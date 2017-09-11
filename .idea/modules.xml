@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/square-cache/square-cache.iml" filepath="$PROJECT_DIR$/square-cache/square-cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/square-common/square-common.iml" filepath="$PROJECT_DIR$/square-common/square-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tuanche-square.iml" filepath="$PROJECT_DIR$/tuanche-square.iml" />
+    </modules>
+  </component>
+</project>
