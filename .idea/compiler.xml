@@ -6,8 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="square-cache" />
-        <module name="square-common" />
+        <module name="taisf-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +18,9 @@
       <module name="square-log" target="1.7" />
       <module name="square-quartz" target="1.7" />
       <module name="square-test" target="1.7" />
+      <module name="taisf" target="1.7" />
+      <module name="taisf-service" target="1.8" />
+      <module name="tuanche" target="1.7" />
       <module name="tuanche-square" target="1.7" />
     </bytecodeTargetLevel>
   </component>

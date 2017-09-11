@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/square-cache/square-cache.iml" filepath="$PROJECT_DIR$/square-cache/square-cache.iml" />
-      <module fileurl="file://$PROJECT_DIR$/square-common/square-common.iml" filepath="$PROJECT_DIR$/square-common/square-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taisf.iml" filepath="$PROJECT_DIR$/taisf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taisf-service/taisf-service.iml" filepath="$PROJECT_DIR$/taisf-service/taisf-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tuanche.iml" filepath="$PROJECT_DIR$/tuanche.iml" />
       <module fileurl="file://$PROJECT_DIR$/tuanche-square.iml" filepath="$PROJECT_DIR$/tuanche-square.iml" />
     </modules>
   </component>
