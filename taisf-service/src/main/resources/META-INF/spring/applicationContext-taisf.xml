@@ -7,8 +7,9 @@
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
 
-	<context:component-scan base-package="com.jk" />
-	<!--<context:property-placeholder location="classpath:jdbc.properties,classpath:redis.properties" ignore-unresolvable="true" />-->
+	<context:component-scan base-package="com.taisf" />
+
+
     <context:property-placeholder location="classpath*:*.properties" ignore-unresolvable="true" />
 
 	<!-- 启用 aspectj 动 态代理 -->
@@ -122,7 +123,7 @@
 
 	<aop:config expose-proxy="true">
 		<!-- 只对业务逻辑层实施事务 -->
-		<aop:pointcut id="taisf.txPointcut" expression="execution(* com.jk.services.taisf.service..*.*(..))" />
+		<aop:pointcut id="taisf.txPointcut" expression="execution(* com.taisf.services.*.service..*.*(..))" />
 		<aop:advisor advice-ref="taisf.txAdvice" pointcut-ref="taisf.txPointcut" />
 	</aop:config>
 

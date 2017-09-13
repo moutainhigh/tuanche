@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/taisf.iml" filepath="$PROJECT_DIR$/taisf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taisf-service/taisf-service.iml" filepath="$PROJECT_DIR$/taisf-service/taisf-service.iml" />
     </modules>
   </component>
 </project>

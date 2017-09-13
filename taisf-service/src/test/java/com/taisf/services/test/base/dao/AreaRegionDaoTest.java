@@ -1,9 +1,9 @@
-package com.taisf.services.base.test.dao;
+package com.taisf.services.test.base.dao;
 
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.base.dao.AreaRegionDao;
 import com.taisf.services.base.entity.AreaRegionEntity;
-import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @version 1.0
  * @since 1.0
  */
-public class AreaRegionDaoTest extends BaseDao{
+public class AreaRegionDaoTest extends BaseTest{
 
     @Resource(name = "basedata.areaRegionDao")
     private AreaRegionDao areaRegionDao;
@@ -29,6 +29,8 @@ public class AreaRegionDaoTest extends BaseDao{
 
     @Test
     public void getAreaRegionByNameTest() {
+
+        System.out.println(1111);
         AreaRegionEntity aa=  areaRegionDao.getAreaRegionByName("1231");
         System.out.println(JsonEntityTransform.Object2Json(aa));
     }

@@ -1,4 +1,4 @@
-package com.taisf.services.base.test.base;
+package com.taisf.services.test.common;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
