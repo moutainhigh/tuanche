@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="product.productDao">
+
+    <resultMap id="BaseResultMap" type="com.taisf.services.product.entity.ProductEntity">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_classify" jdbcType="INTEGER" property="productClassify" />
+        <result column="product_type" jdbcType="INTEGER" property="productType" />
+        <result column="product_source" jdbcType="INTEGER" property="productSource" />
+        <result column="product_des" jdbcType="VARCHAR" property="productDes" />
+        <result column="product_pic" jdbcType="VARCHAR" property="productPic" />
+        <result column="price_sale" jdbcType="INTEGER" property="priceSale" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="is_del" jdbcType="INTEGER" property="isDel" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id, product_name, product_classify, product_type, product_source, product_des, product_pic,
+        price_sale, create_time, update_time, is_del
+    </sql>
+
+    <select id="getProductById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_product
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 保存 -->
+    <insert id="saveProduct" parameterType="com.taisf.services.product.entity.ProductEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        insert into t_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null">
+                product_name,
+            </if>
+            <if test="productClassify != null">
+                product_classify,
+            </if>
+            <if test="productType != null">
+                product_type,
+            </if>
+            <if test="productSource != null">
+                product_source,
+            </if>
+            <if test="productDes != null">
+                product_des,
+            </if>
+            <if test="productPic != null">
+                product_pic,
+            </if>
+            <if test="priceSale != null">
+                price_sale,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="isDel != null">
+                is_del,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="productClassify != null">
+                #{productClassify,jdbcType=INTEGER},
+            </if>
+            <if test="productType != null">
+                #{productType,jdbcType=INTEGER},
+            </if>
+            <if test="productSource != null">
+                #{productSource,jdbcType=INTEGER},
+            </if>
+            <if test="productDes != null">
+                #{productDes,jdbcType=VARCHAR},
+            </if>
+            <if test="productPic != null">
+                #{productPic,jdbcType=VARCHAR},
+            </if>
+            <if test="priceSale != null">
+                #{priceSale,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDel != null">
+                #{isDel,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateProduct" parameterType="com.taisf.services.product.entity.ProductEntity">
+        update t_product
+        <set>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="productClassify != null">
+                product_classify = #{productClassify,jdbcType=INTEGER},
+            </if>
+            <if test="productType != null">
+                product_type = #{productType,jdbcType=INTEGER},
+            </if>
+            <if test="productSource != null">
+                product_source = #{productSource,jdbcType=INTEGER},
+            </if>
+            <if test="productDes != null">
+                product_des = #{productDes,jdbcType=VARCHAR},
+            </if>
+            <if test="productPic != null">
+                product_pic = #{productPic,jdbcType=VARCHAR},
+            </if>
+            <if test="priceSale != null">
+                price_sale = #{priceSale,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDel != null">
+                is_del = #{isDel,jdbcType=INTEGER},
+            </if>
+        </set>
+
+        WHERE   id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>
