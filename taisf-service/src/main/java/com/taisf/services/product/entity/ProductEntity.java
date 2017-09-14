@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * <p>菜单</p>
+ * <p>商品</p>
  * <PRE>
  * <BR>	修改记录
  * <BR>-----------------------------------------------
