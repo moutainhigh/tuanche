@@ -28,12 +28,6 @@ public class CartEntity extends BaseEntity {
     private Integer id;
 
     /**
-     * 订单编号
-     */
-    private String orderSn;
-
-
-    /**
      * 商家uid
      */
     private String businessUid;
@@ -73,13 +67,6 @@ public class CartEntity extends BaseEntity {
         this.id = id;
     }
 
-    public String getOrderSn() {
-        return orderSn;
-    }
-
-    public void setOrderSn(String orderSn) {
-        this.orderSn = orderSn;
-    }
 
     public String getBusinessUid() {
         return businessUid;

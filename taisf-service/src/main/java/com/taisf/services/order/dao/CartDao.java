@@ -1,5 +1,6 @@
 package com.taisf.services.order.dao;
 
+import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.order.entity.CartEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +58,9 @@ public class CartDao extends BaseDao {
      * @return
      */
     public int saveCart(CartEntity record){
+        if (Check.NuNObj(record.getCreateTime())){
+            record.setCreateTime(new Date());
+        }
         return mybatisDaoContext.save(SQLID + "saveCart", record);
     }
     /**
