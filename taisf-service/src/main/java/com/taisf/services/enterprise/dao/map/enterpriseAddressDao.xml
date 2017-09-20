@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="enterprise.enterpriseAddressDao">
+
+  <resultMap id="BaseResultMap" type="com.taisf.services.enterprise.entity.EnterpriseAddressEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="enterprise_code" jdbcType="VARCHAR" property="enterpriseCode" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="send_num" jdbcType="INTEGER" property="sendNum" />
+    <result column="con_tel" jdbcType="VARCHAR" property="conTel" />
+    <result column="con_name" jdbcType="VARCHAR" property="conName" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    id, enterprise_code, address, send_num, con_tel, con_name
+  </sql>
+
+
+  <select id="getEnterpriseAddressByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_enterprise_address
+    where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <insert id="saveEnterpriseAddress" parameterType="com.taisf.services.enterprise.entity.EnterpriseAddressEntity">
+    insert into t_enterprise_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="enterpriseCode != null">
+        enterprise_code,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="sendNum != null">
+        send_num,
+      </if>
+      <if test="conTel != null">
+        con_tel,
+      </if>
+      <if test="conName != null">
+        con_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="enterpriseCode != null">
+        #{enterpriseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sendNum != null">
+        #{sendNum,jdbcType=INTEGER},
+      </if>
+      <if test="conTel != null">
+        #{conTel,jdbcType=VARCHAR},
+      </if>
+      <if test="conName != null">
+        #{conName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateEnterpriseAddress" parameterType="com.taisf.services.enterprise.entity.EnterpriseAddressEntity">
+    update t_enterprise_address
+    <set>
+      <if test="enterpriseCode != null">
+        enterprise_code = #{enterpriseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sendNum != null">
+        send_num = #{sendNum,jdbcType=INTEGER},
+      </if>
+      <if test="conTel != null">
+        con_tel = #{conTel,jdbcType=VARCHAR},
+      </if>
+      <if test="conName != null">
+        con_name = #{conName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>
