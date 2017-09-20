@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="supplier.supplierProductDao">
+
+  <resultMap id="BaseResultMap" type="com.taisf.services.supplier.entity.SupplierProductEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="t_supplier_code" jdbcType="VARCHAR" property="tSupplierCode" />
+    <result column="product_code" jdbcType="INTEGER" property="productCode" />
+    <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="is_send" jdbcType="SMALLINT" property="isSend" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, t_supplier_code, product_code, product_type, create_time, is_send
+  </sql>
+
+
+  <select id="getSupplierProductByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_supplier_product
+    where t_supplier_code = #{t_supplierCode,jdbcType=VARCHAR}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_supplier_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="saveSupplierProduct" parameterType="com.taisf.services.supplier.entity.SupplierProductEntity">
+    insert into t_supplier_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+      <if test="tSupplierCode != null">
+        t_supplier_code,
+      </if>
+      <if test="productCode != null">
+        product_code,
+      </if>
+      <if test="productType != null">
+        product_type,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="isSend != null">
+        is_send,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="tSupplierCode != null">
+        #{tSupplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        #{productCode,jdbcType=INTEGER},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSend != null">
+        #{isSend,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateSupplierProduct" parameterType="com.taisf.services.supplier.entity.SupplierProductEntity">
+    update t_supplier_product
+    <set>
+      <if test="tSupplierCode != null">
+        t_supplier_code = #{tSupplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        product_code = #{productCode,jdbcType=INTEGER},
+      </if>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSend != null">
+        is_send = #{isSend,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where t_supplier_code = #{t_supplierCode,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

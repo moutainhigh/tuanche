@@ -1,0 +1,86 @@
+package com.taisf.services.supplier.entity;
+
+import com.jk.framework.base.entity.BaseEntity;
+
+import java.util.Date;
+
+/**
+ * <p>
+ * 供应的菜单信息
+ * </p>
+ * <p/>
+ *
+ * <PRE>
+ * <BR>	修改记录
+ * <BR>-----------------------------------------------
+ * <BR>	修改日期			修改人			修改内容
+ * </PRE>
+ *
+ * @author afi on 2017/9/20.
+ * @version 1.0
+ * @since 1.0
+ */
+public class SupplierProductEntity extends BaseEntity {
+
+    /** 序列化id */
+    private static final long serialVersionUID = 7380668097871543955L;
+    private Integer id;
+
+    private String tSupplierCode;
+
+    private Integer productCode;
+
+    private Integer productType;
+
+    private Date createTime;
+
+    private Short isSend;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String gettSupplierCode() {
+        return tSupplierCode;
+    }
+
+    public void settSupplierCode(String tSupplierCode) {
+        this.tSupplierCode = tSupplierCode == null ? null : tSupplierCode.trim();
+    }
+
+    public Integer getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(Integer productCode) {
+        this.productCode = productCode;
+    }
+
+    public Integer getProductType() {
+        return productType;
+    }
+
+    public void setProductType(Integer productType) {
+        this.productType = productType;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Short getIsSend() {
+        return isSend;
+    }
+
+    public void setIsSend(Short isSend) {
+        this.isSend = isSend;
+    }
+}
