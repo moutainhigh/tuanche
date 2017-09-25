@@ -21,7 +21,7 @@
     supplier_account, supplier_tax, manager
   </sql>
 
-  <select id="getSupplierFinanceByCode" parameterType="java.lang.VARCHAR" resultMap="BaseResultMap">
+  <select id="getSupplierFinanceByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_supplier_finance

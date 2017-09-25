@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-@Repository("supplier.supplierFinanceDao")
+@Repository("supplier.supplierPackageDao")
 public class SupplierPackageDao extends BaseDao {
 
     private String SQLID = "supplier.supplierPackageDao.";
