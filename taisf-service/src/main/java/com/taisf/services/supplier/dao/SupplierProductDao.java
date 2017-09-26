@@ -1,6 +1,8 @@
 package com.taisf.services.supplier.dao;
 
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.product.entity.ProductEntity;
+import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,20 @@ public class SupplierProductDao extends BaseDao {
      * 日志对象
      */
     private static Logger logger = LoggerFactory.getLogger(SupplierProductDao.class);
+
+
+
+
+    /**
+     * 获取当前供应商的菜单信息
+     * @author afi
+     * @param supplierProductRequest
+     * @return
+     */
+    public List<ProductEntity> getProductListBySupplierAndType(SupplierProductRequest supplierProductRequest){
+        return mybatisDaoContext.findAll(SQLID+"getProductListBySupplierAndType", ProductEntity.class, supplierProductRequest);
+    }
+
 
     /**
      * 获取当前的供应商菜单信息

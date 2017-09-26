@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>商品信息</p>
@@ -42,6 +45,25 @@ public class ProductDao extends BaseDao {
     public ProductEntity getProductById(Integer id){
         return mybatisDaoContext.findOneSlave(SQLID+"getProductById", ProductEntity.class, id);
     }
+
+
+
+
+
+
+
+    /**
+     * 根据id获取当前的菜单list
+     * @author afi
+     * @param list
+     * @return
+     */
+    public List<ProductEntity> getProductByList(List<Integer> list){
+        Map<String,Object> par = new HashMap<>();
+        par.put("productIds",list);
+        return mybatisDaoContext.findAll(SQLID+"getProductByList", ProductEntity.class, par);
+    }
+
 
     /**
      * 修改商品信息

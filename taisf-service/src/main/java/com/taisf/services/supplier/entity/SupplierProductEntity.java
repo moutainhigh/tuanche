@@ -26,9 +26,14 @@ public class SupplierProductEntity extends BaseEntity {
     private static final long serialVersionUID = 7380668097871543955L;
     private Integer id;
 
-    private String tSupplierCode;
+    private String supplierCode;
 
     private Integer productCode;
+
+    /**
+     * 价格
+     */
+    private Integer productPrice;
 
     private Integer productType;
 
@@ -44,12 +49,20 @@ public class SupplierProductEntity extends BaseEntity {
         this.id = id;
     }
 
-    public String gettSupplierCode() {
-        return tSupplierCode;
+    public String getSupplierCode() {
+        return supplierCode;
     }
 
-    public void settSupplierCode(String tSupplierCode) {
-        this.tSupplierCode = tSupplierCode == null ? null : tSupplierCode.trim();
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
+    public Integer getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
     }
 
     public Integer getProductCode() {

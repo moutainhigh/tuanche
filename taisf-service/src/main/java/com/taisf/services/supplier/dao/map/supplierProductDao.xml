@@ -4,23 +4,59 @@
 
   <resultMap id="BaseResultMap" type="com.taisf.services.supplier.entity.SupplierProductEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="t_supplier_code" jdbcType="VARCHAR" property="tSupplierCode" />
+    <result column="supplier_code" jdbcType="VARCHAR" property="tSupplierCode" />
     <result column="product_code" jdbcType="INTEGER" property="productCode" />
     <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="product_price" jdbcType="INTEGER" property="productPrice" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="is_send" jdbcType="SMALLINT" property="isSend" />
   </resultMap>
 
-  <sql id="Base_Column_List">
-    id, t_supplier_code, product_code, product_type, create_time, is_send
+
+  <resultMap id="BaseProductMap" type="com.taisf.services.product.entity.ProductEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_classify" jdbcType="INTEGER" property="productClassify" />
+    <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="product_source" jdbcType="INTEGER" property="productSource" />
+    <result column="product_des" jdbcType="VARCHAR" property="productDes" />
+    <result column="product_pic" jdbcType="VARCHAR" property="productPic" />
+    <result column="price_sale" jdbcType="INTEGER" property="priceSale" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_del" jdbcType="INTEGER" property="isDel" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List_Supplier">
+    t.id, t.product_name, t.product_classify, t.product_type, t.product_source, t.product_des, t.product_pic,
+    p.product_price  as price_sale, t.create_time, t.update_time, is_del
   </sql>
+
+
+  <sql id="Base_Column_List">
+    id, supplier_code, product_code, product_type,product_price, create_time, is_send
+  </sql>
+
+  <select id="getProductListBySupplierAndType" parameterType="com.taisf.services.supplier.dto.SupplierProductRequest" resultMap="BaseProductMap">
+    select
+    <include refid="Base_Column_List_Supplier" />
+    from t_product t
+    inner join t_supplier_product p ON  p.product_code = t.id and p.product_type = 1
+    where   p.supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    <if test="productClassify != null">
+      and t.product_classify = #{productClassify,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
 
 
   <select id="getSupplierProductByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_supplier_product
-    where t_supplier_code = #{t_supplierCode,jdbcType=VARCHAR}
+    where supplier_code = #{t_supplierCode,jdbcType=VARCHAR}
   </select>
 
 
@@ -35,7 +71,7 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
 
       <if test="tSupplierCode != null">
-        t_supplier_code,
+        supplier_code,
       </if>
       <if test="productCode != null">
         product_code,
@@ -43,6 +79,12 @@
       <if test="productType != null">
         product_type,
       </if>
+      <if test="productPrice != null">
+        product_price,
+      </if>
+
+
+
       <if test="createTime != null">
         create_time,
       </if>
@@ -61,6 +103,11 @@
       <if test="productType != null">
         #{productType,jdbcType=INTEGER},
       </if>
+      <if test="productPrice != null">
+        #{productPrice,jdbcType=INTEGER},
+      </if>
+
+
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -74,7 +121,7 @@
     update t_supplier_product
     <set>
       <if test="tSupplierCode != null">
-        t_supplier_code = #{tSupplierCode,jdbcType=VARCHAR},
+        supplier_code = #{tSupplierCode,jdbcType=VARCHAR},
       </if>
       <if test="productCode != null">
         product_code = #{productCode,jdbcType=INTEGER},
@@ -82,6 +129,11 @@
       <if test="productType != null">
         product_type = #{productType,jdbcType=INTEGER},
       </if>
+      <if test="productPrice != null">
+        product_price = #{productPrice,jdbcType=INTEGER},
+      </if>
+
+
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -89,7 +141,7 @@
         is_send = #{isSend,jdbcType=SMALLINT},
       </if>
     </set>
-    where t_supplier_code = #{t_supplierCode,jdbcType=VARCHAR}
+    where supplier_code = #{t_supplierCode,jdbcType=VARCHAR}
   </update>
 
 </mapper>
