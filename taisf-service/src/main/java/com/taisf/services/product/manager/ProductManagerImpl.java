@@ -1,11 +1,15 @@
 package com.taisf.services.product.manager;
 
+import com.jk.framework.base.utils.Check;
 import com.taisf.services.product.dao.ProductDao;
 import com.taisf.services.product.entity.ProductEntity;
+import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -21,7 +25,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-@Service("basedata.productManagerImpl")
+@Service("product.productManagerImpl")
 public class ProductManagerImpl {
 
 	@Resource(name = "product.productDao")
@@ -37,5 +41,26 @@ public class ProductManagerImpl {
 		//获取商品列表
 		return productDao.getProductByList(list);
 	}
+
+	/**
+	 * 获取商品map
+	 * @author afi
+	 * @param list
+	 * @return
+	 */
+	public Map<String,ProductEntity> getProductByMap(List<Integer> list){
+		Map<String,ProductEntity> map = new HashMap<>();
+		if (Check.NuNCollection(list)){
+			return map;
+		}
+		List<ProductEntity> listPro = productDao.getProductByList(list);
+		if (!Check.NuNCollection(listPro)){
+			for (ProductEntity productEntity : listPro) {
+				map.put(productEntity.getId()+"",productEntity);
+			}
+		}
+		return map;
+	}
+
 
 }

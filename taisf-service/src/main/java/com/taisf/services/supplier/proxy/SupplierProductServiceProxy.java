@@ -1,14 +1,12 @@
 package com.taisf.services.supplier.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
-import com.jk.framework.base.entity.JkEleEntity;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.ProductClassifyEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.product.entity.ProductEntity;
-import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.manager.SupplierProductManagerImpl;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>获取版本更新信息</p>

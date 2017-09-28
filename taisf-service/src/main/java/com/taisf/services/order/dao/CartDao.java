@@ -2,6 +2,7 @@ package com.taisf.services.order.dao;
 
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.order.dto.CartBaseRequest;
 import com.taisf.services.order.entity.CartEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
 import org.slf4j.Logger;
@@ -50,6 +51,29 @@ public class CartDao extends BaseDao {
         par.put("businessUid",businessUid);
         return mybatisDaoContext.findAll(SQLID+"getCartByUserId", CartEntity.class, par);
     }
+
+
+    /**
+     * 获取当前商品在购物车中的信息
+     * @param cartBaseRequest
+     * @return
+     */
+    public CartEntity getCartByProduct(CartBaseRequest cartBaseRequest){
+        return mybatisDaoContext.findOne(SQLID+"getCartByProduct", CartEntity.class, cartBaseRequest);
+    }
+
+    /**
+     * 删除购物车
+     * @author afi
+     * @param id
+     * @return
+     */
+    public int delCart(Integer id){
+        Map<String,Object> par = new HashMap<>();
+        par.put("id",id);
+        return mybatisDaoContext.delete(SQLID + "delCart", par);
+    }
+
 
     /**
      * 增加购物车

@@ -40,7 +40,7 @@ public class CartEntity extends BaseEntity {
     /**
      * 商品配型
      */
-    private Integer productType;
+    private Integer supplierProductType;
 
     /**
      * 商品code
@@ -84,12 +84,13 @@ public class CartEntity extends BaseEntity {
         this.userUid = userUid;
     }
 
-    public Integer getProductType() {
-        return productType;
+
+    public Integer getSupplierProductType() {
+        return supplierProductType;
     }
 
-    public void setProductType(Integer productType) {
-        this.productType = productType;
+    public void setSupplierProductType(Integer supplierProductType) {
+        this.supplierProductType = supplierProductType;
     }
 
     public Integer getProductCode() {

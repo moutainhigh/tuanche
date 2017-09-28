@@ -6,7 +6,7 @@
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="business_uid" jdbcType="VARCHAR" property="businessUid" />
         <result column="user_uid" jdbcType="VARCHAR" property="userUid" />
-        <result column="product_type" jdbcType="INTEGER" property="productType" />
+        <result column="supplier_product_type" jdbcType="INTEGER" property="supplierProductType" />
         <result column="product_code" jdbcType="INTEGER" property="productCode" />
         <result column="product_num" jdbcType="VARCHAR" property="productNum" />
         <result column="product_price" jdbcType="INTEGER" property="productPrice" />
@@ -14,8 +14,26 @@
 
 
     <sql id="Base_Column_List">
-        id,business_uid, user_uid, product_code, product_type, product_num,create_time
+        id,business_uid, user_uid, product_code, supplier_product_type, product_num,create_time
     </sql>
+
+    <delete id="delCart" parameterType="java.util.Map">
+        delete from t_cart
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+
+
+    <select id="getCartByProduct" parameterType="com.taisf.services.order.dto.CartBaseRequest" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_cart
+        where user_uid = #{userUid,jdbcType=VARCHAR}
+        AND business_uid = #{businessUid,jdbcType=VARCHAR}
+        AND supplier_product_type = #{supplierProductType,INTEGER=VARCHAR}
+        AND product_code = #{productCode,INTEGER=VARCHAR}
+        limit 1
+    </select>
 
 
 
@@ -42,8 +60,8 @@
             <if test="userUid != null">
                 user_uid,
             </if>
-            <if test="productType != null">
-                product_type,
+            <if test="supplierProductType != null">
+                supplier_product_type,
             </if>
             <if test="productCode != null">
                 product_code,
@@ -66,8 +84,8 @@
                 #{userUid,jdbcType=VARCHAR},
             </if>
 
-            <if test="productType != null">
-                #{productType,jdbcType=INTEGER},
+            <if test="supplierProductType != null">
+                #{supplierProductType,jdbcType=INTEGER},
             </if>
             <if test="productCode != null">
                 #{productCode,jdbcType=INTEGER},
@@ -94,15 +112,15 @@
                 user_uid =  #{userUid,jdbcType=VARCHAR},
             </if>
 
-            <if test="productType != null">
-                product_type =  #{productType,jdbcType=INTEGER},
+            <if test="supplierProductType != null">
+                supplier_product_type =  #{supplierProductType,jdbcType=INTEGER},
             </if>
             <if test="productCode != null">
-                product_type =  #{productCode,jdbcType=INTEGER},
+                supplier_product_type =  #{productCode,jdbcType=INTEGER},
             </if>
 
             <if test="productNum != null">
-                product_type = #{productNum,jdbcType=INTEGER},
+                supplier_product_type = #{productNum,jdbcType=INTEGER},
             </if>
         </set>
         WHERE   id = #{id,jdbcType=INTEGER}

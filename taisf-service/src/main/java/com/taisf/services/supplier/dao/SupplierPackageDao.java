@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>供应商的财务信息</p>
@@ -30,6 +32,21 @@ public class SupplierPackageDao extends BaseDao {
      * 日志对象
      */
     private static Logger logger = LoggerFactory.getLogger(SupplierPackageDao.class);
+
+
+    /**
+     * 获取礼包列表
+     * @author afi
+     * @param list
+     * @return
+     */
+    public List<SupplierPackageEntity> getSupplierPackageByList(List<Integer> list){
+        Map<String,Object> par = new HashMap<>();
+        par.put("productIds",list);
+        return mybatisDaoContext.findAll(SQLID+"getSupplierPackageByList", SupplierPackageEntity.class, par);
+    }
+
+
 
     /**
      * 获取当前的供应商打包信息
