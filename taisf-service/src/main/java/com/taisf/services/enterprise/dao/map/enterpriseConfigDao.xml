@@ -11,11 +11,11 @@
     <result column="lunch_emp" jdbcType="INTEGER" property="lunchEmp" />
     <result column="dinner_emp" jdbcType="INTEGER" property="dinnerEmp" />
     <result column="for_lunch" jdbcType="INTEGER" property="forLunch" />
-    <result column="lunch_start" jdbcType="TIMESTAMP" property="lunchStart" />
-    <result column="lunch_end" jdbcType="TIMESTAMP" property="lunchEnd" />
+    <result column="lunch_start" jdbcType="VARCHAR" property="lunchStart" />
+    <result column="lunch_end" jdbcType="VARCHAR" property="lunchEnd" />
     <result column="for_dinner" jdbcType="INTEGER" property="forDinner" />
-    <result column="dinner_start" jdbcType="TIMESTAMP" property="dinnerStart" />
-    <result column="dinner_end" jdbcType="TIMESTAMP" property="dinnerEnd" />
+    <result column="dinner_start" jdbcType="VARCHAR" property="dinnerStart" />
+    <result column="dinner_end" jdbcType="VARCHAR" property="dinnerEnd" />
   </resultMap>
 
 
@@ -93,19 +93,19 @@
         #{forLunch,jdbcType=INTEGER},
       </if>
       <if test="lunchStart != null">
-        #{lunchStart,jdbcType=TIMESTAMP},
+        #{lunchStart,jdbcType=VARCHAR},
       </if>
       <if test="lunchEnd != null">
-        #{lunchEnd,jdbcType=TIMESTAMP},
+        #{lunchEnd,jdbcType=VARCHAR},
       </if>
       <if test="forDinner != null">
         #{forDinner,jdbcType=INTEGER},
       </if>
       <if test="dinnerStart != null">
-        #{dinnerStart,jdbcType=TIMESTAMP},
+        #{dinnerStart,jdbcType=VARCHAR},
       </if>
       <if test="dinnerEnd != null">
-        #{dinnerEnd,jdbcType=TIMESTAMP},
+        #{dinnerEnd,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -134,19 +134,19 @@
         for_lunch = #{forLunch,jdbcType=INTEGER},
       </if>
       <if test="lunchStart != null">
-        lunch_start = #{lunchStart,jdbcType=TIMESTAMP},
+        lunch_start = #{lunchStart,jdbcType=VARCHAR},
       </if>
       <if test="lunchEnd != null">
-        lunch_end = #{lunchEnd,jdbcType=TIMESTAMP},
+        lunch_end = #{lunchEnd,jdbcType=VARCHAR},
       </if>
       <if test="forDinner != null">
         for_dinner = #{forDinner,jdbcType=INTEGER},
       </if>
       <if test="dinnerStart != null">
-        dinner_start = #{dinnerStart,jdbcType=TIMESTAMP},
+        dinner_start = #{dinnerStart,jdbcType=VARCHAR},
       </if>
       <if test="dinnerEnd != null">
-        dinner_end = #{dinnerEnd,jdbcType=TIMESTAMP},
+        dinner_end = #{dinnerEnd,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

@@ -57,12 +57,12 @@ public class EnterpriseConfigEntity extends BaseEntity {
     /**
      * 午餐开始时间
      */
-    private Date lunchStart;
+    private String lunchStart;
 
     /**
      * 午餐结束时间
      */
-    private Date lunchEnd;
+    private String lunchEnd;
 
     /**
      * 是否晚餐
@@ -72,12 +72,12 @@ public class EnterpriseConfigEntity extends BaseEntity {
     /**
      * 晚餐开始时间
      */
-    private Date dinnerStart;
+    private String dinnerStart;
 
     /**
      * 晚餐开始时间
      */
-    private Date dinnerEnd;
+    private String dinnerEnd;
 
     public Integer getId() {
         return id;
@@ -135,21 +135,6 @@ public class EnterpriseConfigEntity extends BaseEntity {
         this.forLunch = forLunch;
     }
 
-    public Date getLunchStart() {
-        return lunchStart;
-    }
-
-    public void setLunchStart(Date lunchStart) {
-        this.lunchStart = lunchStart;
-    }
-
-    public Date getLunchEnd() {
-        return lunchEnd;
-    }
-
-    public void setLunchEnd(Date lunchEnd) {
-        this.lunchEnd = lunchEnd;
-    }
 
     public Integer getForDinner() {
         return forDinner;
@@ -159,19 +144,35 @@ public class EnterpriseConfigEntity extends BaseEntity {
         this.forDinner = forDinner;
     }
 
-    public Date getDinnerStart() {
+    public String getLunchStart() {
+        return lunchStart;
+    }
+
+    public void setLunchStart(String lunchStart) {
+        this.lunchStart = lunchStart;
+    }
+
+    public String getLunchEnd() {
+        return lunchEnd;
+    }
+
+    public void setLunchEnd(String lunchEnd) {
+        this.lunchEnd = lunchEnd;
+    }
+
+    public String getDinnerStart() {
         return dinnerStart;
     }
 
-    public void setDinnerStart(Date dinnerStart) {
+    public void setDinnerStart(String dinnerStart) {
         this.dinnerStart = dinnerStart;
     }
 
-    public Date getDinnerEnd() {
+    public String getDinnerEnd() {
         return dinnerEnd;
     }
 
-    public void setDinnerEnd(Date dinnerEnd) {
+    public void setDinnerEnd(String dinnerEnd) {
         this.dinnerEnd = dinnerEnd;
     }
 }
