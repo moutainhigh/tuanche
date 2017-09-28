@@ -32,6 +32,11 @@ public class SupplierPackageEntity extends BaseEntity {
 
     private String packagePic;
 
+    /**
+     * 套餐价格
+     */
+    private Integer packagePrice;
+
     private Short packageStatus;
 
     private Integer bigCode;
@@ -49,6 +54,15 @@ public class SupplierPackageEntity extends BaseEntity {
     private Integer fruitCode;
 
     private Date createTime;
+
+
+    public Integer getPackagePrice() {
+        return packagePrice;
+    }
+
+    public void setPackagePrice(Integer packagePrice) {
+        this.packagePrice = packagePrice;
+    }
 
     public Integer getId() {
         return id;

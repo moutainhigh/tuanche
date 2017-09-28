@@ -15,7 +15,13 @@ package com.taisf.services.common.valenum;
  */
 public enum ProductClassifyEnum {
 
-    SUGGEST("推荐", 100),
+    SUGGEST("推荐", 100){
+        @Override
+        public SupplierProductTypeEnum getSupplierProductTypeEnum() {
+            //返回商品包的信息
+            return SupplierProductTypeEnum.PACKAGE;
+        }
+    },
 
     DAHUN("大荤", 1),
     XIAOHUN("小荤", 2),
@@ -31,6 +37,7 @@ public enum ProductClassifyEnum {
     private String name;
     private Integer code;
 
+    private SupplierProductTypeEnum supplierProductTypeEnum;
 
     public String getName() {
         return name;
@@ -67,4 +74,11 @@ public enum ProductClassifyEnum {
 
     }
 
+    /**
+     * 获取当前分类的转化
+     * @return
+     */
+    public  SupplierProductTypeEnum getSupplierProductTypeEnum(){
+        return SupplierProductTypeEnum.PRODUCT;
+    }
 }
