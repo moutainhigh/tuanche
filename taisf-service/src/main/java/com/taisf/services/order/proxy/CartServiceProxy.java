@@ -16,8 +16,6 @@ import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.manager.SupplierProductManagerImpl;
-import com.taisf.services.supplier.proxy.SupplierProductServiceProxy;
-import com.taisf.services.supplier.service.SupplierProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -56,6 +54,28 @@ public class CartServiceProxy implements CartService{
 
     @Resource(name = "supplier.supplierProductManagerImpl")
     private SupplierProductManagerImpl supplierProductManager;
+
+
+    /**
+     * 获取购物车列表信息
+     * @param businessUid
+     * @param userUid
+     * @return
+     */
+    @Override
+    public DataTransferObject<CartInfoVO> cartClean(String userUid, String businessUid){
+        DataTransferObject<CartInfoVO> dto = new DataTransferObject<>();
+        if (Check.NuNStr(businessUid)
+                || Check.NuNStr(userUid)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        cartManager.delUserCart(userUid,businessUid);
+        return dto;
+    }
+
+
+
 
 
     /**

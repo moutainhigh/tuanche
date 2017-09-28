@@ -76,6 +76,20 @@ public class CartDao extends BaseDao {
 
 
     /**
+     * 清空购物车
+     * @param userUid
+     * @param businessUid
+     * @return
+     */
+    public int delUserCart(String userUid, String businessUid){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userUid",userUid);
+        par.put("businessUid",businessUid);
+        return mybatisDaoContext.delete(SQLID + "delUserCart", par);
+
+    }
+
+    /**
      * 增加购物车
      * @author afi
      * @param record

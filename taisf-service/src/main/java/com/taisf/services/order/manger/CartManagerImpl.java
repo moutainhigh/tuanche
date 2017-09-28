@@ -58,6 +58,18 @@ public class CartManagerImpl {
 
 
 	/**
+	 * 清空购物车
+	 * @param userUid
+	 * @param businessUid
+	 * @return
+	 */
+	public int delUserCart(String userUid, String businessUid){
+
+		return cartDao.delUserCart(userUid,businessUid);
+	}
+
+
+	/**
 	 * 删除购物车
 	 * @author afi
 	 * @param id

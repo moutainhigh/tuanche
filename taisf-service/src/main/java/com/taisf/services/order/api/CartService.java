@@ -20,7 +20,13 @@ import com.taisf.services.order.vo.CartInfoVO;
  */
 public interface CartService {
 
-
+    /**
+     * 获取购物车列表信息
+     * @param businessUid
+     * @param userUid
+     * @return
+     */
+    DataTransferObject<CartInfoVO> cartClean(String userUid, String businessUid);
     /**
      * 添加购物车
      * @author afi

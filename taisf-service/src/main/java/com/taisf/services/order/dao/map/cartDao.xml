@@ -17,6 +17,17 @@
         id,business_uid, user_uid, product_code, supplier_product_type, product_num,create_time
     </sql>
 
+
+
+
+    <delete id="delUserCart" parameterType="java.util.Map">
+        delete from t_cart
+        where  user_uid = #{userUid,jdbcType=VARCHAR}
+        AND business_uid = #{businessUid,jdbcType=VARCHAR}
+    </delete>
+
+
+
     <delete id="delCart" parameterType="java.util.Map">
         delete from t_cart
         where id = #{id,jdbcType=INTEGER}
@@ -34,6 +45,7 @@
         AND product_code = #{productCode,INTEGER=VARCHAR}
         limit 1
     </select>
+
 
 
 
