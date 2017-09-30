@@ -1,6 +1,7 @@
 package com.taisf.services.order.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.ValueUtil;
@@ -13,13 +14,12 @@ import com.taisf.services.common.valenum.UserStatusEnum;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreatOrderRequest;
+import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
-import com.taisf.services.order.vo.CartVO;
-import com.taisf.services.order.vo.CartInfoVO;
-import com.taisf.services.order.vo.InitOrderVO;
-import com.taisf.services.order.vo.OrderSaveVO;
+import com.taisf.services.order.manger.OrderManagerImpl;
+import com.taisf.services.order.vo.*;
 import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
@@ -56,6 +56,8 @@ public class OrderServiceProxy implements OrderService {
     @Resource(name = "order.cartServiceProxy")
     private CartService cartService;
 
+    @Resource(name = "order.orderManagerImpl")
+    private OrderManagerImpl orderManager;
 
     @Resource(name = "product.productManagerImpl")
     private ProductManagerImpl productManager;
@@ -67,6 +69,51 @@ public class OrderServiceProxy implements OrderService {
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
 
+    /**
+     * 获取当前订单的信息
+     * @author afi
+     * @param orderInfoRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<PagingResult<OrderInfoVO>> getOrderInfoPage(OrderInfoRequest orderInfoRequest){
+        DataTransferObject<PagingResult<OrderInfoVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(orderInfoRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //分页获取订单列表
+        PagingResult<OrderInfoVO> page = orderManager.getOrderInfoPage(orderInfoRequest);
+        dto.setData(page);
+        return dto;
+    }
+
+
+    /**
+     * 获取订单的详细
+     * @param orderSn
+     * @return
+     */
+    @Override
+    public DataTransferObject<OrderDetailVO>  getOrderDetailBySn(String orderSn){
+        DataTransferObject<OrderDetailVO> dto = new DataTransferObject<>();
+
+        if (Check.NuNStr(orderSn)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //获取当前的购物车
+        OrderDetailVO orderDetail = orderManager.getOrderDetailBySn(orderSn);
+        if (Check.NuNObj(orderDetail)){
+            return dto;
+        }
+        OrderEntity base = orderDetail.getOrderEntity();
+        orderDetail.setAddressEntity(userManager.getUserAddressByFid(base.getAddressFid()));
+
+        dto.setData(orderDetail);
+        return dto;
+
+    }
 
     /**
      * 下单
@@ -100,8 +147,9 @@ public class OrderServiceProxy implements OrderService {
         OrderSaveVO orderSaveVO = new OrderSaveVO();
         //1. 填充订单的信息
         this.fillOrderInfo(dto,orderSaveVO,cartInfoVO,creatOrderRequest,true);
+
         //2. 下单的逻辑
-        //TODO
+        orderManager.saveOrderSave(orderSaveVO);
 
         dto.setData(orderSaveVO.getOrderSn());
         return dto;

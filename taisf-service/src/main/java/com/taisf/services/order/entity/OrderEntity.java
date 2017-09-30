@@ -28,6 +28,9 @@ public class OrderEntity extends BaseEntity {
     /** 订单编号 */
     private String orderSn;
 
+    /** 标题 */
+    private String title;
+
     /**  省code */
     private String provinceCode;
     /** 城市code */
@@ -245,5 +248,13 @@ public class OrderEntity extends BaseEntity {
 
     public void setMark(String mark) {
         this.mark = mark;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

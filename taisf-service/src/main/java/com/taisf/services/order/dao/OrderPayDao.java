@@ -58,8 +58,8 @@ public class OrderPayDao extends BaseDao{
 	 * @param orderSn
 	 * @return
 	 */
-	public List<OrderPayEntity> getOrderPayByOrderSn(String orderSn){
-		return mybatisDaoContext.findAll(SQLID + "selectByOrderSn", OrderPayEntity.class, orderSn);
+	public OrderPayEntity getOrderPayByOrderSn(String orderSn){
+		return mybatisDaoContext.findOne(SQLID + "selectByOrderSn", OrderPayEntity.class, orderSn);
 	}
 
 	

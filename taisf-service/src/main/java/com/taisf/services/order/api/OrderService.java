@@ -1,8 +1,12 @@
 package com.taisf.services.order.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.order.dto.CreatOrderRequest;
+import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.InitOrderVO;
+import com.taisf.services.order.vo.OrderDetailVO;
+import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveVO;
 
 /**
@@ -36,5 +40,22 @@ public interface OrderService {
      * @return
      */
     DataTransferObject<String> createOrder(CreatOrderRequest creatOrderRequest);
+
+
+    /**
+     * 获取订单的详细
+     * @param orderSn
+     * @return
+     */
+    DataTransferObject<OrderDetailVO>  getOrderDetailBySn(String orderSn);
+
+    /**
+     * 获取当前订单的信息
+     * @author afi
+     * @param orderInfoRequest
+     * @return
+     */
+    DataTransferObject<PagingResult<OrderInfoVO>> getOrderInfoPage(OrderInfoRequest orderInfoRequest);
+
 
 }

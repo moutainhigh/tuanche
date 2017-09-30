@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="finance.accountUserLogDao" >
+<mapper namespace="user.accountLogDao" >
 
 
   <resultMap id="BaseResultMap" type="com.taisf.services.user.entity.AccountLogEntity" >
@@ -29,13 +29,11 @@
   </select>
 
 
-  <select id="getAccountLogByBiz" resultMap="BaseResultMap" parameterType="java.util.Map" >
+  <select id="getAccountLogByBizSn" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from t_account_log
-    where biz_type = #{bizType,jdbcType=INTEGER}
-
-    AND biz_sn = #{bizSn,jdbcType=VARCHAR}
+    where biz_sn = #{bizSn,jdbcType=VARCHAR}
   </select>
 
 
@@ -50,9 +48,6 @@
 
       <if test="accountType != null" >
         account_type,
-      </if>
-      <if test="bizType != null" >
-        biz_type,
       </if>
       <if test="bizMoney != null" >
         biz_money,
@@ -78,9 +73,6 @@
       <if test="accountType != null" >
         #{accountType,jdbcType=INTEGER},
       </if>
-      <if test="bizType != null" >
-        #{bizType,jdbcType=INTEGER},
-      </if>
       <if test="bizMoney != null" >
         #{bizMoney,jdbcType=INTEGER},
       </if>
@@ -93,7 +85,6 @@
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-
 
     </trim>
   </insert>

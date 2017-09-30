@@ -36,11 +36,6 @@ public class AccountLogEntity extends BaseEntity {
     private Integer accountType;
 
     /**
-     * 业务类型101:问诊 102:心意 103:处方笺  301:手动提现 302:自动提现  401:手动充值 402:自动充值 403:积分兑换
-     */
-    private Integer bizType;
-
-    /**
      * 操作金额 单位:分
      */
     private Integer bizMoney;
@@ -87,15 +82,6 @@ public class AccountLogEntity extends BaseEntity {
     public void setAccountType(Integer accountType) {
         this.accountType = accountType;
     }
-
-    public Integer getBizType() {
-        return bizType;
-    }
-
-    public void setBizType(Integer bizType) {
-        this.bizType = bizType;
-    }
-
     public Integer getBizMoney() {
         return bizMoney;
     }

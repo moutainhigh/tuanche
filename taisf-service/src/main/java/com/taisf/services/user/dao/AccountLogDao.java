@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <p>用户的账户记录信息</p>
@@ -27,16 +25,16 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-@Repository("finance.accountUserLogDao")
-public class AccountUserLogDao extends BaseDao {
+@Repository("user.accountLogDao")
+public class AccountLogDao extends BaseDao {
 
 
     /**
      * 日志对象
      */
-    private static Logger logger = LoggerFactory.getLogger(AccountUserLogDao.class);
+    private static Logger logger = LoggerFactory.getLogger(AccountLogDao.class);
 
-    private String SQLID = "finance.accountUserLogDao.";
+    private String SQLID = "user.accountLogDao.";
 
 
     /**
@@ -74,14 +72,10 @@ public class AccountUserLogDao extends BaseDao {
      * 获取当前是否存在
      * @author afi
      * @param bizSn
-     * @param bizType
      * @return
      */
-    public AccountLogEntity getAccountLogByBiz(String bizSn,int bizType){
-        Map<String,Object> par = new HashMap();
-        par.put("bizSn",bizSn);
-        par.put("bizType",bizType);
-        return mybatisDaoContext.findOne(SQLID + "getAccountLogByBiz",AccountLogEntity.class,par);
+    public AccountLogEntity getAccountLogByBizSn(String bizSn){
+        return mybatisDaoContext.findOne(SQLID + "getAccountLogByBizSn",AccountLogEntity.class,bizSn);
     }
 
 

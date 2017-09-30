@@ -25,6 +25,14 @@
   </sql>
 
 
+  <!-- 改变当前余额信息 -->
+  <update id="changeUserBalance" parameterType="java.util.Map" >
+    update t_user_account
+    SET draw_balance = draw_balance  +  #{money,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+
   <!-- 冻结当前金额 -->
   <update id="fillUserBalance" parameterType="java.util.Map" >
     update t_user_account

@@ -6,13 +6,11 @@
         <!-- map -->
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
         <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
         <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
         <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
         <result column="address_fid" jdbcType="VARCHAR" property="addressFid" />
-
-
-
         <result column="order_source" jdbcType="TINYINT" property="orderSource" />
         <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
         <result column="accounts_status" jdbcType="TINYINT" property="accountsStatus" />
@@ -32,7 +30,7 @@
 
     <sql id="Base_Column_List">
         <!--  -->
-        id, order_sn, province_code,area_code, city_code,address_fid, order_source,eva_status, order_status, accounts_status,
+        id, order_sn,title, province_code,area_code, city_code,address_fid, order_source,eva_status, order_status, accounts_status,
         pay_status, business_uid, user_uid, user_tel, user_name,
         send_time, pay_time,create_time, last_modify_date, mark
     </sql>
@@ -56,6 +54,10 @@
 
             <if test="orderSn != null">
                 order_sn,
+            </if>
+
+            <if test="title != null">
+                title,
             </if>
 
             <if test="provinceCode != null">
@@ -122,6 +124,11 @@
                 #{orderSn,jdbcType=VARCHAR},
             </if>
 
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+
+
             <if test="provinceCode != null">
                 #{provinceCode,jdbcType=VARCHAR},
             </if>
@@ -186,6 +193,11 @@
         <!-- 更新订单金额 -->
         UPDATE t_order
         <set >
+
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+
             <if test="provinceCode != null">
                 province_code = #{provinceCode,jdbcType=VARCHAR},
             </if>

@@ -133,4 +133,23 @@ public class UserAccountDao extends BaseDao {
         return mybatisDaoContext.update(SQLID + "fillUserBalance",par);
     }
 
+
+    /**
+     * 改变当前余额信息
+     * @author afi
+     * @param userId
+     * @param money
+     * @return
+     */
+    public int changeUserBalance(String userId,int money){
+        if (Check.NuNObjs(userId)){
+            throw new BusinessException("更新数据 id 为空,par:"+ JsonEntityTransform.Object2Json(userId));
+        }
+        Map<String,Object> par = new HashMap();
+        par.put("userId",userId);
+        par.put("money",money);
+        return mybatisDaoContext.update(SQLID + "changeUserBalance",par);
+    }
+
+
 }

@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 /**
  * <p> 订单的主表操作 </p>
  * <PRE>
@@ -57,6 +59,9 @@ public class OrderBaseDao extends BaseDao{
      * @return
      */
     public int saveOrderBase(OrderEntity orderEntity){
+        if (Check.NuNObj(orderEntity)){
+            orderEntity.setCreateTime(new Date());
+        }
         return mybatisDaoContext.save(SQLID + "saveOrderBase", orderEntity);
     }
 

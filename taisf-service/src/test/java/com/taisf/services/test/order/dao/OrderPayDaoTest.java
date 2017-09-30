@@ -39,7 +39,7 @@ public class OrderPayDaoTest  extends BaseTest {
     @Test
     public void queryTradeNumByHouseFidTest(){
 
-		List<OrderPayEntity> list = this.payDao.getOrderPayByOrderSn("8a9e9cd253d0597c0153d0597c760001");
+		OrderPayEntity list = this.payDao.getOrderPayByOrderSn("8a9e9cd253d0597c0153d0597c760001");
 		System.err.println(JsonEntityTransform.Object2Json(list));
     }
     

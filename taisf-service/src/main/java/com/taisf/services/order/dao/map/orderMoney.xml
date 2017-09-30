@@ -17,7 +17,7 @@
 
   <sql id="Base_Column_List" >
     <!-- -->
-     order_sn, sum_money, coupon_money, discount_money,red_money, discount_money, need_pay, pay_money, pay_balance, carry_money
+     order_sn, sum_money, coupon_money, discount_money,red_money, need_pay, pay_money, pay_balance, carry_money
     
   </sql>
 
