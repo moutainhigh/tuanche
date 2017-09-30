@@ -41,8 +41,8 @@
         from t_cart
         where user_uid = #{userUid,jdbcType=VARCHAR}
         AND business_uid = #{businessUid,jdbcType=VARCHAR}
-        AND supplier_product_type = #{supplierProductType,INTEGER=VARCHAR}
-        AND product_code = #{productCode,INTEGER=VARCHAR}
+        AND supplier_product_type = #{supplierProductType,jdbcType=VARCHAR}
+        AND product_code = #{productCode,jdbcType=VARCHAR}
         limit 1
     </select>
 

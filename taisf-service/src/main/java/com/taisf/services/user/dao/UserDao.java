@@ -17,13 +17,13 @@ import org.springframework.stereotype.Repository;
  * @version 1.0
  * @since 1.0
  */
-@Repository("core.userDao")
+@Repository("user.userDao")
 public class UserDao extends BaseDao{
-    private String SQLID = "core.userDao.";
+    private String SQLID = "user.userDao.";
 
     
     public int add(UserEntity userEntity){
-        return mybatisDaoContext.save(SQLID + "insertSelective", userEntity);
+        return mybatisDaoContext.save(SQLID + "saveUser", userEntity);
     }
     
     public UserEntity queryBySelective(UserEntity userEntity){
@@ -40,9 +40,19 @@ public class UserDao extends BaseDao{
      * @return
      */
     public int updateUser(UserEntity userEntity){
-        return mybatisDaoContext.update(SQLID + "updateByPrimaryKeySelective", userEntity);
+        return mybatisDaoContext.update(SQLID + "updateUser", userEntity);
     }
-    
+
+
+    /**
+     * 根据用户userid查询用户
+     * @param userId
+     * @return
+     */
+    public UserEntity getUserByUid(String userId){
+
+        return mybatisDaoContext.findOne(SQLID + "getUserByUid", UserEntity.class, userId);
+    }
     /**
      * 根据用户id查询用户
      * @param id

@@ -15,12 +15,18 @@ import com.taisf.services.order.entity.CartEntity;
  * @version 1.0
  * @since 1.0
  */
-public class CartInVO  extends CartEntity{
+public class CartVO extends CartEntity{
 
     /**
      * 商品名称
      */
     private String productName;
+
+
+    /**
+     * 商品价格
+     */
+    private Integer productPrice;
 
 
     public String getProductName() {
@@ -29,5 +35,13 @@ public class CartInVO  extends CartEntity{
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public Integer getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
     }
 }

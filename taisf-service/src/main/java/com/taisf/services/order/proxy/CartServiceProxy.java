@@ -3,6 +3,7 @@ package com.taisf.services.order.proxy;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.ValueUtil;
+import com.taisf.services.common.util.MoneyDealUtil;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.dto.CartAddRequest;
@@ -10,12 +11,12 @@ import com.taisf.services.order.dto.CartBaseRequest;
 import com.taisf.services.order.entity.CartEntity;
 import com.taisf.services.order.manger.CartManagerImpl;
 import com.taisf.services.order.vo.CartEleVO;
-import com.taisf.services.order.vo.CartInVO;
+import com.taisf.services.order.vo.CartVO;
 import com.taisf.services.order.vo.CartInfoVO;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
-import com.taisf.services.supplier.manager.SupplierProductManagerImpl;
+import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -52,8 +53,8 @@ public class CartServiceProxy implements CartService{
     private ProductManagerImpl productManager;
 
 
-    @Resource(name = "supplier.supplierProductManagerImpl")
-    private SupplierProductManagerImpl supplierProductManager;
+    @Resource(name = "supplier.supplierManagerImpl")
+    private SupplierManagerImpl supplierProductManager;
 
 
     /**
@@ -63,8 +64,8 @@ public class CartServiceProxy implements CartService{
      * @return
      */
     @Override
-    public DataTransferObject<CartInfoVO> cartClean(String userUid, String businessUid){
-        DataTransferObject<CartInfoVO> dto = new DataTransferObject<>();
+    public DataTransferObject<Void> cartClean(String userUid, String businessUid){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNStr(businessUid)
                 || Check.NuNStr(userUid)){
             dto.setErrorMsg("参数异常");
@@ -158,14 +159,15 @@ public class CartServiceProxy implements CartService{
         CartInfoVO vo = dto.getData();
         for (SupplierPackageEntity productEntity : list) {
             int num = ValueUtil.getintValue(numMap.get(productEntity.getId()+""));
-            CartInVO cartInVO = new CartInVO();
-            cartInVO.setProductName(productEntity.getTitle());
-            cartInVO.setBusinessUid(vo.getBusinessUid());
-            cartInVO.setUserUid(vo.getUserUid());
-            cartInVO.setProductCode(productEntity.getId());
-            cartInVO.setProductNum(num);
-            vo.getList().add(cartInVO);
-            vo.setPrice(overlayMoney(vo.getPrice(),productEntity.getPackagePrice(),num));
+            CartVO cartVO = new CartVO();
+            cartVO.setProductName(productEntity.getTitle());
+            cartVO.setBusinessUid(vo.getBusinessUid());
+            cartVO.setUserUid(vo.getUserUid());
+            cartVO.setProductCode(productEntity.getId());
+            cartVO.setProductPrice(productEntity.getPackagePrice());
+            cartVO.setProductNum(num);
+            vo.getList().add(cartVO);
+            vo.setPrice(MoneyDealUtil.overlayMoney(vo.getPrice(),productEntity.getPackagePrice(),num));
         }
     }
 
@@ -196,28 +198,19 @@ public class CartServiceProxy implements CartService{
         CartInfoVO vo = dto.getData();
         for (ProductEntity productEntity : list) {
             int num = ValueUtil.getintValue(numMap.get(productEntity.getId()+""));
-            CartInVO cartInVO = new CartInVO();
-            cartInVO.setProductName(productEntity.getProductName());
-            cartInVO.setBusinessUid(vo.getBusinessUid());
-            cartInVO.setUserUid(vo.getUserUid());
-            cartInVO.setProductCode(productEntity.getId());
-            cartInVO.setProductNum(num);
-            vo.getList().add(cartInVO);
-            vo.setPrice(overlayMoney(vo.getPrice(),productEntity.getPriceSale(),num));
+            CartVO cartVO = new CartVO();
+            cartVO.setProductName(productEntity.getProductName());
+            cartVO.setBusinessUid(vo.getBusinessUid());
+            cartVO.setUserUid(vo.getUserUid());
+            cartVO.setProductCode(productEntity.getId());
+            cartVO.setProductPrice(productEntity.getPriceSale());
+            cartVO.setProductNum(num);
+            vo.getList().add(cartVO);
+            vo.setPrice(MoneyDealUtil.overlayMoney(vo.getPrice(), productEntity.getPriceSale(), num));
         }
     }
 
 
-    /**
-     * 获取当前的最新的金额
-     * @param oldMoney
-     * @param price
-     * @param num
-     * @return
-     */
-    private int overlayMoney(Integer oldMoney,Integer price,Integer num){
-        return ValueUtil.getintValue(oldMoney) + ValueUtil.getintValue(price) * ValueUtil.getintValue(num);
-    }
 
 
     /**

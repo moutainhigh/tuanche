@@ -35,7 +35,7 @@ public class CartDaoTest extends BaseTest {
         productEntity.setBusinessUid("b");
         productEntity.setUserUid("u");
         productEntity.setProductCode(1);
-        productEntity.setProductType(1);
+        productEntity.setSupplierProductType(1);
         productEntity.setProductNum(1);
         cartDao.saveCart(productEntity);
     }
@@ -48,7 +48,7 @@ public class CartDaoTest extends BaseTest {
         productEntity.setBusinessUid("b");
         productEntity.setUserUid("u");
         productEntity.setProductCode(1);
-        productEntity.setProductType(1);
+        productEntity.setSupplierProductType(1);
         productEntity.setProductNum(1);
         cartDao.updateCart(productEntity);
     }

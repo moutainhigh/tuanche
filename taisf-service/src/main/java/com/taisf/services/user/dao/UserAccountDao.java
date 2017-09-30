@@ -26,7 +26,7 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-@Repository("finance.accountUserDao")
+@Repository("user.accountUserDao")
 public class UserAccountDao extends BaseDao {
 
 
@@ -35,7 +35,7 @@ public class UserAccountDao extends BaseDao {
      */
     private static Logger logger = LoggerFactory.getLogger(UserAccountDao.class);
 
-    private String SQLID = "finance.accountUserDao.";
+    private String SQLID = "user.accountUserDao.";
 
 
     /**
@@ -75,6 +75,26 @@ public class UserAccountDao extends BaseDao {
             throw new BusinessException("更新数据 id 为空,par:"+ JsonEntityTransform.Object2Json(accountUserEntity));
         }
         return mybatisDaoContext.update(SQLID + "updateAccountUser",accountUserEntity);
+    }
+
+
+
+
+    /**
+     * 冻结当前的支付密码
+     * @author afi
+     * @param userId
+     * @param accountPassword
+     * @return
+     */
+    public int updateAccountPassword(String userId,String accountPassword){
+        if (Check.NuNObjs(userId)){
+            throw new BusinessException("更新数据 id 为空,par:"+ JsonEntityTransform.Object2Json(userId));
+        }
+        Map<String,Object> par = new HashMap();
+        par.put("userId",userId);
+        par.put("accountPassword",accountPassword);
+        return mybatisDaoContext.update(SQLID + "updateAccountPassword",par);
     }
 
 

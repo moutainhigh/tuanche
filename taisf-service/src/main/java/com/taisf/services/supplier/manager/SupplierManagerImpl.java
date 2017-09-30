@@ -2,9 +2,11 @@ package com.taisf.services.supplier.manager;
 
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.product.entity.ProductEntity;
+import com.taisf.services.supplier.dao.SupplierDao;
 import com.taisf.services.supplier.dao.SupplierPackageDao;
 import com.taisf.services.supplier.dao.SupplierProductDao;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
+import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +30,14 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-@Service("supplier.supplierProductManagerImpl")
-public class SupplierProductManagerImpl {
+@Service("supplier.supplierManagerImpl")
+public class SupplierManagerImpl {
+
+
+	@Resource(name = "supplier.supplierDao")
+	private SupplierDao supplierDao;
+
+
 
 	@Resource(name = "supplier.supplierProductDao")
 	private SupplierProductDao supplierProductDao;
@@ -39,6 +47,15 @@ public class SupplierProductManagerImpl {
 	private SupplierPackageDao supplierPackageDao;
 
 
+	/**
+	 * 获取当前的供应商信息
+	 * @author afi
+	 * @param supplierCode
+	 * @return
+	 */
+	public SupplierEntity getSupplierByCode(String supplierCode){
+		return supplierDao.getSupplierByCode(supplierCode);
+	}
 
 	/**
 	 * 获取礼包列表

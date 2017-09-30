@@ -9,7 +9,7 @@ import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
-import com.taisf.services.supplier.manager.SupplierProductManagerImpl;
+import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.supplier.service.SupplierProductService;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
@@ -41,8 +41,8 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SupplierProductServiceProxy.class);
 
-    @Resource(name = "basedata.supplierProductManagerImpl")
-    private SupplierProductManagerImpl supplierProductManager;
+    @Resource(name = "supplier.supplierManagerImpl")
+    private SupplierManagerImpl supplierManager;
 
 
     /**
@@ -116,7 +116,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         if (!dto.checkSuccess()){
             return;
         }
-        List<SupplierPackageEntity> list = supplierProductManager.getSupplierPackageByCode(supplierProductRequest.getSupplierCode());
+        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCode(supplierProductRequest.getSupplierCode());
         if (Check.NuNCollection(list)){
             list = new ArrayList<>();
         }
@@ -143,7 +143,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         if (!dto.checkSuccess()){
             return;
         }
-        List<ProductEntity> list = supplierProductManager.getProductListBySupplierAndType(supplierProductRequest);
+        List<ProductEntity> list = supplierManager.getProductListBySupplierAndType(supplierProductRequest);
         if (Check.NuNCollection(list)){
             list = new ArrayList<>();
         }

@@ -1,14 +1,10 @@
 package com.taisf.services.supplier.dao;
 
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.UUIDGenerator;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * <p>供应商的信息</p>

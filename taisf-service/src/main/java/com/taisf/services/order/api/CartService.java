@@ -26,7 +26,7 @@ public interface CartService {
      * @param userUid
      * @return
      */
-    DataTransferObject<CartInfoVO> cartClean(String userUid, String businessUid);
+    DataTransferObject<Void> cartClean(String userUid, String businessUid);
     /**
      * 添加购物车
      * @author afi

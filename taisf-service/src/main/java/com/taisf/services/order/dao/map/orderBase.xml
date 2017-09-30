@@ -9,6 +9,10 @@
         <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
         <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
         <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+        <result column="address_fid" jdbcType="VARCHAR" property="addressFid" />
+
+
+
         <result column="order_source" jdbcType="TINYINT" property="orderSource" />
         <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
         <result column="accounts_status" jdbcType="TINYINT" property="accountsStatus" />
@@ -28,7 +32,7 @@
 
     <sql id="Base_Column_List">
         <!--  -->
-        id, order_sn, province_code,area_code, city_code, order_source,eva_status, order_status, accounts_status,
+        id, order_sn, province_code,area_code, city_code,address_fid, order_source,eva_status, order_status, accounts_status,
         pay_status, business_uid, user_uid, user_tel, user_name,
         send_time, pay_time,create_time, last_modify_date, mark
     </sql>
@@ -63,6 +67,10 @@
             <if test="areaCode != null">
                 area_code,
             </if>
+            <if test="addressFid != null">
+                address_fid,
+            </if>
+
 
             <if test="orderSource != null">
                 order_source,
@@ -124,6 +132,10 @@
                 #{areaCode,jdbcType=VARCHAR},
             </if>
 
+            <if test="addressFid != null">
+                #{addressFid,jdbcType=VARCHAR},
+            </if>
+
             <if test="orderSource != null">
                 #{orderSource,jdbcType=TINYINT},
             </if>
@@ -182,6 +194,9 @@
             </if>
             <if test="areaCode != null">
                 area_code = #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="addressFid != null">
+                address_fid = #{addressFid,jdbcType=VARCHAR},
             </if>
 
             <if test="orderSource != null">

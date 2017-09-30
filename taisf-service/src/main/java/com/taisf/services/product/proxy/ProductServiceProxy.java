@@ -27,7 +27,7 @@ public class ProductServiceProxy implements ProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceProxy.class);
 
-    @Resource(name = "basedata.productManagerImpl")
+    @Resource(name = "product.productManagerImpl")
     private ProductManagerImpl productManager;
 
 

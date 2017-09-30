@@ -1,5 +1,6 @@
 package com.taisf.services.test.user.dao;
 
+import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.test.common.BaseTest;
 import com.taisf.services.user.dao.UserDao;
 import com.taisf.services.user.entity.UserEntity;
@@ -25,8 +26,18 @@ public class UserDaoTest extends BaseTest {
 
 
 
-    @Resource(name = "core.userDao")
+    @Resource(name = "user.userDao")
     private UserDao userDao;
+
+
+
+	@Test
+	public void getUserByUidTest() {
+
+		UserEntity aa=  userDao.getUserByUid("111");
+		System.out.println(JsonEntityTransform.Object2Json(aa));
+	}
+
 
 
     @Test

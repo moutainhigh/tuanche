@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  */
 public class AccountUserDaoTest extends BaseTest {
 
-    @Resource(name = "finance.accountUserDao")
+    @Resource(name = "user.accountUserDao")
     private UserAccountDao accountUserDao;
 
 

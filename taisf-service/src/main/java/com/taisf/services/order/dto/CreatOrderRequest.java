@@ -1,12 +1,9 @@
-package com.taisf.services.order.vo;
+package com.taisf.services.order.dto;
 
 import com.jk.framework.base.entity.BaseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * <p>购物车的基本信息</p>
+ * <p>创建订单的参数</p>
  * <p/>
  * <PRE>
  * <BR>	修改记录
@@ -18,10 +15,9 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-public class CartInfoVO extends BaseEntity {
+public class CreatOrderRequest extends BaseEntity{
 
-    private static final long serialVersionUID = 301231231201446703L;
-
+    private static final long serialVersionUID = 301231201446703L;
 
     /**
      * 商家uid
@@ -34,30 +30,15 @@ public class CartInfoVO extends BaseEntity {
     private String userUid;
 
     /**
-     * 购物车价格
+     * 收货地址
      */
-    private Integer price=0;
+    private String addressFid;
+
 
     /**
-     * 购物车中的商品信息
+     * 支付密码
      */
-    List<CartVO> list=new ArrayList<>();
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public List<CartVO> getList() {
-        return list;
-    }
-
-    public void setList(List<CartVO> list) {
-        this.list = list;
-    }
+    private String pwd;
 
 
     public String getBusinessUid() {
@@ -74,5 +55,21 @@ public class CartInfoVO extends BaseEntity {
 
     public void setUserUid(String userUid) {
         this.userUid = userUid;
+    }
+
+    public String getAddressFid() {
+        return addressFid;
+    }
+
+    public void setAddressFid(String addressFid) {
+        this.addressFid = addressFid;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 }

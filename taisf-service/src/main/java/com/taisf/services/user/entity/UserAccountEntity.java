@@ -30,6 +30,11 @@ public class UserAccountEntity extends BaseEntity {
     private String userId;
 
     /**
+     * 交易密码
+     */
+    private String accountPassword;
+
+    /**
      * 用户状态 1：可用 2：禁用 3:冻结
      */
     private Integer accountStatus;
@@ -151,4 +156,11 @@ public class UserAccountEntity extends BaseEntity {
         this.isDel = isDel;
     }
 
+    public String getAccountPassword() {
+        return accountPassword;
+    }
+
+    public void setAccountPassword(String accountPassword) {
+        this.accountPassword = accountPassword;
+    }
 }

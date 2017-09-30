@@ -12,6 +12,28 @@ public class UserEntity extends BaseEntity {
 
 	private Integer id;
 
+
+	/**
+	 * 用户id
+	 */
+	private String userUid;
+
+	/**
+	 * 用户名称
+	 */
+	private String userName;
+
+	/**
+	 * 企业编码
+	 */
+	private String enterpriseCode;
+
+	/**
+	 * 企业名称
+	 */
+	private String enterpriseName;
+
+
 	/**
 	 * 手机号
 	 */
@@ -28,7 +50,7 @@ public class UserEntity extends BaseEntity {
 	private Integer userStatus;
 
 	/**
-	 * 用户类型 1：医生 2：医药代表
+	 * 用户类型
 	 */
 	private Integer userType;
 
@@ -103,5 +125,37 @@ public class UserEntity extends BaseEntity {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getEnterpriseCode() {
+		return enterpriseCode;
+	}
+
+	public void setEnterpriseCode(String enterpriseCode) {
+		this.enterpriseCode = enterpriseCode;
+	}
+
+	public String getEnterpriseName() {
+		return enterpriseName;
+	}
+
+	public void setEnterpriseName(String enterpriseName) {
+		this.enterpriseName = enterpriseName;
+	}
+
+	public String getUserUid() {
+		return userUid;
+	}
+
+	public void setUserUid(String userUid) {
+		this.userUid = userUid;
 	}
 }
