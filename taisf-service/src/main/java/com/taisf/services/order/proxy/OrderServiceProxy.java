@@ -3,14 +3,17 @@ package com.taisf.services.order.proxy;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.ValueUtil;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
+import com.sun.org.apache.regexp.internal.RE;
 import com.taisf.services.common.util.MoneyDealUtil;
-import com.taisf.services.common.valenum.AccountStatusEnum;
-import com.taisf.services.common.valenum.OrdersStatusEnum;
-import com.taisf.services.common.valenum.SupplierStatusEnum;
-import com.taisf.services.common.valenum.UserStatusEnum;
+import com.taisf.services.common.valenum.*;
+import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
+import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.manger.EnterpriseManagerImpl;
+import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreatOrderRequest;
@@ -32,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,6 +72,9 @@ public class OrderServiceProxy implements OrderService {
 
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
+
+    @Resource(name = "enterprise.enterpriseManagerImpl")
+    private EnterpriseManagerImpl enterpriseManager;
 
     /**
      * 获取当前订单的信息
@@ -116,6 +123,35 @@ public class OrderServiceProxy implements OrderService {
     }
 
     /**
+     * 下单[补单]
+     * @author afi
+     * @param creatOrderRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<String> createExtOrder(CreatOrderRequest creatOrderRequest){
+        DataTransferObject<String> dto = new DataTransferObject<>();
+
+        if (Check.NuNStr(creatOrderRequest.getBusinessUid())
+                || Check.NuNStr(creatOrderRequest.getUserUid())
+                || Check.NuNStr(creatOrderRequest.getUserUid())) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
+        OrderSaveVO orderSaveVO = new OrderSaveVO();
+        orderSaveVO.getOrderBase().setOrderType(creatOrderRequest.getOrderType());
+
+        //1. 填充订单的信息
+        this.fillExtOrderInfo(dto,orderSaveVO,creatOrderRequest,true);
+        //2. 下单的逻辑
+        orderManager.saveOrderSave(orderSaveVO);
+
+        dto.setData(orderSaveVO.getOrderSn());
+        return dto;
+    }
+
+    /**
      * 下单
      *
      * @param creatOrderRequest
@@ -145,6 +181,8 @@ public class OrderServiceProxy implements OrderService {
             return dto;
         }
         OrderSaveVO orderSaveVO = new OrderSaveVO();
+        orderSaveVO.getOrderBase().setOrderType(creatOrderRequest.getOrderType());
+
         //1. 填充订单的信息
         this.fillOrderInfo(dto,orderSaveVO,cartInfoVO,creatOrderRequest,true);
 
@@ -152,6 +190,30 @@ public class OrderServiceProxy implements OrderService {
         orderManager.saveOrderSave(orderSaveVO);
 
         dto.setData(orderSaveVO.getOrderSn());
+        return dto;
+    }
+
+
+    /**
+     * 初始化补单
+     * @author afi
+     * @param creatOrderRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<OrderSaveVO> initExtOrder(CreatOrderRequest creatOrderRequest){
+        DataTransferObject<OrderSaveVO> dto = new DataTransferObject<>();
+        if (Check.NuNStr(creatOrderRequest.getBusinessUid())
+                || Check.NuNStr(creatOrderRequest.getUserUid())) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
+        OrderSaveVO orderSaveVO = new OrderSaveVO("");
+        orderSaveVO.getOrderBase().setOrderType(creatOrderRequest.getOrderType());
+        //填充订单的信息
+        this.fillExtOrderInfo(dto,orderSaveVO,creatOrderRequest,false);
+        dto.setData(orderSaveVO);
         return dto;
     }
 
@@ -185,11 +247,50 @@ public class OrderServiceProxy implements OrderService {
             return dto;
         }
         OrderSaveVO orderSaveVO = new OrderSaveVO("");
+        orderSaveVO.getOrderBase().setOrderType(creatOrderRequest.getOrderType());
         //填充订单的信息
         this.fillOrderInfo(dto,orderSaveVO,cartInfoVO,creatOrderRequest,false);
         dto.setData(orderSaveVO);
         return dto;
     }
+
+
+    /**
+     * 填充补单信息
+     * @param dto
+     * @param orderSaveVO
+     * @param creatOrderRequest
+     * @param createFlag
+     */
+    private void  fillExtOrderInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,CreatOrderRequest creatOrderRequest,boolean createFlag){
+        if (!dto.checkSuccess()){
+            return;
+        }
+        if (Check.NuNObjs(orderSaveVO)){
+            return;
+        }
+
+        //1. 检查商家信息
+        this.checkBusinessInfo(dto,creatOrderRequest);
+
+        //2. 获取用户信息
+        this.dealUserInfo(dto,orderSaveVO,creatOrderRequest);
+
+        //3. 填充当前订单的收货信息
+        this.dealUserAddressInfo(dto,orderSaveVO,creatOrderRequest,createFlag);
+
+        //4. 购物车中的商品信息
+        this.dealExtOrderProductInfo(dto,orderSaveVO);
+
+        //5. 处理钱信息
+        this.dealExtOrderMoneyInfo(dto,orderSaveVO,creatOrderRequest);
+
+        //6. 处理账户信息
+        this.dealBalanceInfo(dto,orderSaveVO,orderSaveVO.getExtPrice(),creatOrderRequest,createFlag);
+
+    }
+
+
 
     /**
      * 将当前购物车中的信息转化成订单相关的信息
@@ -226,17 +327,20 @@ public class OrderServiceProxy implements OrderService {
         this.dealMoneyInfo(dto,orderSaveVO,cartInfoVO,creatOrderRequest);
 
         //6. 处理账户信息
-        this.dealBalanceInfo(dto,orderSaveVO,cartInfoVO,creatOrderRequest,createFlag);
+        this.dealBalanceInfo(dto,orderSaveVO,cartInfoVO.getPrice(),creatOrderRequest,createFlag);
 
     }
 
     /**
      * 处理当前的余额信息
+     * @author  afi
      * @param dto
      * @param orderSaveVO
-     * @param cartInfoVO
+     * @param cost
+     * @param creatOrderRequest
+     * @param createFlag
      */
-    private void dealBalanceInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,CartInfoVO cartInfoVO,CreatOrderRequest creatOrderRequest,boolean createFlag) {
+    private void dealBalanceInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,int cost,CreatOrderRequest creatOrderRequest,boolean createFlag) {
 
         if (!dto.checkSuccess()) {
             return;
@@ -263,7 +367,6 @@ public class OrderServiceProxy implements OrderService {
         }
         orderSaveVO.setDrawBalance(drawBalance);
 
-        int cost = cartInfoVO.getPrice();
         if (drawBalance >= cost){
             //全部用余额支付
 
@@ -315,6 +418,24 @@ public class OrderServiceProxy implements OrderService {
        return MD5Util.MD5Encode(org).equals(md);
     }
 
+
+    /**
+     * 处理当前的补单的商品价格信息
+     * @param dto
+     * @param orderSaveVO
+     * @param creatOrderRequest
+     */
+    private void dealExtOrderMoneyInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,CreatOrderRequest creatOrderRequest) {
+        if (!dto.checkSuccess()) {
+            return;
+        }
+        OrderMoneyEntity money =  orderSaveVO.getOrderMoney();
+        money.setSumMoney(orderSaveVO.getExtPrice());
+        dealOrderMoneyBase(money);
+    }
+
+
+
     /**
      * 处理当前的商品信息
      * @param dto
@@ -328,11 +449,39 @@ public class OrderServiceProxy implements OrderService {
         }
         OrderMoneyEntity money =  orderSaveVO.getOrderMoney();
         money.setSumMoney(cartInfoVO.getPrice());
+        dealOrderMoneyBase(money);
+    }
+
+    /**
+     * 初始化当前的金额信息
+     * @param money
+     */
+    private void dealOrderMoneyBase(OrderMoneyEntity money) {
         money.setCarryMoney(0);
         money.setRedMoney(0);
         money.setCouponMoney(0);
         money.setDiscountMoney(0);
     }
+
+    /**
+     * 处理当前的补单商品信息
+     * @param dto
+     * @param orderSaveVO
+     */
+    private void dealExtOrderProductInfo(DataTransferObject dto,OrderSaveVO orderSaveVO) {
+        if (!dto.checkSuccess()) {
+            return;
+        }
+        OrderProductEntity product = new OrderProductEntity();
+        product.setOrderSn(orderSaveVO.getOrderSn());
+        product.setProductCode(0);
+        product.setProductType(SupplierProductTypeEnum.EXR_PRODUCT.getCode());
+        product.setProductPrice(orderSaveVO.getExtPrice());
+        product.setProductNum(1);
+        //添加商品信息
+        orderSaveVO.getList().add(product);
+    }
+
 
     /**
      * 处理当前的商品信息
@@ -458,8 +607,134 @@ public class OrderServiceProxy implements OrderService {
         //当前的用户信息
         orderSaveVO.setUser(userEntity);
 
+        //设置当前的用户关联的企业的用餐信息
+        this.dealEnterpriseInfo( dto, orderSaveVO,userEntity, creatOrderRequest);
+    }
 
 
+    /**
+     * 处理企业信息
+     * @author afi
+     * @param dto
+     * @param orderSaveVO
+     * @param userEntity
+     * @param creatOrderRequest
+     */
+    private void dealEnterpriseInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,UserEntity userEntity,CreatOrderRequest creatOrderRequest){
+        if (!dto.checkSuccess()){
+            return;
+        }
+        EnterpriseInfoVO infoVO = enterpriseManager.getEnterpriseInfoByCode(userEntity.getEnterpriseCode());
+        if (Check.NuNObj(infoVO)){
+            dto.setErrorMsg("异常的企业信息");
+            return;
+        }
+        if (Check.NuNObj(infoVO.getEnterpriseEntity().getTillTime())){
+            dto.setErrorMsg("异常的企业截止时间");
+            return;
+        }
+        if (infoVO.getEnterpriseEntity().getTillTime().before(orderSaveVO.getNow())){
+            dto.setErrorMsg("加盟时间已经失效,请联系企业管理人员");
+            return;
+        }
+        EnterpriseConfigEntity config =infoVO.getEnterpriseConfigEntity();
+        if(Check.NuNObj(config)){
+            dto.setErrorMsg("异常的企业配置信息");
+            return;
+        }
+        //获取当前的订餐类型
+        OrderTypeEnum orderTypeEnum = OrderTypeEnum.getTypeByCode(creatOrderRequest.getOrderType());
+        if (Check.NuNObj(orderTypeEnum)){
+            dto.setErrorMsg("异常的订餐类型");
+            return;
+        }
 
+        if (orderTypeEnum.isExt()){
+            //补餐
+            int extPrice = this.getExtprice(dto,userEntity,orderTypeEnum,config);
+            orderSaveVO.setExtPrice(extPrice);
+            return;
+        }
+
+
+        // 一下是正常的订单时间的限制
+
+        String limtStart = null;
+        String limtEnd = null;
+        if (orderTypeEnum.getCode() == OrderTypeEnum.LUNCH_COMMON.getCode()){
+            //正常午餐
+            limtStart = config.getLunchStart();
+            limtEnd = config.getLunchEnd();
+        }else if (orderTypeEnum.getCode() == OrderTypeEnum.LUNCH_COMMON.getCode()){
+            //正常晚餐
+            limtStart = config.getDinnerStart();
+            limtEnd = config.getDinnerEnd();
+        }
+        if (Check.NuNStr(limtStart)
+                || Check.NuNStr(limtEnd)){
+            dto.setErrorMsg("异常的供餐时间");
+            return;
+        }
+
+        Date now = orderSaveVO.getNow();
+        Date start = DateUtil.connectDate(orderSaveVO.getNow(),limtStart);
+        Date end = DateUtil.connectDate(orderSaveVO.getNow(),limtEnd);
+        if (now.after(start) && now.before(end)){
+            //时间正常
+        }else {
+            String msg = "请在" + DateUtil.timestampFormat(start) +" 至 " + DateUtil.timestampFormat(end) +"时间内完成订餐";
+            dto.setErrorMsg(msg);
+        }
+    }
+
+
+    /**
+     * 获取当前的补餐价格
+     * @author afi
+     * @param orderTypeEnum
+     * @param config
+     * @return
+     */
+    private int getExtprice(DataTransferObject dto,UserEntity userEntity,OrderTypeEnum orderTypeEnum,EnterpriseConfigEntity config){
+        int extPrice = 0;
+        if (!dto.checkSuccess()){
+            return extPrice;
+        }
+        UserRoleEnum userRoleEnum =UserRoleEnum.getTypeByCode(userEntity.getUserRole());
+        if (Check.NuNObj(userRoleEnum)){
+            dto.setErrorMsg("异常的用户类型");
+            return extPrice;
+        }
+
+        if (orderTypeEnum.getCode() == OrderTypeEnum.LUNCH_EXT.getCode()){
+            //午餐补单
+            extPrice = this.getRealPrice(userRoleEnum,ValueUtil.getintValue(config.getLunchBoss()),ValueUtil.getintValue(config.getLunchEmp()));
+        }else if (orderTypeEnum.getCode() == OrderTypeEnum.DINNER_EXT.getCode()){
+            //晚餐补单
+            extPrice = this.getRealPrice(userRoleEnum,ValueUtil.getintValue(config.getDinnerBoss()),ValueUtil.getintValue(config.getDinnerEmp()));
+        }else {
+            dto.setErrorMsg("异常的补单类型");
+        }
+        //返回补餐金额
+        return extPrice;
+    }
+
+
+    /**
+     * 获取当前用户的费用
+     * @author afi
+     * @param userRoleEnum
+     * @param bossPrice
+     * @param empPrice
+     * @return
+     */
+    private int getRealPrice(UserRoleEnum userRoleEnum,int bossPrice,int empPrice){
+        int price = 0;
+        if (userRoleEnum.getCode() == UserRoleEnum.BOSS.getCode()){
+            price = bossPrice;
+        }else {
+            price = empPrice;
+        }
+        return price;
     }
 }

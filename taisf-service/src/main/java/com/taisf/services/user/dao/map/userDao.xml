@@ -11,12 +11,15 @@
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
     <result column="user_status" property="userStatus" jdbcType="INTEGER" />
     <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="user_role" property="userRole" jdbcType="INTEGER" />
+    <result column="product_source" property="productSource" jdbcType="INTEGER" />
+
     <result column="user_business_status" property="userBusinessStatus" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_uid,user_name, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_business_status, create_time,
+    id, user_uid,user_name, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,
     update_time
   </sql>
 
@@ -68,6 +71,16 @@
       <if test="userType != null" >
         user_type,
       </if>
+
+      <if test="userRole != null" >
+        user_role,
+      </if>
+
+      <if test="productSource != null" >
+        product_source,
+      </if>
+
+
       <if test="userBusinessStatus != null" >
         user_business_status,
       </if>
@@ -107,6 +120,16 @@
       <if test="userType != null" >
         #{userType,jdbcType=INTEGER},
       </if>
+
+      <if test="userRole != null" >
+        #{userRole,jdbcType=INTEGER},
+      </if>
+
+      <if test="productSource != null" >
+        #{productSource,jdbcType=INTEGER},
+      </if>
+
+
       <if test="userBusinessStatus != null" >
         #{userBusinessStatus,jdbcType=INTEGER},
       </if>
@@ -133,7 +156,13 @@
       <if test="enterpriseName != null" >
         enterprise_name = #{enterpriseName,jdbcType=CHAR},
       </if>
+      <if test="userRole != null" >
+        user_role = #{userRole,jdbcType=INTEGER},
+      </if>
 
+      <if test="productSource != null" >
+        product_source = #{productSource,jdbcType=INTEGER},
+      </if>
       <if test="userPassword != null" >
         user_password = #{userPassword,jdbcType=VARCHAR},
       </if>

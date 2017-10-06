@@ -9,6 +9,7 @@
     <result column="enterprise_name" jdbcType="VARCHAR" property="enterpriseName" />
     <result column="enterprise_tel" jdbcType="VARCHAR" property="enterpriseTel" />
     <result column="enterprise_type" jdbcType="INTEGER" property="enterpriseType" />
+    <result column="enterprise_status" jdbcType="INTEGER" property="enterpriseStatus" />
     <result column="manger" jdbcType="VARCHAR" property="manger" />
     <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
     <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
@@ -25,7 +26,7 @@
 
 
   <sql id="Base_Column_List">
-    id, enterprise_code, enterprise_name, enterprise_tel, enterprise_type, manger, province_code, 
+    id, enterprise_code, enterprise_name, enterprise_tel, enterprise_type,enterprise_status, manger, province_code,
     province_name, city_code, city_name, area_code, area_name, street, open_time, till_time, 
     create_time, last_modify_date
   </sql>
@@ -62,6 +63,9 @@
       </if>
       <if test="enterpriseType != null">
         enterprise_type,
+      </if>
+      <if test="enterpriseStatus != null">
+        enterprise_status,
       </if>
       <if test="manger != null">
         manger,
@@ -113,6 +117,9 @@
       </if>
       <if test="enterpriseType != null">
         #{enterpriseType,jdbcType=INTEGER},
+      </if>
+      <if test="enterpriseStatus != null">
+        #{enterpriseStatus,jdbcType=INTEGER},
       </if>
       <if test="manger != null">
         #{manger,jdbcType=VARCHAR},
@@ -166,6 +173,10 @@
       </if>
       <if test="enterpriseType != null">
         enterprise_type = #{enterpriseType,jdbcType=INTEGER},
+      </if>
+
+      <if test="enterpriseStatus != null">
+        enterprise_status = #{enterpriseStatus,jdbcType=INTEGER},
       </if>
       <if test="manger != null">
         manger = #{manger,jdbcType=VARCHAR},

@@ -62,6 +62,11 @@ public class OrderEntity extends BaseEntity {
     /** 支付状态 */
     private Integer payStatus;
 
+    /** 订单类型 */
+    private Integer orderType;
+
+
+
     /** 商家Uid */
     private String businessUid;
     
@@ -256,5 +261,13 @@ public class OrderEntity extends BaseEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
     }
 }

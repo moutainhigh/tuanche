@@ -55,6 +55,19 @@ public class UserEntity extends BaseEntity {
 	private Integer userType;
 
 	/**
+	 * 用户角色
+	 */
+	private Integer userRole;
+
+
+	/**
+	 * 餐属性
+	 */
+	private Integer productSource;
+
+
+
+	/**
 	 * 用户状态： 1:注册成功 2：认证审核中 3：认证通过
 	 */
 	private Integer userBusinessStatus;
@@ -157,5 +170,21 @@ public class UserEntity extends BaseEntity {
 
 	public void setUserUid(String userUid) {
 		this.userUid = userUid;
+	}
+
+	public Integer getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(Integer userRole) {
+		this.userRole = userRole;
+	}
+
+	public Integer getProductSource() {
+		return productSource;
+	}
+
+	public void setProductSource(Integer productSource) {
+		this.productSource = productSource;
 	}
 }

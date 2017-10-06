@@ -16,6 +16,7 @@ package com.taisf.services.common.valenum;
 public enum SupplierProductTypeEnum {
 
     PRODUCT("商品", 1),
+    EXR_PRODUCT("补单商品", 3),
     PACKAGE("礼包", 2),
     ;
 

@@ -17,6 +17,24 @@
   </sql>
 
 
+
+
+  <select id="getEnterpriseDaysByTime" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_enterprise_day
+    where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+    <if test="start != null">
+      and day_time >= #{start,jdbcType=VARCHAR}
+    </if>
+
+    <if test="end != null">
+      and <![CDATA[ day_time < #{end,jdbcType=VARCHAR} ]]>
+    </if>
+  </select>
+
+
+
   <select id="getEnterpriseDaysByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

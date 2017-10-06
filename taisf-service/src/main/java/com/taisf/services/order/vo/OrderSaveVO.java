@@ -8,6 +8,7 @@ import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.user.entity.UserEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +44,11 @@ public class OrderSaveVO extends BaseEntity{
     private UserEntity user;
 
     /**
+     * 当前时间
+     */
+    private Date now = new Date();
+
+    /**
      * 订单的基本信息
      */
     private transient OrderEntity orderBase = new OrderEntity();
@@ -58,9 +64,10 @@ public class OrderSaveVO extends BaseEntity{
     private List<OrderProductEntity> list = new ArrayList<>();
 
 
-
-
-
+    /**
+     * 不惨价格
+     */
+    private transient Integer extPrice;
 
 
     /**
@@ -130,5 +137,21 @@ public class OrderSaveVO extends BaseEntity{
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public Date getNow() {
+        return now;
+    }
+
+    public void setNow(Date now) {
+        this.now = now;
+    }
+
+    public Integer getExtPrice() {
+        return extPrice;
+    }
+
+    public void setExtPrice(Integer extPrice) {
+        this.extPrice = extPrice;
     }
 }

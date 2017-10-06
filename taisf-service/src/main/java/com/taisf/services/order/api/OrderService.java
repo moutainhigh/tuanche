@@ -34,12 +34,30 @@ public interface OrderService {
 
 
     /**
+     * 初始化补单
+     * @param creatOrderRequest
+     * @return
+     */
+    DataTransferObject<OrderSaveVO> initExtOrder(CreatOrderRequest creatOrderRequest);
+
+
+    /**
      * 下单
      *
      * @param creatOrderRequest
      * @return
      */
     DataTransferObject<String> createOrder(CreatOrderRequest creatOrderRequest);
+
+
+    /**
+     * 下单[补单]
+     * @author afi
+     * @param creatOrderRequest
+     * @return
+     */
+    DataTransferObject<String> createExtOrder(CreatOrderRequest creatOrderRequest);
+
 
 
     /**

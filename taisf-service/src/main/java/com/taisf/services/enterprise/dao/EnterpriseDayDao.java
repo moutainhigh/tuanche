@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>企业基本信息</p>
@@ -42,6 +45,21 @@ public class EnterpriseDayDao extends BaseDao {
     public List<EnterpriseDayEntity> getEnterpriseDaysByCode(String enterpriseCode){
         return mybatisDaoContext.findAll(SQLID+"getEnterpriseDaysByCode", EnterpriseDayEntity.class, enterpriseCode);
     }
+
+    /**
+     * 获取当前的企业配送时间
+     * @author afi
+     * @param enterpriseCode
+     * @return
+     */
+    public List<EnterpriseDayEntity> getEnterpriseDaysByTime(String enterpriseCode, Date start,Date end){
+        Map<String,Object> par = new HashMap<>();
+        par.put("enterpriseCode",enterpriseCode);
+        par.put("start",start);
+        par.put("end",end);
+        return mybatisDaoContext.findAll(SQLID+"getEnterpriseDaysByTime", EnterpriseDayEntity.class, par);
+    }
+
 
     /**
      * 增加企业

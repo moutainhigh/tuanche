@@ -40,6 +40,13 @@ public class CreatOrderRequest extends BaseEntity{
      */
     private String pwd;
 
+    /**
+     * 订单类型
+     */
+    private Integer orderType;
+
+
+
 
     public String getBusinessUid() {
         return businessUid;
@@ -71,5 +78,14 @@ public class CreatOrderRequest extends BaseEntity{
 
     public void setPwd(String pwd) {
         this.pwd = pwd;
+    }
+
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
     }
 }

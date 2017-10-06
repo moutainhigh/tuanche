@@ -39,6 +39,12 @@ public class EnterpriseEntity extends BaseEntity {
     private Integer enterpriseType;
 
     /**
+     * 企业状态
+     */
+    private Integer enterpriseStatus;
+
+
+    /**
      * 经理
      */
     private String manger;
@@ -199,5 +205,13 @@ public class EnterpriseEntity extends BaseEntity {
 
     public void setLastModifyDate(Date lastModifyDate) {
         this.lastModifyDate = lastModifyDate;
+    }
+
+    public Integer getEnterpriseStatus() {
+        return enterpriseStatus;
+    }
+
+    public void setEnterpriseStatus(Integer enterpriseStatus) {
+        this.enterpriseStatus = enterpriseStatus;
     }
 }

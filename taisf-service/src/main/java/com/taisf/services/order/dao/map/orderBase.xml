@@ -16,6 +16,7 @@
         <result column="accounts_status" jdbcType="TINYINT" property="accountsStatus" />
         <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
         <result column="eva_status" jdbcType="TINYINT" property="evaStatus" />
+        <result column="order_type" jdbcType="TINYINT" property="orderType" />
         <result column="business_uid" jdbcType="VARCHAR" property="businessUid" />
         <result column="user_uid" jdbcType="VARCHAR" property="userUid" />
         <result column="user_tel" jdbcType="VARCHAR" property="userTel" />
@@ -31,7 +32,7 @@
     <sql id="Base_Column_List">
         <!--  -->
         id, order_sn,title, province_code,area_code, city_code,address_fid, order_source,eva_status, order_status, accounts_status,
-        pay_status, business_uid, user_uid, user_tel, user_name,
+        pay_status,orderType, business_uid, user_uid, user_tel, user_name,
         send_time, pay_time,create_time, last_modify_date, mark
     </sql>
 
@@ -86,7 +87,9 @@
             <if test="payStatus != null">
                 pay_status,
             </if>
-
+            <if test="orderType != null">
+                order_type,
+            </if>
             <if test="businessUid != null">
                 business_uid,
             </if>
@@ -156,6 +159,10 @@
                 #{payStatus,jdbcType=TINYINT},
             </if>
 
+            <if test="orderType != null">
+                #{orderType,jdbcType=TINYINT},
+            </if>
+
             <if test="businessUid != null">
                 #{businessUid,jdbcType=VARCHAR},
             </if>
@@ -222,6 +229,10 @@
             </if>
             <if test="payStatus != null">
                 pay_status = #{payStatus,jdbcType=TINYINT},
+            </if>
+
+            <if test="orderType != null">
+                order_type = #{orderType,jdbcType=TINYINT},
             </if>
 
             <if test="businessUid != null">
