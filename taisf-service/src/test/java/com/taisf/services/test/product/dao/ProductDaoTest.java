@@ -1,19 +1,13 @@
 package com.taisf.services.test.product.dao;
 
-import com.jk.framework.base.page.PagingResult;
+import javax.annotation.Resource;
+
+import org.junit.Test;
+
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.product.dao.ProductDao;
 import com.taisf.services.product.entity.ProductEntity;
-import com.taisf.services.system.dao.RoleDao;
-import com.taisf.services.system.dto.RoleRequest;
-import com.taisf.services.system.entity.RoleEntity;
-import com.taisf.services.system.vo.RoleVo;
 import com.taisf.services.test.common.BaseTest;
-import org.junit.Test;
-
-import javax.annotation.Resource;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * <p>商品的测试</p>
