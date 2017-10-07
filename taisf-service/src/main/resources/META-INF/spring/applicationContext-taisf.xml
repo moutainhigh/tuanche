@@ -8,7 +8,7 @@
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
 
 	<context:component-scan base-package="com.taisf" />
-
+	<context:component-scan base-package="com.jk" />
 
     <context:property-placeholder location="classpath*:*.properties" ignore-unresolvable="true" />
 
