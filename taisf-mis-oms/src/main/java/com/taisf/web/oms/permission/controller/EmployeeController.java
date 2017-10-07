@@ -1,17 +1,9 @@
 package com.taisf.web.oms.permission.controller;
 
-import com.jk.framework.base.entity.DataTransferObject;
-import com.jk.framework.base.page.PagingResult;
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.UUIDGenerator;
-import com.jk.framework.log.utils.LogUtil;
-import com.taisf.web.oms.common.page.PageResult;
-import com.taisf.web.oms.permission.api.EmployeeService;
-import com.taisf.web.oms.permission.dto.EmployeeAddRequest;
-import com.taisf.web.oms.permission.dto.EmployeeRequest;
-import com.taisf.web.oms.permission.entity.EmployeeEntity;
-import com.taisf.web.oms.permission.service.EmployeeServiceImpl;
-import com.taisf.web.oms.permission.vo.EmployeeVo;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +11,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.UUIDGenerator;
+import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.permission.api.EmployeeService;
+import com.taisf.services.permission.dto.EmployeeAddRequest;
+import com.taisf.services.permission.dto.EmployeeRequest;
+import com.taisf.services.permission.entity.EmployeeEntity;
+import com.taisf.services.permission.service.EmployeeServiceImpl;
+import com.taisf.services.permission.vo.EmployeeVo;
+import com.taisf.web.oms.common.page.PageResult;
 
 /**
  * <p/>

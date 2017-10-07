@@ -1,27 +1,11 @@
 package com.taisf.web.oms.permission.controller;
 
-import com.alibaba.dubbo.common.utils.CollectionUtils;
-import com.jk.framework.base.entity.DataTransferObject;
-import com.jk.framework.base.exception.SOAParseException;
-import com.jk.framework.base.page.PagingResult;
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.JsonEntityTransform;
-import com.jk.framework.base.utils.UUIDGenerator;
-import com.jk.framework.log.utils.LogUtil;
-import com.taisf.web.oms.common.constant.LoginConstant;
-import com.taisf.web.oms.common.page.PageResult;
-import com.taisf.web.oms.permission.api.PermissionOperateService;
-import com.taisf.web.oms.permission.api.ResourceService;
-import com.taisf.web.oms.permission.dto.CurrentuserRequest;
-import com.taisf.web.oms.permission.dto.EmployeeRequest;
-import com.taisf.web.oms.permission.dto.ResourceRequest;
-import com.taisf.web.oms.permission.dto.RoleRequest;
-import com.taisf.web.oms.permission.entity.EmployeeEntity;
-import com.taisf.web.oms.permission.entity.ResourceEntity;
-import com.taisf.web.oms.permission.entity.RoleEntity;
-import com.taisf.web.oms.permission.vo.CurrentuserVo;
-import com.taisf.web.oms.permission.vo.RoleVo;
-import com.taisf.web.oms.permission.vo.TreeNodeVo;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +15,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.exception.SOAParseException;
+import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.UUIDGenerator;
+import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.permission.api.PermissionOperateService;
+import com.taisf.services.permission.api.ResourceService;
+import com.taisf.services.permission.dto.CurrentuserRequest;
+import com.taisf.services.permission.dto.EmployeeRequest;
+import com.taisf.services.permission.dto.ResourceRequest;
+import com.taisf.services.permission.dto.RoleRequest;
+import com.taisf.services.permission.entity.EmployeeEntity;
+import com.taisf.services.permission.entity.ResourceEntity;
+import com.taisf.services.permission.entity.RoleEntity;
+import com.taisf.services.permission.vo.CurrentuserVo;
+import com.taisf.services.permission.vo.RoleVo;
+import com.taisf.services.permission.vo.TreeNodeVo;
+import com.taisf.web.oms.common.constant.LoginConstant;
+import com.taisf.web.oms.common.page.PageResult;
 
 /**
  *

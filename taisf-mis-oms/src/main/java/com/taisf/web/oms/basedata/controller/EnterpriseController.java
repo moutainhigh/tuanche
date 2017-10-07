@@ -19,10 +19,10 @@ import com.taisf.services.base.entity.AreaRegionEntity;
 import com.taisf.services.base.service.AreaRegionService;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.permission.api.EmployeeService;
+import com.taisf.services.permission.entity.EmployeeEntity;
 import com.taisf.web.oms.common.controller.LoginController;
 import com.taisf.web.oms.common.page.PageResult;
-import com.taisf.web.oms.permission.api.EmployeeService;
-import com.taisf.web.oms.permission.entity.EmployeeEntity;
 
 @Controller
 @RequestMapping("base/enterprise")

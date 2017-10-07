@@ -1,11 +1,11 @@
 package com.taisf.web.oms.common.controller;
 
-import com.jk.framework.base.entity.DataTransferObject;
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.MD5Util;
-import com.taisf.web.oms.common.constant.LoginConstant;
-import com.taisf.web.oms.permission.entity.EmployeeEntity;
-import com.taisf.web.oms.permission.service.EmployeeServiceImpl;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.List;
+import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.MD5Util;
+import com.taisf.services.permission.entity.EmployeeEntity;
+import com.taisf.services.permission.service.EmployeeServiceImpl;
+import com.taisf.web.oms.common.constant.LoginConstant;
 
 /**
  * <p>登录</p>
@@ -39,21 +40,14 @@ public class LoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-
     @Resource(name="ups.employeeServiceImpl")
     private EmployeeServiceImpl employeeService;
-
-    
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public
     String  login(HttpServletRequest request,String key,String json) {
         return "login/login";
     }
-
-
-
-
 
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     public

@@ -1,17 +1,17 @@
 package com.taisf.web.oms.common.interceptor;
 
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.log.utils.LogUtil;
-import com.taisf.web.oms.common.constant.LoginConstant;
-import com.taisf.web.oms.permission.entity.EmployeeEntity;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.jk.framework.base.utils.Check;
+import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.permission.entity.EmployeeEntity;
+import com.taisf.web.oms.common.constant.LoginConstant;
 
 
 /**

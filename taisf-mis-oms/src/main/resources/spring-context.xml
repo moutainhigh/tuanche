@@ -38,7 +38,7 @@
 		</property>
 	</bean> 
 
-	<import resource="META-INF/spring/applicationContext-oms.xml" />
+	<import resource="META-INF/spring/applicationContext-taisf.xml" />
 	<import resource="spring-mvc.xml" />
 
 
