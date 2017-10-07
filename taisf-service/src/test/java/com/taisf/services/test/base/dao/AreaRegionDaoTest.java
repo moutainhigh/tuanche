@@ -6,6 +6,8 @@ import com.taisf.services.base.entity.AreaRegionEntity;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 /**
@@ -23,7 +25,7 @@ import javax.annotation.Resource;
  */
 public class AreaRegionDaoTest extends BaseTest{
 
-    @Resource(name = "basedata.areaRegionDao")
+    @Resource(name = "base.areaRegionDao")
     private AreaRegionDao areaRegionDao;
 
 
@@ -31,7 +33,7 @@ public class AreaRegionDaoTest extends BaseTest{
     public void getAreaRegionByNameTest() {
 
         System.out.println(1111);
-        AreaRegionEntity aa=  areaRegionDao.getAreaRegionByName("1231");
-        System.out.println(JsonEntityTransform.Object2Json(aa));
+        List<AreaRegionEntity> list = areaRegionDao.findAllAreaRegion(2);
+        System.out.println(JsonEntityTransform.Object2Json(list));
     }
 }

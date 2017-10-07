@@ -6,6 +6,7 @@
 
     <modules>
         <module>taisf-service</module>
+        <module>taisf-mis-oms</module>
     </modules>
 
 
