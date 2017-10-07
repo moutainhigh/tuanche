@@ -1,12 +1,13 @@
 package com.taisf.services.base.dao;
 
-import com.taisf.services.base.entity.AreaRegionEntity;
-import com.taisf.services.common.dao.BaseDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.taisf.services.base.entity.AreaRegionEntity;
+import com.taisf.services.common.dao.BaseDao;
 
 
 /**
@@ -20,35 +21,38 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-@Repository("basedata.areaRegionDao")
+@Repository("base.areaRegionDao")
 public class AreaRegionDao extends BaseDao {
 
+	private String SQLID="base.areaRegionDao.";
+	
     /**
-     * 日志对象
-     */
-    private static Logger logger = LoggerFactory.getLogger(AreaRegionDao.class);
-
-    private String SQLID = "basedata.areaRegionDao.";
-
-    
-    
-    /**
-     * 根据praentCode查询子级数据
-     * @param entity
+     * 根据主键code查询 区域信息
+     * @param request
      * @return
      */
-    public List<AreaRegionEntity> getAreaRegionList(AreaRegionEntity entity){
-        return mybatisDaoContext.findAll(SQLID + "queryListSelective", entity);
+    public AreaRegionEntity findOneByPrimaryKey(Integer code) {    	
+    	return mybatisDaoContext.findOneSlave(SQLID + "findAreaRegionBycode", AreaRegionEntity.class, code);
     }
-
-
     /**
-     * 获取当前城市信息
-     * @param cityName
-     * @return
+     * 根据类型 查询出所有 区域 省/ 市  /县 集合
+     * @param type
+     * @return 
      */
-    public AreaRegionEntity getAreaRegionByName(String cityName){
-        return mybatisDaoContext.findOne(SQLID + "getAreaRegionByName",AreaRegionEntity.class,cityName);
+    public List<AreaRegionEntity> findAllAreaRegion(Integer level) {  
+    	Map<String, Object> params = new HashMap<>();
+    	params.put("level", level);
+    	return mybatisDaoContext.findAll(SQLID + "findAllAreaRegion", AreaRegionEntity.class, params);
     }
-
+    /**
+     * 根据parentCode查询子区域
+     * @param type
+     * @return 
+     */
+    public List<AreaRegionEntity> findAllByParentCode(Integer parentCode) {  
+    	Map<String, Object> params = new HashMap<>();
+    	params.put("parentCode", parentCode);
+    	return mybatisDaoContext.findAll(SQLID + "findAllByparentcode", AreaRegionEntity.class, params);
+    }
+   
 }
