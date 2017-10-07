@@ -35,7 +35,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-@Component("basedata.supplierProductServiceProxy")
+@Component("supplier.supplierProductServiceProxy")
 public class SupplierProductServiceProxy implements SupplierProductService {
 
 
@@ -171,6 +171,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             SupplierProductVO supplier = new SupplierProductVO();
             BeanUtils.copyProperties(entity,supplier);
             supplier.setSupplierProductType(supplierProductTypeEnum.getCode());
+            voList.add(supplier);
         }
         return voList;
 

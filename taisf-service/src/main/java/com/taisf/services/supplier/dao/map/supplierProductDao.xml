@@ -4,7 +4,7 @@
 
   <resultMap id="BaseResultMap" type="com.taisf.services.supplier.entity.SupplierProductEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="supplier_code" jdbcType="VARCHAR" property="tSupplierCode" />
+    <result column="supplier_code" jdbcType="VARCHAR" property="supplierCode" />
     <result column="product_code" jdbcType="INTEGER" property="productCode" />
     <result column="product_type" jdbcType="INTEGER" property="productType" />
     <result column="product_price" jdbcType="INTEGER" property="productPrice" />
@@ -70,7 +70,7 @@
     insert into t_supplier_product
     <trim prefix="(" suffix=")" suffixOverrides=",">
 
-      <if test="tSupplierCode != null">
+      <if test="supplierCode != null">
         supplier_code,
       </if>
       <if test="productCode != null">
@@ -94,8 +94,8 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
 
-      <if test="tSupplierCode != null">
-        #{tSupplierCode,jdbcType=VARCHAR},
+      <if test="supplierCode != null">
+        #{supplierCode,jdbcType=VARCHAR},
       </if>
       <if test="productCode != null">
         #{productCode,jdbcType=INTEGER},
@@ -120,8 +120,8 @@
   <update id="updateSupplierProduct" parameterType="com.taisf.services.supplier.entity.SupplierProductEntity">
     update t_supplier_product
     <set>
-      <if test="tSupplierCode != null">
-        supplier_code = #{tSupplierCode,jdbcType=VARCHAR},
+      <if test="supplierCode != null">
+        supplier_code = #{supplierCode,jdbcType=VARCHAR},
       </if>
       <if test="productCode != null">
         product_code = #{productCode,jdbcType=INTEGER},

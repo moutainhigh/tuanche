@@ -37,7 +37,7 @@ public class SupplierPackageEntity extends BaseEntity {
      */
     private Integer packagePrice;
 
-    private Short packageStatus;
+    private Integer packageStatus;
 
     private Integer bigCode;
 
@@ -96,11 +96,11 @@ public class SupplierPackageEntity extends BaseEntity {
         this.packagePic = packagePic == null ? null : packagePic.trim();
     }
 
-    public Short getPackageStatus() {
+    public Integer getPackageStatus() {
         return packageStatus;
     }
 
-    public void setPackageStatus(Short packageStatus) {
+    public void setPackageStatus(Integer packageStatus) {
         this.packageStatus = packageStatus;
     }
 

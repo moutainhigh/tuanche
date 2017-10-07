@@ -1,5 +1,6 @@
 package com.taisf.services.supplier.dao;
 
+import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +66,9 @@ public class SupplierProductDao extends BaseDao {
      * @return
      */
     public int saveSupplierProduct(SupplierProductEntity record){
+        if (Check.NuNObj(record.getCreateTime())){
+            record.setCreateTime(new Date());
+        }
         return mybatisDaoContext.save(SQLID + "saveSupplierProduct", record);
     }
     /**
