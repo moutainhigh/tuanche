@@ -27,6 +27,11 @@ public class EnterpriseEntity extends BaseEntity {
     private static final long serialVersionUID = 7380668097871543955L;
     private Integer id;
 
+    /**
+     * 供应商的code
+     */
+    private String  supplierCode;
+
     private String enterpriseCode;
 
     private String enterpriseName;
@@ -213,5 +218,13 @@ public class EnterpriseEntity extends BaseEntity {
 
     public void setEnterpriseStatus(Integer enterpriseStatus) {
         this.enterpriseStatus = enterpriseStatus;
+    }
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
     }
 }
