@@ -48,7 +48,7 @@ import java.util.List;
 public class UserServiceProxy implements UserService {
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SupplierProductServiceProxy.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceProxy.class);
 
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;

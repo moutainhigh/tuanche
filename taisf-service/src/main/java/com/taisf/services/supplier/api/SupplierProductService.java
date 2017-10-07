@@ -1,4 +1,4 @@
-package com.taisf.services.supplier.service;
+package com.taisf.services.supplier.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
@@ -21,8 +21,6 @@ import java.util.List;
  * @since 1.0
  */
 public interface SupplierProductService {
-
-
 
 
     /**
