@@ -35,7 +35,7 @@ public class LoginTokenDaoTest extends BaseTest {
     	LoginTokenEntity loginTokenEntity = new LoginTokenEntity();
     	loginTokenEntity.setUserId("1");
     	loginTokenEntity.setExpireTime(new Date());
-    	int aa= loginTokenDao.addSelective(loginTokenEntity);
+    	int aa= loginTokenDao.saveLoginToken(loginTokenEntity);
         System.out.println(aa);
     }
 

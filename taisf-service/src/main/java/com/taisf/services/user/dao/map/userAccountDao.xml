@@ -20,7 +20,7 @@
 
 
   <sql id="Base_Column_List" >
-    id, user_id,accountPassword, account_status, draw_balance, draw_not_balance, freeze_money, user_integral,
+    id, user_id,account_password, account_status, draw_balance, draw_not_balance, freeze_money, user_integral,
      create_time, update_time, is_del
   </sql>
 

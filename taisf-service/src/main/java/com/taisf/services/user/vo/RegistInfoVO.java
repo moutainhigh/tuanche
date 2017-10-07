@@ -50,7 +50,7 @@ public class RegistInfoVO extends BaseEntity {
     /**
      * 余额
      */
-    private int drawBalance = 0;
+    private Integer drawBalance = 0;
 
 
     /**
@@ -98,11 +98,11 @@ public class RegistInfoVO extends BaseEntity {
         this.userRoleName = userRoleName;
     }
 
-    public int getDrawBalance() {
+    public Integer getDrawBalance() {
         return drawBalance;
     }
 
-    public void setDrawBalance(int drawBalance) {
+    public void setDrawBalance(Integer drawBalance) {
         this.drawBalance = drawBalance;
     }
 

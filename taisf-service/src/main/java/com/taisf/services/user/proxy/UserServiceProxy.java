@@ -5,7 +5,6 @@ import com.jk.framework.base.head.Header;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.UUIDGenerator;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.taisf.services.common.valenum.ApplicationCodeEnum;
 import com.taisf.services.common.valenum.EnterpriseStatusEnum;
 import com.taisf.services.common.valenum.UserRoleEnum;
@@ -19,6 +18,7 @@ import com.taisf.services.user.dto.UserLoginRequest;
 import com.taisf.services.user.dto.UserLogoutRequest;
 import com.taisf.services.user.dto.UserRegistRequest;
 import com.taisf.services.user.entity.LoginTokenEntity;
+import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
 import com.taisf.services.user.vo.RegistInfoVO;
@@ -173,11 +173,18 @@ public class UserServiceProxy implements UserService {
         }
         vo.setUserRoleName(userRoleEnum.getName());
         List<EnterpriseAddressEntity> list = enterpriseManager.getEnterpriseAddressByCode(enterpriseCode);
-        if(Check.NuNCollection(list)){
+        if(!Check.NuNCollection(list)){
             for (EnterpriseAddressEntity enterpriseAddressEntity : list) {
                 vo.getAddrList().add(enterpriseAddressEntity.getAddress());
             }
         }
+
+        UserAccountEntity accountEntity = userManager.fillAndGetAccountUser(userEntity.getUserUid());
+        if(Check.NuNObj(accountEntity)){
+            dto.setErrorMsg("异常的账户信息");
+            return;
+        }
+        vo.setDrawBalance(accountEntity.getDrawBalance());
         //设置属性
         dto.setData(vo);
     }
@@ -289,8 +296,10 @@ public class UserServiceProxy implements UserService {
         loginTokenEntity.setCreateTime(now);
         loginTokenEntity.setExpireTime(DateUtil.jumpDate(now,365));
         loginTokenEntity.setUserToken(UUIDGenerator.hexUUID());
+        loginTokenEntity.setVersionCode(header.getVersionCode());
         ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(header.getApplicationCode());
         loginTokenEntity.setLoginSource(applicationCodeEnum.getCode());
+        loginTokenEntity.setSourceType(header.getSource());
         return loginTokenEntity;
     }
 
@@ -306,9 +315,6 @@ public class UserServiceProxy implements UserService {
         if (!dto.checkSuccess()){
             return;
         }
-        if (Check.NuNObj(header)){
-
-        }
 
         if (Check.NuNObj(header)){
             dto.setErrorMsg("异常的头信息");
@@ -317,7 +323,8 @@ public class UserServiceProxy implements UserService {
 
         if (Check.NuNStr(header.getDeviceUuid())
                 || Check.NuNStr(header.getApplicationCode())
-                || Check.NuNStr(header.getVersionCode())){
+                || Check.NuNStr(header.getVersionCode())
+                || Check.NuNObj(header.getSource())){
             dto.setErrorMsg("异常的头信息");
             return ;
         }
@@ -388,11 +395,11 @@ public class UserServiceProxy implements UserService {
             return ;
         }
         if (!header.getDeviceUuid().equals(token.getDeviceUuid())){
-            dto.setErrorMsg("参数异常");
+            dto.setErrorMsg("退出失败,参数错误");
             return ;
         }
-        if (applicationCodeEnum.getCode() != token.getSourceType()){
-            dto.setErrorMsg("参数异常");
+        if (applicationCodeEnum.getCode() != token.getLoginSource()){
+            dto.setErrorMsg("退出失败,参数错误");
             return ;
         }
     }

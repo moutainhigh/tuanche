@@ -58,7 +58,7 @@ public class LoginTokenDao extends BaseDao {
     public int deleteById(Integer id){
         Map<String,Object> par = new HashMap<>();
         par.put("id",id);
-        return mybatisDaoContext.delete(SQLID + "delToken", par);
+        return mybatisDaoContext.delete(SQLID + "deleteById", par);
     }
 
 
