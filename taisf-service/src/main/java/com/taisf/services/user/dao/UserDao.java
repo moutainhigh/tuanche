@@ -4,6 +4,9 @@ import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.user.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * <p> 用户主表操作 </p>
@@ -53,6 +56,28 @@ public class UserDao extends BaseDao{
 
         return mybatisDaoContext.findOne(SQLID + "getUserByUid", UserEntity.class, userId);
     }
+
+
+    /**
+     * 激活用户信息
+     * @param userId
+     * @return
+     */
+    public int updateUser2Activity(String userId){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userId",userId);
+        return mybatisDaoContext.update(SQLID + "updateUser2Activity", par );
+    }
+
+
+    /**
+     * 根据用户电话查询用户
+     * @param userPhone
+     * @return
+     */
+    public UserEntity getUserByUserPhone(String userPhone){
+        return mybatisDaoContext.findOne(SQLID + "getUserByUserPhone", UserEntity.class, userPhone);
+    }
     /**
      * 根据用户id查询用户
      * @param id
@@ -61,5 +86,7 @@ public class UserDao extends BaseDao{
     public UserEntity getUserById(Integer id){
         return mybatisDaoContext.findOne(SQLID + "selectByPrimaryKey", UserEntity.class, id);
     }
+
+
 
 }

@@ -43,10 +43,6 @@ public class OrderDetailVO extends BaseEntity{
     private OrderPayEntity orderPayEntity;
 
 
-    /**
-     * 地址
-     */
-    private UserAddressEntity addressEntity;
 
 
     /**
@@ -55,13 +51,6 @@ public class OrderDetailVO extends BaseEntity{
     private List<OrderProductEntity> list;
 
 
-    public UserAddressEntity getAddressEntity() {
-        return addressEntity;
-    }
-
-    public void setAddressEntity(UserAddressEntity addressEntity) {
-        this.addressEntity = addressEntity;
-    }
 
     public OrderEntity getOrderEntity() {
         return orderEntity;

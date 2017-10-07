@@ -9,7 +9,7 @@ import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.dto.CartAddRequest;
 import com.taisf.services.order.dto.CartBaseRequest;
 import com.taisf.services.order.entity.CartEntity;
-import com.taisf.services.order.manger.CartManagerImpl;
+import com.taisf.services.order.manager.CartManagerImpl;
 import com.taisf.services.order.vo.CartEleVO;
 import com.taisf.services.order.vo.CartVO;
 import com.taisf.services.order.vo.CartInfoVO;

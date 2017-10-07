@@ -10,7 +10,7 @@
         <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
         <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
         <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
-        <result column="address_fid" jdbcType="VARCHAR" property="addressFid" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
         <result column="order_source" jdbcType="TINYINT" property="orderSource" />
         <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
         <result column="accounts_status" jdbcType="TINYINT" property="accountsStatus" />
@@ -40,7 +40,7 @@
 
     <sql id="Base_Column_List">
         <!--  -->
-        t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address_fid, t.order_source,t.eva_status, t.order_status, t.accounts_status,
+        t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status, t.order_status, t.accounts_status,
         t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,
         t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark,
         m.sum_money, m.coupon_money, m.discount_money,m.red_money, m.need_pay, m.pay_money, m.pay_balance, m.carry_money

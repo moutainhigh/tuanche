@@ -32,24 +32,12 @@ public class LoginTokenDao extends BaseDao {
 
     private String SQLID = "user.loginTokenDao.";
 
-
-
-    public int add(LoginTokenEntity loginTokenEntity){
-        return mybatisDaoContext.save(SQLID + "insert", loginTokenEntity);
-    }
     
-    public int addSelective(LoginTokenEntity loginTokenEntity){
+    public int saveLoginToken(LoginTokenEntity loginTokenEntity){
         Map<String,Object> par = new HashMap<>();
-        return mybatisDaoContext.save(SQLID + "insertSelective", loginTokenEntity);
+        return mybatisDaoContext.save(SQLID + "saveLoginToken", loginTokenEntity);
     }
-    /**
-     * 用户退出
-     * @param loginTokenEntity
-     * @return
-     */
-    public int logout(LoginTokenEntity loginTokenEntity) {
-    	return mybatisDaoContext.update(SQLID + "logout", loginTokenEntity);
-    }
+
     
     /**
      * 查询用户token是否失效
@@ -59,16 +47,46 @@ public class LoginTokenDao extends BaseDao {
     public Integer queryCountExpireToken(LoginTokenEntity loginTokenEntity){
         return mybatisDaoContext.findOne(SQLID + "selectExpireTokenCount", Integer.class, loginTokenEntity);
     }
-    
+
+
+
+
     /**
-     * 查询token信息
-     * @param loginTokenEntity
+     * 删除token信息
      * @return
      */
-    public LoginTokenEntity queryTokenBySelective(LoginTokenEntity loginTokenEntity){
-        return mybatisDaoContext.findOne(SQLID + "selectBySelective", LoginTokenEntity.class, loginTokenEntity);
+    public int deleteById(Integer id){
+        Map<String,Object> par = new HashMap<>();
+        par.put("id",id);
+        return mybatisDaoContext.delete(SQLID + "delToken", par);
     }
-    
+
+
+    /**
+     * 查询token信息
+     * @param userId
+     * @param deviceUuid
+     * @return
+     */
+    public LoginTokenEntity getToken(String userId,String deviceUuid,Integer loginSource){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userId",userId);
+        par.put("deviceUuid",deviceUuid);
+        par.put("loginSource",loginSource);
+        return mybatisDaoContext.findOne(SQLID + "getToken", LoginTokenEntity.class, par);
+    }
+
+
+    /**
+     * 查询token信息
+     * @param token
+     * @return
+     */
+    public LoginTokenEntity getTokenByToken(String token){
+        return mybatisDaoContext.findOne(SQLID + "getTokenByToken", LoginTokenEntity.class, token);
+    }
+
+
     /**
      * 查询token信息
      * @param loginTokenEntity

@@ -2,19 +2,12 @@ package com.taisf.services.enterprise.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
-import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
-import com.taisf.services.enterprise.manger.EnterpriseManagerImpl;
-import com.taisf.services.order.entity.CartEntity;
-import com.taisf.services.order.vo.CartEleVO;
-import com.taisf.services.order.vo.CartInfoVO;
-import com.taisf.services.user.manager.UserManagerImpl;
+import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>企业接口实现</p>

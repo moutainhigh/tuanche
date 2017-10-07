@@ -23,26 +23,17 @@
     from t_login_token
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+
+  <delete id="deleteById" parameterType="java.util.Map" >
     delete from t_login_token
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.taisf.services.user.entity.LoginTokenEntity" >
-    insert into t_login_token (user_id, user_token, 
-      login_source, device_uuid, source_type, 
-      version_code, create_time, expire_time, 
-      last_modify_date)
-    values (#{userId,jdbcType=VARCHAR}, #{userToken,jdbcType=VARCHAR}, 
-      #{loginSource,jdbcType=INTEGER}, #{deviceUuid,jdbcType=VARCHAR}, #{sourceType,jdbcType=INTEGER}, 
-      #{versionCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP}, 
-      #{lastModifyDate,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.taisf.services.user.entity.LoginTokenEntity" >
+
+  <insert id="saveLoginToken" parameterType="com.taisf.services.user.entity.LoginTokenEntity" >
     insert into t_login_token
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
+
       <if test="userId != null" >
         user_id,
       </if>
@@ -72,9 +63,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
+
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
       </if>
@@ -156,6 +145,8 @@
     set expire_time = #{expireTime,jdbcType=TIMESTAMP}      
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+
   <!-- 查询用户token是否失效 -->
   <select id="selectExpireTokenCount" resultType="java.lang.Integer" parameterType="com.taisf.services.user.entity.LoginTokenEntity" >
     select 
@@ -167,42 +158,30 @@
     and login_source = #{loginSource,jdbcType=INTEGER}
     <![CDATA[and expire_time > now()]]>
   </select>
-  
-   <select id="selectBySelective" resultMap="BaseResultMap" parameterType="com.taisf.services.user.entity.LoginTokenEntity" >
-    select 
+
+
+
+
+  <select id="getTokenByToken" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
     <include refid="Base_Column_List" />
     from t_login_token
-    where 1 = 1
-    <if test="id != null" >
-     and id = #{id,jdbcType=INTEGER}
-    </if>
-    <if test="userId != null" >
-     and user_id = #{userId,jdbcType=VARCHAR}
-    </if>
-    <if test="userToken != null" >
-      and user_token = #{userToken,jdbcType=VARCHAR}
-    </if>
-    <if test="loginSource != null" >
-      and login_source = #{loginSource,jdbcType=INTEGER}
-    </if>
-    <if test="deviceUuid != null" >
+    where user_token = #{token,jdbcType=VARCHAR}
+    ORDER BY id DESC
+    limit 1
+  </select>
+
+
+   <select id="getToken" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+      <include refid="Base_Column_List" />
+    from t_login_token
+    where user_id = #{userId,jdbcType=VARCHAR}
      and device_uuid = #{deviceUuid,jdbcType=VARCHAR}
-    </if>
-    <if test="sourceType != null" >
-     and source_type = #{sourceType,jdbcType=INTEGER}
-    </if>
-    <if test="versionCode != null" >
-      and version_code = #{versionCode,jdbcType=VARCHAR}
-    </if>
-    <if test="createTime != null" >
-      and reate_time = #{createTime,jdbcType=TIMESTAMP}
-    </if>
-    <if test="expireTime != null" >
-      and expire_time = #{expireTime,jdbcType=TIMESTAMP}
-    </if>
-    <if test="lastModifyDate != null" >
-      last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP}
-    </if>
+     and login_source = #{loginSource,jdbcType=INTEGER}
+     <![CDATA[and expire_time > now()]]>
+    ORDER BY id DESC
+     limit 1
   </select>
   
 </mapper>

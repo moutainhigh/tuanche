@@ -3,7 +3,7 @@ package com.taisf.services.common.valenum;
 import com.jk.framework.base.utils.Check;
 
 /**
- * <p>用户状态 1：可用 2：禁用</p>
+ * <p>用户状态/p>
  * <p/>
  * <PRE>
  * <BR>	修改记录
@@ -11,22 +11,33 @@ import com.jk.framework.base.utils.Check;
  * <BR>	修改日期			修改人			修改内容
  * </PRE>
  *
- * @author afi on on 2017/6/26.
+ * @author afi on on 2017/9/26.
  * @version 1.0
  * @since 1.0
  */
 public enum UserStatusEnum {
 
-    AVAILABLE(1,"可用","定义用户正常可用中"),
-    FORBIDDEN(2,"禁用","定义用户已禁用");
+
+    AVAILABLE(1,"可用"),
+    ACTIVITY(2,"激活"),
+    FORBIDDEN(3,"注销"){
+        @Override
+        public boolean checkOk() {
+            return false;
+        }
+    },
+    FREEZE(4,"冻结"){
+        @Override
+        public boolean checkOk() {
+            return false;
+        }
+    };
 
     private int code;
     private String name;
-    private String desc;
-    private UserStatusEnum(int code, String name, String desc) {
+    private UserStatusEnum(int code, String name) {
         this.code = code;
         this.name = name;
-        this.desc = desc;
     }
 
     public int getCode() {
@@ -36,12 +47,6 @@ public enum UserStatusEnum {
         this.code = code;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
 
     public String getName() {
         return name;
@@ -61,5 +66,9 @@ public enum UserStatusEnum {
             }
         }
         return null;
+    }
+
+    public boolean checkOk(){
+        return true;
     }
 }

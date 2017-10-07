@@ -1,4 +1,4 @@
-package com.taisf.services.order.manger;
+package com.taisf.services.order.manager;
 
 import com.taisf.services.order.dao.CartDao;
 import com.taisf.services.order.dto.CartBaseRequest;

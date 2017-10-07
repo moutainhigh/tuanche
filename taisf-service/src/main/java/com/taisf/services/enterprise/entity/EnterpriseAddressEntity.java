@@ -25,6 +25,8 @@ public class EnterpriseAddressEntity extends BaseEntity {
 
     private Integer id;
 
+    private String fid;
+
     private String enterpriseCode;
 
     private String address;
@@ -81,5 +83,14 @@ public class EnterpriseAddressEntity extends BaseEntity {
 
     public void setConName(String conName) {
         this.conName = conName == null ? null : conName.trim();
+    }
+
+
+    public String getFid() {
+        return fid;
+    }
+
+    public void setFid(String fid) {
+        this.fid = fid;
     }
 }

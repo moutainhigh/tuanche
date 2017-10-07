@@ -1,9 +1,11 @@
 package com.taisf.services.user.manager;
 
 import com.jk.framework.base.utils.Check;
+import com.taisf.services.user.dao.LoginTokenDao;
 import com.taisf.services.user.dao.UserAccountDao;
 import com.taisf.services.user.dao.UserAddressDao;
 import com.taisf.services.user.dao.UserDao;
+import com.taisf.services.user.entity.LoginTokenEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserAddressEntity;
 import com.taisf.services.user.entity.UserEntity;
@@ -36,6 +38,49 @@ public class UserManagerImpl {
 
     @Resource(name = "user.accountUserDao")
     private UserAccountDao userAccountDao;
+
+
+    @Resource(name = "user.loginTokenDao")
+    private LoginTokenDao loginTokenDao;
+
+
+    /**
+     * 保存登录信息
+     * @author afi
+     * @param loginTokenEntity
+     * @return
+     */
+    public int saveLoginToken(LoginTokenEntity loginTokenEntity){
+        return loginTokenDao.saveLoginToken(loginTokenEntity);
+    }
+
+    /**
+     * 查询token信息
+     * @param id
+     * @return
+     */
+    public int deleteById(Integer id){
+        return loginTokenDao.deleteById(id);
+    }
+
+    /**
+     * 查询token信息
+     * @param token
+     * @return
+     */
+    public LoginTokenEntity getTokenByToken(String token){
+        return loginTokenDao.getTokenByToken(token);
+    }
+
+    /**
+     * 查询token信息
+     * @param userId
+     * @param deviceUuid
+     * @return
+     */
+    public LoginTokenEntity getToken(String userId, String deviceUuid,int loginSource){
+        return loginTokenDao.getToken(userId,deviceUuid,loginSource);
+    }
 
 
 
@@ -98,4 +143,26 @@ public class UserManagerImpl {
         return userDao.getUserByUid(userId);
     }
 
+
+    /**
+     * 根据用户电话查询用户
+     * @param userPhone
+     * @return
+     */
+    public UserEntity getUserByUserPhone(String userPhone){
+        if (Check.NuNStr(userPhone)){
+            return null;
+        }
+        return userDao.getUserByUserPhone(userPhone);
+    }
+
+
+    /**
+     * 激活用户信息
+     * @param userId
+     * @return
+     */
+    public int updateUser2Activity(String userId){
+        return userDao.updateUser2Activity(userId);
+    }
 }

@@ -36,6 +36,16 @@ public class EnterpriseAddressDao extends BaseDao {
      */
     private static Logger logger = LoggerFactory.getLogger(EnterpriseAddressDao.class);
 
+    /**
+     * 根据fid获取企业的信息
+     * @author afi
+     * @param fid
+     * @return
+     */
+    public EnterpriseAddressEntity getEnterpriseAddressByFid(String fid){
+        return mybatisDaoContext.findOne(SQLID+"getEnterpriseAddressByFid", EnterpriseAddressEntity.class, fid);
+    }
+
 
     /**
      * 获取当前的企业地址列表

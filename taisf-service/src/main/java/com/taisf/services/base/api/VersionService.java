@@ -1,4 +1,4 @@
-package com.taisf.services.base.service;
+package com.taisf.services.base.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;

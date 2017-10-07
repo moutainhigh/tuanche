@@ -1,4 +1,4 @@
-package com.taisf.services.order.manger;
+package com.taisf.services.order.manager;
 
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;

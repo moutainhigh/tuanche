@@ -1,12 +1,14 @@
-package com.taisf.services.enterprise.manger;
+package com.taisf.services.enterprise.manager;
 
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.taisf.services.common.valenum.DayTypeEnum;
+import com.taisf.services.enterprise.dao.EnterpriseAddressDao;
 import com.taisf.services.enterprise.dao.EnterpriseConfigDao;
 import com.taisf.services.enterprise.dao.EnterpriseDao;
 import com.taisf.services.enterprise.dao.EnterpriseDayDao;
+import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
@@ -45,6 +47,40 @@ public class EnterpriseManagerImpl {
 
 	@Resource(name = "enterprise.enterpriseDayDao")
 	private EnterpriseDayDao enterpriseDayDao;
+
+	@Resource(name = "enterprise.enterpriseAddressDao")
+	private EnterpriseAddressDao enterpriseAddressDao;
+
+
+	/**
+	 * 根据fid获取企业的信息
+	 * @author afi
+	 * @param fid
+	 * @return
+	 */
+	public EnterpriseAddressEntity getEnterpriseAddressByFid(String fid){
+		if (Check.NuNStr(fid)){
+			return null;
+		}
+		return enterpriseAddressDao.getEnterpriseAddressByFid(fid);
+	}
+
+
+
+	/**
+	 * 获取当前的企业地址列表
+	 * @author afi
+	 * @param enterpriseCode
+	 * @return
+	 */
+	public List<EnterpriseAddressEntity> getEnterpriseAddressByCode(String enterpriseCode){
+		if (Check.NuNStr(enterpriseCode)){
+			return null;
+		}
+		return enterpriseAddressDao.getEnterpriseAddressByCode(enterpriseCode);
+	}
+
+
 
 
 	/**

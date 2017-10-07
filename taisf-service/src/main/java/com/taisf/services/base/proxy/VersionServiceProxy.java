@@ -8,7 +8,7 @@ import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.base.entity.UpgradeEntity;
 import com.taisf.services.base.manager.VersionManagerImpl;
-import com.taisf.services.base.service.VersionService;
+import com.taisf.services.base.api.VersionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

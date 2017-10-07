@@ -6,13 +6,10 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.ValueUtil;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-import com.sun.org.apache.regexp.internal.RE;
-import com.taisf.services.common.util.MoneyDealUtil;
 import com.taisf.services.common.valenum.*;
+import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
-import com.taisf.services.enterprise.entity.EnterpriseEntity;
-import com.taisf.services.enterprise.manger.EnterpriseManagerImpl;
+import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
@@ -21,7 +18,7 @@ import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
-import com.taisf.services.order.manger.OrderManagerImpl;
+import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.*;
 import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.entity.SupplierEntity;
@@ -114,9 +111,6 @@ public class OrderServiceProxy implements OrderService {
         if (Check.NuNObj(orderDetail)){
             return dto;
         }
-        OrderEntity base = orderDetail.getOrderEntity();
-        orderDetail.setAddressEntity(userManager.getUserAddressByFid(base.getAddressFid()));
-
         dto.setData(orderDetail);
         return dto;
 
@@ -532,22 +526,16 @@ public class OrderServiceProxy implements OrderService {
         if (Check.NuNStr(creatOrderRequest.getAddressFid())){
             return;
         }
-        //获取收货地址信息
-        UserAddressEntity address = userManager.getUserAddressByFid(creatOrderRequest.getAddressFid());
-        if (Check.NuNObj(address)){
+
+        EnterpriseAddressEntity addressEntity = enterpriseManager.getEnterpriseAddressByFid(creatOrderRequest.getAddressFid());
+        if (Check.NuNObj(addressEntity)){
             dto.setErrorMsg("当前收货地址不存在");
             return;
         }
         //基本的订单信息
         OrderEntity order =orderSaveVO.getOrderBase();
-        order.setUserName(address.getUserName());
-        order.setUserTel(address.getUserTel());
-
-        order.setProvinceCode(address.getProvinceCode());
-        order.setCityCode(address.getCityCode());
-        order.setAreaCode(address.getAreaCode());
         //收货地址
-        order.setAddressFid(creatOrderRequest.getAddressFid());
+        order.setAddress(addressEntity.getAddress());
     }
 
 
@@ -607,6 +595,9 @@ public class OrderServiceProxy implements OrderService {
         //当前的用户信息
         orderSaveVO.setUser(userEntity);
 
+        orderSaveVO.getOrderBase().setUserName(userEntity.getUserName());
+        orderSaveVO.getOrderBase().setUserTel(userEntity.getUserPhone());
+
         //设置当前的用户关联的企业的用餐信息
         this.dealEnterpriseInfo( dto, orderSaveVO,userEntity, creatOrderRequest);
     }
@@ -648,6 +639,10 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("异常的订餐类型");
             return;
         }
+        //设置城市code
+        orderSaveVO.getOrderBase().setProvinceCode(infoVO.getEnterpriseEntity().getProvinceCode());
+        orderSaveVO.getOrderBase().setCityCode(infoVO.getEnterpriseEntity().getCityCode());
+        orderSaveVO.getOrderBase().setAreaCode(infoVO.getEnterpriseEntity().getAreaCode());
 
         if (orderTypeEnum.isExt()){
             //补餐

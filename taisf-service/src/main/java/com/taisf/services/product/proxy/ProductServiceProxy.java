@@ -1,7 +1,7 @@
 package com.taisf.services.product.proxy;
 
 import com.taisf.services.product.manager.ProductManagerImpl;
-import com.taisf.services.product.service.ProductService;
+import com.taisf.services.product.api.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

@@ -23,12 +23,29 @@
     update_time
   </sql>
 
+
+
+  <select id="getUserByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_phone = #{userPhone,jdbcType=CHAR}
+  </select>
+
+
+
+
+  <update id="updateUser2Activity" parameterType="java.util.Map" >
+    update t_user set user_status = 2
+    where user_uid = #{userUid,jdbcType=VARCHAR}
+  </update>
+
   <select id="getUserByUid" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from t_user
     where user_uid = #{userUid,jdbcType=CHAR}
-</select>
+  </select>
 
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

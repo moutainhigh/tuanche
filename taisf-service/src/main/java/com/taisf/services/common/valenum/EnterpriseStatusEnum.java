@@ -16,17 +16,25 @@ package com.taisf.services.common.valenum;
 public enum EnterpriseStatusEnum {
 
 
-    NO_SUBMIT(0,"未提交"),
-    SUCCESS(1,"正常"),
-    TIME_OUT(2,"过期"),
-    STOP(3,"停止合作"),
+    NO_SUBMIT(0,"未提交","该企业状态未审核通过"),
+    SUCCESS(1,"正常",""){
+        @Override
+        public boolean checkOk() {
+            return true;
+        }
+    },
+    TIME_OUT(2,"过期","该企业合作已过期"),
+    STOP(3,"停止合作","该企业已停止合作"),
     ;
     private int code;
     private String name;
 
-    private EnterpriseStatusEnum(int code, String name) {
+    private String des;
+
+    private EnterpriseStatusEnum(int code, String name,String des) {
         this.code = code;
         this.name = name;
+        this.des = des;
     }
 
     public int getCode() {
@@ -44,6 +52,14 @@ public enum EnterpriseStatusEnum {
         this.name = name;
     }
 
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
+
     public static EnterpriseStatusEnum getTypeByCode(int code) {
         EnterpriseStatusEnum[] enums = EnterpriseStatusEnum.values();
         for(EnterpriseStatusEnum enumtype:enums) {
@@ -54,4 +70,12 @@ public enum EnterpriseStatusEnum {
         return null;
     }
 
+
+    /**
+     * 当前企业状态是否正常
+     * @return
+     */
+    public boolean checkOk(){
+        return false;
+    }
 }

@@ -10,7 +10,7 @@
         <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
         <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
         <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
-        <result column="address_fid" jdbcType="VARCHAR" property="addressFid" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
         <result column="order_source" jdbcType="TINYINT" property="orderSource" />
         <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
         <result column="accounts_status" jdbcType="TINYINT" property="accountsStatus" />
@@ -31,7 +31,7 @@
 
     <sql id="Base_Column_List">
         <!--  -->
-        id, order_sn,title, province_code,area_code, city_code,address_fid, order_source,eva_status, order_status, accounts_status,
+        id, order_sn,title, province_code,area_code, city_code,address, order_source,eva_status, order_status, accounts_status,
         pay_status,orderType, business_uid, user_uid, user_tel, user_name,
         send_time, pay_time,create_time, last_modify_date, mark
     </sql>
@@ -70,8 +70,8 @@
             <if test="areaCode != null">
                 area_code,
             </if>
-            <if test="addressFid != null">
-                address_fid,
+            <if test="address != null">
+                address,
             </if>
 
 
@@ -142,8 +142,8 @@
                 #{areaCode,jdbcType=VARCHAR},
             </if>
 
-            <if test="addressFid != null">
-                #{addressFid,jdbcType=VARCHAR},
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
             </if>
 
             <if test="orderSource != null">
@@ -214,8 +214,8 @@
             <if test="areaCode != null">
                 area_code = #{areaCode,jdbcType=VARCHAR},
             </if>
-            <if test="addressFid != null">
-                address_fid = #{addressFid,jdbcType=VARCHAR},
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
             </if>
 
             <if test="orderSource != null">

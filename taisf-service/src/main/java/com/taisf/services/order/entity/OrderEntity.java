@@ -40,7 +40,7 @@ public class OrderEntity extends BaseEntity {
     private String areaCode;
 
     /**  收货地址 */
-    private String  addressFid;
+    private String  address;
 
 
     /** 订单来源 */
@@ -95,12 +95,12 @@ public class OrderEntity extends BaseEntity {
     private String mark;
 
 
-    public String getAddressFid() {
-        return addressFid;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddressFid(String addressFid) {
-        this.addressFid = addressFid;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Integer getId() {

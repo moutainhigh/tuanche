@@ -4,6 +4,7 @@
 
   <resultMap id="BaseResultMap" type="com.taisf.services.enterprise.entity.EnterpriseAddressEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="fid" jdbcType="VARCHAR" property="fid" />
     <result column="enterprise_code" jdbcType="VARCHAR" property="enterpriseCode" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="send_num" jdbcType="INTEGER" property="sendNum" />
@@ -13,8 +14,18 @@
 
 
   <sql id="Base_Column_List">
-    id, enterprise_code, address, send_num, con_tel, con_name
+    id,fid, enterprise_code, address, send_num, con_tel, con_name
   </sql>
+
+
+
+
+  <select id="getEnterpriseAddressByFid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_enterprise_address
+    where fid = #{fid,jdbcType=VARCHAR}
+  </select>
 
 
   <select id="getEnterpriseAddressByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -29,6 +40,9 @@
   <insert id="saveEnterpriseAddress" parameterType="com.taisf.services.enterprise.entity.EnterpriseAddressEntity">
     insert into t_enterprise_address
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        fid,
+      </if>
       <if test="enterpriseCode != null">
         enterprise_code,
       </if>
@@ -46,6 +60,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=VARCHAR},
+      </if>
       <if test="enterpriseCode != null">
         #{enterpriseCode,jdbcType=VARCHAR},
       </if>
@@ -84,7 +101,7 @@
         con_name = #{conName,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where fid = #{fid,jdbcType=INTEGER}
   </update>
 
 </mapper>

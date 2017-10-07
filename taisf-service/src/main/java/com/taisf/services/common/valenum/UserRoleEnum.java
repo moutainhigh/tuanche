@@ -1,5 +1,7 @@
 package com.taisf.services.common.valenum;
 
+import com.jk.framework.base.utils.Check;
+
 /**
  * <p>用户角色</p>
  * <p/>
@@ -17,8 +19,8 @@ public enum UserRoleEnum {
 
     //1 用户 2老板
 
-    USER(1,"用户"),
-    BOSS(2,"老板")
+    USER(1,"普通餐"),
+    BOSS(2,"老板餐")
     ;
     private int code;
     private String name;
@@ -43,7 +45,10 @@ public enum UserRoleEnum {
         this.name = name;
     }
 
-    public static UserRoleEnum getTypeByCode(int code) {
+    public static UserRoleEnum getTypeByCode(Integer code) {
+        if(Check.NuNObj(code)){
+            return null;
+        }
         UserRoleEnum[] enums = UserRoleEnum.values();
         for(UserRoleEnum enumtype:enums) {
             if(enumtype.getCode() == code) {
