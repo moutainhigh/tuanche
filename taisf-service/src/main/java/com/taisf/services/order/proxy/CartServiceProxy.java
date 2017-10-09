@@ -8,6 +8,7 @@ import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.dto.CartAddRequest;
 import com.taisf.services.order.dto.CartBaseRequest;
+import com.taisf.services.order.dto.CartCleanRequest;
 import com.taisf.services.order.entity.CartEntity;
 import com.taisf.services.order.manager.CartManagerImpl;
 import com.taisf.services.order.vo.CartEleVO;
@@ -59,19 +60,18 @@ public class CartServiceProxy implements CartService{
 
     /**
      * 获取购物车列表信息
-     * @param businessUid
-     * @param userUid
+     * @param cartCleanRequest
      * @return
      */
     @Override
-    public DataTransferObject<Void> cartClean(String userUid, String businessUid){
+    public DataTransferObject<Void> cartClean(CartCleanRequest cartCleanRequest){
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if (Check.NuNStr(businessUid)
-                || Check.NuNStr(userUid)){
+        if (Check.NuNStr(cartCleanRequest.getBusinessUid())
+                || Check.NuNStr(cartCleanRequest.getUserUid())){
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        cartManager.delUserCart(userUid,businessUid);
+        cartManager.delUserCart(cartCleanRequest.getUserUid(),cartCleanRequest.getBusinessUid());
         return dto;
     }
 

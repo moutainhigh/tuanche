@@ -3,6 +3,7 @@ package com.taisf.services.order.api;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.taisf.services.order.dto.CartAddRequest;
 import com.taisf.services.order.dto.CartBaseRequest;
+import com.taisf.services.order.dto.CartCleanRequest;
 import com.taisf.services.order.vo.CartInfoVO;
 
 /**
@@ -22,11 +23,10 @@ public interface CartService {
 
     /**
      * 获取购物车列表信息
-     * @param businessUid
-     * @param userUid
+     * @param cartCleanRequest
      * @return
      */
-    DataTransferObject<Void> cartClean(String userUid, String businessUid);
+    DataTransferObject<Void> cartClean(CartCleanRequest cartCleanRequest);
     /**
      * 添加购物车
      * @author afi
