@@ -2,9 +2,8 @@ package com.taisf.services.order.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
-import com.taisf.services.order.dto.CreatOrderRequest;
+import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
-import com.taisf.services.order.vo.InitOrderVO;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveVO;
@@ -27,36 +26,36 @@ public interface OrderService {
 
     /**
      * 初始化下单
-     * @param creatOrderRequest
+     * @param createOrderRequest
      * @return
      */
-    DataTransferObject<OrderSaveVO> initOrder(CreatOrderRequest creatOrderRequest);
+    DataTransferObject<OrderSaveVO> initOrder(CreateOrderRequest createOrderRequest);
 
 
     /**
      * 初始化补单
-     * @param creatOrderRequest
+     * @param createOrderRequest
      * @return
      */
-    DataTransferObject<OrderSaveVO> initExtOrder(CreatOrderRequest creatOrderRequest);
+    DataTransferObject<OrderSaveVO> initExtOrder(CreateOrderRequest createOrderRequest);
 
 
     /**
      * 下单
      *
-     * @param creatOrderRequest
+     * @param createOrderRequest
      * @return
      */
-    DataTransferObject<String> createOrder(CreatOrderRequest creatOrderRequest);
+    DataTransferObject<String> createOrder(CreateOrderRequest createOrderRequest);
 
 
     /**
      * 下单[补单]
      * @author afi
-     * @param creatOrderRequest
+     * @param createOrderRequest
      * @return
      */
-    DataTransferObject<String> createExtOrder(CreatOrderRequest creatOrderRequest);
+    DataTransferObject<String> createExtOrder(CreateOrderRequest createOrderRequest);
 
 
 

@@ -132,13 +132,13 @@ public class OrderManagerImpl {
 
 		//消费当前的余额信息
 		userAccountDao.changeUserBalance(userUid,-money);
-
 		//记录当前的消费记录
 		AccountLogEntity log = new AccountLogEntity();
 		log.setAccountType(AccountTypeEnum.CONSUME.getCode());
 		log.setBizMoney(money);
 		log.setBizSn(orderSn);
 		log.setUserId(userUid);
+		log.setTitle("下单消费");
 		accountLogDao.saveAccountLog(log);
 	}
 

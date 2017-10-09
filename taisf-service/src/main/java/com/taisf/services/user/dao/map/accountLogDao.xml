@@ -24,7 +24,7 @@
   <select id="getAccountLogByPage" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
-    from t_account_log
+    from t_user_account_log
     where user_id = #{userId,jdbcType=VARCHAR}
   </select>
 
@@ -32,14 +32,14 @@
   <select id="getAccountLogByBizSn" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
-    from t_account_log
+    from t_user_account_log
     where biz_sn = #{bizSn,jdbcType=VARCHAR}
   </select>
 
 
   <!--- 保存当前的账户信息 -->
   <insert id="saveAccountLog" parameterType="com.taisf.services.user.entity.AccountLogEntity" >
-    insert into t_account_log
+    insert into t_user_account_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
 
       <if test="userId != null" >
@@ -60,6 +60,10 @@
       </if>
       <if test="createTime != null" >
         create_time,
+      </if>
+
+      <if test="title != null" >
+        title,
       </if>
 
 
@@ -84,6 +88,10 @@
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
       </if>
 
     </trim>

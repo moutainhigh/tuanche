@@ -19,10 +19,6 @@ public class CartBaseRequest extends BaseEntity{
 
     private static final long serialVersionUID = 301231201446703L;
 
-    /**
-     * 商品类型
-     */
-    private Integer supplierProductType;
 
 
     /**
@@ -39,6 +35,12 @@ public class CartBaseRequest extends BaseEntity{
      * 商品code
      */
     private Integer productCode;
+
+    /**
+     * 商品类型
+     */
+    private Integer supplierProductType;
+
 
 
     public Integer getSupplierProductType() {

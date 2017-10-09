@@ -166,6 +166,7 @@ public class CartServiceProxy implements CartService{
             cartVO.setProductCode(productEntity.getId());
             cartVO.setProductPrice(productEntity.getPackagePrice());
             cartVO.setProductNum(num);
+            cartVO.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
             vo.getList().add(cartVO);
             vo.setPrice(MoneyDealUtil.overlayMoney(vo.getPrice(),productEntity.getPackagePrice(),num));
         }
@@ -204,6 +205,8 @@ public class CartServiceProxy implements CartService{
             cartVO.setUserUid(vo.getUserUid());
             cartVO.setProductCode(productEntity.getId());
             cartVO.setProductPrice(productEntity.getPriceSale());
+            cartVO.setSupplierProductType(SupplierProductTypeEnum.PRODUCT.getCode());
+
             cartVO.setProductNum(num);
             vo.getList().add(cartVO);
             vo.setPrice(MoneyDealUtil.overlayMoney(vo.getPrice(), productEntity.getPriceSale(), num));
@@ -221,7 +224,7 @@ public class CartServiceProxy implements CartService{
     @Override
     public DataTransferObject<Void> addCart(CartAddRequest cartAddRequest) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        //1. 校验基本参数
+        //1. 校验基本参数,≤
         this.checkCartBasePar(dto,cartAddRequest);
         if (!dto.checkSuccess()){
             return dto;
@@ -238,7 +241,7 @@ public class CartServiceProxy implements CartService{
         }else {
             //当前购物车中已经存在
             has.setProductNum(has.getProductNum() + cartAddRequest.getProductNum());
-            cartManager.saveCart(has);
+            cartManager.updateCart(has);
         }
         return dto;
     }

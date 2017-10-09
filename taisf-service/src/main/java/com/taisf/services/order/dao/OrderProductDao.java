@@ -50,7 +50,7 @@ public class OrderProductDao extends BaseDao {
      * @return
      */
     public int batchSaveOrderProduct(List<OrderProductEntity> list){
-        return mybatisDaoContext.batchSave(SQLID + "batchSaveOrderProduct", list);
+        return mybatisDaoContext.batchSave(SQLID + "saveOrderProduct", list);
     }
 
 

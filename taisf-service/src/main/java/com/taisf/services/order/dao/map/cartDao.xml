@@ -128,11 +128,11 @@
                 supplier_product_type =  #{supplierProductType,jdbcType=INTEGER},
             </if>
             <if test="productCode != null">
-                supplier_product_type =  #{productCode,jdbcType=INTEGER},
+                product_code =  #{productCode,jdbcType=INTEGER},
             </if>
 
             <if test="productNum != null">
-                supplier_product_type = #{productNum,jdbcType=INTEGER},
+                product_num = #{productNum,jdbcType=INTEGER},
             </if>
         </set>
         WHERE   id = #{id,jdbcType=INTEGER}

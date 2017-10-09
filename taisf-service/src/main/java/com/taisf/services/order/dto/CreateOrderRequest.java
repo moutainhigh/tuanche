@@ -15,7 +15,7 @@ import com.jk.framework.base.entity.BaseEntity;
  * @version 1.0
  * @since 1.0
  */
-public class CreatOrderRequest extends BaseEntity{
+public class CreateOrderRequest extends BaseEntity{
 
     private static final long serialVersionUID = 301231201446703L;
 
@@ -45,8 +45,10 @@ public class CreatOrderRequest extends BaseEntity{
      */
     private Integer orderType;
 
-
-
+    /**
+     * 来源
+     */
+    private Integer source;
 
     public String getBusinessUid() {
         return businessUid;
@@ -87,5 +89,14 @@ public class CreatOrderRequest extends BaseEntity{
 
     public void setOrderType(Integer orderType) {
         this.orderType = orderType;
+    }
+
+
+    public Integer getSource() {
+        return source;
+    }
+
+    public void setSource(Integer source) {
+        this.source = source;
     }
 }

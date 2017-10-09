@@ -32,7 +32,7 @@
     <sql id="Base_Column_List">
         <!--  -->
         id, order_sn,title, province_code,area_code, city_code,address, order_source,eva_status, order_status, accounts_status,
-        pay_status,orderType, business_uid, user_uid, user_tel, user_name,
+        pay_status,order_type, business_uid, user_uid, user_tel, user_name,
         send_time, pay_time,create_time, last_modify_date, mark
     </sql>
 

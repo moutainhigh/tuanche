@@ -56,7 +56,18 @@ public class AccountLogEntity extends BaseEntity {
     private Date createTime;
 
 
+    /**
+     * 显示标题
+     */
+    private String title;
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public Integer getId() {
         return id;
