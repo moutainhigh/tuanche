@@ -27,7 +27,7 @@ public class IndexController {
 
 
 
-    @RequestMapping(value ="/")
+    @RequestMapping(value ="index")
     public @ResponseBody
     ResponseDto index(HttpServletRequest request, HttpServletResponse response, String par) {
         return new ResponseDto("api ok");

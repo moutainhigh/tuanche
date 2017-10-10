@@ -48,6 +48,7 @@
     <logger name="com.alibaba.dubbo" level="ERROR"/>
     <logger name="con.jk.framework" level="info"/>
     <logger name="com.jk" level="INFO" addtivity="true"/>
+    <logger name="com.taisf" level="INFO" addtivity="true"/>
 
 
     <root level="DEBUG">

@@ -20,13 +20,10 @@
     -->
     <aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true"/>
 
-
-    <import resource="META-INF/spring/applicationContext-taisf.xml"/>
-
-
     <import resource="spring-mvc.xml"/>
 
 
 
+    <import resource="META-INF/spring/applicationContext-taisf.xml"/>
 
 </beans>
