@@ -2,6 +2,9 @@ package com.taisf.services.supplier.dao;
 
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.supplier.entity.SupplierEntity;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -28,6 +31,14 @@ public class SupplierDao extends BaseDao {
      * 日志对象
      */
     private static Logger logger = LoggerFactory.getLogger(SupplierDao.class);
+    
+    /**
+     * 获取供应商列表
+     * @return
+     */
+    public List<SupplierEntity> getAllSupplierList(){
+        return mybatisDaoContext.findAll(SQLID+"getAllSupplierList", SupplierEntity.class);
+    }
 
     /**
      * 获取当前的供应商信息

@@ -1,3 +1,5 @@
+<%@page import="com.taisf.services.common.valenum.FinanceCheckTypeEnum"%>
+<%@page import="com.taisf.services.common.valenum.EnterpriseTypeEnum"%>
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -24,9 +26,12 @@
 	<link href="${staticResourceUrl}/css/style.css${VERSION}001" rel="stylesheet">
 	<link href="${staticResourceUrl}/css/custom-z.css${VERSION}" rel="stylesheet">
 	<style type=text/css>
-		.tdfont{font-size:13px}
+		.td-title{font-weight:bold;font-size:13px}
 		.table>tbody>tr>td {
-			border: 1px solid white
+			border: 0px solid white
+		}
+		.hr-line-dashed {
+			margin: 0 0;
 		}
 	</style>
 	<!-- 全局js -->
@@ -50,9 +55,6 @@
 	<script src="${staticResourceUrl}/js/plugins/validate/jquery.validate.min.js${VERSION}"></script>
 	<script src="${staticResourceUrl}/js/plugins/validate/messages_zh.min.js${VERSION}"></script>
 	<script src="${staticResourceUrl}/js/plugins/layer/laydate/laydate.js${VERSION}001"></script>
-
-	<script type="text/javascript" src="${staticResourceUrl}/js/printArea.js${VERSION}001"></script>
-	<!-- Page-Level Scripts -->
 </head>
 
 <body class="gray-bg">
@@ -73,19 +75,25 @@
 			<div class="ibox-content">
 				<div class="row row-lg">
 					<div class="col-sm-12">
-						<label style="font-size:13px;color:#1bb394">基本信息</label>
 						<table class="table">
+							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">基本信息</td></tr>
+							
 							<tr>
-								<td align="right" style="font-weight:bold;font-size:13px">供餐信息:</td>
-								<td> <select class="form-control" id="province" name="provinceCode" >  
-				                        <option value="">-请选择省-</option>  
+								<td align="right" class="td-title">供餐单位:</td>
+								<td><select class="form-control" id="supplierCode" name="supplierCode" >  
+				                        <option value="">-请选择-</option>  
+				                    	<c:if test="${ not empty suppliers}" > 
+				                        <c:forEach var="su" items="${suppliers}">  
+				                            <option  value="${su.supplierCode}">${su.supplierName}</option>
+				                        </c:forEach>  
+				                        </c:if>
 				                    </select></td>
 							</tr>
 							<tr>
-								<td align="right" style="font-weight:bold;font-size:13px">企业编号:</td>
+								<td align="right" class="td-title">企业编号:</td>
 								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
 									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseCode}"></td>
-								<td align="right" style="font-weight:bold;font-size:13px">企业名称:</td>
+								<td align="right" class="td-title">企业名称:</td>
 								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
 									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseName}"></td>
 								<td align="right" style="font-weight:bold;">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</td>
@@ -93,24 +101,24 @@
 									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseTel}"></td>
 							</tr>
 							<tr>
-								<td align="right" style="font-weight:bold;font-size:13px">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:</td>
+								<td align="right" class="td-title">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:</td>
 								<td colspan="5">
-									 <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="province" name="provinceCode" onchange="selectCitys(this)" >  
+									 <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="provinceCode" name="provinceCode" onchange="selectCitys(this)" >  
 				                        <option value="">-请选择省-</option>  
 				                        <c:forEach var="pv" items="${provinceList}">  
 				                            <option  value="${pv.code}">${pv.name}</option>
 				                        </c:forEach>  
 				                    </select>
-				                    <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="city" name="cityCode" onchange="selectAreas(this)">  
-				                          <option value="">-请选择市-</option>
+				                    <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="cityCode" name="cityCode" onchange="selectAreas(this)">  
+				                        <option value="">-请选择市-</option>
 				                        <c:if test="${ not empty citylist}" > 
 				                        <c:forEach var="pv" items="${citylist}">  
 				                            <option  value="${pv.code}">${pv.name}</option>
 				                        </c:forEach> 
 				                         </c:if>
 				                    </select>
-				                    <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="area" name="countyCode"> 
-				                         <option value="">-请选择区\县-</option>
+				                    <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="countyCode" name="countyCode"> 
+				                    	<option value="">-请选择区\县-</option>
 				                        <c:if test="${ not empty countylist}" > 
 				                        <c:forEach var="pv" items="${countylist}">  
 				                            <option  value="${pv.code}">${pv.name}</option>
@@ -121,7 +129,90 @@
 				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.street}"/>
 								</td>
 							</tr>
+							
+							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
+							
+							<tr>
+								<td align="right" class="td-title">联&nbsp;&nbsp;络&nbsp;人:</td>
+								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseCode}"></td>
+								<td align="right" class="td-title">公司邮箱:</td>
+								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseName}"></td>
+								<td align="right" style="font-weight:bold;">手&nbsp;&nbsp;机&nbsp;&nbsp;号:</td>
+								<td align="center"><input type="text" id="enterpriseTel" name="enterpriseTel" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseTel}"></td>
+							</tr>
+							<tr>
+								<td align="right" class="td-title">微信/QQ:</td>
+								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseCode}"></td>
+								<td align="right" style="font-weight:bold;">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</td>
+								<td align="center"><input type="text" id="enterpriseTel" name="enterpriseTel" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseTel}"></td>
+							</tr>
+							
+							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
+							
+							<tr>
+								<td align="right" class="td-title">企业类型:</td>
+								<td align="center">
+									<select class="form-control" name="enterpriseType" id="enterpriseType">
+										<option value="">--请选择--</option>
+										<c:forEach items="<%=EnterpriseTypeEnum.values()%>" var="e" >
+											<option value="${e.code}">${e.name}</option>
+										</c:forEach>
+	                        		</select>
+                        		</td>
+								<td align="right" class="td-title">平台经理:</td>
+								<td align="center">
+									<select class="form-control" name="manger" id="manger">
+			                            <option value="">--请选择--</option>
+			                            <c:forEach items="${employees}" var="emp" >
+			                                <option  value="${emp.userId}">${emp.empName}</option>
+			                            </c:forEach>
+			                        </select>
+								</td>
+							</tr>
+							<tr>
+								<td align="right" class="td-title">开户日期:</td>
+								<td align="center"><input type="text" id="openTime" name="openTime" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.openTime}"></td>
+								<td align="right" style="font-weight:bold;">截止日期:</td>
+								<td align="center"><input type="text" id="tillTime" name="tillTime" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.tillTime}"></td>
+							</tr>
+							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">财务信息</td></tr>
+							<tr>
+								<td align="right" class="td-title">发票抬头:</td>
+								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${finance.invoiceTitle}"></td>
+								<td align="right" class="td-title">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</td>
+								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${finance.enterpriseAccount}"></td>
+								<td align="right" class="td-title">税&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</td>
+								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${finance.enterpriseTax}"></td>
+							</tr>
+							<tr>
+								<td align="right" class="td-title">结算周期:</td>
+								<td align="center">
+									<select class="form-control" name="checkType" id="checkType">
+										<option value="">--请选择--</option>
+										<c:forEach items="<%=FinanceCheckTypeEnum.values()%>" var="e" >
+											<option value="${e.code}">${e.name}</option>
+										</c:forEach>
+	                        		</select>
+                        		</td>
+								<td align="right" class="td-title">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期:</td>
+								<td align="center">
+									<label class="td-title mtop" style="width:10%;float:left;">T+</label>
+									<div style="width:90%;float:left;"><input type="text" id="feeDay" name="feeDay" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${finance.feeDay}"></div>
+								</td>
+							</tr>
 						</table>
+						
 						<div class="row">
 							<div class="col-sm-5"></div>
 							<div class="col-sm-2">
@@ -148,44 +239,56 @@
 	</div>
 
 	<script>
-
+	$(function (){
+		//初始化日期
+		CommonUtils.datePickerFormat("openTime");
+		CommonUtils.datePickerFormat("tillTime");
+	});
+	
     function selectCitys() {
-		$("#city option").remove();
-	    $("#area option").remove();
-	    var p= $('#province option:selected') .val(); 
+		$("#cityCode option").remove();
+	    $("#countyCode option").remove();
+	    var p= $('#provinceCode option:selected') .val(); 
 	     $.ajax({
 	        type: "post",
 	        contentType: "application/json",
 	        url: "base/region/listByParentCode",
 	        data: "{pid:'" +  p + "'}",
 	        success: function (data) {
-	        	$("#city").append("<option value=''>--请选择--</option>");
+	        	$("#cityCode").append("<option value=''>--请选择--</option>");
 	        	json = eval(data)
 	            for (var i = 0; i < json.length; i++) {
 	                var a = "<option value='" + json[i].code + "'>" + json[i].name + "</option>";
-	                $("#city").append(a);
+	                $("#cityCode").append(a);
 	            }
-	        	$("#area").append("<option value=\"\">--请选择--</option>");
+	        	$("#countyCode").append("<option value=\"\">--请选择--</option>");
 	        }
 	    }) 
 	}
 	function selectAreas() {
-	    $("#area option").remove();
-	    var p= $('#city option:selected') .val(); 
+	    $("#countyCode option").remove();
+	    var p= $('#cityCode option:selected') .val(); 
 	     $.ajax({
 	        type: "post",
 	        contentType: "application/json",
 	        url: "base/region/listByParentCode",
 	        data: "{pid:'" +  p + "'}",
 	        success: function (data) {
-	        	$("#area").append("<option value=\"\">--请选择--</option>");
+	        	$("#countyCode").append("<option value=\"\">--请选择--</option>");
 	        	json = eval(data)
 	            for (var i = 0; i < json.length; i++) {
 	                var a = "<option value='" + json[i].code + "'>" + json[i].name + "</option>";
-	                $("#area").append(a);
+	                $("#countyCode").append(a);
 	            }
 	        }
 	    }) 
+	}
+	
+	function callBack(parent){
+        parent.refreshData("listTable");
+    }
+	function toList() {
+	    $.callBackParent("base/enterprise/list",true,callBack);
 	}
 
     function array_remove_repeat(a) { // 去重

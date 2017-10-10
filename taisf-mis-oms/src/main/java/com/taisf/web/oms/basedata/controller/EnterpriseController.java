@@ -21,20 +21,24 @@ import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.permission.api.EmployeeService;
 import com.taisf.services.permission.entity.EmployeeEntity;
-import com.taisf.web.oms.common.controller.LoginController;
+import com.taisf.services.supplier.api.SupplierService;
+import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.web.oms.common.page.PageResult;
 
 @Controller
 @RequestMapping("base/enterprise")
 public class EnterpriseController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EnterpriseController.class);
 
 	@Resource(name = "ups.employeeServiceProxy")
 	private EmployeeService employeeService;
 	
-	@Resource(name="base.areaRegionServiceProxy")
+	@Resource(name = "base.areaRegionServiceProxy")
 	private AreaRegionService areaRegionService;
+	
+	@Resource(name = "supplier.supplierServiceProxy")
+	private SupplierService supplierService;
 	
 	@RequestMapping("list")
 	public String list(HttpServletRequest request) {
@@ -117,6 +121,11 @@ public class EnterpriseController {
 		DataTransferObject<List<EmployeeEntity>> employeeDto = employeeService.findAllEmployee();
 		List<EmployeeEntity> employees = employeeDto.getData();
 		request.setAttribute("employees", employees);
+		
+		// 员工列表
+		DataTransferObject<List<SupplierEntity>> supplierDto = supplierService.getAllSupplierList();
+		List<SupplierEntity> suppliers = supplierDto.getData();
+		request.setAttribute("suppliers", suppliers);
 
 		return "enterprise/enterpriseOperate";
 	}

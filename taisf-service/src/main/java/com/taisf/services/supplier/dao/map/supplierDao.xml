@@ -36,7 +36,12 @@
     where supplier_code = #{supplierCode,jdbcType=VARCHAR}
   </select>
 
-
+  <select id="getAllSupplierList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_supplier
+    where supplier_status = 1
+  </select>
 
   <insert id="saveSupplier" parameterType="com.taisf.services.supplier.entity.SupplierEntity">
     insert into t_supplier

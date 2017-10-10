@@ -33,6 +33,11 @@ public class AreaRegionEntity extends BaseEntity{
      * 父级代码
      */
     private Integer parentCode;
+    
+    /**
+     * 层级 国家：1；省份：2；城市：3；区域：4 最顶层显示根节点为：0
+     */
+    private Short level;
 
     public Integer getCode() {
         return code;
@@ -57,4 +62,13 @@ public class AreaRegionEntity extends BaseEntity{
     public void setParentCode(Integer parentCode) {
         this.parentCode = parentCode;
     }
+
+	public Short getLevel() {
+		return level;
+	}
+
+	public void setLevel(Short level) {
+		this.level = level;
+	}
+    
 }

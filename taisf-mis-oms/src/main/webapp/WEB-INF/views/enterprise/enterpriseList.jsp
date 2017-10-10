@@ -159,33 +159,40 @@
 			//初始化日期
 			CommonUtils.datePickerFormat("openTime");
 			CommonUtils.datePickerFormat("tillTime");
+			/*
+			laydate.render({
+				elem : 'tillTime',
+				type : 'datetime'
+			});
+			*/
 		});
-		
+
 		function paginationParam(params) {
 			var openTime = $("#openTime").val();
 			var tillTime = $("#tillTime").val();
-			
-			if(openTime == "") {
+
+			if (openTime == "") {
 				openTime = undefined;
 			} else {
 				openTime += " 00:00:00";
 			}
-			if(tillTime == ""){
+			if (tillTime == "") {
 				tillTime = undefined;
-			} else 
+			} else
 				tillTime += " 00:00:00";
-			
+
 			return {
 				limit : params.limit,
 				page : $("#listTable").bootstrapTable("getOptions").pageNumber,
-                openTime : openTime,
-                tillTime : tillTime,
-                enterpriseName : $("#enterpriseName").val(),
-                enterpriseType : $("#enterpriseType").find("option:selected").val(),
-                manger : $("#manger").val()
+				openTime : openTime,
+				tillTime : tillTime,
+				enterpriseName : $("#enterpriseName").val(),
+				enterpriseType : $("#enterpriseType").find("option:selected")
+						.val(),
+				manger : $("#manger").val()
 			};
 		}
-		
+
 		// 格式化时间
 		function formatDate(value, row, index) {
 			if (value != null) {
@@ -195,34 +202,37 @@
 				return "-";
 			}
 		}
-		
+
 		// 操作列
 		function formatOperate(value, row, index) {
 			var result = "";
-            result = result+"<a title='编辑' href=javascript:editEnterprise('"+"base/enterprise/operate?id="+row.id+"&operate=2"+"')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-            result = result+"<a title='查看' href=javascript:viewEnterprise('"+"base/enterprise/operate?id="+row.id+"&operate=1"+"')>查看</a>";
-            return result;
+			result = result + "<a title='编辑' href=javascript:editEnterprise('"
+					+ "base/enterprise/operate?id=" + row.id + "&operate=2"
+					+ "')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+			result = result + "<a title='查看' href=javascript:viewEnterprise('"
+					+ "base/enterprise/operate?id=" + row.id + "&operate=1"
+					+ "')>查看</a>";
+			return result;
 		}
-		
-        function editEnterprise(url){
-            $.openNewTab(new Date().getTime(),url, "编辑企业");
-        }
-        
-        function viewEnterprise(url){
-            $.openNewTab(new Date().getTime(),url, "查看企业");
-        }
-        
-        //跳转添加企业页
-        function addEnterprise() {
-        	debugger;
-            var url = "base/enterprise/operate?operate=3";
-            $.openNewTab(new Date().getTime(),url, "添加企业");
-        }
+
+		function editEnterprise(url) {
+			$.openNewTab(new Date().getTime(), url, "编辑企业");
+		}
+
+		function viewEnterprise(url) {
+			$.openNewTab(new Date().getTime(), url, "查看企业");
+		}
+
+		//跳转添加企业页
+		function addEnterprise() {
+			debugger;
+			var url = "base/enterprise/operate?operate=3";
+			$.openNewTab(new Date().getTime(), url, "添加企业");
+		}
 
 		function query() {
 			$("#listTable").bootstrapTable("selectPage", 1);
 		}
-
 	</script>
 
 </body>

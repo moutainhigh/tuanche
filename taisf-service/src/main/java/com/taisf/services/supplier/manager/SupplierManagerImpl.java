@@ -48,6 +48,15 @@ public class SupplierManagerImpl {
 
 
 	/**
+	 * 获取供应商列表
+	 * @author afi
+	 * @return
+	 */
+	public List<SupplierEntity> getAllSupplierList(){
+		return supplierDao.getAllSupplierList();
+	}
+	
+	/**
 	 * 获取当前的供应商信息
 	 * @author afi
 	 * @param supplierCode
