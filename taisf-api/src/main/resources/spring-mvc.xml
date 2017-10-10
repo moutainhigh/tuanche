@@ -13,14 +13,16 @@
 	<bean id="exceptionIntercepter" class="com.jk.api.dependency.common.interceptor.ExceptionIntercepter" />
     <aop:config> 
 		<aop:aspect ref="exceptionIntercepter"> 
-		<aop:pointcut id="exceptionAspect" expression="execution(* com.jk.api.order.controller.*.*(..))" />
+		<aop:pointcut id="exceptionAspect" expression="execution(* com.taisf.api.*.controller.*.*(..))" />
 		<aop:around pointcut-ref="exceptionAspect" method="around" /> 
 		</aop:aspect> 
 	</aop:config>
 
+
+
     <!-- 开启controller注解支持 -->
     <!-- 注意事项请参考：http://jinnianshilongnian.iteye.com/blog/1762632 -->
-    <context:component-scan base-package="com.jk.**" use-default-filters="false">
+    <context:component-scan base-package="com.taisf.**" use-default-filters="false">
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation"

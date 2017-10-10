@@ -6,6 +6,7 @@ import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.dto.CartAddRequest;
 import com.taisf.services.order.dto.CartBaseRequest;
+import com.taisf.services.order.dto.CartCleanRequest;
 import com.taisf.services.order.vo.CartInfoVO;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
@@ -57,8 +58,9 @@ public class CartServiceProxyTest extends BaseTest {
 
     @Test
     public void cartCleanTest() {
+        CartCleanRequest cartCleanRequest = new CartCleanRequest();
 
-        DataTransferObject<Void> classify = cartService.cartClean("afi","123");
+        DataTransferObject<Void> classify = cartService.cartClean(cartCleanRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }
