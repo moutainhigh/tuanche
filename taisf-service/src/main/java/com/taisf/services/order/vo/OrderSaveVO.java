@@ -41,7 +41,7 @@ public class OrderSaveVO extends BaseEntity{
     /**
      * 用户信息
      */
-    private UserEntity user;
+    private  UserVO user;
 
     /**
      * 当前时间
@@ -131,11 +131,11 @@ public class OrderSaveVO extends BaseEntity{
         this.drawBalance = drawBalance;
     }
 
-    public UserEntity getUser() {
+    public UserVO getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(UserVO user) {
         this.user = user;
     }
 

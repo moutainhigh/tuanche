@@ -1,23 +1,18 @@
 package com.taisf.api.user.controller;
 
-import com.jk.api.dependency.common.abs.AbstractController;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
-import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.rst.ResponseDto;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
-import com.taisf.services.order.api.OrderService;
-import com.taisf.services.order.dto.CreateOrderRequest;
-import com.taisf.services.order.dto.OrderInfoRequest;
-import com.taisf.services.order.vo.OrderDetailVO;
-import com.taisf.services.order.vo.OrderInfoVO;
-import com.taisf.services.order.vo.OrderSaveVO;
+import com.taisf.api.common.abs.AbstractController;
+import com.taisf.services.user.api.IndexService;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserLoginRequest;
 import com.taisf.services.user.dto.UserLogoutRequest;
 import com.taisf.services.user.dto.UserRegistRequest;
+import com.taisf.services.user.vo.IndexVO;
 import com.taisf.services.user.vo.RegistInfoVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +48,34 @@ public class UserController extends AbstractController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private IndexService indexService;
+
+    @RequestMapping(value ="index")
+    public @ResponseBody
+    ResponseDto index(HttpServletRequest request, HttpServletResponse response) {
+
+
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        String userUid = getUserId(request);
+        if (Check.NuNStr(userUid)) {
+            return new ResponseDto("参数异常");
+        }
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(userUid));
+        try {
+            DataTransferObject<IndexVO> dto =indexService.getIndex("afi");
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【初始化首页】错误,par:{}, e={}",JsonEntityTransform.Object2Json(userUid), e);
+            return new ResponseDto("未知错误");
+        }
+
+    }
+
     /**
      * 登录
      * @author afi
@@ -72,7 +95,7 @@ public class UserController extends AbstractController {
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
-
+        paramRequest.setHeader(header);
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
@@ -105,7 +128,7 @@ public class UserController extends AbstractController {
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
-
+        paramRequest.setHeader(header);
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
@@ -139,7 +162,7 @@ public class UserController extends AbstractController {
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
-
+        paramRequest.setHeader(header);
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 

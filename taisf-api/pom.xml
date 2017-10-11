@@ -75,11 +75,11 @@
             <version>0.0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.jk</groupId>
-            <artifactId>jk-dependency-api</artifactId>
-            <version>0.0.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.jk</groupId>-->
+            <!--<artifactId>jk-dependency-api</artifactId>-->
+            <!--<version>0.0.1</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.jk</groupId>

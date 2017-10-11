@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 	
-	<bean id="exceptionIntercepter" class="com.jk.api.dependency.common.interceptor.ExceptionIntercepter" />
+	<bean id="exceptionIntercepter" class="com.taisf.api.common.interceptor.ExceptionIntercepter" />
     <aop:config> 
 		<aop:aspect ref="exceptionIntercepter"> 
 		<aop:pointcut id="exceptionAspect" expression="execution(* com.taisf.api.*.controller.*.*(..))" />

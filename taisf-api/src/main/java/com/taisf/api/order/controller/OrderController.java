@@ -1,6 +1,5 @@
 package com.taisf.api.order.controller;
 
-import com.jk.api.dependency.common.abs.AbstractController;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
 import com.jk.framework.base.page.PagingResult;
@@ -8,11 +7,13 @@ import com.jk.framework.base.rst.ResponseDto;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.api.common.abs.AbstractController;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
+import com.taisf.services.order.vo.OrderSaveInfo;
 import com.taisf.services.order.vo.OrderSaveVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +65,7 @@ public class OrderController extends AbstractController {
         }
         //获取当前参数
         CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
+        paramRequest.setSource(header.getSource());
         paramRequest.setUserUid(getUserId(request));
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
@@ -72,7 +74,7 @@ public class OrderController extends AbstractController {
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
-            DataTransferObject<OrderSaveVO> dto =ordersService.initOrder(paramRequest);
+            DataTransferObject<OrderSaveInfo> dto =ordersService.initOrder(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【订单初始化】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
@@ -97,6 +99,7 @@ public class OrderController extends AbstractController {
         }
         //获取当前参数
         CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
+        paramRequest.setSource(header.getSource());
         paramRequest.setUserUid(getUserId(request));
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
@@ -105,7 +108,7 @@ public class OrderController extends AbstractController {
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
-            DataTransferObject<OrderSaveVO> dto =ordersService.initExtOrder(paramRequest);
+            DataTransferObject<OrderSaveInfo> dto =ordersService.initExtOrder(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【补单初始化】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
@@ -131,6 +134,7 @@ public class OrderController extends AbstractController {
         }
         //获取当前参数
         CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
+        paramRequest.setSource(header.getSource());
         paramRequest.setUserUid(getUserId(request));
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
@@ -166,6 +170,7 @@ public class OrderController extends AbstractController {
         }
         //获取当前参数
         CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
+        paramRequest.setSource(header.getSource());
         paramRequest.setUserUid(getUserId(request));
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
