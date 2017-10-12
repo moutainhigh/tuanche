@@ -1,7 +1,10 @@
 package com.taisf.services.product.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,10 +50,17 @@ public class ProductDao extends BaseDao {
     }
 
 
-
-
-
-
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/11
+     * @description:分页查询商品列表
+     **/
+    public PagingResult<ProductEntity> pageListProduct(ProductListRequest request){
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setLimit(request.getLimit());
+        pageBounds.setPage(request.getPage());
+        return mybatisDaoContext.findForPage(SQLID+"pageListProduct",ProductEntity.class,request,pageBounds);
+    }
 
     /**
      * 根据id获取当前的菜单list

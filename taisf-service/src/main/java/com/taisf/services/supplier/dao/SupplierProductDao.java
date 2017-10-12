@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>供应商的财务信息</p>
@@ -79,5 +81,26 @@ public class SupplierProductDao extends BaseDao {
      */
     public int updateSupplierProduct(SupplierProductEntity record){
         return mybatisDaoContext.update(SQLID + "updateSupplierProduct", record);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/12
+     * @description:根据用户id关联用户供餐商中间表得到上架code查询供餐商菜品信息
+     **/
+    public List<SupplierProductEntity> getSupplierProductByUserId(String userId){
+        return mybatisDaoContext.findAll(SQLID+"getSupplierProductByUserId", SupplierProductEntity.class, userId);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/12
+     * @description:撤回菜品
+     **/
+    public int deleteByUserIdAndProudctId(String userId,Integer productId){
+        Map<String,Object> map = new HashMap<>();
+        map.put("productId",productId);
+        map.put("userId",userId);
+        return mybatisDaoContext.delete(SQLID + "deleteByUserIdAndProudctId", map);
     }
 }

@@ -1,13 +1,14 @@
 package com.taisf.services.test.product.dao;
 
-import javax.annotation.Resource;
-
-import org.junit.Test;
-
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.product.dao.ProductDao;
+import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.test.common.BaseTest;
+import org.junit.Test;
+
+import javax.annotation.Resource;
 
 /**
  * <p>商品的测试</p>
@@ -64,6 +65,12 @@ public class ProductDaoTest extends BaseTest {
     public void getProductByIdTest() {
         ProductEntity productEntity = productDao.getProductById(572);
         System.out.println(JsonEntityTransform.Object2Json(productEntity));
+    }
+
+    @Test
+    public void pageListProductTest() {
+        PagingResult<ProductEntity> productEntityPagingResult = productDao.pageListProduct(new ProductListRequest());
+        System.out.println(JsonEntityTransform.Object2Json(productEntityPagingResult));
     }
 
 }
