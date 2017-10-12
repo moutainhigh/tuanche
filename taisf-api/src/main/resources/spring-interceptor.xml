@@ -29,8 +29,18 @@
 
 
     <mvc:interceptors>
-        <bean class="com.jk.api.dependency.common.interceptor.HeadersInterceptor" />
-        <bean class="com.jk.api.dependency.common.collector.ParamCollector" />
+        <bean class="com.taisf.api.common.interceptor.HeadersInterceptor" />
+        <bean class="com.taisf.api.common.collector.ParamCollector" />
+        <mvc:interceptor>
+            <mvc:mapping path="/order/*" />
+            <mvc:mapping path="/user/*" />
+            <mvc:mapping path="/supplier/*" />
+            <mvc:mapping path="/cart/*" />
+
+            <mvc:exclude-mapping path="/"/>
+            <mvc:exclude-mapping path="/redis"/>
+            <bean class="com.taisf.api.common.interceptor.TokenInterceptor" />
+        </mvc:interceptor>
 
 
     </mvc:interceptors>

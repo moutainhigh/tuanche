@@ -21,13 +21,18 @@ public class IndexVO extends BaseEntity{
     /**
      * 用户信息
      */
-    private UserEntity userEntity;
+    private IndexUserVO userInfo;
 
 
     /**
      * 余额
      */
     private Integer drawBalance;
+
+    /**
+     * 显示名 头信息
+     */
+    private String timeTitle =  "点餐（以下今天餐单）";
 
     /**
      * 显示名
@@ -37,15 +42,24 @@ public class IndexVO extends BaseEntity{
     /**
      * 时间倒计时
      */
-    private String timeLast;
+    private Long timeLast = 0L;
 
+    /**
+     * 默认不可下单
+     */
+    private Boolean orderFlag = false;
 
-    public UserEntity getUserEntity() {
-        return userEntity;
+    /**
+     * 订单类型
+     */
+    private Integer orderType;
+
+    public IndexUserVO getUserInfo() {
+        return userInfo;
     }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setUserInfo(IndexUserVO userInfo) {
+        this.userInfo = userInfo;
     }
 
     public Integer getDrawBalance() {
@@ -64,11 +78,36 @@ public class IndexVO extends BaseEntity{
         this.timeMsg = timeMsg;
     }
 
-    public String getTimeLast() {
+
+    public Long getTimeLast() {
         return timeLast;
     }
 
-    public void setTimeLast(String timeLast) {
+    public void setTimeLast(Long timeLast) {
         this.timeLast = timeLast;
+    }
+
+    public String getTimeTitle() {
+        return timeTitle;
+    }
+
+    public void setTimeTitle(String timeTitle) {
+        this.timeTitle = timeTitle;
+    }
+
+    public Boolean getOrderFlag() {
+        return orderFlag;
+    }
+
+    public void setOrderFlag(Boolean orderFlag) {
+        this.orderFlag = orderFlag;
+    }
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
     }
 }

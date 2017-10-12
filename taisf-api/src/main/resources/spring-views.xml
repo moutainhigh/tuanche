@@ -24,5 +24,5 @@
 
     
     <!-- 默认跳转URL -->
-    <mvc:view-controller path="/" view-name="redirect:/index"/>
+    <!--<mvc:view-controller path="/" view-name="redirect:/"/>-->
 </beans>

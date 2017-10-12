@@ -28,6 +28,7 @@ import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -127,7 +128,7 @@ public class OrderServiceProxy implements OrderService {
 
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
                 || Check.NuNStr(createOrderRequest.getUserUid())
-                || Check.NuNStr(createOrderRequest.getUserUid())) {
+                || Check.NuNObjs(createOrderRequest.getOrderType())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
@@ -156,7 +157,7 @@ public class OrderServiceProxy implements OrderService {
 
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
                 || Check.NuNStr(createOrderRequest.getUserUid())
-                || Check.NuNStr(createOrderRequest.getUserUid())) {
+                || Check.NuNObjs(createOrderRequest.getOrderType())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
@@ -195,10 +196,11 @@ public class OrderServiceProxy implements OrderService {
      * @return
      */
     @Override
-    public DataTransferObject<OrderSaveVO> initExtOrder(CreateOrderRequest createOrderRequest){
-        DataTransferObject<OrderSaveVO> dto = new DataTransferObject<>();
+    public DataTransferObject<OrderSaveInfo> initExtOrder(CreateOrderRequest createOrderRequest){
+        DataTransferObject<OrderSaveInfo> dto = new DataTransferObject<>();
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
-                || Check.NuNStr(createOrderRequest.getUserUid())) {
+                || Check.NuNStr(createOrderRequest.getUserUid())
+                || Check.NuNObjs(createOrderRequest.getOrderType())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
@@ -207,7 +209,9 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.getOrderBase().setOrderType(createOrderRequest.getOrderType());
         //填充订单的信息
         this.fillExtOrderInfo(dto,orderSaveVO, createOrderRequest,false);
-        dto.setData(orderSaveVO);
+        OrderSaveInfo saveInfo = new OrderSaveInfo();
+        BeanUtils.copyProperties(orderSaveVO,saveInfo);
+        dto.setData(saveInfo);
         return dto;
     }
 
@@ -219,11 +223,12 @@ public class OrderServiceProxy implements OrderService {
      * @return
      */
     @Override
-    public DataTransferObject<OrderSaveVO> initOrder(CreateOrderRequest createOrderRequest) {
-        DataTransferObject<OrderSaveVO> dto = new DataTransferObject<>();
+    public DataTransferObject<OrderSaveInfo> initOrder(CreateOrderRequest createOrderRequest) {
+        DataTransferObject<OrderSaveInfo> dto = new DataTransferObject<>();
 
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
-                || Check.NuNStr(createOrderRequest.getUserUid())) {
+                || Check.NuNStr(createOrderRequest.getUserUid())
+                || Check.NuNObjs(createOrderRequest.getOrderType())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
@@ -244,7 +249,10 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.getOrderBase().setOrderType(createOrderRequest.getOrderType());
         //填充订单的信息
         this.fillOrderInfo(dto,orderSaveVO,cartInfoVO, createOrderRequest,false);
-        dto.setData(orderSaveVO);
+
+        OrderSaveInfo saveInfo = new OrderSaveInfo();
+        BeanUtils.copyProperties(orderSaveVO,saveInfo);
+        dto.setData(saveInfo);
         return dto;
     }
 
@@ -625,8 +633,10 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("当前用户已经被冻结,请联系平台处理");
             return;
         }
+        UserVO user =new UserVO();
+        BeanUtils.copyProperties(userEntity,user);
         //当前的用户信息
-        orderSaveVO.setUser(userEntity);
+        orderSaveVO.setUser(user);
 
         orderSaveVO.getOrderBase().setUserName(userEntity.getUserName());
         orderSaveVO.getOrderBase().setUserTel(userEntity.getUserPhone());

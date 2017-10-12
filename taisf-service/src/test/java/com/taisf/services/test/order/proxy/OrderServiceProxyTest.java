@@ -9,6 +9,7 @@ import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
+import com.taisf.services.order.vo.OrderSaveInfo;
 import com.taisf.services.order.vo.OrderSaveVO;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class OrderServiceProxyTest extends BaseTest {
         createOrderRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
         createOrderRequest.setPwd("123");
 
-        DataTransferObject<OrderSaveVO> classify = orderService.initOrder(createOrderRequest);
+        DataTransferObject<OrderSaveInfo> classify = orderService.initOrder(createOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }
@@ -76,7 +77,7 @@ public class OrderServiceProxyTest extends BaseTest {
         createOrderRequest.setPwd("123");
         createOrderRequest.setSource(1);
         createOrderRequest.setAddressFid("111");
-        DataTransferObject<OrderSaveVO> classify = orderService.initExtOrder(createOrderRequest);
+        DataTransferObject<OrderSaveInfo> classify = orderService.initExtOrder(createOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }

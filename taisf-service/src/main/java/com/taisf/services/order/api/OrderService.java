@@ -6,6 +6,7 @@ import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
+import com.taisf.services.order.vo.OrderSaveInfo;
 import com.taisf.services.order.vo.OrderSaveVO;
 
 /**
@@ -29,7 +30,7 @@ public interface OrderService {
      * @param createOrderRequest
      * @return
      */
-    DataTransferObject<OrderSaveVO> initOrder(CreateOrderRequest createOrderRequest);
+    DataTransferObject<OrderSaveInfo> initOrder(CreateOrderRequest createOrderRequest);
 
 
     /**
@@ -37,7 +38,7 @@ public interface OrderService {
      * @param createOrderRequest
      * @return
      */
-    DataTransferObject<OrderSaveVO> initExtOrder(CreateOrderRequest createOrderRequest);
+    DataTransferObject<OrderSaveInfo> initExtOrder(CreateOrderRequest createOrderRequest);
 
 
     /**

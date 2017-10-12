@@ -42,7 +42,7 @@ public class UserEntity extends BaseEntity {
 	/**
 	 * 密码
 	 */
-	private String userPassword;
+	private transient String userPassword;
 
 	/**
 	 * 用户状态 1：可用 2：禁用
