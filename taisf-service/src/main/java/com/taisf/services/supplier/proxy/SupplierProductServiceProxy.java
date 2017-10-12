@@ -11,6 +11,7 @@ import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.supplier.api.SupplierProductService;
+import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
 import org.slf4j.Logger;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>获取版本更新信息</p>
@@ -43,6 +46,98 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     @Resource(name = "supplier.supplierManagerImpl")
     private SupplierManagerImpl supplierManager;
+
+
+
+    /**
+     * 获取当前的列表信息
+     * @param supplierCode
+     * @return
+     */
+    public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode){
+
+        DataTransferObject dto = new DataTransferObject();
+        if (Check.NuNStr(supplierCode)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        Map<String,List<SupplierProductVO>>  map =  this.getSupplierProductMap(supplierCode);
+        List<ProductClassifyVO> list = new ArrayList<>();
+        try {
+            //便利当前的枚举信息
+            for (ProductClassifyEnum c : ProductClassifyEnum.values()) {
+                if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PRODUCT.getCode()){
+                    dealProduct(map, list, c);
+                }if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PACKAGE.getCode()){
+                    List<SupplierProductVO> tmp=  this.dealPackage(supplierCode);
+                    ProductClassifyInfo vo = new ProductClassifyInfo();
+                    String key = c.getCode()+"";
+                    vo.setProductClassify(key);
+                    vo.setProductClassifyName(c.getName());
+                    if (!Check.NuNCollection(tmp)){
+                        vo.setList(tmp);
+                    }
+                    list.add(vo);
+                }
+
+            }
+            dto.setData(list);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【获取列表和商品信息】par:{},error:{}", JsonEntityTransform.Object2Json(supplierCode),e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("获取分类信息失败");
+            return dto;
+        }
+        return dto;
+    }
+
+    /**
+     * 处理商品列表
+     * @param map
+     * @param list
+     * @param c
+     */
+    private void dealProduct(Map<String, List<SupplierProductVO>> map, List<ProductClassifyVO> list, ProductClassifyEnum c) {
+        if (Check.NuNObjs(map,list,c)){
+            return;
+        }
+        ProductClassifyInfo vo = new ProductClassifyInfo();
+        String key = c.getCode()+"";
+        vo.setProductClassify(key);
+        vo.setProductClassifyName(c.getName());
+        List<SupplierProductVO> tmp = map.get(key);
+        if (!Check.NuNCollection(tmp)){
+            vo.setList(tmp);
+        }
+        list.add(vo);
+    }
+
+
+    /**
+     * 处理包
+     * @param supplierCode
+     */
+    private List<SupplierProductVO> dealPackage(String supplierCode) {
+        if (Check.NuNStr(supplierCode)){
+            return null;
+        }
+
+        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCode(supplierCode);
+        if (Check.NuNCollection(list)){
+            list = new ArrayList<>();
+        }
+        List<SupplierProductVO> voList = new ArrayList<>();
+        for (SupplierPackageEntity packageEntity : list) {
+            SupplierProductVO vo = new SupplierProductVO();
+            vo.setId(packageEntity.getId());
+            vo.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
+            vo.setPriceSale(packageEntity.getPackagePrice());
+            vo.setProductName(packageEntity.getTitle());
+            vo.setProductPic(packageEntity.getPackagePic());
+            voList.add(vo);
+        }
+        return voList;
+    }
 
 
     /**
@@ -151,6 +246,45 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         dto.setData(voList);
     }
 
+    /**
+     * 获取当前的分类
+     * @author afi
+     * @param supplierCode
+     * @return
+     */
+    private Map<String,List<SupplierProductVO>>  getSupplierProductMap(String supplierCode){
+        Map<String,List<SupplierProductVO>> rst = new HashMap<>();
+
+        Map<String,List<ProductEntity>> map = new HashMap<>();
+        SupplierProductRequest request =new SupplierProductRequest();
+        request.setSupplierCode(supplierCode);
+        List<ProductEntity> list = supplierManager.getProductListBySupplierAndType(request);
+        if (Check.NuNCollection(list)){
+            return rst;
+        }
+        for (ProductEntity productEntity : list) {
+           Integer productClassify = productEntity.getProductClassify();
+           if (Check.NuNObj(productClassify)){
+               //直接过滤掉异常数据
+               continue;
+           }
+           String key = productClassify +"";
+           if (map.containsKey(key)){
+               map.get(key).add(productEntity);
+           }else {
+               List<ProductEntity> tmp = new ArrayList<>();
+               tmp.add(productEntity);
+               map.put(key,tmp);
+           }
+        }
+        for (String key : map.keySet()) {
+            List<ProductEntity> proList = map.get(key);
+            List<SupplierProductVO> voList = this.transProductList2VO(proList,SupplierProductTypeEnum.PRODUCT);
+            rst.put(key,voList);
+        }
+
+        return rst;
+    }
 
     /**
      * 转化当前的商品为对外展示的商品列表信息

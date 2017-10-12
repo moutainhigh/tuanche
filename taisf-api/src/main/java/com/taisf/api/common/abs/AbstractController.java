@@ -112,6 +112,15 @@ public abstract class AbstractController {
      * @param request
      * @return
      */
+    protected final String getToken(final HttpServletRequest request) {
+        return (String) request.getAttribute(HeadersInterceptor.TOKEN);
+    }
+
+    /**
+     * 获取用户信息
+     * @param request
+     * @return
+     */
     protected final String getUserId(final HttpServletRequest request) {
         return (String) request.getAttribute(HeadersInterceptor.USERID);
     }

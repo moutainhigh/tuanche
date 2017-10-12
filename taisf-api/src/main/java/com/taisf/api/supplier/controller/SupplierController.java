@@ -8,6 +8,7 @@ import com.jk.framework.log.utils.LogUtil;
 import com.taisf.api.common.abs.AbstractController;
 import com.taisf.services.supplier.api.SupplierProductService;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
+import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
 import org.slf4j.Logger;
@@ -108,4 +109,35 @@ public class SupplierController extends AbstractController {
 
     }
 
+
+    /**
+     * 获取商品分类
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/classifyProduct", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDto classifyProduct(HttpServletRequest request, HttpServletResponse response,String supplierCode) {
+
+
+        if (Check.NuNStr(supplierCode)) {
+            return new ResponseDto("参数异常");
+        }
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(supplierCode));
+        try {
+            DataTransferObject<List<ProductClassifyInfo>> dto =supplierProductService.getSupplierClassifyProduct(supplierCode);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【获取分类商品】错误,par:{}, e={}",JsonEntityTransform.Object2Json(supplierCode), e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
+
+
+
 }
+
+

@@ -2,6 +2,7 @@ package com.taisf.services.supplier.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
+import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
 
@@ -29,6 +30,14 @@ public interface SupplierProductService {
      * @return
      */
     DataTransferObject<List<ProductClassifyVO>> getSupplierProductClassify(String supplierCode);
+
+    /**
+     * 获取当前的列表信息
+     * @param supplierCode
+     * @return
+     */
+    DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode);
+
 
     /**
      * 获取当前供应商的商品了列表

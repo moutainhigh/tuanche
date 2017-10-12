@@ -5,9 +5,9 @@
 
   <resultMap id="BaseResultMap" type="com.taisf.services.user.entity.AccountLogEntity" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="account_type" property="accountType" jdbcType="INTEGER" />
-    <result column="biz_type" property="bizType" jdbcType="INTEGER" />
     <result column="biz_money" property="bizMoney" jdbcType="INTEGER" />
     <result column="biz_status" property="bizStatus" jdbcType="INTEGER" />
     <result column="biz_sn" property="bizSn" jdbcType="VARCHAR" />
@@ -16,9 +16,8 @@
 
 
   <sql id="Base_Column_List" >
-    id, user_id,  account_type, biz_type, biz_money, biz_status, biz_sn, create_time
+    id, user_id, title, account_type,  biz_money, biz_status, biz_sn, create_time
   </sql>
-
 
 
   <select id="getAccountLogByPage" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -26,6 +25,9 @@
     <include refid="Base_Column_List" />
     from t_user_account_log
     where user_id = #{userId,jdbcType=VARCHAR}
+    <if test="accountType != null" >
+     and account_type =  #{accountType,jdbcType=INTEGER}
+    </if>
   </select>
 
 

@@ -1,7 +1,11 @@
 package com.taisf.services.user.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
+import com.taisf.services.user.vo.IndexBaseVO;
 import com.taisf.services.user.vo.IndexVO;
+
+import java.util.List;
 
 /**
  * <p>获取首页信息</p>
@@ -17,6 +21,22 @@ import com.taisf.services.user.vo.IndexVO;
  * @since 1.0
  */
 public interface IndexService {
+
+
+    /**
+     * 获取用户的地址信息列表
+     * @author afi
+     * @param userUid
+     * @return
+     */
+    DataTransferObject<List<EnterpriseAddressEntity>> getUserAddressList(String userUid);
+    /**
+     * 获取用户的基本信息
+     * @author afi
+     * @param userUid
+     * @return
+     */
+    DataTransferObject<IndexBaseVO> getUserBaseInfo(String userUid);
 
     /**
      * 获取首页信息
