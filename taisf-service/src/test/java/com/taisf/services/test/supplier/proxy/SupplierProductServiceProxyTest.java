@@ -5,6 +5,7 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.enterprise.dao.EnterpriseConfigDao;
 import com.taisf.services.supplier.api.SupplierProductService;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
+import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
 import com.taisf.services.test.common.BaseTest;
@@ -32,6 +33,16 @@ public class SupplierProductServiceProxyTest extends BaseTest {
     @Resource(name = "supplier.supplierProductServiceProxy")
     private SupplierProductService supplierProductService;
 
+
+
+
+    @Test
+    public void getSupplierClassifyProductTest() {
+
+        DataTransferObject<List<ProductClassifyInfo>> classify = supplierProductService.getSupplierClassifyProduct("123");
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+
+    }
 
     @Test
     public void getSupplierProductClassifyTest() {

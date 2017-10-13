@@ -55,6 +55,10 @@
         FROM t_order t
           INNER join t_order_money m on  t.order_sn = m.order_sn
         WHERE  t.user_uid = #{userUid,jdbcType=VARCHAR}
+
+        <if test="balanceFlag != null and balanceFlag ">
+            and m.pay_balance > 0
+        </if>
     </select>
 
 

@@ -1,6 +1,11 @@
 package com.taisf.services.user.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.vo.OrderInfoVO;
+import com.taisf.services.user.dto.AccountLogRequest;
+import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.vo.RegistInfoVO;
 import com.taisf.services.user.dto.UserLoginRequest;
 import com.taisf.services.user.dto.UserLogoutRequest;
@@ -52,5 +57,15 @@ public interface UserService {
      */
     DataTransferObject<Void> logout(UserLogoutRequest userLogoutRequest);
 
+
+
+
+    /**
+     * 充值记录
+     * @author afi
+     * @param accountLogRequest
+     * @return
+     */
+    DataTransferObject<PagingResult<AccountLogEntity>> rechargeLog(AccountLogRequest accountLogRequest);
 
 }

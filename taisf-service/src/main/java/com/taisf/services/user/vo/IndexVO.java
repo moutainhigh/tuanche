@@ -16,18 +16,9 @@ import com.taisf.services.user.entity.UserEntity;
  * @version 1.0
  * @since 1.0
  */
-public class IndexVO extends BaseEntity{
-
-    /**
-     * 用户信息
-     */
-    private IndexUserVO userInfo;
+public class IndexVO extends IndexBaseVO{
 
 
-    /**
-     * 余额
-     */
-    private Integer drawBalance;
 
     /**
      * 显示名 头信息
@@ -54,21 +45,12 @@ public class IndexVO extends BaseEntity{
      */
     private Integer orderType;
 
-    public IndexUserVO getUserInfo() {
-        return userInfo;
-    }
+    /**
+     * 供应商code
+     */
+    private String supplierCode;
 
-    public void setUserInfo(IndexUserVO userInfo) {
-        this.userInfo = userInfo;
-    }
 
-    public Integer getDrawBalance() {
-        return drawBalance;
-    }
-
-    public void setDrawBalance(Integer drawBalance) {
-        this.drawBalance = drawBalance;
-    }
 
     public String getTimeMsg() {
         return timeMsg;
@@ -109,5 +91,13 @@ public class IndexVO extends BaseEntity{
 
     public void setOrderType(Integer orderType) {
         this.orderType = orderType;
+    }
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
     }
 }

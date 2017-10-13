@@ -19,7 +19,10 @@ public class OrderInfoRequest extends PageRequest {
 
     private static final long serialVersionUID = 301231231201446703L;
 
-
+    /**
+     * 只查询余额支付的
+     */
+    private boolean balanceFlag = false;
 
     /**
      * 用户uid
@@ -32,5 +35,13 @@ public class OrderInfoRequest extends PageRequest {
 
     public void setUserUid(String userUid) {
         this.userUid = userUid;
+    }
+
+    public boolean isBalanceFlag() {
+        return balanceFlag;
+    }
+
+    public void setBalanceFlag(boolean balanceFlag) {
+        this.balanceFlag = balanceFlag;
     }
 }

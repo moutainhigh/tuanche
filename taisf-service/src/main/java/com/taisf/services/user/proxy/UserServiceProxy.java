@@ -2,21 +2,21 @@ package com.taisf.services.user.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.UUIDGenerator;
-import com.taisf.services.common.valenum.ApplicationCodeEnum;
-import com.taisf.services.common.valenum.EnterpriseStatusEnum;
-import com.taisf.services.common.valenum.UserRoleEnum;
-import com.taisf.services.common.valenum.UserStatusEnum;
+import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.supplier.proxy.SupplierProductServiceProxy;
 import com.taisf.services.user.api.UserService;
+import com.taisf.services.user.dto.AccountLogRequest;
 import com.taisf.services.user.dto.UserLoginRequest;
 import com.taisf.services.user.dto.UserLogoutRequest;
 import com.taisf.services.user.dto.UserRegistRequest;
+import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.entity.LoginTokenEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
@@ -402,5 +402,37 @@ public class UserServiceProxy implements UserService {
             dto.setErrorMsg("退出失败,参数错误");
             return ;
         }
+    }
+
+
+
+
+
+    /**
+     * 充值记录
+     * @author afi
+     * @param accountLogRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<PagingResult<AccountLogEntity>> rechargeLog(AccountLogRequest accountLogRequest){
+
+        DataTransferObject<PagingResult<AccountLogEntity>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(accountLogRequest)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(accountLogRequest.getUserId())){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        accountLogRequest.setAccountType(AccountTypeEnum.FILL.getCode());
+        //获取当前的信息
+        PagingResult<AccountLogEntity> page = userManager.getAccountLogByPage(accountLogRequest);
+        if (page == null){
+            page = new PagingResult();
+        }
+        dto.setData(page);
+        return dto;
     }
 }

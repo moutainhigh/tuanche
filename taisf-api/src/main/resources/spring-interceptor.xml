@@ -36,6 +36,7 @@
             <mvc:mapping path="/user/*" />
             <mvc:mapping path="/supplier/*" />
             <mvc:mapping path="/cart/*" />
+            <mvc:mapping path="/my/*" />
 
             <mvc:exclude-mapping path="/"/>
             <mvc:exclude-mapping path="/redis"/>

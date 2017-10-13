@@ -102,6 +102,7 @@ public class OrderServiceProxyTest extends BaseTest {
     public void getOrderInfoPageTest() {
         OrderInfoRequest createOrderRequest = new OrderInfoRequest();
         createOrderRequest.setUserUid("afi");
+        createOrderRequest.setBalanceFlag(true);
         DataTransferObject<PagingResult<OrderInfoVO>> classify = orderService.getOrderInfoPage(createOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
     }

@@ -2,13 +2,16 @@ package com.taisf.services.test.user.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.test.common.BaseTest;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dao.UserAccountDao;
+import com.taisf.services.user.dto.AccountLogRequest;
 import com.taisf.services.user.dto.UserLoginRequest;
 import com.taisf.services.user.dto.UserLogoutRequest;
 import com.taisf.services.user.dto.UserRegistRequest;
+import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.vo.RegistInfoVO;
 import org.junit.Test;
@@ -85,5 +88,20 @@ public class UserServiceProxyTest extends BaseTest {
 
         System.out.println(JsonEntityTransform.Object2Json(dto));
     }
+
+
+
+
+    @Test
+    public void rechargeLogTest() {
+
+        AccountLogRequest request = new AccountLogRequest();
+        request.setUserId("afi");
+
+        DataTransferObject<PagingResult<AccountLogEntity>>  dto = userService.rechargeLog(request);
+
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
+
 
 }

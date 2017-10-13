@@ -1,14 +1,10 @@
 package com.taisf.services.user.manager;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
-import com.taisf.services.user.dao.LoginTokenDao;
-import com.taisf.services.user.dao.UserAccountDao;
-import com.taisf.services.user.dao.UserAddressDao;
-import com.taisf.services.user.dao.UserDao;
-import com.taisf.services.user.entity.LoginTokenEntity;
-import com.taisf.services.user.entity.UserAccountEntity;
-import com.taisf.services.user.entity.UserAddressEntity;
-import com.taisf.services.user.entity.UserEntity;
+import com.taisf.services.user.dao.*;
+import com.taisf.services.user.dto.AccountLogRequest;
+import com.taisf.services.user.entity.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,9 +36,22 @@ public class UserManagerImpl {
     private UserAccountDao userAccountDao;
 
 
+    @Resource(name = "user.accountLogDao")
+    private AccountLogDao accountLogDao;
+
     @Resource(name = "user.loginTokenDao")
     private LoginTokenDao loginTokenDao;
 
+
+    /**
+     * 获取当前的账户的操作记录
+     * @author afi
+     * @param accountLogRequest
+     * @return
+     */
+    public PagingResult<AccountLogEntity> getAccountLogByPage(AccountLogRequest accountLogRequest){
+        return accountLogDao.getAccountLogByPage(accountLogRequest);
+    }
 
     /**
      * 保存登录信息

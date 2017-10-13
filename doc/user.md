@@ -42,7 +42,8 @@ Content-Type|application/json
             "timeMsg": "晚餐订餐倒计时:",
             "timeLast": 5393182,
             "orderFlag": true,
-            "orderType":1
+            "orderType":1,
+            "supplierCode":"123"
         }
     }
 
@@ -68,6 +69,9 @@ timeMsg|String|倒计时前缀
 timeLast|Long|倒计时 毫秒
 orderFlag|boolen| true:可订饭 false:不可订饭
 orderType|Integer|订单类型 这个参数需要带到下单作为下单的参数
+supplierCode|String|当前用户对应的供应商code
+
+
 ````
 userInfo:对象
     "userInfo": {

@@ -24,11 +24,24 @@ public class AccountLogRequest extends PageRequest {
      */
     private  String userId;
 
+    /**
+     * 账户类型
+     */
+    private Integer accountType;
+
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Integer getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(Integer accountType) {
+        this.accountType = accountType;
     }
 }

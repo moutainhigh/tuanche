@@ -2,12 +2,15 @@ package com.taisf.services.test.user.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.test.common.BaseTest;
 import com.taisf.services.user.api.IndexService;
+import com.taisf.services.user.vo.IndexBaseVO;
 import com.taisf.services.user.vo.IndexVO;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>TODO</p>
@@ -26,6 +29,20 @@ public class IndexServiceProxyTest extends BaseTest {
 
     @Resource(name = "user.indexServiceProxy")
     private IndexService indexService;
+
+
+    @Test
+    public void getUserAddressListTest() {
+        DataTransferObject<List<EnterpriseAddressEntity>> dto = indexService.getUserAddressList("afi");
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
+
+
+    @Test
+    public void getUserBaseInfoTest() {
+        DataTransferObject<IndexBaseVO> dto = indexService.getUserBaseInfo("afi");
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
 
 
     @Test
