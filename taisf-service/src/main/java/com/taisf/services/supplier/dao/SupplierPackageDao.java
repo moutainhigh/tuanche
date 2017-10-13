@@ -1,7 +1,10 @@
 package com.taisf.services.supplier.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,5 +83,49 @@ public class SupplierPackageDao extends BaseDao {
      */
     public int updateSupplierPackage(SupplierPackageEntity record){
         return mybatisDaoContext.update(SQLID + "updateSupplierPackage", record);
+    }
+
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:分页查询套餐列表
+     **/
+    public PagingResult<SupplierPackageEntity> pageListSupplierProduct(SupplierProductRequest request){
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setLimit(request.getLimit());
+        pageBounds.setPage(request.getPage());
+        return mybatisDaoContext.findForPage(SQLID+"pageListSupplierProduct",SupplierPackageEntity.class,request,pageBounds);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:删除组合套餐
+     **/
+    public int deleteByPrimaryKey(Integer id){
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        return mybatisDaoContext.delete(SQLID + "deleteByPrimaryKey",map);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:查询组合套餐信息根据ID
+     **/
+    public SupplierPackageEntity getSupplierPackageById(Integer id){
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        return mybatisDaoContext.findOne(SQLID + "getById",SupplierPackageEntity.class,map);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:修改组合套餐信息根据ID
+     **/
+    public int updateSupplierPackageById(SupplierPackageEntity record){
+        return mybatisDaoContext.update(SQLID + "updateSupplierPackageById", record);
     }
 }

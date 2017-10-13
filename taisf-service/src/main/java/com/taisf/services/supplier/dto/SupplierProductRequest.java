@@ -1,6 +1,6 @@
 package com.taisf.services.supplier.dto;
 
-import com.jk.framework.base.entity.BaseEntity;
+import com.jk.framework.base.page.PageRequest;
 
 /**
  * <p>TODO</p>
@@ -15,7 +15,7 @@ import com.jk.framework.base.entity.BaseEntity;
  * @version 1.0
  * @since 1.0
  */
-public class SupplierProductRequest extends BaseEntity {
+public class SupplierProductRequest extends PageRequest {
 
 
     /**

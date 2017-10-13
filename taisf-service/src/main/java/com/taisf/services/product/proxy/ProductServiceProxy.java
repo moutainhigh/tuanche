@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>获取版本更新信息</p>
@@ -108,6 +109,7 @@ public class ProductServiceProxy implements ProductService {
             if (Check.NuNObj(entity)) {
                 dto.setErrCode(DataTransferObject.ERROR);
                 dto.setErrorMsg("查询商品失败");
+                dto.setData(new ProductEntity());
                 return dto;
             }
             dto.setData(entity);
@@ -142,6 +144,31 @@ public class ProductServiceProxy implements ProductService {
             }
         } catch (Exception e) {
             LogUtil.error(LOGGER, "修改商品失败 error:{}{}", e, JsonEntityTransform.Object2Json(productEntity));
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("修改商品失败");
+            return dto;
+        }
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:根据分类查询菜品集合
+     **/
+    @Override
+    public DataTransferObject<List<ProductEntity>> getListByClassify(Integer productClassify) {
+        DataTransferObject<List<ProductEntity>> dto = new DataTransferObject();
+        if (Check.NuNObj(productClassify)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            List<ProductEntity> listByClassify = productDao.getListByClassify(productClassify);
+            dto.setData(listByClassify);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "修改商品失败 error:{}{}", e, productClassify);
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("修改商品失败");
             return dto;

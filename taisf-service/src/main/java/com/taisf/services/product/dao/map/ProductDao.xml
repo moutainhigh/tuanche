@@ -30,6 +30,13 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="getListByClassify" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_product
+        where product_classify = #{productClassify,jdbcType=INTEGER}
+    </select>
+
     <select id="pageListProduct" parameterType="com.taisf.services.product.dto.ProductListRequest"
             resultMap="BaseResultMap">
         select

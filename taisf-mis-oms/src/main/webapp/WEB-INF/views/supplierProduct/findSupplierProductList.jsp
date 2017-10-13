@@ -110,11 +110,9 @@
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
                            data-single-select="true"
-                           data-url="supplierProduct/pageList">
+                           data-url="supplierProduct/findPageList">
                         <thead>
                         <tr>
-                            <th data-field="id" data-width="10%"
-                                data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="productName" data-width="10%"
                                 data-align="center"><span class="tdfont">菜单名称</span></th>
                             <th data-field="productType" data-width="15%" data-formatter="formatProductType"
@@ -125,10 +123,6 @@
                                 data-align="center"><span class="tdfont">分类</span></th>
                             <th data-field="priceSale" data-width="10%"
                                 data-align="center"><span class="tdfont">单价</span></th>
-                            <th data-field="isDel" data-width="10%" data-formatter="formatStatus"
-                                data-align="center"><span class="tdfont">状态</span></th>
-                            <th data-field="handle" data-width="15%" data-align="center"
-                                data-formatter="formatOperate"><span class="tdfont">操作</span></th>
                         </tr>
                         </thead>
                     </table>

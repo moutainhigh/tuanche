@@ -1,18 +1,19 @@
 package com.taisf.services.supplier.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.ProductClassifyEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
+import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.api.SupplierProductService;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
-import com.taisf.services.supplier.api.SupplierProductService;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
@@ -53,33 +54,34 @@ public class SupplierProductServiceProxy implements SupplierProductService {
     private com.taisf.services.supplier.dao.SupplierProductDao supplierProductDao;
 
 
-
     /**
      * 获取当前的列表信息
+     *
      * @param supplierCode
      * @return
      */
-    public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode){
+    public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode) {
 
         DataTransferObject dto = new DataTransferObject();
-        if (Check.NuNStr(supplierCode)){
+        if (Check.NuNStr(supplierCode)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        Map<String,List<SupplierProductVO>>  map =  this.getSupplierProductMap(supplierCode);
+        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode);
         List<ProductClassifyVO> list = new ArrayList<>();
         try {
             //便利当前的枚举信息
             for (ProductClassifyEnum c : ProductClassifyEnum.values()) {
-                if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PRODUCT.getCode()){
+                if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PRODUCT.getCode()) {
                     dealProduct(map, list, c);
-                }if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PACKAGE.getCode()){
-                    List<SupplierProductVO> tmp=  this.dealPackage(supplierCode);
+                }
+                if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PACKAGE.getCode()) {
+                    List<SupplierProductVO> tmp = this.dealPackage(supplierCode);
                     ProductClassifyInfo vo = new ProductClassifyInfo();
-                    String key = c.getCode()+"";
+                    String key = c.getCode() + "";
                     vo.setProductClassify(key);
                     vo.setProductClassifyName(c.getName());
-                    if (!Check.NuNCollection(tmp)){
+                    if (!Check.NuNCollection(tmp)) {
                         vo.setList(tmp);
                     }
                     list.add(vo);
@@ -88,7 +90,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             }
             dto.setData(list);
         } catch (Exception e) {
-            LogUtil.error(LOGGER, "【获取列表和商品信息】par:{},error:{}", JsonEntityTransform.Object2Json(supplierCode),e);
+            LogUtil.error(LOGGER, "【获取列表和商品信息】par:{},error:{}", JsonEntityTransform.Object2Json(supplierCode), e);
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("获取分类信息失败");
             return dto;
@@ -98,20 +100,21 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     /**
      * 处理商品列表
+     *
      * @param map
      * @param list
      * @param c
      */
     private void dealProduct(Map<String, List<SupplierProductVO>> map, List<ProductClassifyVO> list, ProductClassifyEnum c) {
-        if (Check.NuNObjs(map,list,c)){
+        if (Check.NuNObjs(map, list, c)) {
             return;
         }
         ProductClassifyInfo vo = new ProductClassifyInfo();
-        String key = c.getCode()+"";
+        String key = c.getCode() + "";
         vo.setProductClassify(key);
         vo.setProductClassifyName(c.getName());
         List<SupplierProductVO> tmp = map.get(key);
-        if (!Check.NuNCollection(tmp)){
+        if (!Check.NuNCollection(tmp)) {
             vo.setList(tmp);
         }
         list.add(vo);
@@ -120,15 +123,16 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     /**
      * 处理包
+     *
      * @param supplierCode
      */
     private List<SupplierProductVO> dealPackage(String supplierCode) {
-        if (Check.NuNStr(supplierCode)){
+        if (Check.NuNStr(supplierCode)) {
             return null;
         }
 
         List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCode(supplierCode);
-        if (Check.NuNCollection(list)){
+        if (Check.NuNCollection(list)) {
             list = new ArrayList<>();
         }
         List<SupplierProductVO> voList = new ArrayList<>();
@@ -257,39 +261,40 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     /**
      * 获取当前的分类
-     * @author afi
+     *
      * @param supplierCode
      * @return
+     * @author afi
      */
-    private Map<String,List<SupplierProductVO>>  getSupplierProductMap(String supplierCode){
-        Map<String,List<SupplierProductVO>> rst = new HashMap<>();
+    private Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode) {
+        Map<String, List<SupplierProductVO>> rst = new HashMap<>();
 
-        Map<String,List<ProductEntity>> map = new HashMap<>();
-        SupplierProductRequest request =new SupplierProductRequest();
+        Map<String, List<ProductEntity>> map = new HashMap<>();
+        SupplierProductRequest request = new SupplierProductRequest();
         request.setSupplierCode(supplierCode);
         List<ProductEntity> list = supplierManager.getProductListBySupplierAndType(request);
-        if (Check.NuNCollection(list)){
+        if (Check.NuNCollection(list)) {
             return rst;
         }
         for (ProductEntity productEntity : list) {
-           Integer productClassify = productEntity.getProductClassify();
-           if (Check.NuNObj(productClassify)){
-               //直接过滤掉异常数据
-               continue;
-           }
-           String key = productClassify +"";
-           if (map.containsKey(key)){
-               map.get(key).add(productEntity);
-           }else {
-               List<ProductEntity> tmp = new ArrayList<>();
-               tmp.add(productEntity);
-               map.put(key,tmp);
-           }
+            Integer productClassify = productEntity.getProductClassify();
+            if (Check.NuNObj(productClassify)) {
+                //直接过滤掉异常数据
+                continue;
+            }
+            String key = productClassify + "";
+            if (map.containsKey(key)) {
+                map.get(key).add(productEntity);
+            } else {
+                List<ProductEntity> tmp = new ArrayList<>();
+                tmp.add(productEntity);
+                map.put(key, tmp);
+            }
         }
         for (String key : map.keySet()) {
             List<ProductEntity> proList = map.get(key);
-            List<SupplierProductVO> voList = this.transProductList2VO(proList,SupplierProductTypeEnum.PRODUCT);
-            rst.put(key,voList);
+            List<SupplierProductVO> voList = this.transProductList2VO(proList, SupplierProductTypeEnum.PRODUCT);
+            rst.put(key, voList);
         }
 
         return rst;
@@ -352,15 +357,64 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         DataTransferObject<Void> dto = new DataTransferObject();
         try {
             int num = supplierProductDao.deleteByUserIdAndProudctId(userId, productId);
-            if (num != 1){
+            if (num != 1) {
                 dto.setErrCode(DataTransferObject.ERROR);
                 dto.setErrorMsg("撤回菜品失败");
                 return dto;
             }
         } catch (Exception e) {
-            LogUtil.error(LOGGER, "【撤回菜品失败】par:{},error:{}", userId+productId, e);
+            LogUtil.error(LOGGER, "【撤回菜品失败】par:{},error:{}", userId + productId, e);
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("撤回菜品失败");
+            return dto;
+        }
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:商家添加菜品
+     **/
+    @Override
+    public DataTransferObject<Void> saveSupplierProduct(SupplierProductEntity supplierProductEntity) {
+        DataTransferObject<Void> dto = new DataTransferObject();
+        if (Check.NuNObj(supplierProductEntity)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            int num = supplierProductDao.saveSupplierProduct(supplierProductEntity);
+            if (num != 1) {
+                dto.setErrCode(DataTransferObject.ERROR);
+                dto.setErrorMsg("商家添加菜品失败");
+                return dto;
+            }
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【商家添加菜品失败】par:{},error:{}", JsonEntityTransform.Object2Json(supplierProductEntity), e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("商家添加菜品失败");
+            return dto;
+        }
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:分页查询菜品
+     **/
+    @Override
+    public DataTransferObject<PagingResult<ProductEntity>> pageListProduct(ProductListRequest request) {
+        DataTransferObject<PagingResult<ProductEntity>> dto = new DataTransferObject();
+        try {
+            PagingResult<ProductEntity> pagingResult = supplierProductDao.pageListProduct(request);
+            dto.setData(pagingResult);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【分页查询菜品失败】par:{},error:{}", JsonEntityTransform.Object2Json(request), e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("分页查询菜品失败");
             return dto;
         }
         return dto;

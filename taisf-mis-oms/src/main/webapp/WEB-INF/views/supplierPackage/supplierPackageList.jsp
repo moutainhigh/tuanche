@@ -98,7 +98,7 @@
                 <!-- Example Pagination -->
                 <div class="col-sm-12">
                     <button id="addMenuButton" type="button" class="btn btn-primary"
-                            data-toggle='modal' data-target='#myModal'>
+                            onclick="addSupplierPackage();">
                         <i class="fa fa-plus"></i>&nbsp;新增
                     </button>
                     <table id="listTable" class="table table-bordered" data-click-to-select="true"
@@ -110,24 +110,32 @@
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
                            data-single-select="true"
-                           data-url="supplierProduct/pageList">
+                           data-url="supplierProductPackage/pageList">
                         <thead>
                         <tr>
-                            <th data-field="id" data-width="10%"
+                            <th data-field="id" data-width="5%"
                                 data-align="center"><span class="tdfont">ID</span></th>
-                            <th data-field="productName" data-width="10%"
-                                data-align="center"><span class="tdfont">菜单名称</span></th>
-                            <th data-field="productType" data-width="15%" data-formatter="formatProductType"
-                                data-align="center"><span class="tdfont">供餐类型</span></th>
-                            <th data-field="productSource" data-width="10%" data-formatter="formatProductSource"
-                                data-align="center"><span class="tdfont">菜品属性</span></th>
-                            <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
-                                data-align="center"><span class="tdfont">分类</span></th>
-                            <th data-field="priceSale" data-width="10%"
-                                data-align="center"><span class="tdfont">单价</span></th>
-                            <th data-field="isDel" data-width="10%" data-formatter="formatStatus"
-                                data-align="center"><span class="tdfont">状态</span></th>
-                            <th data-field="handle" data-width="15%" data-align="center"
+                            <th data-field="title" data-width="10%"
+                                data-align="center"><span class="tdfont">组合名称</span></th>
+                            <th data-field="bigName" data-width="10%"
+                                data-align="center"><span class="tdfont">大荤</span></th>
+                            <th data-field="smallName" data-width="10%"
+                                data-align="center"><span class="tdfont">小荤</span></th>
+                            <th data-field="suName" data-width="10%"
+                                data-align="center"><span class="tdfont">素</span></th>
+                            <th data-field="tangName" data-width="10%"
+                                data-align="center"><span class="tdfont">汤</span></th>
+                            <th data-field="drinkName" data-width="10%"
+                                data-align="center"><span class="tdfont">饮品</span></th>
+                            <th data-field="foodName" data-width="10%"
+                                data-align="center"><span class="tdfont">主食</span></th>
+                            <th data-field="fruitName" data-width="10%"
+                                data-align="center"><span class="tdfont">水果</span></th>
+                            <th data-field="handle" data-width="10%" data-align="center"
+                            ><span class="tdfont">图片</span></th>
+                            <th data-field="packagePrice" data-width="10%"
+                                data-align="center"><span class="tdfont">价格</span></th>
+                            <th data-field="handle" data-width="5%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
                         </tr>
                         </thead>
@@ -139,134 +147,68 @@
 </div>
 <script>
     function paginationParam(params) {
-        var openTime = $("#openTime").val();
-        var tillTime = $("#tillTime").val();
-
-        if (openTime == "") {
-            openTime = undefined;
-        } else {
-            openTime += " 00:00:00";
-        }
-        if (tillTime == "") {
-            tillTime = undefined;
-        } else
-            tillTime += " 00:00:00";
-
         return {
             limit: params.limit,
             page: $("#listTable").bootstrapTable("getOptions").pageNumber,
-            openTime: openTime,
-            tillTime: tillTime,
             productName: $("#productNameS").val(),
             productClassify: $("#productClassifyS").val(),
             productType: $("#productTypeS").val(),
             productSource: $("#productSourceS").val(),
         };
     }
-
-    // 格式化时间
-    function formatDate(value, row, index) {
-        if (value != null) {
-            var _date = new Date(value);
-            return _date.format("yyyy-MM-dd");
-        } else {
-            return "-";
-        }
-    }
-    function formatProductType(value, row, index) {
-        if (value == 1) {
-            return "全部";
-        } else if (value == 2) {
-            return "老板餐";
-        } else if (value == 3) {
-            return "员工餐";
-        }
-    }
-    function formatProductSource(value, row, index) {
-        if (value == 1) {
-            return "普通餐";
-        } else if (value == 2) {
-            return "西餐";
-        } else if (value == 3) {
-            return "清真";
-        }
-    }
-    function formatProductClassify(value, row, index) {
-        if (value == 1) {
-            return "大荤";
-        } else if (value == 2) {
-            return "小荤";
-        } else if (value == 3) {
-            return "素";
-        }
-    }
-    function formatStatus(value, row, index) {
-        if (value == 1) {
-            return "已添加";
-        } else {
-            return "未添加";
-        }
-    }
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        if (row.isDel == 1) {
-            result = result + "<a title='撤回' onclick='revocation(" + row.id + ")')>撤回</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        } else {
-            result = result + "<a title='添加' onclick='addSupplierProduct(" + row.id + ")')>添加</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        }
+        result = result + "<a title='编辑' onclick='toeditSupplierPackage(" + row.id + ")')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='删除' onclick='deleteSupplierPackage(" + row.id + ")')>删除</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         return result;
-    }
-    //撤回
-    function revocation(id) {
-        $.ajax({
-            data: {
-                'id': id,
-            },
-            type: "post",
-            dataType: "json",
-            url: 'supplierProduct/revocation',
-            success: function (result) {
-                if (result.code === 0) {
-                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
-                    $('#listTable').bootstrapTable('refresh');
-                } else {
-                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
-                    $("#saveBtn").removeAttr("disabled");
-                }
-            },
-            error: function (result) {
-                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
-                $("#saveBtn").removeAttr("disabled");
-            }
-        });
-    }
-    //添加
-    function addSupplierProduct(id) {
-        $.ajax({
-            data: {
-                'id': id,
-            },
-            type: "post",
-            dataType: "json",
-            url: 'supplierProduct/addSupplierProduct',
-            success: function (result) {
-                if (result.code === 0) {
-                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
-                    $('#listTable').bootstrapTable('refresh');
-                } else {
-                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
-                    $("#saveBtn").removeAttr("disabled");
-                }
-            },
-            error: function (result) {
-                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
-                $("#saveBtn").removeAttr("disabled");
-            }
-        });
     }
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);
+    }
+
+    //跳转添加组合套餐页面
+    function addSupplierPackage() {
+        debugger
+        var $table = $('#listTable');
+        var len = $table.bootstrapTable('getData').length;
+        if (len >= 5) {
+            layer.alert("最多添加五个套餐", {icon: 5, time: 2000, title: '提示'});
+            return false;
+        }
+        var url = "supplierProductPackage/toAdd";
+        $.openNewTab(new Date().getTime(), url, "添加组合套餐");
+    }
+
+    //跳转编辑组合套餐页面
+    function toeditSupplierPackage(id) {
+        var url = "supplierProductPackage/toedit?id="+id;
+        $.openNewTab(new Date().getTime(), url, "编辑组合套餐");
+    }
+
+    //删除
+    function deleteSupplierPackage(id) {
+        $.ajax({
+            data: {
+                'id': id,
+            },
+            type: "post",
+            dataType: "json",
+            url: 'supplierProductPackage/deleteSupplierPackage',
+            success: function (result) {
+                if (result.code === 0) {
+                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                    $('#listTable').bootstrapTable('refresh');
+                } else {
+                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                    $("#saveBtn").removeAttr("disabled");
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtn").removeAttr("disabled");
+            }
+        });
     }
 </script>
 

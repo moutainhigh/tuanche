@@ -99,6 +99,14 @@ public class ProductDao extends BaseDao {
         return mybatisDaoContext.save(SQLID + "saveProduct", record);
     }
 
-
-
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:根据分类查询菜品集合
+     **/
+    public List<ProductEntity> getListByClassify(Integer productClassify){
+        Map<String,Object>  map = new HashMap<>();
+        map.put("productClassify",productClassify);
+        return mybatisDaoContext.findAll(SQLID+"getListByClassify", ProductEntity.class, map);
+    }
 }

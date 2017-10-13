@@ -1,6 +1,9 @@
 package com.taisf.services.supplier.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.product.dto.ProductListRequest;
+import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
@@ -61,4 +64,18 @@ public interface SupplierProductService {
      * @description:撤回菜品
      **/
     DataTransferObject<Void> deleteByUserIdAndProudctId(String userId, Integer productId);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:商家添加菜品
+     **/
+    DataTransferObject<Void> saveSupplierProduct(SupplierProductEntity supplierProductEntity);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:分页查询菜品
+     **/
+    DataTransferObject<PagingResult<ProductEntity>> pageListProduct(ProductListRequest request);
 }

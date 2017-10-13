@@ -5,6 +5,8 @@ import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 
+import java.util.List;
+
 /**
  * <p>商品列表</p>
  * <p/>
@@ -46,4 +48,11 @@ public interface ProductService {
      * @description:根据ID修改菜品
      **/
     DataTransferObject<Void> updateProduct(ProductEntity productEntity);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:根据分类查询菜品集合
+     **/
+    DataTransferObject<List<ProductEntity>> getListByClassify(Integer productClassify);
 }

@@ -1,7 +1,10 @@
 package com.taisf.services.supplier.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
@@ -102,5 +105,17 @@ public class SupplierProductDao extends BaseDao {
         map.put("productId",productId);
         map.put("userId",userId);
         return mybatisDaoContext.delete(SQLID + "deleteByUserIdAndProudctId", map);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:分页查询菜品列表
+     **/
+    public PagingResult<ProductEntity> pageListProduct(ProductListRequest request){
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setLimit(request.getLimit());
+        pageBounds.setPage(request.getPage());
+        return mybatisDaoContext.findForPage(SQLID+"pageListSupplierProduct",ProductEntity.class,request,pageBounds);
     }
 }
