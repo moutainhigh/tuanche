@@ -35,6 +35,24 @@
 
 
 
+
+  <select id="getOkUserByEntrpriseCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where enterprise_code = #{enterpriseCode,jdbcType=CHAR}
+    and user_status in (1,2)
+  </select>
+
+
+
+
+  <update id="updateUserPwd" parameterType="java.util.Map" >
+    update t_user set user_password = #{userPassword,jdbcType=VARCHAR}
+    where user_uid = #{userUid,jdbcType=VARCHAR}
+  </update>
+
+
   <update id="updateUser2Activity" parameterType="java.util.Map" >
     update t_user set user_status = 2
     where user_uid = #{userUid,jdbcType=VARCHAR}

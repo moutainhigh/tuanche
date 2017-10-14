@@ -1,10 +1,13 @@
 package com.taisf.services.user.dao;
 
+import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.user.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,6 +29,9 @@ public class UserDao extends BaseDao{
 
     
     public int add(UserEntity userEntity){
+        if (Check.NuNObj(userEntity.getCreateTime())){
+            userEntity.setCreateTime(new Date());
+        }
         return mybatisDaoContext.save(SQLID + "saveUser", userEntity);
     }
     
@@ -45,6 +51,18 @@ public class UserDao extends BaseDao{
     public int updateUser(UserEntity userEntity){
         return mybatisDaoContext.update(SQLID + "updateUser", userEntity);
     }
+
+
+    /**
+     * 根据用户entrpriseCode 查询当前的用户
+     * @param entrpriseCode
+     * @return
+     */
+    public List<UserEntity> getOkUserByEntrpriseCode(String entrpriseCode){
+
+        return mybatisDaoContext.findAll(SQLID + "getOkUserByEntrpriseCode", UserEntity.class, entrpriseCode);
+    }
+
 
 
     /**
@@ -85,6 +103,20 @@ public class UserDao extends BaseDao{
      */
     public UserEntity getUserById(Integer id){
         return mybatisDaoContext.findOne(SQLID + "selectByPrimaryKey", UserEntity.class, id);
+    }
+
+
+    /**
+     * 修改用户登录密码
+     * @param userId
+     * @param userPassword
+     * @return
+     */
+    public int updateUserPwd(String userId,String userPassword){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userUid",userId);
+        par.put("userPassword",userPassword);
+        return mybatisDaoContext.update(SQLID + "updateUserPwd", par );
     }
 
 

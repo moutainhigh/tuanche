@@ -2,6 +2,7 @@ package com.taisf.services.order.vo;
 
 import com.jk.framework.base.entity.BaseEntity;
 import com.jk.framework.base.utils.SnUtil;
+import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
@@ -49,6 +50,11 @@ public class OrderSaveInfo extends BaseEntity{
     private List<OrderProductEntity> list = new ArrayList<>();
 
 
+    /**
+     * 地址
+     */
+    List<EnterpriseAddressEntity> addressList = new ArrayList<>();
+
     public int getDrawBalance() {
         return drawBalance;
     }
@@ -79,5 +85,13 @@ public class OrderSaveInfo extends BaseEntity{
 
     public void setList(List<OrderProductEntity> list) {
         this.list = list;
+    }
+
+    public List<EnterpriseAddressEntity> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<EnterpriseAddressEntity> addressList) {
+        this.addressList = addressList;
     }
 }

@@ -1,5 +1,8 @@
 package com.taisf.services.recharge.api;
 
+import com.jk.framework.base.entity.DataTransferObject;
+import com.taisf.services.recharge.dto.ChargeRequest;
+
 /**
  * <p>充值</p>
  * <p/>
@@ -14,4 +17,15 @@ package com.taisf.services.recharge.api;
  * @since 1.0
  */
 public interface RechargeService {
+
+
+
+
+    /**
+     * 企业充值
+     * @author afi
+     * @param chargeRequest
+     * @return
+     */
+    DataTransferObject<Void> chargeMoney(ChargeRequest chargeRequest);
 }

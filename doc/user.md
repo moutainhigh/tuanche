@@ -30,6 +30,8 @@ Content-Type|application/json
         "data": {
             "userInfo": {
                 "userName": "name",
+                "userPic":"",
+                "userCard":"",
                 "enterpriseCode": "code",
                 "enterpriseName": "11",
                 "userPhone": "123",
@@ -76,6 +78,8 @@ supplierCode|String|当前用户对应的供应商code
 userInfo:对象
     "userInfo": {
         "userName": "name", //用户名
+        "userPic":"", //头像
+        "userCard":"", //二维码
         "enterpriseCode": "code",//企业编号
         "enterpriseName": "11", //企业名称
         "userPhone": "123", //用户电话
@@ -296,4 +300,207 @@ demo:
       -H 'token: token' \
       -H 'traceinfo: applicationCode=user;deviceUuid=deviceUuid;versionCode=versionCode;source=1;' \
       -d '{"userPhone":"123","pwd":"123"}'
+````
+
+
+
+
+
+## 5.发送验证码
+
+###  地址
+
+    send/code?code=103
+
+
+###  提交方式
+类型|描述
+---|---
+提交方式|get
+
+参数 放在url
+
+
+### 参数
+    code 
+    // 修改支付密码 103
+    
+
+返回信息:成功
+
+    {
+        "msg": {
+            "info": "",
+            "code": 0,
+            "success": true
+        },
+        "data": {}
+    }
+
+返回信息:失败
+
+    {
+    msg: {
+        info: "参数异常",
+        code: 1,
+        success: false
+    },
+    data: null
+    }
+    
+
+      
+demo:
+
+
+````
+   curl -X GET \
+   'http://localhost:8080/send/code?code=103' \
+   -H 'cache-control: no-cache' \
+   -H 'content-type: application/json' \
+   -H 'postman-token: 3ca76eb6-5f57-6c71-c54a-2aaadac01820' \
+   -H 'token: token' \
+   -H 'traceinfo: applicationCode=aa;deviceUuid=deviceUuid;'
+
+````
+
+
+
+## 6.修改密码
+
+###  地址
+
+    user/changeUserPwd
+
+
+###  提交方式
+类型|描述
+---|---
+提交方式|post
+
+参数 放在url
+
+
+### 参数
+    
+    {
+    	"oldPwd":"123",
+    	"newPwd":"123456",
+    	"msgCode":"123456"
+    }
+    
+    
+
+返回信息:成功
+
+    {
+        "msg": {
+            "info": "",
+            "code": 0,
+            "success": true
+        },
+        "data": {}
+    }
+
+返回信息:失败
+
+    {
+    msg: {
+        info: "参数异常",
+        code: 1,
+        success: false
+    },
+    data: null
+    }
+    
+
+      
+demo:
+
+
+````
+   curl -X POST \
+     http://localhost:8080/user/changeUserPwd \
+     -H 'cache-control: no-cache' \
+     -H 'content-type: application/json' \
+     -H 'postman-token: 9ef5b6ac-acf3-3b89-f426-a832a55e202d' \
+     -H 'token: token' \
+     -H 'traceinfo: applicationCode=aa;deviceUuid=deviceUuid;' \
+     -d '{
+   	"oldPwd":"123",
+   	"newPwd":"123456",
+   	"msgCode":"123456"
+   }'
+
+````
+
+
+
+
+## 7.修改支付密码
+
+###  地址
+
+    user/changeAccountPwd
+
+
+###  提交方式
+类型|描述
+---|---
+提交方式|post
+
+参数 放在url
+
+
+### 参数
+    
+    {
+    	"oldPwd":"123",
+    	"newPwd":"123456",
+    	"msgCode":"123456"
+    }
+    
+    
+
+返回信息:成功
+
+    {
+        "msg": {
+            "info": "",
+            "code": 0,
+            "success": true
+        },
+        "data": {}
+    }
+
+返回信息:失败
+
+    {
+    msg: {
+        info: "参数异常",
+        code: 1,
+        success: false
+    },
+    data: null
+    }
+    
+
+      
+demo:
+
+
+````
+  curl -X POST \
+    http://localhost:8080/user/changeAccountPwd \
+    -H 'cache-control: no-cache' \
+    -H 'content-type: application/json' \
+    -H 'postman-token: 57ef03d1-9702-8107-6317-9c6401116e3b' \
+    -H 'token: token' \
+    -H 'traceinfo: applicationCode=aa;deviceUuid=deviceUuid;' \
+    -d '{
+  	"oldPwd":"123",
+  	"newPwd":"123456",
+  	"msgCode":"123456"
+  }'
+
 ````

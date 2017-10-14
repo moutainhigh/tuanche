@@ -81,7 +81,7 @@ public class UserAccountDao extends BaseDao {
 
 
     /**
-     * 冻结当前的支付密码
+     * 修改当前的支付密码
      * @author afi
      * @param userId
      * @param accountPassword

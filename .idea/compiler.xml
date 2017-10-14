@@ -7,12 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="taisf-api" />
+        <module name="taisf-mis-oms" />
         <module name="taisf-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="taisf" target="1.7" />
       <module name="taisf-api" target="1.8" />
+      <module name="taisf-mis-oms" target="1.8" />
       <module name="taisf-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>

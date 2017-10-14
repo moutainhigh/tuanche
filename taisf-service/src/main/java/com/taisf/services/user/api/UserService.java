@@ -68,4 +68,22 @@ public interface UserService {
      */
     DataTransferObject<PagingResult<AccountLogEntity>> rechargeLog(AccountLogRequest accountLogRequest);
 
+
+    /**
+     * 修改支付密码
+     * @param userId
+     * @param accountPassword
+     * @return
+     */
+    DataTransferObject<Void> updateAccountPassword(String userId,String accountPassword );
+
+
+    /**
+     * 修改登录密码
+     * @param userId
+     * @param userPassword
+     * @return
+     */
+    DataTransferObject<Void> updateUserPwd(String userId,String userPassword,String oldUserPassword);
+
 }

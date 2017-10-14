@@ -683,6 +683,12 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("异常的订餐类型");
             return;
         }
+
+        //地址
+        List<EnterpriseAddressEntity> list = enterpriseManager.getEnterpriseAddressByCode(userEntity.getEnterpriseCode());
+        if (!Check.NuNCollection(list)){
+            orderSaveVO.setAddressList(list);
+        }
         //设置城市code
         orderSaveVO.getOrderBase().setProvinceCode(infoVO.getEnterpriseEntity().getProvinceCode());
         orderSaveVO.getOrderBase().setCityCode(infoVO.getEnterpriseEntity().getCityCode());

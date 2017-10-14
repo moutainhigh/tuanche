@@ -46,12 +46,12 @@ public class CartServiceProxyTest extends BaseTest {
 
     @Test
     public void delCartTest() {
-        CartBaseRequest cartAddRequest = new CartBaseRequest();
+        CartAddRequest cartAddRequest = new CartAddRequest();
         cartAddRequest.setBusinessUid("123");
         cartAddRequest.setSupplierProductType(SupplierProductTypeEnum.PRODUCT.getCode());
         cartAddRequest.setProductCode(1);
         cartAddRequest.setUserUid("afi");
-        DataTransferObject<Void> classify = cartService.delCart(cartAddRequest);
+        DataTransferObject<CartInfoVO> classify = cartService.delCart(cartAddRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }
@@ -74,7 +74,7 @@ public class CartServiceProxyTest extends BaseTest {
         cartAddRequest.setSupplierProductType(SupplierProductTypeEnum.PRODUCT.getCode());
         cartAddRequest.setProductCode(1);
         cartAddRequest.setUserUid("afi");
-        DataTransferObject<Void> classify = cartService.addCart(cartAddRequest);
+        DataTransferObject<CartInfoVO> classify = cartService.addCart(cartAddRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }
@@ -89,7 +89,7 @@ public class CartServiceProxyTest extends BaseTest {
         cartAddRequest.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
         cartAddRequest.setProductCode(1);
         cartAddRequest.setUserUid("afi");
-        DataTransferObject<Void> classify = cartService.addCart(cartAddRequest);
+        DataTransferObject<CartInfoVO> classify = cartService.addCart(cartAddRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }

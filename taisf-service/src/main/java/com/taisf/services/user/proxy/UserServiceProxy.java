@@ -6,6 +6,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.UUIDGenerator;
+import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
@@ -433,6 +434,53 @@ public class UserServiceProxy implements UserService {
             page = new PagingResult();
         }
         dto.setData(page);
+        return dto;
+    }
+
+
+    /**
+     * 修改支付密码
+     * @param userId
+     * @param accountPassword
+     * @return
+     */
+    @Override
+    public DataTransferObject<Void> updateAccountPassword(String userId,String accountPassword){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userId)
+                || Check.NuNObj(accountPassword)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        userManager.updateAccountPassword(userId,accountPassword);
+        return dto;
+    }
+
+
+    /**
+     * 修改登录密码
+     * @param userId
+     * @param userPassword
+     * @return
+     */
+    @Override
+    public DataTransferObject<Void> updateUserPwd(String userId,String userPassword,String oldUserPassword){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userId)
+                || Check.NuNStr(userPassword)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        UserEntity has = userManager.getUserByUid(userId);
+        if (Check.NuNObj(has)){
+            dto.setErrorMsg("当前用户不存在");
+            return dto;
+        }
+        if (!ValueUtil.getStrValue(has.getUserPassword()).equals(ValueUtil.getStrValue(oldUserPassword))){
+            dto.setErrorMsg("原始密码错误");
+            return dto;
+        }
+        userManager.updateUserPwd( userId, userPassword);
         return dto;
     }
 }

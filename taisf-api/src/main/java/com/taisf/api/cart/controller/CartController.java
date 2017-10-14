@@ -69,7 +69,7 @@ public class CartController extends AbstractController {
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
-            DataTransferObject<Void> dto =cartService.addCart(paramRequest);
+            DataTransferObject<CartInfoVO> dto =cartService.addCart(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【添加购物车】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
@@ -104,7 +104,7 @@ public class CartController extends AbstractController {
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
-            DataTransferObject<Void> dto =cartService.delCart(paramRequest);
+            DataTransferObject<CartInfoVO> dto =cartService.delCart(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【移除购物车】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);

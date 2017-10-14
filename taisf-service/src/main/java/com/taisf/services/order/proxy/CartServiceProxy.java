@@ -222,8 +222,8 @@ public class CartServiceProxy implements CartService{
      * @return
      */
     @Override
-    public DataTransferObject<Void> addCart(CartAddRequest cartAddRequest) {
-        DataTransferObject<Void> dto = new DataTransferObject<>();
+    public DataTransferObject<CartInfoVO> addCart(CartAddRequest cartAddRequest) {
+        DataTransferObject<CartInfoVO> dto = new DataTransferObject<>();
         //1. 校验基本参数,≤
         this.checkCartBasePar(dto,cartAddRequest);
         if (!dto.checkSuccess()){
@@ -243,7 +243,7 @@ public class CartServiceProxy implements CartService{
             has.setProductNum(has.getProductNum() + cartAddRequest.getProductNum());
             cartManager.updateCart(has);
         }
-        return dto;
+        return cartInfo(cartAddRequest.getUserUid(),cartAddRequest.getBusinessUid());
     }
 
     /**
@@ -252,8 +252,8 @@ public class CartServiceProxy implements CartService{
      * @return
      */
     @Override
-    public DataTransferObject<Void> delCart(CartBaseRequest cartBaseRequest) {
-        DataTransferObject<Void> dto = new DataTransferObject<>();
+    public DataTransferObject<CartInfoVO> delCart(CartAddRequest cartBaseRequest) {
+        DataTransferObject<CartInfoVO> dto = new DataTransferObject<>();
         //1. 校验基本参数
         this.checkCartBasePar(dto,cartBaseRequest);
         if (!dto.checkSuccess()){
@@ -265,9 +265,23 @@ public class CartServiceProxy implements CartService{
             dto.setErrorMsg("当前商品不存在,请勿重复删除");
             return dto;
         }else {
-            cartManager.delCart(has.getId());
+
+            if ( ValueUtil.getintValue(cartBaseRequest.getProductNum()) == 0
+                    ||ValueUtil.getintValue(has.getProductNum()) == ValueUtil.getintValue(cartBaseRequest.getProductNum())){
+                cartManager.delCart(has.getId());
+            }else {
+                int last = has.getProductNum() - cartBaseRequest.getProductNum();
+                if (last < 0){
+                    dto.setErrorMsg("异常的购物车数量");
+                    return dto;
+                }
+                //当前购物车中已经存在
+                has.setProductNum(last);
+                cartManager.updateCart(has);
+            }
+
         }
-        return dto;
+        return cartInfo(cartBaseRequest.getUserUid(),cartBaseRequest.getBusinessUid());
     }
 
     /**

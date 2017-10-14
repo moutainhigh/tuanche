@@ -26,6 +26,16 @@ public class IndexUserVO  extends BaseEntity {
     private String userName = "";
 
     /**
+     * 用户头像
+     */
+    private String userPic = "";
+
+    /**
+     * 用户二维码
+     */
+    private String userCard = "";
+
+    /**
      * 企业编码
      */
     private String enterpriseCode = "";
@@ -114,5 +124,21 @@ public class IndexUserVO  extends BaseEntity {
 
     public void setProductSource(Integer productSource) {
         this.productSource = productSource;
+    }
+
+    public String getUserPic() {
+        return userPic;
+    }
+
+    public void setUserPic(String userPic) {
+        this.userPic = userPic;
+    }
+
+    public String getUserCard() {
+        return userCard;
+    }
+
+    public void setUserCard(String userCard) {
+        this.userCard = userCard;
     }
 }

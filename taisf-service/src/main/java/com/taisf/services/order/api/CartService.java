@@ -33,7 +33,7 @@ public interface CartService {
      * @param cartAddRequest
      * @return
      */
-    DataTransferObject<Void> addCart(CartAddRequest cartAddRequest);
+    DataTransferObject<CartInfoVO> addCart(CartAddRequest cartAddRequest);
 
 
     /**
@@ -42,7 +42,7 @@ public interface CartService {
      * @param cartBaseRequest
      * @return
      */
-    DataTransferObject<Void> delCart(CartBaseRequest cartBaseRequest);
+    DataTransferObject<CartInfoVO> delCart(CartAddRequest cartBaseRequest);
 
 
     /**

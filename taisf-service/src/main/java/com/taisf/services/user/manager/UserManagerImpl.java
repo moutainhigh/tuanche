@@ -1,13 +1,17 @@
 package com.taisf.services.user.manager;
 
+import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.taisf.services.common.valenum.UserTypeEnum;
+import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.user.dao.*;
 import com.taisf.services.user.dto.AccountLogRequest;
 import com.taisf.services.user.entity.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>用户信息</p>
@@ -43,6 +47,18 @@ public class UserManagerImpl {
     private LoginTokenDao loginTokenDao;
 
 
+
+    /**
+     * 根据用户entrpriseCode 查询当前的用户
+     * @param entrpriseCode
+     * @return
+     */
+    public List<UserEntity> getOkUserByEntrpriseCode(String entrpriseCode){
+        if (Check.NuNStr(entrpriseCode)){
+            return null;
+        }
+        return userDao.getOkUserByEntrpriseCode(entrpriseCode);
+    }
     /**
      * 获取当前的账户的操作记录
      * @author afi
@@ -92,6 +108,34 @@ public class UserManagerImpl {
     }
 
 
+
+    /**
+     * 幂等获取企业用户信息
+     * @author afi
+     * @param enterpriseEntity
+     * @return
+     */
+    public UserEntity fillAndGetEnterpriseUser(EnterpriseEntity enterpriseEntity){
+        /**
+         * 当前的账户信息是否存在
+         */
+        UserEntity has =  userDao.getUserByUid(enterpriseEntity.getEnterpriseCode());
+        if (!Check.NuNObj(has)){
+            if(has.getUserType() != UserTypeEnum.ENTERPRISE.getCode()){
+                throw new BusinessException("企业编号和用户编号重复");
+            }
+            //当前用户存在,直接返回
+            return has;
+        }
+
+        has = new UserEntity();
+        has.setUserUid(enterpriseEntity.getEnterpriseCode());
+        has.setUserType(UserTypeEnum.ENTERPRISE.getCode());
+        has.setEnterpriseCode(enterpriseEntity.getEnterpriseCode());
+        has.setEnterpriseName(enterpriseEntity.getEnterpriseName());
+        userDao.add(has);
+        return has;
+    }
 
     /**
      * 获取当前的账户信息,如果当前账户信息不存在直接创建账户信息
@@ -174,4 +218,28 @@ public class UserManagerImpl {
     public int updateUser2Activity(String userId){
         return userDao.updateUser2Activity(userId);
     }
+
+
+    /**
+     * 修改当前的支付密码
+     * @author afi
+     * @param userId
+     * @param accountPassword
+     * @return
+     */
+    public int updateAccountPassword(String userId,String accountPassword){
+        return userAccountDao.updateAccountPassword(userId,accountPassword);
+    }
+
+    /**
+     * 修改用户登录密码
+     * @param userId
+     * @param userPassword
+     * @return
+     */
+    public int updateUserPwd(String userId,String userPassword){
+        return userDao.updateUserPwd(userId,userPassword);
+    }
+
+
 }

@@ -5,8 +5,13 @@ import com.jk.framework.base.head.Header;
 import com.jk.framework.base.rst.ResponseDto;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.ValueUtil;
+import com.jk.framework.cache.redis.api.RedisOperations;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.api.common.abs.AbstractController;
+import com.taisf.api.user.dto.ChangePwdRequest;
+import com.taisf.api.util.HeaderUtil;
+import com.taisf.services.common.valenum.SmsTypeEnum;
 import com.taisf.services.user.api.IndexService;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserLoginRequest;
@@ -51,6 +56,11 @@ public class UserController extends AbstractController {
     @Autowired
     private IndexService indexService;
 
+
+    @Autowired
+    private RedisOperations redisOperation;
+
+
     @RequestMapping(value ="index")
     public @ResponseBody
     ResponseDto index(HttpServletRequest request, HttpServletResponse response) {
@@ -75,6 +85,131 @@ public class UserController extends AbstractController {
         }
 
     }
+
+
+
+    /**
+     * 注册
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/regist", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto regist(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        UserRegistRequest paramRequest = getEntity(request, UserRegistRequest.class);
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        paramRequest.setHeader(header);
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+
+            DataTransferObject<RegistInfoVO> dto =userService.regist(paramRequest);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【注册】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            return new ResponseDto("未知错误");
+        }
+
+    }
+
+
+
+    /**
+     * 修改登录密码
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/changeUserPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto changeUserPwd(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        ChangePwdRequest paramRequest = getEntity(request, ChangePwdRequest.class);
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        if (Check.NuNStr(paramRequest.getNewPwd())) {
+            return new ResponseDto("请输入新密码");
+        }
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+
+            DataTransferObject<Void> dto =userService.updateUserPwd(getUserId(request),paramRequest.getNewPwd(),paramRequest.getOldPwd());
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【修改登录密码】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            return new ResponseDto("未知错误");
+        }
+
+    }
+
+
+
+
+    /**
+     * 修改支付密码
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/changeAccountPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto changeAccountPwd(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        ChangePwdRequest paramRequest = getEntity(request, ChangePwdRequest.class);
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        if (Check.NuNStr(paramRequest.getNewPwd())) {
+            return new ResponseDto("请输入新密码");
+        }
+
+        if (Check.NuNStr(paramRequest.getMsgCode())) {
+            return new ResponseDto("请输入验证码");
+        }
+
+        String  key = HeaderUtil.getCodeStr(header, SmsTypeEnum.PWD_ACCOUNT.getCode());
+        String value= redisOperation.get(key);
+        if (!ValueUtil.getStrValue(value).equals(ValueUtil.getStrValue(paramRequest.getMsgCode()))){
+            return new ResponseDto("验证码错误");
+        }
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+            DataTransferObject<Void> dto =userService.updateAccountPassword(getUserId(request),paramRequest.getNewPwd());
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【修改登录密码】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            return new ResponseDto("未知错误");
+        }
+
+    }
+
+
+
+
+
+
+
+
+
 
     /**
      * 登录
@@ -144,36 +279,5 @@ public class UserController extends AbstractController {
 
 
 
-    /**
-     * 注册
-     * @author afi
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping(value = "/regist", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDto regist(HttpServletRequest request, HttpServletResponse response) {
-        Header header = getHeader(request);
-        if (Check.NuNObj(header)) {
-            return new ResponseDto("头信息为空");
-        }
-        //获取当前参数
-        UserRegistRequest paramRequest = getEntity(request, UserRegistRequest.class);
-        if (Check.NuNObj(paramRequest)) {
-            return new ResponseDto("参数异常");
-        }
-        paramRequest.setHeader(header);
-        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
-        try {
-
-            DataTransferObject<RegistInfoVO> dto =userService.regist(paramRequest);
-            return dto.trans2Res();
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【注册】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
-            return new ResponseDto("未知错误");
-        }
-
-    }
 
 }
