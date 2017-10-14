@@ -30,24 +30,14 @@ public class EnterpriseConfigEntity extends BaseEntity {
     private String enterpriseCode;
 
     /**
-     * 老板午餐
+     * 员工餐价格
      */
-    private Integer lunchBoss;
+    private Integer empPrice;
 
     /**
-     * 老板晚餐价格
+     * 老板餐价格
      */
-    private Integer dinnerBoss;
-
-    /**
-     * 员工午餐价格
-     */
-    private Integer lunchEmp;
-
-    /**
-     * 员工晚餐价格
-     */
-    private Integer dinnerEmp;
+    private Integer bossPrice;
 
     /**
      * 是否午餐
@@ -95,36 +85,21 @@ public class EnterpriseConfigEntity extends BaseEntity {
         this.enterpriseCode = enterpriseCode == null ? null : enterpriseCode.trim();
     }
 
-    public Integer getLunchBoss() {
-        return lunchBoss;
+
+    public Integer getEmpPrice() {
+        return empPrice;
     }
 
-    public void setLunchBoss(Integer lunchBoss) {
-        this.lunchBoss = lunchBoss;
+    public void setEmpPrice(Integer empPrice) {
+        this.empPrice = empPrice;
     }
 
-    public Integer getDinnerBoss() {
-        return dinnerBoss;
+    public Integer getBossPrice() {
+        return bossPrice;
     }
 
-    public void setDinnerBoss(Integer dinnerBoss) {
-        this.dinnerBoss = dinnerBoss;
-    }
-
-    public Integer getLunchEmp() {
-        return lunchEmp;
-    }
-
-    public void setLunchEmp(Integer lunchEmp) {
-        this.lunchEmp = lunchEmp;
-    }
-
-    public Integer getDinnerEmp() {
-        return dinnerEmp;
-    }
-
-    public void setDinnerEmp(Integer dinnerEmp) {
-        this.dinnerEmp = dinnerEmp;
+    public void setBossPrice(Integer bossPrice) {
+        this.bossPrice = bossPrice;
     }
 
     public Integer getForLunch() {

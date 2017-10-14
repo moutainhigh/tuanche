@@ -1,7 +1,10 @@
 package com.taisf.services.enterprise.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 
 /**
  * <p>企业接口信息</p>
@@ -18,6 +21,13 @@ import com.taisf.services.enterprise.entity.EnterpriseEntity;
  */
 public interface EnterpriseService {
 
+
+    /**
+     * 获取企业的账户统计信息
+     * @param request
+     * @return
+     */
+    DataTransferObject<PagingResult<EnterpriseAccountVO>> getEnterpriseAccountByPage(EnterprisePageRequest request);
 
 
     /**

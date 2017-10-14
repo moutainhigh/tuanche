@@ -1,7 +1,9 @@
 package com.taisf.services.test.enterprise.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.enterprise.dao.EnterpriseDao;
+import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
@@ -27,6 +29,18 @@ public class EnterpriseDaoTest  extends BaseTest {
 
     @Resource(name = "enterprise.enterpriseDao")
     private EnterpriseDao enterpriseDao;
+
+
+
+
+    @Test
+    public void getEnterpriseByPageTest() {
+        EnterprisePageRequest request = new EnterprisePageRequest();
+        request.setEnterpriseCode("code");
+        PagingResult<EnterpriseEntity> rst = enterpriseDao.getEnterpriseByPage(request);
+        System.out.println(JsonEntityTransform.Object2Json(rst));
+    }
+
 
 
     @Test

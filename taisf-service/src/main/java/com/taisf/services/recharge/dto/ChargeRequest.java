@@ -39,6 +39,18 @@ public class ChargeRequest extends BaseEntity {
      */
     private String opId;
 
+    /**
+     * 充值类型
+     */
+    private Integer rechargeType;
+
+    public Integer getRechargeType() {
+        return rechargeType;
+    }
+
+    public void setRechargeType(Integer rechargeType) {
+        this.rechargeType = rechargeType;
+    }
 
     public String getEnterpriseCode() {
         return enterpriseCode;

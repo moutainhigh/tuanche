@@ -1,6 +1,7 @@
 package com.taisf.services.enterprise.manager;
 
 import com.jk.framework.base.exception.BusinessException;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.taisf.services.common.valenum.DayTypeEnum;
@@ -8,6 +9,7 @@ import com.taisf.services.enterprise.dao.EnterpriseAddressDao;
 import com.taisf.services.enterprise.dao.EnterpriseConfigDao;
 import com.taisf.services.enterprise.dao.EnterpriseDao;
 import com.taisf.services.enterprise.dao.EnterpriseDayDao;
+import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
@@ -51,6 +53,16 @@ public class EnterpriseManagerImpl {
 	@Resource(name = "enterprise.enterpriseAddressDao")
 	private EnterpriseAddressDao enterpriseAddressDao;
 
+
+	/**
+	 * 获取企业列表信息
+	 * @author afi
+	 * @param request
+	 * @return
+	 */
+	public PagingResult<EnterpriseEntity> getEnterpriseByPage(EnterprisePageRequest request){
+		return enterpriseDao.getEnterpriseByPage(request);
+	}
 
 	/**
 	 * 根据fid获取企业的信息

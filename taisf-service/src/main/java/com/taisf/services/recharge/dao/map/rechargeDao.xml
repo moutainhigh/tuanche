@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.taisf.services.recharge.entity.RechargeEntity">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="recharge_sn" jdbcType="VARCHAR" property="rechargeSn" />
-        <result column="arecharge_status" jdbcType="INTEGER" property="arechargeStatus" />
+        <result column="recharge_status" jdbcType="INTEGER" property="rechargeStatus" />
         <result column="recharge_type" jdbcType="INTEGER" property="rechargeType" />
         <result column="total_price" jdbcType="INTEGER" property="totalPrice" />
         <result column="pay_money" jdbcType="INTEGER" property="payMoney" />
@@ -22,10 +22,42 @@
 
 
     <sql id="Base_Column_List">
-        id, recharge_sn, arecharge_status, recharge_type, total_price, pay_money, enterprise_code,
+        id, recharge_sn, recharge_status, recharge_type, total_price, pay_money, enterprise_code,
         enterprise_name, recharge_tel, boss_num, common_num, create_id, create_name, create_time,
         update_time
     </sql>
+
+
+    <select id="getRechargeByPage" parameterType="com.taisf.services.recharge.dto.ChargeHisRequest" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_recharge
+        where 1 = 1
+        <if test="rechargeType != null">
+            and recharge_type = #{rechargeType,jdbcType=INTEGER},
+        </if>
+
+        <if test="enterpriseCode != null">
+            and enterprise_code = #{enterpriseCode,jdbcType=VARCHAR},
+        </if>
+        <if test="enterpriseName != null">
+            and  enterprise_name = #{enterpriseName,jdbcType=VARCHAR},
+        </if>
+        <if test="rechargeTel != null">
+            and  recharge_tel = #{rechargeTel,jdbcType=VARCHAR},
+        </if>
+        <if test="createId != null">
+            and create_id = #{createId,jdbcType=VARCHAR},
+        </if>
+        <if test="start!=null and start!=''">
+            AND create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}
+        </if>
+        <if test="end!=null and end!=''">
+            AND create_time <![CDATA[ <= ]]> #{end,jdbcType=TIMESTAMP}
+        </if>
+        order by id DESC
+
+    </select>
 
 
     <select id="getRechargeEntityBySn" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -49,8 +81,8 @@
             <if test="rechargeSn != null">
                 recharge_sn,
             </if>
-            <if test="arechargeStatus != null">
-                arecharge_status,
+            <if test="rechargeStatus != null">
+                recharge_status,
             </if>
             <if test="rechargeType != null">
                 recharge_type,
@@ -94,8 +126,8 @@
             <if test="rechargeSn != null">
                 #{rechargeSn,jdbcType=VARCHAR},
             </if>
-            <if test="arechargeStatus != null">
-                #{arechargeStatus,jdbcType=INTEGER},
+            <if test="rechargeStatus != null">
+                #{rechargeStatus,jdbcType=INTEGER},
             </if>
             <if test="rechargeType != null">
                 #{rechargeType,jdbcType=INTEGER},
@@ -141,8 +173,8 @@
         update t_recharge
         <set>
 
-            <if test="arechargeStatus != null">
-                arecharge_status = #{arechargeStatus,jdbcType=INTEGER},
+            <if test="rechargeStatus != null">
+                recharge_status = #{rechargeStatus,jdbcType=INTEGER},
             </if>
             <if test="rechargeType != null">
                 recharge_type = #{rechargeType,jdbcType=INTEGER},

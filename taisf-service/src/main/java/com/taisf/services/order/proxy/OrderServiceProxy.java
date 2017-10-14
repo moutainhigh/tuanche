@@ -753,10 +753,10 @@ public class OrderServiceProxy implements OrderService {
 
         if (orderTypeEnum.getCode() == OrderTypeEnum.LUNCH_EXT.getCode()){
             //午餐补单
-            extPrice = this.getRealPrice(userRoleEnum,ValueUtil.getintValue(config.getLunchBoss()),ValueUtil.getintValue(config.getLunchEmp()));
+            extPrice = this.getRealPrice(userRoleEnum,ValueUtil.getintValue(config.getBossPrice()),ValueUtil.getintValue(config.getEmpPrice()));
         }else if (orderTypeEnum.getCode() == OrderTypeEnum.DINNER_EXT.getCode()){
             //晚餐补单
-            extPrice = this.getRealPrice(userRoleEnum,ValueUtil.getintValue(config.getDinnerBoss()),ValueUtil.getintValue(config.getDinnerEmp()));
+            extPrice = this.getRealPrice(userRoleEnum,ValueUtil.getintValue(config.getBossPrice()),ValueUtil.getintValue(config.getEmpPrice()));
         }else {
             dto.setErrorMsg("异常的补单类型");
         }

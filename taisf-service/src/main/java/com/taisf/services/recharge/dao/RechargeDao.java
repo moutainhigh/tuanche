@@ -1,7 +1,12 @@
 package com.taisf.services.recharge.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.vo.OrderInfoVO;
+import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.entity.RechargeEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +47,21 @@ public class RechargeDao extends BaseDao {
         return mybatisDaoContext.findOne(SQLID+"getRechargeEntityBySn", RechargeEntity.class, rechargeSn);
     }
 
+
+    /**
+     * 分页查询充值记录
+     * @author afi
+     * @param chargeHisRequest
+     * @return
+     */
+    public PagingResult<RechargeEntity> getRechargeByPage(ChargeHisRequest chargeHisRequest){
+        PageBounds pageBounds=new PageBounds();
+        pageBounds.setLimit(chargeHisRequest.getLimit());
+        pageBounds.setPage(chargeHisRequest.getPage());
+
+        return mybatisDaoContext.findForPage(SQLID + "getRechargeByPage", RechargeEntity.class, chargeHisRequest,pageBounds);
+    }
+
     /**
      * 新增充值信息
      * @author afi
@@ -63,4 +83,6 @@ public class RechargeDao extends BaseDao {
     public int updateRecharge(RechargeEntity record){
         return mybatisDaoContext.update(SQLID + "updateRecharge", record);
     }
+
+
 }

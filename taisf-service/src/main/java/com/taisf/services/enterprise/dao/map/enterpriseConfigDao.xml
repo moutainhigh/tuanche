@@ -6,10 +6,8 @@
   <resultMap id="BaseResultMap" type="com.taisf.services.enterprise.entity.EnterpriseConfigEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="enterprise_code" jdbcType="VARCHAR" property="enterpriseCode" />
-    <result column="lunch_boss" jdbcType="INTEGER" property="lunchBoss" />
-    <result column="dinner_boss" jdbcType="INTEGER" property="dinnerBoss" />
-    <result column="lunch_emp" jdbcType="INTEGER" property="lunchEmp" />
-    <result column="dinner_emp" jdbcType="INTEGER" property="dinnerEmp" />
+    <result column="boss_price" jdbcType="INTEGER" property="bossPrice" />
+    <result column="emp_price" jdbcType="INTEGER" property="empPrice" />
     <result column="for_lunch" jdbcType="INTEGER" property="forLunch" />
     <result column="lunch_start" jdbcType="VARCHAR" property="lunchStart" />
     <result column="lunch_end" jdbcType="VARCHAR" property="lunchEnd" />
@@ -20,7 +18,7 @@
 
 
   <sql id="Base_Column_List">
-    id, enterprise_code, lunch_boss, dinner_boss, lunch_emp, dinner_emp, for_lunch, lunch_start, 
+    id, enterprise_code, boss_price, emp_price, for_lunch, lunch_start,
     lunch_end, for_dinner, dinner_start, dinner_end
   </sql>
 
@@ -41,18 +39,14 @@
       <if test="enterpriseCode != null">
         enterprise_code,
       </if>
-      <if test="lunchBoss != null">
-        lunch_boss,
+      <if test="bossPrice != null">
+        boss_price,
       </if>
-      <if test="dinnerBoss != null">
-        dinner_boss,
+
+      <if test="empPrice != null">
+        emp_price,
       </if>
-      <if test="lunchEmp != null">
-        lunch_emp,
-      </if>
-      <if test="dinnerEmp != null">
-        dinner_emp,
-      </if>
+
       <if test="forLunch != null">
         for_lunch,
       </if>
@@ -77,18 +71,14 @@
       <if test="enterpriseCode != null">
         #{enterpriseCode,jdbcType=VARCHAR},
       </if>
-      <if test="lunchBoss != null">
-        #{lunchBoss,jdbcType=INTEGER},
+      <if test="bossPrice != null">
+        #{bossPrice,jdbcType=INTEGER},
       </if>
-      <if test="dinnerBoss != null">
-        #{dinnerBoss,jdbcType=INTEGER},
+
+      <if test="empPrice != null">
+        #{empPrice,jdbcType=INTEGER},
       </if>
-      <if test="lunchEmp != null">
-        #{lunchEmp,jdbcType=INTEGER},
-      </if>
-      <if test="dinnerEmp != null">
-        #{dinnerEmp,jdbcType=INTEGER},
-      </if>
+
       <if test="forLunch != null">
         #{forLunch,jdbcType=INTEGER},
       </if>
@@ -118,17 +108,11 @@
       <if test="enterpriseCode != null">
         enterprise_code = #{enterpriseCode,jdbcType=VARCHAR},
       </if>
-      <if test="lunchBoss != null">
-        lunch_boss = #{lunchBoss,jdbcType=INTEGER},
+      <if test="bossPrice != null">
+        boss_price = #{bossPrice,jdbcType=INTEGER},
       </if>
-      <if test="dinnerBoss != null">
-        dinner_boss = #{dinnerBoss,jdbcType=INTEGER},
-      </if>
-      <if test="lunchEmp != null">
-        lunch_emp = #{lunchEmp,jdbcType=INTEGER},
-      </if>
-      <if test="dinnerEmp != null">
-        dinner_emp = #{dinnerEmp,jdbcType=INTEGER},
+      <if test="empPrice != null">
+        emp_price = #{empPrice,jdbcType=INTEGER},
       </if>
       <if test="forLunch != null">
         for_lunch = #{forLunch,jdbcType=INTEGER},

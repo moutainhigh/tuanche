@@ -4,6 +4,7 @@ import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.user.entity.UserAccountEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +38,38 @@ public class UserAccountDao extends BaseDao {
     private static Logger logger = LoggerFactory.getLogger(UserAccountDao.class);
 
     private String SQLID = "user.accountUserDao.";
+
+
+
+
+
+
+    /**
+     * 获取企业的余额的汇总
+     * @author afi
+     * @param enterpriseCodeList
+     * @return
+     */
+    public List<EnterpriseAccountVO> getEnterpriseAccountByList(List<String> enterpriseCodeList){
+        Map<String,Object> par = new HashMap<>();
+        par.put("enterpriseCodeList",enterpriseCodeList);
+        return mybatisDaoContext.findAll(SQLID + "getEnterpriseAccountByList", EnterpriseAccountVO.class, par);
+
+    }
+
+
+    /**
+     * 获取用户账户信息列表
+     * @author afi
+     * @param userIdList
+     * @return
+     */
+    public List<UserAccountEntity> getUserAccountByList(List<String> userIdList){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userIdList",userIdList);
+        return mybatisDaoContext.findAll(SQLID + "getUserAccountByList", UserAccountEntity.class, par);
+
+    }
 
 
     /**

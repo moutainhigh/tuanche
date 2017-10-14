@@ -5,13 +5,16 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.user.dao.*;
 import com.taisf.services.user.dto.AccountLogRequest;
 import com.taisf.services.user.entity.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>用户信息</p>
@@ -46,6 +49,70 @@ public class UserManagerImpl {
     @Resource(name = "user.loginTokenDao")
     private LoginTokenDao loginTokenDao;
 
+
+
+    /**
+     * 获取企业的余额的汇总
+     * @author afi
+     * @param enterpriseCodeList
+     * @return
+     */
+    public List<EnterpriseAccountVO> getEnterpriseAccountByList(List<String> enterpriseCodeList){
+        if (Check.NuNCollection(enterpriseCodeList)){
+            return null;
+        }
+        return userAccountDao.getEnterpriseAccountByList(enterpriseCodeList);
+    }
+
+
+    /**
+     * 获取企业的余额的汇总
+     * @author afi
+     * @param enterpriseCodeList
+     * @return
+     */
+    public Map<String,EnterpriseAccountVO> getEnterpriseAccountMapByList(List<String> enterpriseCodeList){
+        Map<String,EnterpriseAccountVO> map = new HashMap<>();
+        List<EnterpriseAccountVO>  list =  this.getEnterpriseAccountByList(enterpriseCodeList);
+        if (!Check.NuNCollection(list)){
+            for (EnterpriseAccountVO entity : list) {
+                map.put(entity.getEnterpriseCode(),entity);
+            }
+        }
+        return map;
+    }
+
+
+    /**
+     * 获取用户账户信息列表
+     * @author afi
+     * @param userIdList
+     * @return
+     */
+    public List<UserAccountEntity> getUserAccountByList(List<String> userIdList){
+        if (Check.NuNCollection(userIdList)){
+            return null;
+        }
+        return userAccountDao.getUserAccountByList(userIdList);
+    }
+
+
+    /**
+     * 获取用户账户信息列表
+     * @author afi
+     * @param userIdList
+     * @return
+     */
+    public Map<String,UserAccountEntity> getUserAccountMapByList(List<String> userIdList){
+        Map<String,UserAccountEntity> map = new HashMap<>();
+        List<UserAccountEntity>  list =  this.getUserAccountByList(userIdList);
+        if (!Check.NuNCollection(list)){
+            for (UserAccountEntity entity : list) {
+                map.put(entity.getUserId(),entity);
+            }
+        }
+        return map;
+    }
 
 
     /**
@@ -136,6 +203,12 @@ public class UserManagerImpl {
         userDao.add(has);
         return has;
     }
+
+
+
+
+
+
 
     /**
      * 获取当前的账户信息,如果当前账户信息不存在直接创建账户信息

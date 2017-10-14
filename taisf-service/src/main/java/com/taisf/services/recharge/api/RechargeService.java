@@ -1,7 +1,10 @@
 package com.taisf.services.recharge.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.dto.ChargeRequest;
+import com.taisf.services.recharge.entity.RechargeEntity;
 
 /**
  * <p>充值</p>
@@ -19,6 +22,13 @@ import com.taisf.services.recharge.dto.ChargeRequest;
 public interface RechargeService {
 
 
+    /**
+     * 分页查询充值记录
+     * @author afi
+     * @param chargeHisRequest
+     * @return
+     */
+    DataTransferObject<PagingResult<RechargeEntity>> getRechargeByPage(ChargeHisRequest chargeHisRequest);
 
 
     /**
@@ -28,4 +38,7 @@ public interface RechargeService {
      * @return
      */
     DataTransferObject<Void> chargeMoney(ChargeRequest chargeRequest);
+
+
+
 }

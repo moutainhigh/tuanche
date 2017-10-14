@@ -29,7 +29,7 @@ public class RechargeEntity extends BaseEntity {
     /**
      * 用户状态 1：成功 2：失败'
      */
-    private Integer arechargeStatus;
+    private Integer rechargeStatus;
 
     private Integer rechargeType;
 
@@ -71,12 +71,12 @@ public class RechargeEntity extends BaseEntity {
         this.rechargeSn = rechargeSn == null ? null : rechargeSn.trim();
     }
 
-    public Integer getArechargeStatus() {
-        return arechargeStatus;
+    public Integer getRechargeStatus() {
+        return rechargeStatus;
     }
 
-    public void setArechargeStatus(Integer arechargeStatus) {
-        this.arechargeStatus = arechargeStatus;
+    public void setRechargeStatus(Integer rechargeStatus) {
+        this.rechargeStatus = rechargeStatus;
     }
 
     public Integer getRechargeType() {

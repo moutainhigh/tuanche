@@ -88,7 +88,7 @@ public class OrderSaveVO extends BaseEntity{
      * 构造函数
      */
     public OrderSaveVO() {
-        String orderSn = SnUtil.getOrderSn();
+        String orderSn = "TA"+SnUtil.getOrderSn();
         this.orderSn = orderSn;
         orderBase.setOrderSn(orderSn);
         orderMoney.setOrderSn(orderSn);

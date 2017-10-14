@@ -36,12 +36,10 @@ public class EnterpriseConfigDaoTest  extends BaseTest {
     public void saveEnterpriseConfigTest() {
         EnterpriseConfigEntity entity = new EnterpriseConfigEntity();
         entity.setEnterpriseCode("code");
-        entity.setDinnerBoss(1);
-        entity.setDinnerEmp(1);
         entity.setDinnerEnd("18:51:26");
         entity.setDinnerStart("18:51:26");
-        entity.setLunchBoss(1);
-        entity.setLunchEmp(1);
+        entity.setBossPrice(1);
+        entity.setEmpPrice(1);
         entity.setLunchStart("18:51:26");
         entity.setLunchEnd("18:51:26");
 
@@ -56,12 +54,10 @@ public class EnterpriseConfigDaoTest  extends BaseTest {
 
         entity.setId(1);
         entity.setEnterpriseCode("code");
-        entity.setDinnerBoss(1);
-        entity.setDinnerEmp(1);
+        entity.setBossPrice(1);
+        entity.setEmpPrice(1);
         entity.setDinnerEnd("18:51:26");
         entity.setDinnerStart("18:51:26");
-        entity.setLunchBoss(1);
-        entity.setLunchEmp(1);
         entity.setLunchStart("18:51:26");
         entity.setLunchEnd("18:51:26");
 

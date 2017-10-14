@@ -1,7 +1,9 @@
 package com.taisf.services.test.reRecharge.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.recharge.dao.RechargeDao;
+import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.entity.RechargeEntity;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
@@ -32,7 +34,7 @@ public class RechargeDaoTest extends BaseTest {
     public void saveRechargeTest() {
         RechargeEntity record = new RechargeEntity();
         record.setRechargeSn("sv");
-        record.setArechargeStatus(1);
+        record.setRechargeStatus(1);
         record.setBossNum(1);
         record.setCommonNum(1);
         record.setEnterpriseCode("code");
@@ -48,7 +50,7 @@ public class RechargeDaoTest extends BaseTest {
     public void updateRechargeTest() {
         RechargeEntity record = new RechargeEntity();
         record.setRechargeSn("sv");
-        record.setArechargeStatus(1);
+        record.setRechargeStatus(1);
         record.setBossNum(1);
         record.setCommonNum(1);
         record.setEnterpriseCode("code");
@@ -63,10 +65,21 @@ public class RechargeDaoTest extends BaseTest {
 
     @Test
     public void getRechargeEntityBySnTest() {
-
         RechargeEntity rechargeEntity = rechargeDao.getRechargeEntityBySn("sv");
-
         System.out.println(JsonEntityTransform.Object2Json(rechargeEntity));
     }
+
+
+
+
+    @Test
+    public void getRechargeByPageTest() {
+        ChargeHisRequest request = new ChargeHisRequest();
+//        request.setEnterpriseCode();
+
+        PagingResult<RechargeEntity> rst = rechargeDao.getRechargeByPage(request);
+        System.out.println(JsonEntityTransform.Object2Json(rst));
+    }
+
 
 }
