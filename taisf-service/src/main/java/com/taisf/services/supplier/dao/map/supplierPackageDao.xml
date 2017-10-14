@@ -25,12 +25,24 @@
     tang_code, drink_code, food_code, fruit_code, create_time
   </sql>
 
+  <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_supplier_product_package
+    where id = #{id,jdbcType=INTEGER}
+  </select>
 
   <select id="getSupplierPackageByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_supplier_product_package
     where supplier_code = #{supplierCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="pageListSupplierProduct" parameterType="com.taisf.services.supplier.dto.SupplierProductRequest" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_supplier_product_package
   </select>
 
 
@@ -187,5 +199,49 @@
       </if>
     </set>
     where   supplier_code = #{supplierCode,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateSupplierPackageById" parameterType="com.taisf.services.supplier.entity.SupplierPackageEntity">
+    update t_supplier_product_package
+    <set>
+
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="packagePic != null">
+        package_pic = #{packagePic,jdbcType=VARCHAR},
+      </if>
+      <if test="packageStatus != null">
+        package_status = #{packageStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="packagePrice != null">
+        package_price = #{packagePrice,jdbcType=INTEGER},
+      </if>
+      <if test="bigCode != null">
+        big_code = #{bigCode,jdbcType=INTEGER},
+      </if>
+      <if test="smallCode != null">
+        small_code = #{smallCode,jdbcType=INTEGER},
+      </if>
+      <if test="suCode != null">
+        su_code = #{suCode,jdbcType=INTEGER},
+      </if>
+      <if test="tangCode != null">
+        tang_code = #{tangCode,jdbcType=INTEGER},
+      </if>
+      <if test="drinkCode != null">
+        drink_code = #{drinkCode,jdbcType=INTEGER},
+      </if>
+      <if test="foodCode != null">
+        food_code = #{foodCode,jdbcType=INTEGER},
+      </if>
+      <if test="fruitCode != null">
+        fruit_code = #{fruitCode,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where   id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

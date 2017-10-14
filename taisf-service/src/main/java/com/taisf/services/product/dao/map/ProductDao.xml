@@ -3,17 +3,17 @@
 <mapper namespace="product.productDao">
 
     <resultMap id="BaseResultMap" type="com.taisf.services.product.entity.ProductEntity">
-        <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="product_name" jdbcType="VARCHAR" property="productName" />
-        <result column="product_classify" jdbcType="INTEGER" property="productClassify" />
-        <result column="product_type" jdbcType="INTEGER" property="productType" />
-        <result column="product_source" jdbcType="INTEGER" property="productSource" />
-        <result column="product_des" jdbcType="VARCHAR" property="productDes" />
-        <result column="product_pic" jdbcType="VARCHAR" property="productPic" />
-        <result column="price_sale" jdbcType="INTEGER" property="priceSale" />
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-        <result column="is_del" jdbcType="INTEGER" property="isDel" />
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="product_classify" jdbcType="INTEGER" property="productClassify"/>
+        <result column="product_type" jdbcType="INTEGER" property="productType"/>
+        <result column="product_source" jdbcType="INTEGER" property="productSource"/>
+        <result column="product_des" jdbcType="VARCHAR" property="productDes"/>
+        <result column="product_pic" jdbcType="VARCHAR" property="productPic"/>
+        <result column="price_sale" jdbcType="INTEGER" property="priceSale"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="is_del" jdbcType="INTEGER" property="isDel"/>
     </resultMap>
 
 
@@ -23,27 +23,49 @@
     </sql>
 
 
-
-
-
-
     <select id="getProductById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from t_product
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="getListByClassify" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_product
+        where product_classify = #{productClassify,jdbcType=INTEGER}
+    </select>
 
-
+    <select id="pageListProduct" parameterType="com.taisf.services.product.dto.ProductListRequest"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_product
+        where 1=1
+        <if test="productName != null and productName != ''">
+           AND product_name = #{productName}
+        </if>
+        <if test="productClassify != null and productClassify != ''">
+            AND product_classify = #{productClassify}
+        </if>
+        <if test="productType != null and productType != ''">
+            AND product_type = #{productType}
+        </if>
+        <if test="productSource != null and productSource != ''">
+            AND product_source = #{productSource}
+        </if>
+    </select>
 
 
     <select id="getProductByList" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from t_product
-        where id in <foreach collection="productIds" item="item" index="index"
-                             open="(" separator="," close=")">#{item}</foreach>
+        where id in
+        <foreach collection="productIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </select>
 
 
@@ -156,7 +178,7 @@
             </if>
         </set>
 
-        WHERE   id = #{id,jdbcType=INTEGER}
+        WHERE id = #{id,jdbcType=INTEGER}
     </update>
 
 

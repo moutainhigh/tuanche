@@ -1,7 +1,11 @@
 package com.taisf.services.supplier.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.product.dto.ProductListRequest;
+import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
+import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
@@ -46,4 +50,32 @@ public interface SupplierProductService {
      * @return
      */
     DataTransferObject<List<SupplierProductVO>> getSupplierProductList(SupplierProductRequest supplierProductRequest);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/12
+     * @description:根据用户id关联用户供餐商中间表得到上架code查询供餐商菜品信息
+     **/
+    DataTransferObject<List<SupplierProductEntity>> getSupplierProductByUserId(String userId);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/12
+     * @description:撤回菜品
+     **/
+    DataTransferObject<Void> deleteByUserIdAndProudctId(String userId, Integer productId);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:商家添加菜品
+     **/
+    DataTransferObject<Void> saveSupplierProduct(SupplierProductEntity supplierProductEntity);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/13
+     * @description:分页查询菜品
+     **/
+    DataTransferObject<PagingResult<ProductEntity>> pageListProduct(ProductListRequest request);
 }
