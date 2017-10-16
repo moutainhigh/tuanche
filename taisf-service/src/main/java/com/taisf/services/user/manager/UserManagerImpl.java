@@ -8,7 +8,9 @@ import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.user.dao.*;
 import com.taisf.services.user.dto.AccountLogRequest;
+import com.taisf.services.user.dto.UserAccountRequest;
 import com.taisf.services.user.entity.*;
+import com.taisf.services.user.vo.UserAccountVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -112,6 +114,16 @@ public class UserManagerImpl {
             }
         }
         return map;
+    }
+
+
+    /**
+     * 获取当前的账户信息
+     * @param userAccountRequest
+     * @return
+     */
+    public PagingResult<UserAccountVO> getUserAccountPage(UserAccountRequest userAccountRequest){
+        return userDao.getUserAccountPage(userAccountRequest);
     }
 
 

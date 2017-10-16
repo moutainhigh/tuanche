@@ -20,7 +20,8 @@ public enum AccountTypeEnum {
     INCOME(1,"收入"),
     CONSUME(2,"消费"),
     WITHDRAW(3,"提现"),
-    FILL(4,"充值")
+    FILL(4,"充值"),
+    CHANGE(5,"转账"),
     ;
     private int code;
     private String name;

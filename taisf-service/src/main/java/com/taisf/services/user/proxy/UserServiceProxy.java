@@ -13,16 +13,14 @@ import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.supplier.proxy.SupplierProductServiceProxy;
 import com.taisf.services.user.api.UserService;
-import com.taisf.services.user.dto.AccountLogRequest;
-import com.taisf.services.user.dto.UserLoginRequest;
-import com.taisf.services.user.dto.UserLogoutRequest;
-import com.taisf.services.user.dto.UserRegistRequest;
+import com.taisf.services.user.dto.*;
 import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.entity.LoginTokenEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
 import com.taisf.services.user.vo.RegistInfoVO;
+import com.taisf.services.user.vo.UserAccountVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -57,6 +55,24 @@ public class UserServiceProxy implements UserService {
 
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
+
+
+    /**
+     * 获取当前的账户信息
+     * @param userAccountRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<PagingResult<UserAccountVO>> getUserAccountPage(UserAccountRequest userAccountRequest){
+        DataTransferObject<PagingResult<UserAccountVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userAccountRequest)){
+            userAccountRequest = new UserAccountRequest();
+        }
+        PagingResult<UserAccountVO> page =userManager.getUserAccountPage(userAccountRequest);
+        dto.setData(page);
+        return dto;
+
+    }
 
 
     @Override

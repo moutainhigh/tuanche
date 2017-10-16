@@ -24,6 +24,11 @@ public class UserEntity extends BaseEntity {
 	private String userName;
 
 	/**
+	 * 员工号
+	 */
+	private String userCode;
+
+	/**
 	 * 企业编码
 	 */
 	private String enterpriseCode;
@@ -186,5 +191,13 @@ public class UserEntity extends BaseEntity {
 
 	public void setProductSource(Integer productSource) {
 		this.productSource = productSource;
+	}
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
 	}
 }

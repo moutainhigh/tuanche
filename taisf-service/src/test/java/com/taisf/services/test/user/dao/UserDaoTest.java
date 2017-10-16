@@ -1,9 +1,12 @@
 package com.taisf.services.test.user.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.test.common.BaseTest;
 import com.taisf.services.user.dao.UserDao;
+import com.taisf.services.user.dto.UserAccountRequest;
 import com.taisf.services.user.entity.UserEntity;
+import com.taisf.services.user.vo.UserAccountVO;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -28,6 +31,19 @@ public class UserDaoTest extends BaseTest {
 
     @Resource(name = "user.userDao")
     private UserDao userDao;
+
+
+
+
+
+	@Test
+	public void getUserAccountPageTest() {
+		UserAccountRequest request = new UserAccountRequest();
+
+
+		PagingResult<UserAccountVO> aa=  userDao.getUserAccountPage(request);
+		System.out.println(JsonEntityTransform.Object2Json(aa));
+	}
 
 
 

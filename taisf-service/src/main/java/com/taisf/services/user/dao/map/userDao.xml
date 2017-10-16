@@ -6,6 +6,8 @@
     <result column="user_uid" property="userUid" jdbcType="CHAR" />
     <result column="user_phone" property="userPhone" jdbcType="CHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
+
+    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
     <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR" />
     <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
@@ -13,23 +15,64 @@
     <result column="user_type" property="userType" jdbcType="INTEGER" />
     <result column="user_role" property="userRole" jdbcType="INTEGER" />
     <result column="product_source" property="productSource" jdbcType="INTEGER" />
-
     <result column="user_business_status" property="userBusinessStatus" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
+
+
+  <resultMap id="BaseResultMapExt" type="com.taisf.services.user.vo.UserAccountVO" extends="BaseResultMap" >
+    <result column="account_status" property="accountStatus" jdbcType="INTEGER" />
+    <result column="draw_balance" property="drawBalance" jdbcType="INTEGER" />
+    <result column="draw_not_balance" property="drawNotBalance" jdbcType="INTEGER" />
+    <result column="freeze_money" property="freezeMoney" jdbcType="INTEGER" />
+    <result column="user_integral" property="userIntegral" jdbcType="INTEGER" />
+  </resultMap>
+
+
   <sql id="Base_Column_List" >
-    id, user_uid,user_name, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,
+    id, user_uid,user_name,user_code, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,
     update_time
   </sql>
 
+
+
+  <sql id="User_account_Column_List" >
+    t.id, t.user_uid,t.user_name,t.user_code, t.enterprise_code ,t.enterprise_name ,t.user_phone, t.user_password, t.user_status, t.user_type, t.user_role, t.product_source ,t.user_business_status, t.create_time,
+    t.update_time ,
+    a.account_status,a.draw_balance,a.draw_not_balance,a.freeze_money,a.user_integral
+  </sql>
+
+
+
+  <select id="getUserAccountPage" resultMap="BaseResultMapExt" parameterType="com.taisf.services.user.dto.UserAccountRequest" >
+    select
+    <include refid="User_account_Column_List" />
+    from t_user t
+    inner join t_user_account a on a.user_id = t.user_uid
+    where 1 =1
+
+    <if test="userCode != null and userCode != '' " >
+      and  t.user_code = #{userCode,jdbcType=VARCHAR}
+    </if>
+
+    <if test="enterpriseCode != null and enterpriseCode != '' " >
+      and  t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+    </if>
+
+    <if test="userPhone != null and userPhone != '' " >
+      and  t.user_phone = #{userPhone,jdbcType=VARCHAR}
+    </if>
+
+
+  </select>
 
 
   <select id="getUserByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from t_user
-    where user_phone = #{userPhone,jdbcType=CHAR}
+    where user_phone = #{userPhone,jdbcType=VARCHAR}
   </select>
 
 
@@ -40,8 +83,9 @@
     select
     <include refid="Base_Column_List" />
     from t_user
-    where enterprise_code = #{enterpriseCode,jdbcType=CHAR}
+    where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
     and user_status in (1,2)
+    and user_type  = 1
   </select>
 
 
@@ -88,6 +132,9 @@
       <if test="userName != null" >
         user_name,
       </if>
+      <if test="userCode != null" >
+        user_code,
+      </if>
       <if test="enterpriseCode != null" >
         enterprise_code,
       </if>
@@ -133,6 +180,10 @@
       </if>
       <if test="userName != null" >
         #{userName,jdbcType=CHAR},
+      </if>
+
+      <if test="userCode != null" >
+        #{userCode,jdbcType=CHAR},
       </if>
 
       <if test="enterpriseCode != null" >
@@ -183,6 +234,10 @@
     <set >
       <if test="userName != null" >
         user_name = #{userName,jdbcType=CHAR},
+      </if>
+
+      <if test="userCode != null" >
+        user_code = #{userCode,jdbcType=CHAR},
       </if>
 
       <if test="enterpriseCode != null" >

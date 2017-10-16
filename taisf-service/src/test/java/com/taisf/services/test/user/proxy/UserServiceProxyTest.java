@@ -14,6 +14,7 @@ import com.taisf.services.user.dto.UserRegistRequest;
 import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.vo.RegistInfoVO;
+import com.taisf.services.user.vo.UserAccountVO;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -35,6 +36,19 @@ public class UserServiceProxyTest extends BaseTest {
 
     @Resource(name = "user.userServiceProxy")
     private UserService userService;
+
+
+
+
+    @Test
+    public void getUserAccountPageTest() {
+
+
+        DataTransferObject<PagingResult<UserAccountVO>>  dto = userService.getUserAccountPage(null);
+
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
+
 
 
     @Test

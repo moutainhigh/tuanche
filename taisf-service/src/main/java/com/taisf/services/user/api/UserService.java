@@ -4,12 +4,10 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderInfoVO;
-import com.taisf.services.user.dto.AccountLogRequest;
+import com.taisf.services.user.dto.*;
 import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.vo.RegistInfoVO;
-import com.taisf.services.user.dto.UserLoginRequest;
-import com.taisf.services.user.dto.UserLogoutRequest;
-import com.taisf.services.user.dto.UserRegistRequest;
+import com.taisf.services.user.vo.UserAccountVO;
 
 /**
  * <p>用户</p>
@@ -25,6 +23,13 @@ import com.taisf.services.user.dto.UserRegistRequest;
  * @since 1.0
  */
 public interface UserService {
+
+    /**
+     * 获取当前的账户信息
+     * @param userAccountRequest
+     * @return
+     */
+    DataTransferObject<PagingResult<UserAccountVO>> getUserAccountPage(UserAccountRequest userAccountRequest);
 
     /**
      * 用户注册

@@ -2,9 +2,12 @@ package com.taisf.services.recharge.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
+import com.taisf.services.recharge.dto.BalanceMoneyOneRequest;
 import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.dto.ChargeRequest;
 import com.taisf.services.recharge.entity.RechargeEntity;
+import com.taisf.services.recharge.vo.EnterpriseStatsNumber;
 
 /**
  * <p>充值</p>
@@ -21,6 +24,31 @@ import com.taisf.services.recharge.entity.RechargeEntity;
  */
 public interface RechargeService {
 
+
+    /**
+     * 分配金额-对个人
+     * @author afi
+     * @param request
+     * @return
+     */
+    DataTransferObject<Void> balanceMoneyOne(BalanceMoneyOneRequest request);
+
+
+    /**
+     * 分配金额-平均
+     * @author afi
+     * @param request
+     * @return
+     */
+    DataTransferObject<Void> balanceMoneyAvg(BalanceMoneyAvgRequest request);
+
+    /**
+     * 获取企业下的员工数量和金额
+     * @author afi
+     * @param enterpriseCode
+     * @return
+     */
+    DataTransferObject<EnterpriseStatsNumber>  getEnterpriseStatsNumber(String enterpriseCode);
 
     /**
      * 分页查询充值记录

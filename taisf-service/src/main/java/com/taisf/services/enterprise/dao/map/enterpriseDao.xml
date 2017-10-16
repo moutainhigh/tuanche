@@ -40,7 +40,7 @@
     <include refid="Base_Column_List" />
     from t_enterprise
     where 1=1
-    <if test="enterpriseCode != null">
+    <if test="enterpriseCode != null and enterpriseCode != '' ">
      and  enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
     </if>
 

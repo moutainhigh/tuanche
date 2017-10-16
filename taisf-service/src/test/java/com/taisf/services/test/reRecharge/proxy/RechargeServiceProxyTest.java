@@ -3,7 +3,10 @@ package com.taisf.services.test.reRecharge.proxy;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.recharge.api.RechargeService;
+import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
+import com.taisf.services.recharge.dto.BalanceMoneyOneRequest;
 import com.taisf.services.recharge.dto.ChargeRequest;
+import com.taisf.services.recharge.vo.EnterpriseStatsNumber;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
@@ -28,6 +31,45 @@ public class RechargeServiceProxyTest extends BaseTest {
 
     @Resource(name = "recharge.rechargeServiceProxy")
     private RechargeService rechargeService;
+
+
+
+
+    @Test
+    public void balanceMoneyOneTest() {
+        BalanceMoneyOneRequest request = new BalanceMoneyOneRequest();
+        request.setEnterpriseCode("code");
+        request.setUserPhone("15120096722");
+        request.setMoneyYuan(11);
+        DataTransferObject<Void> chargeMoney = rechargeService.balanceMoneyOne(request);
+        System.out.println(JsonEntityTransform.Object2Json(chargeMoney));
+
+    }
+
+
+
+    @Test
+    public void balanceMoneyAvgTest() {
+        BalanceMoneyAvgRequest request = new BalanceMoneyAvgRequest();
+        request.setEnterpriseCode("code");
+        request.setEmpNum(2);
+        request.setEmpMoneyYuan(10);
+
+        DataTransferObject<Void> chargeMoney = rechargeService.balanceMoneyAvg(request);
+        System.out.println(JsonEntityTransform.Object2Json(chargeMoney));
+
+    }
+
+
+
+
+    @Test
+    public void getEnterpriseStatsNumberTest() {
+        DataTransferObject<EnterpriseStatsNumber> chargeMoney = rechargeService.getEnterpriseStatsNumber("code");
+        System.out.println(JsonEntityTransform.Object2Json(chargeMoney));
+
+    }
+
 
 
     @Test

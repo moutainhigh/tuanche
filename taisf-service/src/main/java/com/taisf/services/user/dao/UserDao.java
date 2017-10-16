@@ -1,8 +1,14 @@
 package com.taisf.services.user.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.user.dto.UserAccountRequest;
+import com.taisf.services.user.entity.AccountLogEntity;
+import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
+import com.taisf.services.user.vo.UserAccountVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -63,6 +69,20 @@ public class UserDao extends BaseDao{
         return mybatisDaoContext.findAll(SQLID + "getOkUserByEntrpriseCode", UserEntity.class, entrpriseCode);
     }
 
+
+    /**
+     * 获取当前的账户信息
+     * @param request
+     * @return
+     */
+    public PagingResult<UserAccountVO> getUserAccountPage(UserAccountRequest request){
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setLimit(request.getLimit());
+        pageBounds.setPage(request.getPage());
+        return mybatisDaoContext.findForPage(SQLID + "getUserAccountPage",UserAccountVO.class,request,pageBounds);
+
+
+    }
 
 
     /**
