@@ -3,15 +3,12 @@ package com.taisf.web.oms.finance.controller;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.recharge.api.RechargeService;
-import com.taisf.services.recharge.dto.ChargeHisRequest;
-import com.taisf.services.recharge.entity.RechargeEntity;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserAccountRequest;
 import com.taisf.services.user.vo.UserAccountVO;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * <p>财务相关</p>
@@ -111,6 +107,10 @@ public class FinanceController {
             DataTransferObject<PagingResult<UserAccountVO>> dto =userService.getUserAccountPage(userAccountRequest);
             //查询出当前供餐商下所有菜品信息
             if (!Check.NuNObj(dto.getData())) {
+                if(dto.getData().getList().size() == 0){
+                    dto.getData().getList().add(new UserAccountVO());
+                    dto.getData().setTotal(1);
+                }
                 pageResult.setRows(dto.getData().getList());
                 pageResult.setTotal(dto.getData().getTotal());
             }
