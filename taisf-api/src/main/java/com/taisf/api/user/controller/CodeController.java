@@ -58,6 +58,7 @@ public class CodeController extends AbstractController {
         if (Check.NuNObj(code)) {
             return new ResponseDto("参数异常");
         }
+
         SmsTypeEnum smsTypeEnum = SmsTypeEnum.getTypeByCode(code);
         if (Check.NuNObj(smsTypeEnum)){
             return new ResponseDto("异常的code");

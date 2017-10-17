@@ -56,7 +56,7 @@ public interface UserService {
      * @param userLoginRequest
      * @return
      */
-    DataTransferObject<RegistInfoVO> loginByCode(UserLoginRequest userLoginRequest);
+    DataTransferObject<String> loginByCode(UserLoginCodeRequest userLoginRequest);
 
 
 

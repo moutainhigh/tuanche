@@ -104,7 +104,7 @@ demo:
 
 ````
 
-            
+         
 ## 2.登录
 
 ###  地址
@@ -161,8 +161,71 @@ demo:
       -d '{"userPhone":"123","pwd":"123"}'
 
 ````
+
+
+
+
+         
+## 3.验证码登录
+
+###  地址
+
+    user/loginByCode
+
+
+###  提交方式
+类型|描述
+---|---
+提交方式|post
+Content-Type|application/json
+参数|放在body流中,依照json格式
+
+
+### 参数信息
+字段|类型|描述
+---|---|---
+userPhone|String|用户电话
+msgCode|String|验证码
+
+返回信息:成功
+
+   {
+       "msg": {
+           "info": "",
+           "code": 0,
+           "success": true
+       },
+       "data": "ff8080815f0bc096015f0bc096510000" //就是返回的token值
+   }
+
+返回信息:失败
+
+    {
+        "msg": {
+            "info": "异常的头信息",
+            "code": 1,
+            "success": false
+        },
+        "data": {}
+    }
+   
+demo:
+
+````
+      curl -X POST \
+      http://localhost:8080/user/login \
+      -H 'cache-control: no-cache' \
+      -H 'content-type: application/json' \
+      -H 'postman-token: 2294e873-d761-11b0-01cc-60cfec39e264' \
+      -H 'token: token' \
+      -H 'traceinfo: applicationCode=user;deviceUuid=deviceUuid;versionCode=versionCode;source=1;' \
+      -d '{"userPhone":"123","pwd":"123"}'
+
+````
+
+
            
-## 3.退出
+## 4.退出
 
 ###  地址
 
@@ -219,7 +282,7 @@ demo:
 
 ````
            
-## 4.注册
+## 5.注册
 
 ###  地址
 
@@ -306,12 +369,11 @@ demo:
 
 
 
-## 5.发送验证码
+## 6.发送验证码
 
 ###  地址
 
-    send/code?code=103
-
+    send/code?code=103&userTel=12313123123131
 
 ###  提交方式
 类型|描述
@@ -321,10 +383,13 @@ demo:
 参数 放在url
 
 
-### 参数
-    code 
-    // 修改支付密码 103
-    
+
+### 参数信息
+字段|类型|描述
+---|---|---
+code|String|修改支付密码传103 用户登录:101  
+userTel|String|用户电话
+
 
 返回信息:成功
 
@@ -366,7 +431,7 @@ demo:
 
 
 
-## 6.修改密码
+## 7.修改密码
 
 ###  地址
 
@@ -435,7 +500,7 @@ demo:
 
 
 
-## 7.修改支付密码
+## 8.修改支付密码
 
 ###  地址
 

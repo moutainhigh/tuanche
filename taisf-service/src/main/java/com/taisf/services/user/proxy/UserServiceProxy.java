@@ -3,10 +3,9 @@ package com.taisf.services.user.proxy;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
 import com.jk.framework.base.page.PagingResult;
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.DateUtil;
-import com.jk.framework.base.utils.UUIDGenerator;
-import com.jk.framework.base.utils.ValueUtil;
+import com.jk.framework.base.utils.*;
+import com.jk.framework.cache.redis.api.RedisOperations;
+import com.jk.framework.cache.redis.constant.RedisConstant;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
@@ -22,9 +21,11 @@ import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
 import com.taisf.services.user.vo.RegistInfoVO;
 import com.taisf.services.user.vo.UserAccountVO;
+import com.taisf.services.user.vo.UserModelVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -62,6 +63,10 @@ public class UserServiceProxy implements UserService {
 
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
+
+    @Autowired
+    private RedisOperations redisOperations;
+
 
     @Resource(name="ups.employeeDao")
     private EmployeeDao employeeDao;
@@ -101,9 +106,6 @@ public class UserServiceProxy implements UserService {
             dto.setErrorMsg("请输入密码");
             return dto;
         }
-
-        //TODO 验证码
-
         //校验头信息
         this.checkHeaderMust(dto,userRegistRequest.getHeader());
         if (!dto.checkSuccess()){
@@ -296,18 +298,8 @@ public class UserServiceProxy implements UserService {
             return dto;
         }
         //2. 获取token信息
-        LoginTokenEntity token = userManager.getToken(userEntity.getUserUid(), userLoginRequest.getHeader().getDeviceUuid(), applicationCodeEnum.getCode());
-        if (!Check.NuNObj(token)){
-            dto.setData(token.getUserToken());
-        }else {
-
-            String userToken = UUIDGenerator.hexUUID();
-            LoginTokenEntity loginTokenEntity = new LoginTokenEntity();
-            loginTokenEntity.setUserId(userEntity.getUserUid());
-            loginTokenEntity.setUserToken(userToken);
-            userManager.saveLoginToken(transHeader2Token(userLoginRequest.getHeader(),loginTokenEntity));
-            dto.setData(userToken);
-        }
+        //处理token信息
+        this.dealToken(userLoginRequest, dto, applicationCodeEnum, userEntity);
         return dto;
     }
 
@@ -363,13 +355,127 @@ public class UserServiceProxy implements UserService {
         }
     }
 
+    /**
+     * 用户登录 [验证码登录]
+     * @param userLoginRequest
+     * @return
+     */
     @Override
-    public DataTransferObject<RegistInfoVO> loginByCode(UserLoginRequest userLoginRequest) {
+    public DataTransferObject<String> loginByCode(UserLoginCodeRequest userLoginRequest) {
 
-        return null;
+        DataTransferObject<String> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userLoginRequest)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(userLoginRequest.getUserPhone())){
+            dto.setErrorMsg("请输入正确的手机号");
+            return dto;
+        }
+
+        //校验头信息
+        this.checkHeaderMust(dto,userLoginRequest.getHeader());
+        if (!dto.checkSuccess()){
+            return dto;
+        }
+
+        ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(userLoginRequest.getHeader().getApplicationCode());
+        if (Check.NuNObj(applicationCodeEnum)){
+            dto.setErrorMsg("异常的应用名称");
+            return dto;
+        }
+        //1. 验证手机号信息
+        UserEntity userEntity = userManager.getUserByUserPhone(userLoginRequest.getUserPhone());
+        if (Check.NuNObj(userEntity)){
+            dto.setErrorMsg("该手机号不存在");
+            return dto;
+        }
+
+        //2. 判断用户状态
+        UserStatusEnum userStatusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());
+        if (Check.NuNObj(userStatusEnum)){
+            dto.setErrorMsg("异常的用户状态");
+            return dto;
+        }
+        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+            dto.setErrorMsg("该帐户已注销");
+            return dto;
+        }else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()){
+            dto.setErrorMsg("该帐户已冻结");
+            return dto;
+        }
+
+        //2. 获取企业信息
+        EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
+        if (Check.NuNObj(infoVO)){
+            dto.setErrorMsg("异常的企业信息");
+            return dto;
+        }
+
+        //获取合作企业状态
+        EnterpriseStatusEnum statusEnum = EnterpriseStatusEnum.getTypeByCode(infoVO.getEnterpriseStatus());
+        if (Check.NuNObj(statusEnum)){
+            dto.setErrorMsg("异常的企业状态信息");
+            return dto;
+        }
+        if (!statusEnum.checkOk()){
+            dto.setErrorMsg(statusEnum.getDes());
+            return dto;
+        }
+        if (Check.NuNObj(infoVO.getTillTime())){
+            dto.setErrorMsg("异常的企业合作信息,请联系管理员");
+            return dto;
+        }
+        if (infoVO.getTillTime().before(new Date())){
+            dto.setErrorMsg("该企业合作已过期");
+            return dto;
+        }
+        //处理token信息
+        this.dealToken(userLoginRequest, dto, applicationCodeEnum, userEntity);
+
+        return dto;
+
+    }
+
+    /**
+     * 处理用户的登录信息
+     * @param userLoginRequest
+     * @param dto
+     * @param applicationCodeEnum
+     * @param userEntity
+     */
+    private void dealToken(UserLoginCodeRequest userLoginRequest, DataTransferObject<String> dto, ApplicationCodeEnum applicationCodeEnum, UserEntity userEntity) {
+        if (!dto.checkSuccess()){
+            return;
+        }
+        //2. 获取token信息
+        LoginTokenEntity token = userManager.getToken(userEntity.getUserUid(), userLoginRequest.getHeader().getDeviceUuid(), applicationCodeEnum.getCode());
+        if (!Check.NuNObj(token)){
+            dto.setData(token.getUserToken());
+        }else {
+
+            String userToken = UUIDGenerator.hexUUID();
+            LoginTokenEntity loginTokenEntity = new LoginTokenEntity();
+            loginTokenEntity.setUserId(userEntity.getUserUid());
+            loginTokenEntity.setUserToken(userToken);
+            userManager.saveLoginToken(transHeader2Token(userLoginRequest.getHeader(),loginTokenEntity));
+            dto.setData(userToken);
+        }
+
+        //设置redis信息
+        String loginKey = RedisConstant.LOGIN_KEY + token.getUserToken();
+        UserModelVO userModel = new UserModelVO();
+        BeanUtils.copyProperties(userEntity,userModel);
+        //设置缓存信息
+        redisOperations.setex(loginKey,360*24*60*60, JsonEntityTransform.Object2Json(userModel));
     }
 
 
+    /**
+     * 登出
+     * @param userLogoutRequest
+     * @return
+     */
     @Override
     public DataTransferObject<Void> logout(UserLogoutRequest userLogoutRequest) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
