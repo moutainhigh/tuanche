@@ -40,7 +40,7 @@ public class UserRegistRequest extends BaseEntity{
     /**
      * 密码
      */
-    private String code;
+    private String msgCode;
 
 
     public Header getHeader() {
@@ -67,11 +67,12 @@ public class UserRegistRequest extends BaseEntity{
         this.pwd = pwd;
     }
 
-    public String getCode() {
-        return code;
+
+    public String getMsgCode() {
+        return msgCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setMsgCode(String msgCode) {
+        this.msgCode = msgCode;
     }
 }

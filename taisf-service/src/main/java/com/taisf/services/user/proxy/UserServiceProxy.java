@@ -167,10 +167,24 @@ public class UserServiceProxy implements UserService {
         }
 
         //4. 修改用户状态
-        userManager.updateUser2Activity(userEntity.getUserUid());
+        userManager.updateUser2Activity(userEntity.getUserUid(),userRegistRequest.getPwd());
 
         //5. 获取企业的信息并封装企业返回信息
         this.fillEnterpriseInfo(dto,userEntity.getEnterpriseCode(),userEntity);
+
+        //6. 登录 获取token
+        if (dto.checkSuccess()){
+
+            UserLoginCodeRequest userLoginCodeRequest = new UserLoginCodeRequest();
+            userLoginCodeRequest.setHeader(userRegistRequest.getHeader());
+            userLoginCodeRequest.setUserPhone(userRegistRequest.getUserPhone());
+            DataTransferObject<String> loginDto =loginByCode(userLoginCodeRequest);
+            if (loginDto.checkSuccess()){
+                dto.getData().setUserToken(loginDto.getData());
+            }else {
+                dto.setErrorMsg("注册成功,单登录失败,请重新登录");
+            }
+        }
 
         return dto;
     }
@@ -465,6 +479,9 @@ public class UserServiceProxy implements UserService {
         //设置redis信息
         String loginKey = RedisConstant.LOGIN_KEY + token.getUserToken();
         UserModelVO userModel = new UserModelVO();
+        userModel.setDeviceUuid(token.getDeviceUuid());
+        userModel.setUserToken(token.getUserToken());
+        userModel.setUserId(token.getUserId());
         BeanUtils.copyProperties(userEntity,userModel);
         //设置缓存信息
         redisOperations.setex(loginKey,360*24*60*60, JsonEntityTransform.Object2Json(userModel));

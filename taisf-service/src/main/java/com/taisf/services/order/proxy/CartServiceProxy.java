@@ -110,6 +110,10 @@ public class CartServiceProxy implements CartService{
         for (CartEntity cartEntity : list) {
             //获取购物车类型
             SupplierProductTypeEnum supplierProductTypeEnum = SupplierProductTypeEnum.getByCode(cartEntity.getSupplierProductType());
+            if (Check.NuNObj(supplierProductTypeEnum)){
+                dto.setErrorMsg("异常的商品类型");
+                return dto;
+            }
             if(supplierProductTypeEnum.getCode() == supplierProductTypeEnum.PACKAGE.getCode() ){
                 CartEleVO ele = new CartEleVO();
                 ele.setProductCode(cartEntity.getProductCode());
@@ -227,6 +231,12 @@ public class CartServiceProxy implements CartService{
         //1. 校验基本参数,≤
         this.checkCartBasePar(dto,cartAddRequest);
         if (!dto.checkSuccess()){
+            return dto;
+        }
+
+        SupplierProductTypeEnum supplierProductTypeEnum = SupplierProductTypeEnum.getByCode(cartAddRequest.getSupplierProductType());
+        if (Check.NuNObj(supplierProductTypeEnum)){
+            dto.setErrorMsg("异常的商品类型");
             return dto;
         }
         if (Check.NuNObj(cartAddRequest.getProductNum())){

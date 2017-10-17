@@ -302,7 +302,7 @@ Content-Type|application/json
 ---|---|---
 userPhone|String|用户手机号
 pwd|String|密码,一定是MD5之后的,不接受明文密码
-code|String|手机验证码
+msgCode|String|手机验证码 原来是code,后来调整msgCode 请注意
 
 
 返回信息:成功

@@ -40,6 +40,10 @@
 
             <mvc:exclude-mapping path="/"/>
             <mvc:exclude-mapping path="/redis"/>
+            <mvc:exclude-mapping path="/user/regist"/>
+            <mvc:exclude-mapping path="/user/loginByCode"/>
+            <mvc:exclude-mapping path="/user/login"/>
+
             <bean class="com.taisf.api.common.interceptor.TokenInterceptor" />
         </mvc:interceptor>
 

@@ -78,7 +78,7 @@ public class UserController extends AbstractController {
         }
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(userUid));
         try {
-            DataTransferObject<IndexVO> dto =indexService.getIndex("afi");
+            DataTransferObject<IndexVO> dto =indexService.getIndex(userUid);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【初始化首页】错误,par:{}, e={}",JsonEntityTransform.Object2Json(userUid), e);
@@ -107,6 +107,12 @@ public class UserController extends AbstractController {
         UserRegistRequest paramRequest = getEntity(request, UserRegistRequest.class);
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
+        }
+
+        String  key = HeaderUtil.getCodeStr(header, SmsTypeEnum.USER_REGIST.getCode());
+        String value= redisOperation.get(key);
+        if (!ValueUtil.getStrValue(value).equals(ValueUtil.getStrValue(paramRequest.getMsgCode()))){
+            return new ResponseDto("验证码错误");
         }
         paramRequest.setHeader(header);
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));

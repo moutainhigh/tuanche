@@ -300,8 +300,8 @@ public class UserManagerImpl {
      * @param userId
      * @return
      */
-    public int updateUser2Activity(String userId){
-        return userDao.updateUser2Activity(userId);
+    public int updateUser2Activity(String userId,String pwd){
+        return userDao.updateUser2Activity(userId,pwd);
     }
 
 

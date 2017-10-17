@@ -23,6 +23,11 @@ public class RegistInfoVO extends BaseEntity {
     private static final long serialVersionUID = 301231231201446703L;
 
     /**
+     * 用户token
+     */
+    private String userToken;
+
+    /**
      * 手机号
      */
     private String userPhone;
@@ -31,6 +36,11 @@ public class RegistInfoVO extends BaseEntity {
      * 用户名称
      */
     private String userName;
+
+    /**
+     * 员工号
+     */
+    private String userCode;
 
     /**
      * 企业编码
@@ -57,6 +67,15 @@ public class RegistInfoVO extends BaseEntity {
      * 送餐地址
      */
     private List<String>  addrList = new ArrayList<>();
+
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
 
     public String getUserPhone() {
         return userPhone;
@@ -112,5 +131,13 @@ public class RegistInfoVO extends BaseEntity {
 
     public void setAddrList(List<String> addrList) {
         this.addrList = addrList;
+    }
+
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 }

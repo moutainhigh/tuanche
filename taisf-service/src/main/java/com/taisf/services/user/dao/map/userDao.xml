@@ -118,7 +118,7 @@
 
 
   <update id="updateUser2Activity" parameterType="java.util.Map" >
-    update t_user set user_status = 2
+    update t_user set user_status = 2, user_password = #{userPassword,jdbcType=VARCHAR}
     where user_uid = #{userUid,jdbcType=VARCHAR}
   </update>
 

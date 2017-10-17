@@ -123,9 +123,10 @@ public class UserDao extends BaseDao {
      * @param userId
      * @return
      */
-    public int updateUser2Activity(String userId) {
+    public int updateUser2Activity(String userId,String pwd) {
         Map<String, Object> par = new HashMap<>();
         par.put("userUid", userId);
+        par.put("userPassword", pwd);
         return mybatisDaoContext.update(SQLID + "updateUser2Activity", par);
     }
 
