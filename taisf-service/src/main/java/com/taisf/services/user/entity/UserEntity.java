@@ -80,6 +80,32 @@ public class UserEntity extends BaseEntity {
 	private Date createTime;
 
 	private Date updateTime;
+	private Integer amount;
+	private Integer accountStatus;
+
+	public Integer getAccountStatus() {
+		return accountStatus;
+	}
+
+	public void setAccountStatus(Integer accountStatus) {
+		this.accountStatus = accountStatus;
+	}
+
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
 
 	public Integer getId() {
 		return id;
@@ -193,11 +219,5 @@ public class UserEntity extends BaseEntity {
 		this.productSource = productSource;
 	}
 
-	public String getUserCode() {
-		return userCode;
-	}
 
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
-	}
 }

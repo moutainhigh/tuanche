@@ -33,51 +33,12 @@
 			<div class="ibox-content">
 				<div class="row">
 					<div class="form-group">
+						<input type="hidden" value="${manger}" id="mangerId"/>
 						<label class="col-sm-1 control-label mtop">企业名称:</label>
 						<div class="col-sm-2">
-							<input id="enterpriseName" type="text" value="" class="form-control">
+							<input id="supplierName" type="text" value="" class="form-control">
 						</div>
-						<label class="col-sm-1 control-label mtop">开户日期:</label>
-						<div class="col-sm-2">
-                           <input id="openTime" name="openTime" value="" class="laydate-icon form-control layer-date">
-                       	</div>
-                       	<label class="col-sm-1 control-label mtop">截止日期:</label>
-                       	<div class="col-sm-2">
-                           <input id="tillTime" name="tillTime" value="" class="laydate-icon form-control layer-date">
-                       	</div>
-
-						<label class="col-sm-1 control-label mtop">企业类型:</label>
-						<div class="col-sm-2">
-							<select class="form-control" name="enterpriseType" id="enterpriseType">
-								<option value="">--请选择--</option>
-								<c:forEach items="<%=EnterpriseTypeEnum.values()%>" var="e" >
-									<option value="${e.code}">${e.name}</option>
-								</c:forEach>
-                        	</select>
-						</div>
-					</div>
-				</div>
-				<div class="row" style="margin-top:10px">
-                	<div class="form-group">
-						<label class="col-sm-1 control-label mtop">平台经理:</label>
-	                    <div class="col-sm-2">
-	                        <select class="form-control" name="manger" id="manger">
-	                            <option value="">--请选择--</option>
-	                            <c:forEach items="${employees}" var="emp" >
-	                                <option  value="${emp.userId}">${emp.empName}</option>
-	                            </c:forEach>
-	                        </select>
-	                    </div>
-	                    <label class="col-sm-1 control-label mtop">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</label>
-						<div class="col-sm-2">
-							<select class="form-control" name="productType"  id="productType">
-								<option value="">--请选择--</option>
-								<c:forEach items="${drugType}" var="d" >
-									<option value="${d.typeCode}">${d.typeName}</option>
-								</c:forEach>
-                        	</select>
-						</div>
-	                    <div class="col-sm-1">
+						<div class="col-sm-1">
 							<button class="btn btn-primary" type="button" onclick="query();">
 								<i class="fa fa-search"></i>&nbsp;搜索
 							</button>
@@ -91,10 +52,8 @@
 			<div class="ibox-content">
 				<div class="row row-lg">
 						<!-- Example Pagination -->
-					<div class="col-sm-12">				
-						<button id="addMenuButton" type="button" onclick="addEnterprise();" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-							<i class="fa fa-plus"></i>&nbsp;添加企业
-						</button>
+					<div class="col-sm-12">
+						<label class="col-sm-3 control-label mtop">员工:${userName}</label>
 						<table id="listTable" class="table table-bordered" data-click-to-select="true"
 							data-toggle="table" data-side-pagination="server"
 							data-pagination="true" data-page-list="[5,10,20,50]"
@@ -104,29 +63,22 @@
 							data-content-type="application/x-www-form-urlencoded"
 							data-query-params="paginationParam" data-method="post"
 							data-single-select="true"
-							data-url="base/enterprise/pageList">
+							data-url="user/supplierPageList">
 							<thead>																																															
 								<tr>						
 									<th data-field="id" data-visible="false"></th>
 
-									<th data-field="enterpriseCode" data-width="10%"
-										data-align="center"><span class="tdfont">企业编号</span></th>
-									<th data-field="enterpriseName" data-width="10%"
-										data-align="center" ><span class="tdfont">企业名称</span></th>
-									<th data-field="enterpriseType" data-width="15%"
-										data-align="center" ><span class="tdfont">企业类型</span></th>
-									<th data-field="packing" data-width="10%"
-										data-align="center" ><span class="tdfont">用餐总数</span></th>
-									<th data-field="unit" data-width="10%" data-formatter="formatDate"
-										data-align="center" ><span class="tdfont">供餐信息</span></th>
-									<th data-field="openTime" data-width="10%"
-										data-align="center" ><span class="tdfont">开户日期</span></th>
-									<th data-field="tillTime" data-width="10%" data-formatter="formatDate"
-										data-align="center" ><span class="tdfont">截止日期</span></th>
-									<th data-field="enterpriseStatus" data-width="10%" data-formatter="formatStatus"
+									<th data-field="supplierCode" data-width="10%"
+										data-align="center"><span class="tdfont">编号</span></th>
+									<th data-field="cityName" data-width="10%"
+										data-align="center" ><span class="tdfont">城市</span></th>
+									<th data-field="supplierName" data-width="15%"
+										data-align="center" ><span class="tdfont">供餐单位名称</span></th>
+									<th data-field="supplierStatus" data-width="10%"
 										data-align="center" ><span class="tdfont">状态</span></th>
-									<th data-field="handle" data-width="15%" data-align="center"
-										data-formatter="formatOperate"><span class="tdfont">操作</span></th>
+
+									<%--<th data-field="handle" data-width="15%" data-align="center"
+										data-formatter="formatOperate"><span class="tdfont">操作</span></th>--%>
 								</tr>
 							</thead>
 						</table>
@@ -155,41 +107,12 @@
 
 	<!-- Page-Level Scripts -->
 	<script>
-		$(function (){
-			//初始化日期
-			CommonUtils.datePickerFormat("openTime");
-			CommonUtils.datePickerFormat("tillTime");
-			/*
-			laydate.render({
-				elem : 'tillTime',
-				type : 'datetime'
-			});
-			*/
-		});
-
 		function paginationParam(params) {
-			var openTime = $("#openTime").val();
-			var tillTime = $("#tillTime").val();
-
-			if (openTime == "") {
-				openTime = undefined;
-			} else {
-				openTime += " 00:00:00";
-			}
-			if (tillTime == "") {
-				tillTime = undefined;
-			} else
-				tillTime += " 00:23:59";
-
 			return {
 				limit : params.limit,
 				page : $("#listTable").bootstrapTable("getOptions").pageNumber,
-				openTime : openTime,
-				tillTime : tillTime,
-				enterpriseName : $("#enterpriseName").val(),
-				enterpriseType : $("#enterpriseType").find("option:selected")
-						.val(),
-				manger : $("#manger").val()
+				manger : $("#mangerId").val(),
+                supplierName : $("#supplierName").val()
 			};
 		}
 
@@ -206,12 +129,9 @@
 		// 操作列
 		function formatOperate(value, row, index) {
 			var result = "";
-			result = result + "<a title='编辑' href=javascript:editEnterprise('"
+			result = result + "<a title='转让' href=javascript:editEnterprise('"
 					+ "base/enterprise/operate?id=" + row.id + "&operate=2"
-					+ "')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-			result = result + "<a title='查看' href=javascript:viewEnterprise('"
-					+ "base/enterprise/operate?id=" + row.id + "&operate=1"
-					+ "')>查看</a>";
+					+ "')>转让</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			return result;
 		}
 

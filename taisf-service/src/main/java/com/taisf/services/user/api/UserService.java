@@ -2,11 +2,16 @@ package com.taisf.services.user.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.user.dto.*;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.user.dto.*;
 import com.taisf.services.user.entity.AccountLogEntity;
+import com.taisf.services.user.entity.UserAccountEntity;
+import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.vo.RegistInfoVO;
+
+import java.util.List;
 import com.taisf.services.user.vo.UserAccountVO;
 
 /**
@@ -90,5 +95,54 @@ public interface UserService {
      * @return
      */
     DataTransferObject<Void> updateUserPwd(String userId,String userPassword,String oldUserPassword);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:销售管理列表
+     **/
+    DataTransferObject<PagingResult<UserEntity>> pageListUser(UserRequest request);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:销售管理列表
+     **/
+    DataTransferObject<UserEntity> getUserById(Integer id);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:修改员工信息
+     **/
+    DataTransferObject<Void> updateUser(UserEntity userEntity);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:修改员工信息
+     **/
+    DataTransferObject<List<UserEntity>> getUserByType(Integer type);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:修改员工信息
+     **/
+    void saveUser(UserEntity userEntity);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:企业员工管理列表
+     **/
+    DataTransferObject<PagingResult<UserEntity>> pageListCompanyUser(UserRequest request);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:修改账户信息
+     **/
+    void updateAccountUser(UserAccountEntity accountUserEntity);
 
 }

@@ -62,6 +62,16 @@ public class EmployeeEntity extends BaseEntity {
 	 */
 	private String hospitalName;
 
+	private int userRole;
+
+	public int getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(int userRole) {
+		this.userRole = userRole;
+	}
+
 	public Integer getHospitalId() {
 		return hospitalId;
 	}

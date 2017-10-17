@@ -7,6 +7,7 @@ import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.AccountTypeEnum;
 import com.taisf.services.order.dao.*;
 import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.dto.OrderProductListRequest;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderPayEntity;
@@ -84,6 +85,26 @@ public class OrderManagerImpl {
 			infoVO.setList(orderProductDao.getOrderProductByOrderSn(infoVO.getOrderSn()));
 		}
 		return pagingResult;
+	}
+
+	/**
+	 * @author:zhangzhengguang
+	 * @date:2017/10/16
+	 * @description:分页查询订单列表
+	 **/
+	public PagingResult<OrderInfoVO> pageListOrder(OrderInfoRequest orderInfoRequest){
+		PagingResult<OrderInfoVO> pagingResult = orderInfoDao.pageListOrder(orderInfoRequest);
+		return pagingResult;
+	}
+
+	/**
+	 * @author:zhangzhengguang
+	 * @date:2017/10/17
+	 * @description:分页查询订单详情商品列表
+	 **/
+	public PagingResult<OrderProductEntity>  getOrderProductPageList(OrderProductListRequest orderProductListRequest){
+		PagingResult<OrderProductEntity> orderProductPageList = orderProductDao.getOrderProductPageList(orderProductListRequest);
+		return orderProductPageList;
 	}
 
 

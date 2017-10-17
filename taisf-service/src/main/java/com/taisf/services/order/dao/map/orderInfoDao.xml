@@ -34,6 +34,7 @@
         <result column="need_pay" property="needPay" jdbcType="INTEGER" />
         <result column="pay_balance" property="payBalance" jdbcType="INTEGER" />
         <result column="carry_money" property="carryMoney" jdbcType="INTEGER" />
+        <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
 
     </resultMap>
 
@@ -61,5 +62,27 @@
         </if>
     </select>
 
+    <select id="pageListOrder" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest" >
+        SELECT
+        <include refid="Base_Column_List" />
+        ,supplier_name
+        FROM t_order t
+        INNER join t_order_money m on  t.order_sn = m.order_sn
+        LEFT  JOIN  t_supplier s ON  s.supplier_code = t.business_uid
+        WHERE  1=1
+        <if test="userUid != null and userUid != '' ">
+            and t.user_uid = #{userUid,jdbcType=VARCHAR}
+        </if>
+        <if test="openTime != null and openTime != '' ">
+            <![CDATA[
+				and create_time >= #{openTime}
+			]]>
+        </if>
+        <if test="tillTime != null and tillTime != '' ">
+            <![CDATA[
+				and create_time <= #{tillTime}
+			]]>
+        </if>
+    </select>
 
 </mapper>

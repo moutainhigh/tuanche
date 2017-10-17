@@ -46,16 +46,21 @@
         <div class="ibox-content">
             <div class="row">
                 <div class="form-group">
-                    <label class="col-sm-1 control-label mtop">日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期:</label>
+                    <label class="col-sm-1 control-label mtop">手机号:</label>
                     <div class="col-sm-2">
-                        <input id="openTime" name="openTime" value="" class="laydate-icon form-control layer-date">
+                        <input id="userPhoneS" type="text" value="" class="form-control">
                     </div>
-                    <div class="col-sm-2">
-                        <input id="tillTime" name="tillTime" value="" class="laydate-icon form-control layer-date">
+                    <label class="col-xs-1 col-sm-1 control-label mtop">餐食标准:</label>
+                    <div class="col-xs-2 col-sm-2">
+                        <select class="form-control" name="userRole" id="userRole">
+                            <option value="">--请选择--</option>
+                            <option value="1">--普通餐--</option>
+                            <option value="2">--老板餐--</option>
+                        </select>
                     </div>
-                    <label class="col-sm-1 control-label mtop">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</label>
+                    <label class="col-sm-1 control-label mtop">企业名称:</label>
                     <div class="col-sm-2">
-                        <input id="name" type="text" value="" class="form-control">
+                        <input id="enterpriseName" type="text" value="" class="form-control">
                     </div>
                     <label class="col-xs-1 col-sm-1 control-label mtop">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</label>
                     <div class="col-xs-2 col-sm-2">
@@ -65,6 +70,17 @@
                             <option value="2">--冻结--</option>
                             <option value="3">--已过期--</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label mtop">日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期:</label>
+                    <div class="col-sm-2">
+                        <input id="openTime" name="openTime" value="" class="laydate-icon form-control layer-date">
+                    </div>
+                    <div class="col-sm-2">
+                        <input id="tillTime" name="tillTime" value="" class="laydate-icon form-control layer-date">
                     </div>
                     <div class="col-sm-1">
                         <button class="btn btn-primary" type="button" onclick="query();">
@@ -94,23 +110,25 @@
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
                            data-single-select="true"
-                           data-url="user/pageList">
+                           data-url="user/pageListCompanyUser">
                         <thead>
                         <tr>
-                            <th data-field="id" data-visible="false"></th>
+                            <%--<th data-field="id" data-visible="false"></th>--%>
+                            <th data-field="id" data-width="10%"
+                                data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="userUid" data-width="10%"
                                 data-align="center"><span class="tdfont">编号</span></th>
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
-                                data-align="center"><span class="tdfont">日期</span></th>
-                            <th data-field="userName" data-width="15%"
-                                data-align="center"><span class="tdfont">姓名</span></th>
+                                data-align="center"><span class="tdfont">注册时间</span></th>
                             <th data-field="userPhone" data-width="10%"
                                 data-align="center"><span class="tdfont">手机号</span></th>
-                            <th data-field="2" data-width="10%" data-formatter="formatCompany"
-                                data-align="center"><span class="tdfont">维护企业</span></th>
-                            <th data-field="1" data-width="10%" data-formatter="formatSupplier"
-                                data-align="center"><span class="tdfont">维护供餐商</span></th>
-                            <th data-field="userStatus" data-width="10%"
+                            <th data-field="enterpriseName" data-width="15%"
+                                data-align="center"><span class="tdfont">企业</span></th>
+                            <th data-field="userRole" data-width="15%" data-formatter="formatUserRole"
+                                data-align="center"><span class="tdfont">餐食标准</span></th>
+                                <th data-field="amount" data-width="15%" data-formatter="formatAmount"
+                                data-align="center"><span class="tdfont">账户金额(元)</span></th>
+                            <th data-field="accountStatus" data-width="10%" data-formatter="formatAccountStatus"
                                 data-align="center"><span class="tdfont">状态</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
@@ -130,7 +148,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
-                <h4 class="modal-title">新增销售员工</h4>
+                <h4 class="modal-title">新增企业员工</h4>
             </div>
             <div class="col-sm-14">
                 <div class="ibox float-e-margins">
@@ -138,17 +156,50 @@
                         <form id="form" class="form-horizontal m-t">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</label>
+                                <label class="col-sm-3 control-label">员工编号:</label>
                                 <div class="col-sm-8">
-                                    <input id="userName" name="userName" type="text"
+                                    <input id="userCode" name="userCode" type="text"
                                            value="${backstageUser.relationName }" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;号:</label>
                                 <div class="col-sm-8">
-                                    <input id="userPhone" name="userPhone" type="text"
+                                    <input id="userPhoneA" name="userPhoneA" type="text"
                                            value="${backstageUser.relationName }" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">企业编号:</label>
+                                <div class="col-sm-8">
+                                    <input id="enterpriseCodeA" name="enterpriseCodeA" type="text"
+                                           value="${backstageUser.relationName }" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">企业名称:</label>
+                                <div class="col-sm-8">
+                                    <input id="enterpriseNameA" name="enterpriseNameA" type="text"
+                                           value="${backstageUser.relationName }" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">类型选择:</label>
+                                <div class="col-sm-8">
+                                    <input type="radio" value="1"  name="productSource" > 普通餐
+                                    <input type="radio" value="2"  name="productSource" > 西餐
+                                    <input type="radio" value="3"  name="productSource" > 清真(单选)
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">餐费标准:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="userRoleA" id="userRoleA">
+                                        <option value="">--请选择--</option>
+                                        <option value="1">--普通餐--</option>
+                                        <option value="2">--老板餐--</option>
+                                    </select>
                                 </div>
                             </div>
                             <input type="hidden" class="form-control" id="iduser" name="id" value=""/>
@@ -167,70 +218,82 @@
     </div>
 </div>
  <!-- 编辑 -->
-<div class="modal inmodal" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
-                <h4 class="modal-title">销售个人信息</h4>
+                <h4 class="modal-title">编辑企业员工</h4>
             </div>
             <div class="col-sm-14">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
-                        <form id="formD" class="form-horizontal m-t">
-                            <input type="hidden" id="UserUidD" name="UserUidE" value="">
+                        <form id="form" class="form-horizontal m-t">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</label>
+                                <label class="col-sm-3 control-label">员工编号:</label>
                                 <div class="col-sm-8">
-                                    <input readonly id="userNameD" name="userNameE" type="text"
-                                           value="" class="form-control">
+                                    <input id="userCodeE" name="userCode" type="text"
+                                           value="${user.userCode }" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;号:</label>
                                 <div class="col-sm-8">
-                                    <input readonly id="userPhoneD" name="userPhone" type="text"
-                                           value="" class="form-control">
+                                    <input id="userPhoneU" name="userPhoneA" type="text"
+                                           value="${backstageUser.relationName }" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</label>
+                                <label class="col-sm-3 control-label">企业编号:</label>
                                 <div class="col-sm-8">
-                                   <span id="userStatusE">在职</span>
-                                    <button class="btn btn-primary" type="button" onclick="dimission();">离职</button>
+                                    <input id="enterpriseCodeE" name="enterpriseCodeA" type="text"
+                                           value="${backstageUser.relationName }" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</label>
+                                <label class="col-sm-3 control-label">企业名称:</label>
                                 <div class="col-sm-8">
-                                    <input readonly id="" name="userPhone" type="text"
-                                           value="" class="form-control">
+                                    <input id="enterpriseNameE" name="enterpriseNameA" type="text"
+                                           value="${backstageUser.relationName }" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+                                <label class="col-sm-3 control-label">类型选择:</label>
                                 <div class="col-sm-8">
-                                    <input readonly id="password" name="userPhone" type="text"
-                                           value="" class="form-control">
+                                    <input type="radio" value="1"  name="productSourceE" > 普通餐
+                                    <input type="radio" value="2"  name="productSourceE" > 西餐
+                                    <input type="radio" value="3"  name="productSourceE" > 清真(单选)
+                                    </select>
                                 </div>
                             </div>
-                            <input type="hidden" class="form-control" id="iduserD" name="id" value=""/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">餐费标准:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="userRoleE" id="userRoleE">
+                                        <option value="">--请选择--</option>
+                                        <option value="1">--普通餐--</option>
+                                        <option value="2">--老板餐--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" class="form-control" id="UIDE" name="UID" value=""/>
                             <!-- 用于 将表单缓存清空 -->
-                            <input id="addResetD" type="reset" style="display:none;"/>
+                            <input id="addReset" type="reset" style="display:none;"/>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="saveBtnD" type="button" onclick="editUser();">保存</button>
+                <button class="btn btn-primary" id="saveBtn" type="button" onclick="editUser();">保存</button>
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
             </div>
         </div>
     </div>
-</div><div class="modal inmodal" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+</div>
+<div class="modal inmodal" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
@@ -299,8 +362,9 @@
             page: $("#listTable").bootstrapTable("getOptions").pageNumber,
             openTime: openTime,
             tillTime: tillTime,
-            userName: $("#name").val(),
-            userStatus: $("#status").val(),
+            userPhone: $("#userPhoneS").val(),
+            userRole: $("#userRole").val(),
+            enterpriseName: $("#enterpriseName").val(),
         };
     }
     function paginationParamC(params) {
@@ -319,6 +383,26 @@
             return _date.format("yyyy-MM-dd");
         } else {
             return "-";
+        }
+    }
+    function formatUserRole(value, row, index) {
+        if (value == 1) {
+            return "普通餐";
+        } else {
+            return "老板餐";
+        }
+    }
+
+    function formatAmount(value, row, index) {
+            return (value/100).toFixed(2);
+    }
+    function formatAccountStatus(value, row, index) {
+        if(value == 1){
+            return "可用";
+        }else if(value == 2){
+            return "禁用";
+        }else if(value == 3){
+            return "冻结";
         }
     }
 
@@ -341,7 +425,13 @@
     function formatOperate(value, row, index) {
         var result = "";
         result = result + "<a title='编辑' onclick='toedit("+row.id+")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='查看' onclick='detail(\""+row.id+"\")'  data-toggle='modal' data-target='#detailModal')>查看</a>";
+        if(row.accountStatus == 1){
+            result = result + "<a title='禁用' onclick='updateAccountUser(\""+row.userUid+"\",\"2\")'  >禁用</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result = result + "<a title='冻结' onclick='updateAccountUser(\""+row.userUid+"\",\"3\")' >冻结</a>";
+        }else{
+            result = result + "<a title='激活' onclick='updateAccountUser(\""+row.userUid+"\",\"1\")' >激活</a>";
+        }
+
         return result;
     }
     //编辑员工
@@ -354,11 +444,14 @@
             dataType: "json",
             url: 'user/toedit',
             success: function (result) {
-
                 if (result.code === 0) {
                     $('#UserUidE').val(result.data.userUid);
-                    $('#userNameE').val(result.data.userName);
-                    $('#userPhoneE').val(result.data.userPhone);
+                    $('#userCodeE').val(result.data.userCode);
+                    $('#userPhoneU').val(result.data.userPhone);
+                    $('#enterpriseCodeE').val(result.data.enterpriseCode);
+                    $('#enterpriseNameE').val(result.data.enterpriseName);
+                    $('#userRoleE').val(result.data.userRole);
+                    $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -370,19 +463,19 @@
             }
         });
     }
-    function detail(id) {
+    function updateAccountUser(id,status) {
         $.ajax({
             data: {
-                'id': id,
+                'userId': id,
+                'accountStatus': status,
             },
             type: "post",
             dataType: "json",
-            url: 'user/toedit',
+            url: 'user/updateAccountUser',
             success: function (result) {
                 if (result.code === 0) {
-                    $('#UserUidD').val(result.data.userUid);
-                    $('#userNameD').val(result.data.userName);
-                    $('#userPhoneD').val(result.data.userPhone);
+                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                    $('#listTable').bootstrapTable('refresh');
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -398,13 +491,25 @@
     //编辑保存销售员工
     function editUser() {
         $("#saveBtn").attr("disabled", "disabled");
-        if ($("#userNameE").val() == null || $("#userNameE").val() == "") {
-            layer.alert("姓名不能为空", {icon: 5, time: 2000, title: '提示'});
+        if ($("#userCodeE").val() == null || $("#userCodeE").val() == "") {
+            layer.alert("员工编号不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
         ;
-        var userPhone = $("#userPhoneE").val();
+        if ($("#enterpriseCodeE").val() == null || $("#enterpriseCodeE").val() == "") {
+            layer.alert("企业编号不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
+        ;
+        if ($("#enterpriseNameE").val() == null || $("#enterpriseNameE").val() == "") {
+            layer.alert("企业名称不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
+        ;
+        var userPhone = $("#userPhoneU").val();
         if (userPhone == null || userPhone == "") {
             layer.alert("手机号不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
@@ -422,12 +527,16 @@
         $.ajax({
             data: {
                 'userUid': $("#UserUidE").val(),
-                'userPhone': $("#userPhoneE").val(),
-                'userName': $("#userNameE").val(),
+                'userCode': $("#userCodeE").val(),
+                'userPhone': $("#userPhoneU").val(),
+                'enterpriseCode': $("#enterpriseCodeE").val(),
+                'enterpriseName': $("#enterpriseNameE").val(),
+                'productSource': $('input[name="productSourceE"]:checked').val(),
+                'userRole': $("#userRoleE").val(),
             },
             type: "post",
             dataType: "json",
-            url: 'user/editUser',
+            url: 'user/editCompanyUser',
             success: function (result) {
                 if (result.code === 0) {
                     layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
@@ -446,43 +555,29 @@
             }
         });
     }
-    //离职
-    function dimission() {
-        $.ajax({
-            data: {
-                'userUid': $("#UserUidD").val(),
-            },
-            type: "post",
-            dataType: "json",
-            url: 'user/dimission',
-            success: function (result) {
-                if (result.code === 0) {
-                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
-                    $('#listTable').bootstrapTable('refresh');
-                    $('#detailModal').modal('hide');
-                    $("#addResetD").trigger("click");
-                    $("#saveBtn").removeAttr("disabled");
-                } else {
-                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
-                    $("#saveBtn").removeAttr("disabled");
-                }
-            },
-            error: function (result) {
-                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
-                $("#saveBtn").removeAttr("disabled");
-            }
-        });
-    }
-    //新增销售员工
+
+    //新增企业员工
     function saveUser() {
         $("#saveBtn").attr("disabled", "disabled");
-        if ($("#userName").val() == null || $("#userName").val() == "") {
-            layer.alert("姓名不能为空", {icon: 5, time: 2000, title: '提示'});
+        if ($("#userCode").val() == null || $("#userCode").val() == "") {
+            layer.alert("员工编号不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
         ;
-        var userPhone = $("#userPhone").val();
+        if ($("#enterpriseCodeA").val() == null || $("#enterpriseCodeA").val() == "") {
+            layer.alert("企业编号不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
+        ;
+        if ($("#enterpriseNameA").val() == null || $("#enterpriseNameA").val() == "") {
+            layer.alert("企业名称不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
+        ;
+        var userPhone = $("#userPhoneA").val();
         if (userPhone == null || userPhone == "") {
             layer.alert("手机号不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
@@ -507,12 +602,16 @@
                 return true;
             },
             data: {
-                'userPhone': $("#userPhone").val(),
-                'userName': $("#userName").val(),
+                'userCode': $("#userCode").val(),
+                'userPhone': $("#userPhoneA").val(),
+                'enterpriseCode': $("#enterpriseCodeA").val(),
+                'enterpriseName': $("#enterpriseNameA").val(),
+                'productSource': $('input[name="productSource"]:checked').val(),
+                'userRole': $("#userRoleA").val(),
             },
             type: "post",
             dataType: "json",
-            url: 'user/addUser',
+            url: 'user/addCompanyUser',
             success: function (result) {
                 if (result.code === 0) {
                     layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});

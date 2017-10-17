@@ -1,8 +1,6 @@
 package com.taisf.services.user.dto;
 
-import com.jk.framework.base.entity.BaseEntity;
-
-import java.util.Date;
+import com.jk.framework.base.page.PageRequest;
 
 /**
  * <p>用户的请求参数</p>
@@ -17,15 +15,15 @@ import java.util.Date;
  * @version 1.0
  * @since 1.0
  */
-public class UserRequest extends BaseEntity{
+public class UserRequest extends PageRequest{
     /**
      * 开始时间
      */
-    private Date openTime;
+    private String openTime;
     /**
      * 截止时间
      */
-    private Date tillTime;
+    private String tillTime;
     /**
      * 用户姓名
      */
@@ -35,19 +33,53 @@ public class UserRequest extends BaseEntity{
      */
     private String userStatus;
 
-    public Date getOpenTime() {
+
+    private String enterpriseName;
+
+    /**
+     * '用户状态 1：可用 2：激活 3 注销 4 冻结'
+     */
+    private String userRole;
+
+    private String userPhone;
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
+    }
+
+    public String getOpenTime() {
         return openTime;
     }
 
-    public void setOpenTime(Date openTime) {
+    public void setOpenTime(String openTime) {
         this.openTime = openTime;
     }
 
-    public Date getTillTime() {
+    public String getTillTime() {
         return tillTime;
     }
 
-    public void setTillTime(Date tillTime) {
+    public void setTillTime(String tillTime) {
         this.tillTime = tillTime;
     }
 

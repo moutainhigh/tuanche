@@ -5,11 +5,14 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
+import com.taisf.services.enterprise.dao.EnterpriseDao;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -36,6 +39,8 @@ public class EnterpriseServiceProxy implements EnterpriseService {
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
 
+    @Autowired
+    private EnterpriseDao enterpriseDao;
 
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
@@ -107,22 +112,55 @@ public class EnterpriseServiceProxy implements EnterpriseService {
 
     /**
      * 获取企业基本信息
+     *
      * @param enterpriseCode
      * @return
      */
     @Override
-    public DataTransferObject<EnterpriseEntity> getEnterpriseByCode(String enterpriseCode){
+    public DataTransferObject<EnterpriseEntity> getEnterpriseByCode(String enterpriseCode) {
         DataTransferObject<EnterpriseEntity> dto = new DataTransferObject<>();
 
-        if (Check.NuNStr(enterpriseCode)){
+        if (Check.NuNStr(enterpriseCode)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
         EnterpriseEntity entity = enterpriseManager.getEnterpriseByCode(enterpriseCode);
-        if (entity == null){
+        if (entity == null) {
             dto.setErrorMsg("当前企业不存在");
         }
         dto.setData(entity);
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:查询当前销售员工下维护的企业
+     **/
+    @Override
+    public DataTransferObject<PagingResult<EnterpriseEntity>> pageListAndManger(EnterpriseListRequest request) {
+        DataTransferObject<PagingResult<EnterpriseEntity>> dto = new DataTransferObject<>();
+        if (Check.NuNStr(request.getManger())) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        PagingResult<EnterpriseEntity> pagingResult = enterpriseDao.pageListAndManger(request);
+        dto.setData(pagingResult);
+        return dto;
+    }
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:根据enterpriseCode修改
+     **/
+    @Override
+    public DataTransferObject<Void> updateEnterprise(EnterpriseEntity enterpriseEntity) {
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(enterpriseEntity)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        enterpriseDao.updateEnterprise(enterpriseEntity);
         return dto;
     }
 

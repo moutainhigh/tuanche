@@ -4,26 +4,53 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.UUIDGenerator;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.UserStatusEnum;
+import com.taisf.services.common.valenum.UserTypeEnum;
+import com.taisf.services.enterprise.api.EnterpriseService;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
+import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.supplier.api.SupplierService;
+import com.taisf.services.supplier.dto.SupplierRequest;
+import com.taisf.services.supplier.entity.SupplierEntity;
+import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserRequest;
+import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
+import com.taisf.services.user.manager.UserManagerImpl;
 import com.taisf.web.oms.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("user/")
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EnterpriseService enterpriseService;
+
+    @Autowired
+    private SupplierService supplierService;
+
+    @Resource(name = "user.userManagerImpl")
+    private UserManagerImpl userManager;
 
     /**
      * @author:zhangzhengguang
@@ -43,25 +70,17 @@ public class UserController {
     @RequestMapping("pageList")
     @ResponseBody
     public PageResult pageList(HttpServletRequest request, UserRequest userRequest) {
-        DataTransferObject<PagingResult<UserEntity>> dto = new DataTransferObject<>();
         PageResult pageResult = new PageResult();
         try {
-            //todo 分页条件查询
-            UserEntity entity = new UserEntity();
-            entity.setUserUid("123");
-            entity.setCreateTime(new Date());
-            entity.setUserName("小明");
-            entity.setUserPhone("110");
-            entity.setUserStatus(1);
-            List<UserEntity> list = new ArrayList<>();
-            list.add(entity);
-            pageResult.setRows(list);
-            pageResult.setTotal(1L);
-            System.out.println("分页条件查询");
+            DataTransferObject<PagingResult<UserEntity>> dto = userService.pageListUser(userRequest);
+            if (!Check.NuNObj(dto.getData().getList())) {
+                pageResult.setRows(dto.getData().getList());
+                pageResult.setTotal(dto.getData().getTotal());
+            }
         } catch (Exception e) {
-            LogUtil.info(LOGGER,"params:{}", JsonEntityTransform.Object2Json(userRequest));
-            LogUtil.error(LOGGER,"error:{}",e);
-            return  new PageResult();
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(userRequest));
+            LogUtil.error(LOGGER, "error:{}", e);
+            return new PageResult();
         }
         return pageResult;
     }
@@ -81,8 +100,12 @@ public class UserController {
             return dto;
         }
         try {
-            //todo 执行保存
-            System.out.println(userEntity);
+            String uuid = UUIDGenerator.hexUUID();
+            userEntity.setUserPassword("123456");
+            userEntity.setUserStatus(UserStatusEnum.ACTIVITY.getCode());
+            userEntity.setUserUid(uuid);
+            userEntity.setCreateTime(new Date());
+            userService.saveUser(userEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);
@@ -99,21 +122,15 @@ public class UserController {
      **/
     @RequestMapping("toedit")
     @ResponseBody
-    public DataTransferObject<UserEntity> toedit(HttpServletRequest request, String userUid) {
+    public DataTransferObject<UserEntity> toedit(HttpServletRequest request, Integer id) {
         DataTransferObject<UserEntity> dto = new DataTransferObject<>();
-        if (Check.NuNObj(userUid)) {
+        if (Check.NuNObj(id)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
         try {
-            //todo 根据userUid查询用户信息
-            System.out.println(userUid);
-            UserEntity userEntity = new UserEntity();
-            userEntity.setUserName("小明");
-            userEntity.setUserPhone("151200957278");
-            userEntity.setUserUid("110");
-            dto.setData(userEntity);
+            dto = userService.getUserById(id);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);
@@ -138,9 +155,7 @@ public class UserController {
             return dto;
         }
         try {
-            //todo 执行修改
-
-            System.out.println(userEntity);
+            dto = userService.updateUser(userEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);
@@ -169,6 +184,228 @@ public class UserController {
             //1.根据userUid查询是否有维护信息  如果有直接return ,提示信息: 请先将该员工下维护信息做变更后方可做离职变更
             //2.如果无维护信息 修改状态
             //3.离职后账号自动解除
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "error:{}", e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("系统错误");
+            return dto;
+        }
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:去企业列表页面
+     **/
+    @RequestMapping("toEnterprisePageList")
+    public String toEnterprisePageList(HttpServletRequest request, String manger, String userName) {
+        request.setAttribute("manger", manger);
+        request.setAttribute("userName", userName);
+
+        //查询所有用户
+        DataTransferObject<List<UserEntity>> dto = userService.getUserByType(UserTypeEnum.YONGHU.getCode());
+        request.setAttribute("userList", dto.getData());
+        return "user/enterpriseList";
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:去供餐商列表页面
+     **/
+    @RequestMapping("toSupplierPageList")
+    public String toSupplierPageList(HttpServletRequest request, String manger, String userName) {
+        request.setAttribute("manger", manger);
+        request.setAttribute("userName", userName);
+        return "user/supplierPageList";
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:企业列表
+     **/
+    @RequestMapping("enterprisePageList")
+    @ResponseBody
+    public PageResult enterprisePageList(HttpServletRequest request, EnterpriseListRequest req) {
+        PageResult pageResult = new PageResult();
+        try {
+            PagingResult<EnterpriseEntity> data = enterpriseService.pageListAndManger(req).getData();
+            if (!Check.NuNObj(data.getList())) {
+                pageResult.setRows(data.getList());
+                pageResult.setTotal(data.getTotal());
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(req));
+            LogUtil.error(LOGGER, "error:{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:企业列表
+     **/
+    @RequestMapping("supplierPageList")
+    @ResponseBody
+    public PageResult supplierPageList(HttpServletRequest request, SupplierRequest req) {
+        PageResult pageResult = new PageResult();
+        try {
+            PagingResult<SupplierEntity> data = supplierService.supplierPageList(req).getData();
+            if (!Check.NuNObj(data.getList())) {
+                pageResult.setRows(data.getList());
+                pageResult.setTotal(data.getTotal());
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(req));
+            LogUtil.error(LOGGER, "error:{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:转让
+     **/
+    @RequestMapping("transfer")
+    @ResponseBody
+    public DataTransferObject<Void> transfer(HttpServletRequest request, EnterpriseEntity enterpriseEntity) {
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(enterpriseEntity)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            dto = enterpriseService.updateEnterprise(enterpriseEntity);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "error:{}", e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("系统错误");
+            return dto;
+        }
+        return dto;
+    }
+
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:企业员工管理列表
+     **/
+    @RequestMapping("companyUserlist")
+    public String companyUserlist(HttpServletRequest request) {
+        return "user/companyUserlist";
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/11
+     * @description:销售管理列表数据
+     **/
+    @RequestMapping("pageListCompanyUser")
+    @ResponseBody
+    public PageResult pageListCompanyUser(HttpServletRequest request, UserRequest userRequest) {
+        PageResult pageResult = new PageResult();
+        try {
+            DataTransferObject<PagingResult<UserEntity>> dto = userService.pageListCompanyUser(userRequest);
+            if (!Check.NuNObj(dto.getData().getList())) {
+                List<String> ids = dto.getData().getList().stream().map(UserEntity::getUserUid).collect(Collectors.toList());
+                Map<String, UserAccountEntity> map = userManager.getUserAccountMapByList(ids);
+                dto.getData().getList().stream().forEach((x) ->{
+                    if(!Check.NuNObj(map.get(x.getUserUid()))){
+                        x.setAmount(map.get(x.getUserUid()).getDrawBalance());
+                        x.setAccountStatus(map.get(x.getUserUid()).getAccountStatus());
+                    }
+                });
+                pageResult.setRows(dto.getData().getList());
+                pageResult.setTotal(dto.getData().getTotal());
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(userRequest));
+            LogUtil.error(LOGGER, "error:{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:新增企业员工
+     **/
+    @RequestMapping("addCompanyUser")
+    @ResponseBody
+    public DataTransferObject<Void> addCompanyUser(HttpServletRequest request, UserEntity userEntity) {
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userEntity)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            String uuid = UUIDGenerator.hexUUID();
+            userEntity.setUserPassword("123456");
+            userEntity.setUserStatus(UserStatusEnum.ACTIVITY.getCode());
+            userEntity.setUserUid(uuid);
+            userEntity.setUserType(UserTypeEnum.YONGHU.getCode());
+            userEntity.setCreateTime(new Date());
+            userService.saveUser(userEntity);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "error:{}", e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("系统错误");
+            return dto;
+        }
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:编辑保存企业员工
+     **/
+    @RequestMapping("editCompanyUser")
+    @ResponseBody
+    public DataTransferObject<Void> editCompanyUser(HttpServletRequest request, UserEntity userEntity) {
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userEntity)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            dto = userService.updateUser(userEntity);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "error:{}", e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("系统错误");
+            return dto;
+        }
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:编辑保存企业员工
+     **/
+    @RequestMapping("updateAccountUser")
+    @ResponseBody
+    public DataTransferObject<Void> updateAccountUser(HttpServletRequest request,UserAccountEntity accountUserEntity) {
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(accountUserEntity)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            userService.updateAccountUser(accountUserEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);

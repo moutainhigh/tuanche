@@ -3,6 +3,7 @@ package com.taisf.services.enterprise.dao;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.order.dto.OrderInfoRequest;
@@ -37,12 +38,13 @@ public class EnterpriseDao extends BaseDao {
 
     /**
      * 获取当前的企业进本信息
-     * @author afi
+     *
      * @param enterpriseCode
      * @return
+     * @author afi
      */
-    public EnterpriseEntity getEnterpriseByCode(String enterpriseCode){
-        return mybatisDaoContext.findOne(SQLID+"getEnterpriseByCode", EnterpriseEntity.class, enterpriseCode);
+    public EnterpriseEntity getEnterpriseByCode(String enterpriseCode) {
+        return mybatisDaoContext.findOne(SQLID + "getEnterpriseByCode", EnterpriseEntity.class, enterpriseCode);
     }
 
 
@@ -64,22 +66,37 @@ public class EnterpriseDao extends BaseDao {
 
     /**
      * 增加企业
-     * @author afi
+     *
      * @param record
      * @return
+     * @author afi
      */
-    public int saveEnterprise(EnterpriseEntity record){
+    public int saveEnterprise(EnterpriseEntity record) {
 
         return mybatisDaoContext.save(SQLID + "saveEnterprise", record);
     }
+
     /**
      * 修改企业信息
-     * @author afi
+     *
      * @param record
      * @return
+     * @author afi
      */
-    public int updateEnterprise(EnterpriseEntity record){
+    public int updateEnterprise(EnterpriseEntity record) {
         return mybatisDaoContext.update(SQLID + "updateEnterprise", record);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:查询当前销售员工下维护的企业
+     **/
+    public PagingResult<EnterpriseEntity> pageListAndManger(EnterpriseListRequest request) {
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setLimit(request.getLimit());
+        pageBounds.setPage(request.getPage());
+        return mybatisDaoContext.findForPage(SQLID + "pageListAndManger", EnterpriseEntity.class, request,pageBounds);
     }
 
 }

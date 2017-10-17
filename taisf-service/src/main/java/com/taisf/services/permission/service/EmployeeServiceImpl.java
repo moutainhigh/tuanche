@@ -129,6 +129,10 @@ public class EmployeeServiceImpl {
 			employeeRoleDao.insertEmployeeRole(entity);
 		}
     }
+
+    public void saveEmployee(EmployeeEntity request){
+    	employeeDao.insertEmployeeSysc(request);
+    }
     
     /**
      * 修改用户和用户角色

@@ -3,7 +3,7 @@ package com.taisf.services.common.valenum;
 import com.jk.framework.base.utils.Check;
 
 /**
- * <p>用户类型</p>
+ * <p>用户角色</p>
  * <p/>
  * <PRE>
  * <BR>	修改记录
@@ -17,9 +17,9 @@ import com.jk.framework.base.utils.Check;
  */
 public enum UserTypeEnum {
 
-
-    USER(1,"用户"),
-    ENTERPRISE(3,"企业")
+    YONGHU(1,"用户"),
+    SONGCAN(2,"送餐员"),
+    QIYE(2,"企业")
     ;
     private int code;
     private String name;

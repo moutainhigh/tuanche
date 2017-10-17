@@ -11,7 +11,8 @@ import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
-import com.taisf.services.supplier.proxy.SupplierProductServiceProxy;
+import com.taisf.services.permission.dao.EmployeeDao;
+import com.taisf.services.permission.entity.EmployeeEntity;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.*;
 import com.taisf.services.user.entity.AccountLogEntity;
@@ -52,9 +53,18 @@ public class UserServiceProxy implements UserService {
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
 
+    @Resource(name = "user.userDao")
+    private com.taisf.services.user.dao.UserDao userDao;
+
+    @Resource(name = "user.accountUserDao")
+    private com.taisf.services.user.dao.UserAccountDao userAccountDao;
+
 
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
+
+    @Resource(name="ups.employeeDao")
+    private EmployeeDao employeeDao;
 
 
     /**
@@ -499,4 +509,100 @@ public class UserServiceProxy implements UserService {
         userManager.updateUserPwd( userId, userPassword);
         return dto;
     }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:销售管理列表
+     **/
+    @Override
+    public DataTransferObject<PagingResult<UserEntity>> pageListUser(UserRequest request){
+        DataTransferObject<PagingResult<UserEntity>> dto = new DataTransferObject<>();
+        PagingResult<UserEntity> userEntityPagingResult = userDao.pageListUser(request);
+        dto.setData(userEntityPagingResult);
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:企业员工管理列表
+     **/
+    @Override
+    public DataTransferObject<PagingResult<UserEntity>> pageListCompanyUser(UserRequest request){
+        DataTransferObject<PagingResult<UserEntity>> dto = new DataTransferObject<>();
+        PagingResult<UserEntity> userEntityPagingResult = userDao.pageListCompanyUser(request);
+        dto.setData(userEntityPagingResult);
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:销售管理列表
+     **/
+    @Override
+    public DataTransferObject<UserEntity> getUserById(Integer id){
+        DataTransferObject<UserEntity> dto = new DataTransferObject<>();
+        UserEntity userEntity = userDao.getUserById(id);
+        dto.setData(userEntity);
+        return dto;
+    }
+
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:修改员工信息
+     **/
+    @Override
+    public DataTransferObject<Void> updateUser(UserEntity userEntity){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        int num = userDao.updateUser(userEntity);
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:修改员工信息
+     **/
+    @Override
+    public DataTransferObject<List<UserEntity>> getUserByType(Integer type){
+        DataTransferObject<List<UserEntity>> dto = new DataTransferObject<>();
+        List<UserEntity> userEntityList = userDao.getUserByType(type);
+        dto.setData(userEntityList);
+        return dto;
+    }
+
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:修改员工信息
+     **/
+    @Override
+    public void saveUser(UserEntity userEntity){
+        userDao.add(userEntity);
+        EmployeeEntity employeeEntity = new EmployeeEntity();
+        employeeEntity.setUserId(userEntity.getUserUid());
+        employeeEntity.setEmpName(userEntity.getUserName());
+        employeeEntity.setUserPwd("123456");
+        employeeEntity.setEmpValid(1);
+        employeeEntity.setUserRole(2);
+        employeeDao.insertEmployeeSysc(employeeEntity);
+    }
+
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:修改账户信息
+     **/
+    @Override
+    public void updateAccountUser(UserAccountEntity  accountUserEntity){
+        userAccountDao.updateAccountUser(accountUserEntity);
+    }
+
+
 }

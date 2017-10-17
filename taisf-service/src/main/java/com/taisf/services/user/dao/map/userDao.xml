@@ -6,8 +6,6 @@
     <result column="user_uid" property="userUid" jdbcType="CHAR" />
     <result column="user_phone" property="userPhone" jdbcType="CHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
-
-    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
     <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR" />
     <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
@@ -15,6 +13,8 @@
     <result column="user_type" property="userType" jdbcType="INTEGER" />
     <result column="user_role" property="userRole" jdbcType="INTEGER" />
     <result column="product_source" property="productSource" jdbcType="INTEGER" />
+    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
+
     <result column="user_business_status" property="userBusinessStatus" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -31,8 +31,8 @@
 
 
   <sql id="Base_Column_List" >
-    id, user_uid,user_name,user_code, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,
-    update_time
+    id, user_uid,user_name, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,
+    update_time,user_code
   </sql>
 
 
@@ -75,8 +75,28 @@
     where user_phone = #{userPhone,jdbcType=VARCHAR}
   </select>
 
-
-
+  <select id="pageListUser" resultMap="BaseResultMap" parameterType="com.taisf.services.user.dto.UserRequest" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where 1=1
+    <if test="userName != null and userName != '' ">
+      and user_name like CONCAT('%',#{userName, jdbcType=VARCHAR},'%')
+    </if>
+    <if test="openTime != null and openTime != '' ">
+      <![CDATA[
+				and create_time >= #{openTime, jdbcType=TIMESTAMP}
+			]]>
+    </if>
+    <if test="tillTime != null and tillTime != '' ">
+      <![CDATA[
+				and create_time <= #{tillTime, jdbcType=TIMESTAMP}
+			]]>
+    </if>
+    <if test="userStatus != null and userStatus != '' ">
+      and user_status = #{userStatus,jdbcType=INTEGER}
+    </if>
+  </select>
 
 
   <select id="getOkUserByEntrpriseCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -106,7 +126,14 @@
     select
     <include refid="Base_Column_List" />
     from t_user
-    where user_uid = #{userUid,jdbcType=CHAR}
+    where user_uid = #{userUid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getUserByType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_type = #{type,jdbcType=INTEGER}
   </select>
 
 
@@ -249,7 +276,9 @@
       <if test="userRole != null" >
         user_role = #{userRole,jdbcType=INTEGER},
       </if>
-
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=INTEGER},
+      </if>
       <if test="productSource != null" >
         product_source = #{productSource,jdbcType=INTEGER},
       </if>
@@ -265,5 +294,35 @@
     </set>
     where user_uid = #{userUid,jdbcType=VARCHAR}
   </update>
+
+
+  <select id="pageListCompanyUser" resultMap="BaseResultMap" parameterType="com.taisf.services.user.dto.UserRequest" >
+    SELECT id, user_uid,user_name, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,
+    update_time
+    FROM t_user
+    where 1=1
+    <if test="enterpriseName != null and enterpriseName != '' ">
+      and CONCAT(`enterprise_name`,`enterprise_code`) like CONCAT('%',#{enterpriseName, jdbcType=VARCHAR},'%')
+    </if>
+    <if test="openTime != null and openTime != '' ">
+      <![CDATA[
+				and create_time >= #{openTime}
+			]]>
+    </if>
+    <if test="tillTime != null and tillTime != '' ">
+      <![CDATA[
+				and create_time <= #{tillTime}
+			]]>
+    </if>
+    <if test="userRole != null and userRole != '' ">
+      and user_role = #{userRole,jdbcType=INTEGER}
+    </if>
+   <!-- <if test="userStatus != null and userStatus != '' ">
+      and user_status = #{userStatus,jdbcType=INTEGER}
+    </if>-->
+    <if test="userPhone != null and userPhone != '' ">
+      and user_phone = #{userPhone,jdbcType=VARCHAR}
+    </if>
+  </select>
 
 </mapper>

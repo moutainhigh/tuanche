@@ -200,7 +200,7 @@ public class UserManagerImpl {
          */
         UserEntity has =  userDao.getUserByUid(enterpriseEntity.getEnterpriseCode());
         if (!Check.NuNObj(has)){
-            if(has.getUserType() != UserTypeEnum.ENTERPRISE.getCode()){
+            if(has.getUserType() != UserTypeEnum.QIYE.getCode()){
                 throw new BusinessException("企业编号和用户编号重复");
             }
             //当前用户存在,直接返回
@@ -209,7 +209,7 @@ public class UserManagerImpl {
 
         has = new UserEntity();
         has.setUserUid(enterpriseEntity.getEnterpriseCode());
-        has.setUserType(UserTypeEnum.ENTERPRISE.getCode());
+        has.setUserType(UserTypeEnum.QIYE.getCode());
         has.setEnterpriseCode(enterpriseEntity.getEnterpriseCode());
         has.setEnterpriseName(enterpriseEntity.getEnterpriseName());
         userDao.add(has);

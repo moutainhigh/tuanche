@@ -46,6 +46,18 @@ public class OrderInfoDao extends BaseDao{
         return mybatisDaoContext.findForPage(SQLID + "getOrderInfo", OrderInfoVO.class, orderInfoRequest,pageBounds);
     }
 
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/16
+     * @description:分页查询订单列表
+     **/
+    public PagingResult<OrderInfoVO> pageListOrder(OrderInfoRequest orderInfoRequest){
+		PageBounds pageBounds=new PageBounds();
+		pageBounds.setLimit(orderInfoRequest.getLimit());
+		pageBounds.setPage(orderInfoRequest.getPage());
+        return mybatisDaoContext.findForPage(SQLID + "pageListOrder", OrderInfoVO.class, orderInfoRequest,pageBounds);
+    }
+
     
 
 

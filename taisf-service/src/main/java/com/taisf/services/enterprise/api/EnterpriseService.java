@@ -2,6 +2,8 @@ package com.taisf.services.enterprise.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
+import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
@@ -36,4 +38,18 @@ public interface EnterpriseService {
      * @return
      */
     DataTransferObject<EnterpriseEntity> getEnterpriseByCode(String enterpriseCode);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:查询当前销售员工下维护的企业
+     **/
+    DataTransferObject<PagingResult<EnterpriseEntity>> pageListAndManger(EnterpriseListRequest request);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/14
+     * @description:根据enterpriseCode修改
+     **/
+    DataTransferObject<Void> updateEnterprise(EnterpriseEntity enterpriseEntity);
 }

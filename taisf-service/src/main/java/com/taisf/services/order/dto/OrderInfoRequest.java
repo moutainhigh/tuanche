@@ -29,6 +29,31 @@ public class OrderInfoRequest extends PageRequest {
      */
     private String userUid;
 
+    /**
+     * 开始时间
+     */
+    private String openTime;
+    /**
+     * 截止时间
+     */
+    private String tillTime;
+
+    public String getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(String openTime) {
+        this.openTime = openTime;
+    }
+
+    public String getTillTime() {
+        return tillTime;
+    }
+
+    public void setTillTime(String tillTime) {
+        this.tillTime = tillTime;
+    }
+
     public String getUserUid() {
         return userUid;
     }

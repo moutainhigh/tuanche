@@ -1,13 +1,15 @@
 package com.taisf.services.supplier.dao;
 
+import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.supplier.dto.SupplierRequest;
 import com.taisf.services.supplier.entity.SupplierEntity;
-
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>供应商的信息</p>
@@ -38,6 +40,18 @@ public class SupplierDao extends BaseDao {
      */
     public List<SupplierEntity> getAllSupplierList(){
         return mybatisDaoContext.findAll(SQLID+"getAllSupplierList", SupplierEntity.class);
+    }
+
+   /**
+    * @author:zhangzhengguang
+    * @date:2017/10/14
+    * @description:当前销售维护的供应商列表
+    **/
+    public PagingResult<SupplierEntity> supplierPageList(SupplierRequest request){
+        PageBounds page = new PageBounds();
+        page.setPage(request.getPage());
+        page.setLimit(request.getLimit());
+        return mybatisDaoContext.findForPage(SQLID+"supplierPageList", SupplierEntity.class,request,page);
     }
 
     /**

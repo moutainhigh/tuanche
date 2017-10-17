@@ -33,51 +33,12 @@
 			<div class="ibox-content">
 				<div class="row">
 					<div class="form-group">
+						<input type="hidden" value="${manger}" id="mangerId"/>
 						<label class="col-sm-1 control-label mtop">企业名称:</label>
 						<div class="col-sm-2">
 							<input id="enterpriseName" type="text" value="" class="form-control">
 						</div>
-						<label class="col-sm-1 control-label mtop">开户日期:</label>
-						<div class="col-sm-2">
-                           <input id="openTime" name="openTime" value="" class="laydate-icon form-control layer-date">
-                       	</div>
-                       	<label class="col-sm-1 control-label mtop">截止日期:</label>
-                       	<div class="col-sm-2">
-                           <input id="tillTime" name="tillTime" value="" class="laydate-icon form-control layer-date">
-                       	</div>
-
-						<label class="col-sm-1 control-label mtop">企业类型:</label>
-						<div class="col-sm-2">
-							<select class="form-control" name="enterpriseType" id="enterpriseType">
-								<option value="">--请选择--</option>
-								<c:forEach items="<%=EnterpriseTypeEnum.values()%>" var="e" >
-									<option value="${e.code}">${e.name}</option>
-								</c:forEach>
-                        	</select>
-						</div>
-					</div>
-				</div>
-				<div class="row" style="margin-top:10px">
-                	<div class="form-group">
-						<label class="col-sm-1 control-label mtop">平台经理:</label>
-	                    <div class="col-sm-2">
-	                        <select class="form-control" name="manger" id="manger">
-	                            <option value="">--请选择--</option>
-	                            <c:forEach items="${employees}" var="emp" >
-	                                <option  value="${emp.userId}">${emp.empName}</option>
-	                            </c:forEach>
-	                        </select>
-	                    </div>
-	                    <label class="col-sm-1 control-label mtop">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</label>
-						<div class="col-sm-2">
-							<select class="form-control" name="productType"  id="productType">
-								<option value="">--请选择--</option>
-								<c:forEach items="${drugType}" var="d" >
-									<option value="${d.typeCode}">${d.typeName}</option>
-								</c:forEach>
-                        	</select>
-						</div>
-	                    <div class="col-sm-1">
+						<div class="col-sm-1">
 							<button class="btn btn-primary" type="button" onclick="query();">
 								<i class="fa fa-search"></i>&nbsp;搜索
 							</button>
@@ -91,10 +52,8 @@
 			<div class="ibox-content">
 				<div class="row row-lg">
 						<!-- Example Pagination -->
-					<div class="col-sm-12">				
-						<button id="addMenuButton" type="button" onclick="addEnterprise();" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-							<i class="fa fa-plus"></i>&nbsp;添加企业
-						</button>
+					<div class="col-sm-12">
+						<label class="col-sm-3 control-label mtop">员工:${userName}</label>
 						<table id="listTable" class="table table-bordered" data-click-to-select="true"
 							data-toggle="table" data-side-pagination="server"
 							data-pagination="true" data-page-list="[5,10,20,50]"
@@ -104,7 +63,7 @@
 							data-content-type="application/x-www-form-urlencoded"
 							data-query-params="paginationParam" data-method="post"
 							data-single-select="true"
-							data-url="base/enterprise/pageList">
+							data-url="user/enterprisePageList">
 							<thead>																																															
 								<tr>						
 									<th data-field="id" data-visible="false"></th>
@@ -119,7 +78,7 @@
 										data-align="center" ><span class="tdfont">用餐总数</span></th>
 									<th data-field="unit" data-width="10%" data-formatter="formatDate"
 										data-align="center" ><span class="tdfont">供餐信息</span></th>
-									<th data-field="openTime" data-width="10%"
+									<th data-field="openTime" data-width="10%" data-formatter="formatDate"
 										data-align="center" ><span class="tdfont">开户日期</span></th>
 									<th data-field="tillTime" data-width="10%" data-formatter="formatDate"
 										data-align="center" ><span class="tdfont">截止日期</span></th>
@@ -131,6 +90,46 @@
 							</thead>
 						</table>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content animated bounceInRight">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+							class="sr-only">关闭</span>
+					</button>
+					<h4 class="modal-title">转让</h4>
+				</div>
+				<div class="col-sm-14">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							<form id="form" class="form-horizontal m-t">
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label">转让人:</label>
+									<div class="col-sm-8">
+										<select class="form-control" name="userId"  id="userId">
+											<option value="">--请选择--</option>
+											<c:forEach items="${userList}" var="z" >
+												<option  value="${z.userUid}">${z.userName}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								<input type="hidden" class="form-control" id="enterpriseCodeC" name="enterpriseCode" value=""/>
+								<input type="hidden" class="form-control" id="UID" name="UID" value=""/>
+								<!-- 用于 将表单缓存清空 -->
+								<input id="addReset" type="reset" style="display:none;"/>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" id="saveBtn" type="button" onclick="saveUser();">保存</button>
+					<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
 				</div>
 			</div>
 		</div>
@@ -155,41 +154,12 @@
 
 	<!-- Page-Level Scripts -->
 	<script>
-		$(function (){
-			//初始化日期
-			CommonUtils.datePickerFormat("openTime");
-			CommonUtils.datePickerFormat("tillTime");
-			/*
-			laydate.render({
-				elem : 'tillTime',
-				type : 'datetime'
-			});
-			*/
-		});
-
 		function paginationParam(params) {
-			var openTime = $("#openTime").val();
-			var tillTime = $("#tillTime").val();
-
-			if (openTime == "") {
-				openTime = undefined;
-			} else {
-				openTime += " 00:00:00";
-			}
-			if (tillTime == "") {
-				tillTime = undefined;
-			} else
-				tillTime += " 00:23:59";
-
 			return {
 				limit : params.limit,
 				page : $("#listTable").bootstrapTable("getOptions").pageNumber,
-				openTime : openTime,
-				tillTime : tillTime,
-				enterpriseName : $("#enterpriseName").val(),
-				enterpriseType : $("#enterpriseType").find("option:selected")
-						.val(),
-				manger : $("#manger").val()
+				manger : $("#mangerId").val(),
+                enterpriseName : $("#enterpriseName").val()
 			};
 		}
 
@@ -206,23 +176,12 @@
 		// 操作列
 		function formatOperate(value, row, index) {
 			var result = "";
-			result = result + "<a title='编辑' href=javascript:editEnterprise('"
-					+ "base/enterprise/operate?id=" + row.id + "&operate=2"
-					+ "')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-			result = result + "<a title='查看' href=javascript:viewEnterprise('"
-					+ "base/enterprise/operate?id=" + row.id + "&operate=1"
-					+ "')>查看</a>";
+			result = result + "<a title='转让' onclick='transfer(\""+row.enterpriseCode+"\")'  data-toggle='modal' data-target='#myModal'>转让</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			return result;
 		}
-
-		function editEnterprise(url) {
-			$.openNewTab(new Date().getTime(), url, "编辑企业");
+		function transfer(id){
+		    $("#enterpriseCodeC").val(id);
 		}
-
-		function viewEnterprise(url) {
-			$.openNewTab(new Date().getTime(), url, "查看企业");
-		}
-
 		//跳转添加企业页
 		function addEnterprise() {
 			debugger;
@@ -233,6 +192,51 @@
 		function query() {
 			$("#listTable").bootstrapTable("selectPage", 1);
 		}
+
+        function saveUser() {
+
+            var userId = $("#userId").val();
+            if (userId == null || userId == "") {
+                layer.alert("请选择转让人", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtn").removeAttr("disabled");
+                return false;
+            }
+            ;
+            $("#saveBtn").attr("disabled", "disabled");
+            $.ajax({
+                beforeSend: function () {
+                    var valid = $("#form").valid();
+                    if (!valid) {
+                        $("#saveBtn").removeAttr("disabled");
+                        return false;
+                    }
+                    return true;
+                },
+                data: {
+                    'manger': $("#userId").val(),
+                    'enterpriseCode': $("#enterpriseCodeC").val()
+                },
+                type: "post",
+                dataType: "json",
+                url: 'user/transfer',
+                success: function (result) {
+                    if (result.code === 0) {
+                        layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                        $('#listTable').bootstrapTable('refresh');
+                        $('#myModal').modal('hide');
+                        $("input[type=reset]").trigger("click");
+                        $("#saveBtn").removeAttr("disabled");
+                    } else {
+                        layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                        $("#saveBtn").removeAttr("disabled");
+                    }
+                },
+                error: function (result) {
+                    layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                    $("#saveBtn").removeAttr("disabled");
+                }
+            });
+        }
 	</script>
 
 </body>

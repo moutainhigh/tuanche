@@ -7,6 +7,7 @@ import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.user.dto.UserAccountRequest;
 import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
+import com.taisf.services.user.dto.UserRequest;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.vo.UserAccountVO;
 import org.springframework.stereotype.Repository;
@@ -30,31 +31,32 @@ import java.util.Map;
  * @since 1.0
  */
 @Repository("user.userDao")
-public class UserDao extends BaseDao{
+public class UserDao extends BaseDao {
     private String SQLID = "user.userDao.";
 
-    
+
     public int add(UserEntity userEntity){
         if (Check.NuNObj(userEntity.getCreateTime())){
             userEntity.setCreateTime(new Date());
         }
         return mybatisDaoContext.save(SQLID + "saveUser", userEntity);
     }
-    
-    public UserEntity queryBySelective(UserEntity userEntity){
+
+    public UserEntity queryBySelective(UserEntity userEntity) {
         return mybatisDaoContext.findOne(SQLID + "selectByPrimaryKeySelective", UserEntity.class, userEntity);
     }
-    
-    public Integer queryCountBySelective(UserEntity userEntity){
+
+    public Integer queryCountBySelective(UserEntity userEntity) {
         return mybatisDaoContext.findOne(SQLID + "selectCountSelective", Integer.class, userEntity);
     }
-    
+
     /**
      * 根据用户id更新用户信息
+     *
      * @param userEntity
      * @return
      */
-    public int updateUser(UserEntity userEntity){
+    public int updateUser(UserEntity userEntity) {
         return mybatisDaoContext.update(SQLID + "updateUser", userEntity);
     }
 
@@ -87,24 +89,44 @@ public class UserDao extends BaseDao{
 
     /**
      * 根据用户userid查询用户
+     *
      * @param userId
      * @return
      */
-    public UserEntity getUserByUid(String userId){
+    public UserEntity getUserByUid(String userId) {
 
         return mybatisDaoContext.findOne(SQLID + "getUserByUid", UserEntity.class, userId);
     }
 
 
+    public List<UserEntity> getUserByType(Integer type) {
+        return mybatisDaoContext.findAll(SQLID + "getUserByType", UserEntity.class, type);
+    }
+
+    public PagingResult<UserEntity> pageListUser(UserRequest request) {
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setPage(request.getPage());
+        pageBounds.setLimit(request.getLimit());
+        return mybatisDaoContext.findForPage(SQLID + "pageListUser", UserEntity.class,request, pageBounds);
+    }
+
+    public PagingResult<UserEntity> pageListCompanyUser(UserRequest request) {
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setPage(request.getPage());
+        pageBounds.setLimit(request.getLimit());
+        return mybatisDaoContext.findForPage(SQLID + "pageListCompanyUser", UserEntity.class,request, pageBounds);
+    }
+
     /**
      * 激活用户信息
+     *
      * @param userId
      * @return
      */
-    public int updateUser2Activity(String userId){
-        Map<String,Object> par = new HashMap<>();
-        par.put("userUid",userId);
-        return mybatisDaoContext.update(SQLID + "updateUser2Activity", par );
+    public int updateUser2Activity(String userId) {
+        Map<String, Object> par = new HashMap<>();
+        par.put("userUid", userId);
+        return mybatisDaoContext.update(SQLID + "updateUser2Activity", par);
     }
 
 
@@ -125,7 +147,6 @@ public class UserDao extends BaseDao{
         return mybatisDaoContext.findOne(SQLID + "selectByPrimaryKey", UserEntity.class, id);
     }
 
-
     /**
      * 修改用户登录密码
      * @param userId
@@ -138,7 +159,5 @@ public class UserDao extends BaseDao{
         par.put("userPassword",userPassword);
         return mybatisDaoContext.update(SQLID + "updateUserPwd", par );
     }
-
-
 
 }
