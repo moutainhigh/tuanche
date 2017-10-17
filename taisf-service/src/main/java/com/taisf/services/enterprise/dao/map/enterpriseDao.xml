@@ -22,14 +22,19 @@
     <result column="street" jdbcType="VARCHAR" property="street" />
     <result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
     <result column="till_time" jdbcType="TIMESTAMP" property="tillTime" />
+    <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+    <result column="contact_mail" jdbcType="VARCHAR" property="contactMail" />
+    <result column="contact_mobile" jdbcType="VARCHAR" property="contactMobile" />
+    <result column="contact_tel" jdbcType="VARCHAR" property="contactTel" />
+    <result column="contact_tencent" jdbcType="VARCHAR" property="contactTencent" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="last_modify_date" jdbcType="TIMESTAMP" property="lastModifyDate" />
   </resultMap>
 
 
   <sql id="Base_Column_List">
-    id, enterprise_code,supplier_code,enterprise_name, enterprise_tel, enterprise_type,enterprise_status, manger, province_code,
-    province_name, city_code, city_name, area_code, area_name, street, open_time, till_time, 
+    id, enterprise_code,supplier_code,enterprise_name, enterprise_tel, enterprise_type,enterprise_status, manger, province_code, province_name,
+    city_code, city_name, area_code, area_name, street, open_time, till_time, contact_name, contact_mail, contact_mobile, contact_tel, contact_tencent,
     create_time, last_modify_date
   </sql>
 

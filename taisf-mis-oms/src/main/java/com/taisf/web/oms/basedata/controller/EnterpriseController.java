@@ -1,5 +1,6 @@
 package com.taisf.web.oms.basedata.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
@@ -71,6 +74,15 @@ public class EnterpriseController {
             return result;
         }
         return result;
+	}
+	
+	@RequestMapping("save")
+	@ResponseBody
+	public DataTransferObject<Void> saveHospital(EnterpriseEntity enterprise){
+		DataTransferObject<Void> dto = new DataTransferObject<>();
+		String jsonString = JSONObject.toJSONString(enterprise);
+		System.out.println(jsonString);
+		return dto;
 	}
 
 	/**

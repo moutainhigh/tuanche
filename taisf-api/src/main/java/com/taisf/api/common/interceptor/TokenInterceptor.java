@@ -1,23 +1,16 @@
 package com.taisf.api.common.interceptor;
 
 
-import com.jk.framework.base.head.Header;
-import com.jk.framework.base.rst.ResponseDto;
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.JsonEntityTransform;
-import com.jk.framework.cache.redis.api.RedisOperations;
-import com.jk.framework.cache.redis.constant.RedisConstant;
-import com.jk.services.core.model.UserModel;
-import com.taisf.api.common.VO.UserModelVO;
-import com.taisf.api.common.constants.ReturnEnum;
-import com.taisf.api.common.util.StreamUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.jk.framework.base.head.Header;
+import com.jk.framework.cache.redis.api.RedisOperations;
 
 /**
  * 
