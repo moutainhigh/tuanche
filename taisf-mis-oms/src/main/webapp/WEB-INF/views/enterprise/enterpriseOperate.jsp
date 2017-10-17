@@ -135,21 +135,21 @@
 							<tr>
 								<td align="right" class="td-title">联&nbsp;&nbsp;络&nbsp;人:</td>
 								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseCode}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactName}"></td>
 								<td align="right" class="td-title">公司邮箱:</td>
 								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseName}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactMail}"></td>
 								<td align="right" style="font-weight:bold;">手&nbsp;&nbsp;机&nbsp;&nbsp;号:</td>
 								<td align="center"><input type="text" id="enterpriseTel" name="enterpriseTel" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseTel}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactMobile}"></td>
 							</tr>
 							<tr>
 								<td align="right" class="td-title">微信/QQ:</td>
 								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseCode}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactTencent}"></td>
 								<td align="right" style="font-weight:bold;">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</td>
 								<td align="center"><input type="text" id="enterpriseTel" name="enterpriseTel" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseTel}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactTel}"></td>
 							</tr>
 							
 							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
@@ -221,11 +221,11 @@
 								</c:if>
 								<c:if test="${operate==2}">
 									<button class="btn btn-primary" id="saveBtn" type="button"
-										onclick="editProduct();">保存</button>
+										onclick="editEnterprise();">保存</button>
 								</c:if>
 								<c:if test="${operate==3}">
 									<button class="btn btn-primary" id="saveBtn" type="button"
-										onclick="addProduct();">添加</button>
+										onclick="addEnterprise();">添加</button>
 								</c:if>
 							</div>
 							<div class="col-sm-1">
@@ -290,6 +290,49 @@
 	function toList() {
 	    $.callBackParent("base/enterprise/list",true,callBack);
 	}
+	
+	//添加企业
+    function addEnterprise() {
+        $("#saveBtn").attr("disabled","disabled");
+       /*  var checkMsg = checkParam();
+        if(!isNullOrBlank(checkMsg)){
+            layer.alert(checkMsg, {icon: 5,time: 2000, title:'提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return;
+        } */
+
+        CommonUtils.ajaxPostSubmit("base/enterprise/save", {
+                "operateType" : 1,
+                "enterpriseCode" :  $("#enterpriseCode").val(),
+                "enterpriseName" : $("#enterpriseName").val(),
+                "enterpriseTel" : $("#enterpriseTel").val(),
+                "enterpriseType" : $("#enterpriseType").val(),
+                "manger" : $("#manger").val(),
+                "provinceCode" : $("#provinceCode").val(),
+                "cityCode" : $("#cityCode").val(),
+                "areaCode" : $("#areaCode").val(),
+                "street" : $("#street").val(),
+               /*  "openTime" : $("#openTime").val(),
+                "tillTime" : $("#tillTime").val(), */
+                "contactName" : $("#contactName").val(),
+                "contactMail" : $("#contactMail").val(),
+                "contactMobile" : $("#contactMobile").val(),
+                "contactTel" : $("#contactTel").val(),
+                "contactTencent" : $("#contactTencent").val()
+            }, function(data){
+                if(data){
+                    if(data.code == 0){
+                        layer.alert("添加成功", {icon: 6,time: 3000, title:'提示'});
+                        toList();
+
+                    }else {
+                        layer.alert(data.msg, {icon: 5,time: 2000, title:'提示'});
+                        $("#saveBtn").removeAttr("disabled");
+                    }
+                }
+            }
+        );
+    }
 
     function array_remove_repeat(a) { // 去重
         var r = [];

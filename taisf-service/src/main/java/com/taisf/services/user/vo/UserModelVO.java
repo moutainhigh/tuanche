@@ -1,4 +1,4 @@
-package com.taisf.api.common.VO;
+package com.taisf.services.user.vo;
 
 /**
  * <p>用户对象</p>

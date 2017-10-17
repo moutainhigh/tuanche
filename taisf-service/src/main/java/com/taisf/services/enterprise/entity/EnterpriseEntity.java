@@ -71,6 +71,16 @@ public class EnterpriseEntity extends BaseEntity {
     private Date openTime;
 
     private Date tillTime;
+    
+    private String contactName;
+    
+    private String contactMail;
+    
+    private String contactMobile;
+    
+    private String contactTel;
+    
+    private String contactTencent;
 
     private Date createTime;
 
@@ -227,4 +237,45 @@ public class EnterpriseEntity extends BaseEntity {
     public void setSupplierCode(String supplierCode) {
         this.supplierCode = supplierCode;
     }
+
+	public String getContactName() {
+		return contactName;
+	}
+
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
+	}
+
+	public String getContactMail() {
+		return contactMail;
+	}
+
+	public void setContactMail(String contactMail) {
+		this.contactMail = contactMail;
+	}
+
+	public String getContactMobile() {
+		return contactMobile;
+	}
+
+	public void setContactMobile(String contactMobile) {
+		this.contactMobile = contactMobile;
+	}
+
+	public String getContactTel() {
+		return contactTel;
+	}
+
+	public void setContactTel(String contactTel) {
+		this.contactTel = contactTel;
+	}
+
+	public String getContactTencent() {
+		return contactTencent;
+	}
+
+	public void setContactTencent(String contactTencent) {
+		this.contactTencent = contactTencent;
+	}
+
 }

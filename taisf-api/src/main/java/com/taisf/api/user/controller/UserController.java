@@ -14,6 +14,7 @@ import com.taisf.api.util.HeaderUtil;
 import com.taisf.services.common.valenum.SmsTypeEnum;
 import com.taisf.services.user.api.IndexService;
 import com.taisf.services.user.api.UserService;
+import com.taisf.services.user.dto.UserLoginCodeRequest;
 import com.taisf.services.user.dto.UserLoginRequest;
 import com.taisf.services.user.dto.UserLogoutRequest;
 import com.taisf.services.user.dto.UserRegistRequest;
@@ -205,6 +206,54 @@ public class UserController extends AbstractController {
 
 
 
+
+    /**
+     * 验证码登录
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/loginByCode", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto loginByCode(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        UserLoginCodeRequest paramRequest = getEntity(request, UserLoginCodeRequest.class);
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        paramRequest.setHeader(header);
+
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        if (Check.NuNStr(paramRequest.getUserPhone())) {
+            return new ResponseDto("请输入电话");
+        }
+        if (Check.NuNStr(paramRequest.getMsgCode())) {
+            return new ResponseDto("请输入验证码");
+        }
+
+        String  key = HeaderUtil.getCodeStr(header, SmsTypeEnum.USER_LOG.getCode());
+        String value= redisOperation.get(key);
+        if (!ValueUtil.getStrValue(value).equals(ValueUtil.getStrValue(paramRequest.getMsgCode()))){
+            return new ResponseDto("验证码错误");
+        }
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+
+            DataTransferObject<String> dto =userService.loginByCode(paramRequest);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【登录】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            return new ResponseDto("未知错误");
+        }
+
+    }
 
 
 

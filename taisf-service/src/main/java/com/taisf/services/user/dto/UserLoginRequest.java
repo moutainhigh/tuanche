@@ -16,17 +16,9 @@ import com.jk.framework.base.head.Header;
  * @version 1.0
  * @since 1.0
  */
-public class UserLoginRequest extends BaseEntity{
+public class UserLoginRequest extends UserLoginCodeRequest{
 
-    /**
-     * 头信息
-     */
-    private Header header;
 
-    /**
-     * 用户手机号
-     */
-    private String userPhone;
 
     /**
      * 密码
@@ -41,19 +33,5 @@ public class UserLoginRequest extends BaseEntity{
         this.pwd = pwd;
     }
 
-    public String getUserPhone() {
-        return userPhone;
-    }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-
-    public Header getHeader() {
-        return header;
-    }
-
-    public void setHeader(Header header) {
-        this.header = header;
-    }
 }

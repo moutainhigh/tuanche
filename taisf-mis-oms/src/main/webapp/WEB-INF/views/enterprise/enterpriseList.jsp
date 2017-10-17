@@ -179,7 +179,7 @@
 			if (tillTime == "") {
 				tillTime = undefined;
 			} else
-				tillTime += " 00:23:59";
+				tillTime += " 23:59:59";
 
 			return {
 				limit : params.limit,
@@ -225,7 +225,6 @@
 
 		//跳转添加企业页
 		function addEnterprise() {
-			debugger;
 			var url = "base/enterprise/operate?operate=3";
 			$.openNewTab(new Date().getTime(), url, "添加企业");
 		}
