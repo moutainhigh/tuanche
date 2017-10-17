@@ -44,7 +44,7 @@ public class CodeController extends AbstractController {
 
     @RequestMapping(value ="code")
     public @ResponseBody
-    ResponseDto sendSmsCode(HttpServletRequest request, HttpServletResponse response,Integer code) {
+    ResponseDto sendSmsCode(HttpServletRequest request, HttpServletResponse response,Integer code,String userTel) {
 
         Header header = getHeader(request);
         if (Check.NuNObj(header)) {

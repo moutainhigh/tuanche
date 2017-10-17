@@ -39,7 +39,8 @@ orderType|是|Integer|订单类型 由首页初始化接口返回
                 "enterpriseName": "11",
                 "userPhone": "123",
                 "userRole": 1,
-                "productSource": 1
+                "productSource": 1,
+                "userCode":"12321"
             },
             "orderMoney": {
                 "orderSn": "",
@@ -86,6 +87,7 @@ drawBalance|Integer|余额, 当前余额的和orderMoney的needPay做对比判�
         "userPhone": "123", //电话
         "userRole": 1, //角色 1 员工 2老板餐
         "productSource": 1 //无用
+        "userCode":"12321" 用户编号
     },
     
     //订单金额信息
