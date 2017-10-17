@@ -20,7 +20,7 @@ Content-Type|application/json
 ---|---|---|---
 businessUid|是|String|供应商code
 productCode|是|Integer|商品code
-supplierProductType|是|Integer|商品分类
+supplierProductType|是|Integer|商品分类 注意是 supplierProductType 不是productType
 productNum|否|Integer|商品数量,默认1
     
 
