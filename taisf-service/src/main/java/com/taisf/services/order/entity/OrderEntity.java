@@ -78,6 +78,11 @@ public class OrderEntity extends BaseEntity {
 
     /** 用户名称 */
     private String userName;
+
+    /**
+     * 配送人
+     */
+    private String senderUid;
     
     /** 订单支付时间 */
     private Date payTime;
@@ -269,5 +274,13 @@ public class OrderEntity extends BaseEntity {
 
     public void setOrderType(Integer orderType) {
         this.orderType = orderType;
+    }
+
+    public String getSenderUid() {
+        return senderUid;
+    }
+
+    public void setSenderUid(String senderUid) {
+        this.senderUid = senderUid;
     }
 }

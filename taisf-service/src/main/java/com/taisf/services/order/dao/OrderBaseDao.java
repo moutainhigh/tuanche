@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p> 订单的主表操作 </p>
@@ -32,6 +34,23 @@ public class OrderBaseDao extends BaseDao{
 	private static Logger logger = LoggerFactory.getLogger(OrderBaseDao.class);
 
 	private String SQLID = "order.orderBaseDao.";
+
+
+    /**
+     * 结束订单
+     * @param orderSn
+     * @param oldStatus
+     * @return
+     */
+    public int finishOrder(String orderSn,int oldStatus,String senderUid){
+        Map<String,Object> par = new HashMap<>();
+        par.put("orderSn",orderSn);
+        par.put("oldStatus",oldStatus);
+        par.put("senderUid",senderUid);
+        return mybatisDaoContext.update(SQLID + "finishOrder", par);
+    }
+
+
 
 
     /**

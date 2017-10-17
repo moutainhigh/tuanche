@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * <p> 订单的试图操作 </p>
  * <PRE>
@@ -45,6 +47,15 @@ public class OrderInfoDao extends BaseDao{
 
         return mybatisDaoContext.findForPage(SQLID + "getOrderInfo", OrderInfoVO.class, orderInfoRequest,pageBounds);
     }
+
+	/**
+	 * 获取当前用户的待完成订单
+	 * @param userUid
+	 * @return
+	 */
+	public List<OrderInfoVO> getOrderInfoWaitingList(String userUid){
+		return mybatisDaoContext.findAll(SQLID + "getOrderInfoWaitingList", OrderInfoVO.class, userUid);
+	}
 
     /**
      * @author:zhangzhengguang

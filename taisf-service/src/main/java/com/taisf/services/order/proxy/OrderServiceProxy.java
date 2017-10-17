@@ -14,6 +14,7 @@ import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
+import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
@@ -72,6 +73,70 @@ public class OrderServiceProxy implements OrderService {
 
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
+
+
+    /**
+     * 结束订单
+     * @author afi
+     * @param finishOrderRequest
+     * @return
+     */
+    public DataTransferObject<Void>  finishOrder(FinishOrderRequest finishOrderRequest){
+
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(finishOrderRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(finishOrderRequest.getOrderSn())){
+            dto.setErrorMsg("异常的订单号");
+            return dto;
+        }
+
+        if (Check.NuNStr(finishOrderRequest.getOpId())){
+            dto.setErrorMsg("异常的操作人");
+            return dto;
+        }
+
+        //获取订单信息
+        OrderEntity base = orderManager.getOrderBaseBySn(finishOrderRequest.getOrderSn());
+        if (Check.NuNObj(base)){
+            dto.setErrorMsg("当前订单不存在");
+            return dto;
+        }
+        OrdersStatusEnum ordersStatusEnum = OrdersStatusEnum.getByCode(base.getOrderStatus());
+        if (Check.NuNObj(ordersStatusEnum)){
+            dto.setErrorMsg("异常的定点状态");
+            return dto;
+        }
+        if (ordersStatusEnum.getCode() != OrdersStatusEnum.SEND.getCode()){
+            dto.setErrorMsg("当前订单状态不能结束");
+            return dto;
+        }
+        //结束订单
+        orderManager.finishOrder(finishOrderRequest,base);
+        return dto;
+
+    }
+
+    /**
+     * 获取当前用户的带完成的订单
+     * @author afi
+     * @param userUid
+     * @return
+     */
+    @Override
+    public DataTransferObject<List<OrderInfoVO>> getOrderInfoWaitingList(String userUid){
+        DataTransferObject<List<OrderInfoVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userUid)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //分页获取订单列表
+        List<OrderInfoVO> list = orderManager.getOrderInfoWaitingList(userUid);
+        dto.setData(list);
+        return dto;
+    }
 
     /**
      * 获取当前订单的信息

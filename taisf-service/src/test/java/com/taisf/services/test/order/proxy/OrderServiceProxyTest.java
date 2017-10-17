@@ -6,6 +6,7 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
+import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
@@ -35,6 +36,19 @@ public class OrderServiceProxyTest extends BaseTest {
     @Resource(name = "order.orderServiceProxy")
     private OrderService orderService;
 
+
+
+
+
+    @Test
+    public void finishOrderTest() {
+        FinishOrderRequest request = new FinishOrderRequest();
+        request.setOpId("afi");
+        request.setOrderSn("171016EWA23FJF114304");
+        DataTransferObject<Void> classify = orderService.finishOrder(request);
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+
+    }
 
 
 

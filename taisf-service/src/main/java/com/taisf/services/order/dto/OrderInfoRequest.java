@@ -20,14 +20,15 @@ public class OrderInfoRequest extends PageRequest {
     private static final long serialVersionUID = 301231231201446703L;
 
     /**
-     * 只查询余额支付的
-     */
-    private boolean balanceFlag = false;
-
-    /**
      * 用户uid
      */
     private String userUid;
+
+    /**
+     * 骑士id
+     */
+    private String knightUid;
+
 
     /**
      * 开始时间
@@ -37,6 +38,14 @@ public class OrderInfoRequest extends PageRequest {
      * 截止时间
      */
     private String tillTime;
+
+    public String getKnightUid() {
+        return knightUid;
+    }
+
+    public void setKnightUid(String knightUid) {
+        this.knightUid = knightUid;
+    }
 
     public String getOpenTime() {
         return openTime;
@@ -62,11 +71,4 @@ public class OrderInfoRequest extends PageRequest {
         this.userUid = userUid;
     }
 
-    public boolean isBalanceFlag() {
-        return balanceFlag;
-    }
-
-    public void setBalanceFlag(boolean balanceFlag) {
-        this.balanceFlag = balanceFlag;
-    }
 }

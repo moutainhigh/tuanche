@@ -3,11 +3,14 @@ package com.taisf.services.order.api;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.order.dto.CreateOrderRequest;
+import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
 import com.taisf.services.order.vo.OrderSaveVO;
+
+import java.util.List;
 
 /**
  * <p>订单相关接口</p>
@@ -24,6 +27,14 @@ import com.taisf.services.order.vo.OrderSaveVO;
  */
 public interface OrderService {
 
+
+    /**
+     * 结束订单
+     * @author afi
+     * @param finishOrderRequest
+     * @return
+     */
+    DataTransferObject<Void>  finishOrder(FinishOrderRequest finishOrderRequest);
 
     /**
      * 初始化下单
@@ -75,5 +86,13 @@ public interface OrderService {
      */
     DataTransferObject<PagingResult<OrderInfoVO>> getOrderInfoPage(OrderInfoRequest orderInfoRequest);
 
+
+    /**
+     * 获取当前用户的带完成的订单
+     * @author afi
+     * @param userUid
+     * @return
+     */
+    DataTransferObject<List<OrderInfoVO>> getOrderInfoWaitingList(String userUid);
 
 }

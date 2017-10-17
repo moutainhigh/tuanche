@@ -1,5 +1,7 @@
 package com.taisf.services.common.valenum;
 
+import com.jk.framework.base.utils.Check;
+
 /**
  * <p>订单状态</p>
  * <p/>
@@ -47,7 +49,10 @@ public enum OrdersStatusEnum {
         this.foreignType = foreignType;
     }
     // 普通方法
-    public static OrdersStatusEnum getByCode(int code) {
+    public static OrdersStatusEnum getByCode(Integer code) {
+        if(Check.NuNObj(code)){
+            return null;
+        }
         for (OrdersStatusEnum c : OrdersStatusEnum.values()) {
             if (c.code == code) {
                 return c;

@@ -5,13 +5,12 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.AccountTypeEnum;
+import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.order.dao.*;
+import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.dto.OrderProductListRequest;
-import com.taisf.services.order.entity.OrderEntity;
-import com.taisf.services.order.entity.OrderMoneyEntity;
-import com.taisf.services.order.entity.OrderPayEntity;
-import com.taisf.services.order.entity.OrderProductEntity;
+import com.taisf.services.order.entity.*;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveVO;
@@ -21,6 +20,7 @@ import com.taisf.services.user.entity.AccountLogEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 
@@ -43,6 +43,10 @@ public class OrderManagerImpl {
 	@Resource(name = "order.orderBaseDao")
 	private OrderBaseDao orderBaseDao;
 
+	@Resource(name = "order.orderLogDao")
+	private OrderLogDao orderLogDao;
+
+
 	@Resource(name = "order.orderMoneyDao")
 	private OrderMoneyDao orderMoneyDao;
 
@@ -64,6 +68,42 @@ public class OrderManagerImpl {
 	private OrderInfoDao orderInfoDao;
 
 
+	/**
+	 * 结束当前订单
+	 * @param finishOrderRequest
+	 * @param base
+	 */
+	public  void finishOrder(FinishOrderRequest finishOrderRequest,OrderEntity base){
+		int count = orderBaseDao.finishOrder(base.getOrderSn(),base.getOrderStatus(),finishOrderRequest.getOpId());
+		if (count == 1){
+			OrderLogEntity log = new OrderLogEntity();
+			log.setOrderSn(base.getOrderSn());
+			log.setFromStatus(base.getOrderStatus());
+			log.setToStatus(OrdersStatusEnum.RECEIVE.getCode());
+			log.setCreateId(finishOrderRequest.getOpId());
+			log.setCreateDate(new Date());
+			log.setTitle("配送完成");
+			orderLogDao.insertOrderLog(log);
+		}
+	}
+
+
+	/**
+	 * 获取当前用户的待完成订单
+	 * @param userUid
+	 * @return
+	 */
+	public List<OrderInfoVO> getOrderInfoWaitingList(String userUid){
+		//获取列表
+		List<OrderInfoVO> waitingList = orderInfoDao.getOrderInfoWaitingList(userUid);
+		if (Check.NuNCollection(waitingList)){
+			return waitingList;
+		}
+		for (OrderInfoVO infoVO : waitingList) {
+			infoVO.setList(orderProductDao.getOrderProductByOrderSn(infoVO.getOrderSn()));
+		}
+		return waitingList;
+	}
 
 	/**
 	 * 获取当前订单的信息
@@ -163,6 +203,18 @@ public class OrderManagerImpl {
 		accountLogDao.saveAccountLog(log);
 	}
 
+	/**
+	 * 获取当前的订单基本信息
+	 * @author afi
+	 * @param orderSn
+	 * @return
+	 */
+	public OrderEntity getOrderBaseBySn(String orderSn){
+		if (Check.NuNStr(orderSn)){
+			return null;
+		}
+		return orderBaseDao.getOrderBaseByOrderSn(orderSn);
+	}
 	/**
 	 * 获取当前的订单信息
 	 * @author afi

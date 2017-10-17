@@ -49,17 +49,34 @@
     </sql>
 
 
+
+    <!-- 获取订单列表的信息 -->
+    <select id="getOrderInfoWaitingList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM t_order t
+        INNER join t_order_money m on  t.order_sn = m.order_sn
+        WHERE t.user_uid = #{userUid,jdbcType=VARCHAR}
+    </select>
+
     <!-- 获取订单列表的信息 -->
     <select id="getOrderInfo" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest" >
         SELECT
         <include refid="Base_Column_List" />
         FROM t_order t
           INNER join t_order_money m on  t.order_sn = m.order_sn
-        WHERE  t.user_uid = #{userUid,jdbcType=VARCHAR}
+        WHERE 1= 1
 
-        <if test="balanceFlag != null and balanceFlag ">
-            and m.pay_balance > 0
+        <if test="userUid != null and userUid != '' ">
+            and t.user_uid = #{userUid,jdbcType=VARCHAR}
         </if>
+
+        <if test="knightUid != null and knightUid != '' ">
+            and t.knight_uid = #{knightUid,jdbcType=VARCHAR}
+        </if>
+
+        order by t.id DESC
+
     </select>
 
     <select id="pageListOrder" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest" >
