@@ -377,7 +377,7 @@
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='编辑' onclick='detail("+row.enterpriseCode+")' >查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='编辑' onclick='detail("+row.enterpriseCode+")' data-toggle='modal' data-target='#detailModal')>查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         result = result + "<a title='编辑' onclick='avgMoney("+row.enterpriseCode+")'  data-toggle='modal' data-target='#evgModal')>平均分配</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         result = result + "<a title='查看' onclick='detail("+row.enterpriseCode+")'  data-toggle='modal' data-target='#detailModal')>个人分配</a>";
         return result;

@@ -54,6 +54,11 @@ public class UserVO extends BaseEntity {
      */
     private Integer userRole;
 
+    /**
+     * 员工号
+     */
+    private String userCode;
+
 
     /**
      * 餐属性
@@ -115,5 +120,13 @@ public class UserVO extends BaseEntity {
 
     public void setProductSource(Integer productSource) {
         this.productSource = productSource;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 }
