@@ -260,4 +260,12 @@
     where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
   </update>
 
+  <select id="findAll"  resultMap="BaseResultMap">
+      SELECT o.enterprise_code,e.enterprise_name
+      FROM t_order o
+      INNER JOIN t_enterprise e ON e.enterprise_code = o.enterprise_code
+      /*WHERE TO_DAYS( now() ) - TO_DAYS(o.create_time) = 0*/
+      GROUP BY o.enterprise_code
+  </select>
+
 </mapper>

@@ -3,13 +3,13 @@
 <mapper namespace="order.orderProductDao">
 
     <resultMap id="BaseResultMap" type="com.taisf.services.order.entity.OrderProductEntity">
-        <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
-        <result column="product_name" jdbcType="VARCHAR" property="productName" />
-        <result column="product_type" jdbcType="INTEGER" property="productType" />
-        <result column="product_code" jdbcType="INTEGER" property="productCode" />
-        <result column="product_num" jdbcType="VARCHAR" property="productNum" />
-        <result column="product_price" jdbcType="INTEGER" property="productPrice" />
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="product_type" jdbcType="INTEGER" property="productType"/>
+        <result column="product_code" jdbcType="INTEGER" property="productCode"/>
+        <result column="product_num" jdbcType="VARCHAR" property="productNum"/>
+        <result column="product_price" jdbcType="INTEGER" property="productPrice"/>
     </resultMap>
 
 
@@ -19,7 +19,7 @@
 
     <select id="getOrderProductByOrderSn" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from t_order_product
         where order_sn = #{orderSn,jdbcType=VARCHAR}
     </select>
@@ -79,5 +79,16 @@
         </trim>
     </insert>
 
+    <select id="getEverydayTaskPgeList" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest" resultMap="BaseResultMap">
+        SELECT op.product_name ,SUM(op.product_num) AS productNum,p.product_classify AS product_type
+        FROM t_order_product op INNER JOIN t_product p ON op.product_code = p.id
+        INNER JOIN t_order o ON o.order_sn = op.order_sn
+        WHERE 1=1
+        <if test="enterpriseCode != null and enterpriseCode != '' ">
+            AND o.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+        </if>
+        GROUP BY p.id
+        ORDER BY p.product_classify
+    </select>
 
 </mapper>

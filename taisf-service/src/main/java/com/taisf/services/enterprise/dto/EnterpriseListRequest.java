@@ -1,12 +1,14 @@
 package com.taisf.services.enterprise.dto;
 
-import java.util.Date;
-
 import com.jk.framework.base.page.PageRequest;
+
+import java.util.Date;
 
 public class EnterpriseListRequest extends PageRequest {
 
 	private static final long serialVersionUID = -8308160586793003064L;
+
+	private String enterpriseCode;
 
 	private String enterpriseName;
 
@@ -17,6 +19,14 @@ public class EnterpriseListRequest extends PageRequest {
 	private Integer enterpriseType;
 	
 	private String manger;
+
+	public String getEnterpriseCode() {
+		return enterpriseCode;
+	}
+
+	public void setEnterpriseCode(String enterpriseCode) {
+		this.enterpriseCode = enterpriseCode;
+	}
 
 	public String getEnterpriseName() {
 		return enterpriseName;

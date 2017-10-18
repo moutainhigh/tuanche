@@ -437,8 +437,8 @@
     function formatOperate(value, row, index) {
         var result = "";
         result = result + "<a title='编辑' onclick='detail(\"" + row.enterpriseCode + "\")' >查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='编辑' onclick='avgMoney(" + row.enterpriseCode + ")'  >平均分配</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='查看' onclick='oneMoney(" + row.enterpriseCode + ")'  >个人分配</a>";
+        result = result + "<a title='编辑' onclick='avgMoney(\"" + row.enterpriseCode + "\")'  >平均分配</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='查看' onclick='oneMoney(\"" + row.enterpriseCode + "\")'  >个人分配</a>";
         return result;
     }
 

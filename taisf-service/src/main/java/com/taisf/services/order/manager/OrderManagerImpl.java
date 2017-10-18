@@ -6,6 +6,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.AccountTypeEnum;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.order.dao.*;
 import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
@@ -144,6 +145,16 @@ public class OrderManagerImpl {
 	 **/
 	public PagingResult<OrderProductEntity>  getOrderProductPageList(OrderProductListRequest orderProductListRequest){
 		PagingResult<OrderProductEntity> orderProductPageList = orderProductDao.getOrderProductPageList(orderProductListRequest);
+		return orderProductPageList;
+	}
+
+	/**
+	 * @author:zhangzhengguang
+	 * @date:2017/10/18
+	 * @description:分页查询订单详情商品列表
+	 **/
+	public PagingResult<OrderProductEntity>  getEverydayTaskPgeList(EnterpriseListRequest request){
+		PagingResult<OrderProductEntity> orderProductPageList = orderProductDao.getEverydayTaskPgeList(request);
 		return orderProductPageList;
 	}
 

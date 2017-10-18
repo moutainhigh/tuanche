@@ -16,14 +16,14 @@ package com.taisf.services.common.valenum;
 public enum OrderTypeEnum {
 
     LUNCH_COMMON(20,"午餐正常"),
-    LUNCH_EXT(21,"午餐补餐"){
-        @Override
-        public boolean isExt() {
-            return true;
-        }
-    },
-    DINNER_COMMON(30,"晚餐正常"),
-    DINNER_EXT(31,"晚餐补单"){
+        LUNCH_EXT(21,"午餐补餐"){
+            @Override
+            public boolean isExt() {
+                return true;
+            }
+        },
+        DINNER_COMMON(30,"晚餐正常"),
+        DINNER_EXT(31,"晚餐补单"){
         @Override
         public boolean isExt() {
             return true;

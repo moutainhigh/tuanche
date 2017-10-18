@@ -16,6 +16,7 @@ import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.vo.SupplierPackageVO;
 import com.taisf.web.oms.common.constant.LoginConstant;
+import com.taisf.web.oms.common.constant.PathConstant;
 import com.taisf.web.oms.common.page.PageResult;
 import com.taisf.web.oms.supplierProductController.SupplierProductController;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class SupplierProductPackageController {
 
     @Autowired
     private EmployeeSupplierService employeeSupplierService;
+
+    @Autowired
+    private PathConstant pathConstant;
 
     /**
      * @author:zhangzhengguang
@@ -111,12 +115,15 @@ public class SupplierProductPackageController {
      **/
     @RequestMapping("addSupplierProductPackage")
     @ResponseBody
-    public DataTransferObject<Void> addSupplierProductPackage(HttpServletRequest request, SupplierPackageEntity supplierPackageEntity) {
+    public DataTransferObject<Void> addSupplierProductPackage(HttpServletRequest request, SupplierPackageEntity packageEntity) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if (Check.NuNObj(supplierPackageEntity)) {
+        if (Check.NuNObj(packageEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
+        }
+        if(!Check.NuNObjs(packageEntity.getPackagePic())){
+            packageEntity.setPackagePic(packageEntity.getPackagePic().replace(pathConstant.IMAGE_URL,""));
         }
         try {
             //商家code
@@ -124,11 +131,11 @@ public class SupplierProductPackageController {
             EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
             //根据userId 得到 商家code
             EmployeeSupplierEntity employeeSupplierEntity = employeeSupplierService.getByUserId(employeeEntity.getUserId());
-            supplierPackageEntity.setSupplierCode(employeeSupplierEntity.getUserId());
-            dto = supplierPackageService.saveSupplierPackage(supplierPackageEntity);
+            packageEntity.setSupplierCode(employeeSupplierEntity.getUserId());
+            dto = supplierPackageService.saveSupplierPackage(packageEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
-            LogUtil.info(LOGGER, "param:{}", JsonEntityTransform.Object2Json(supplierPackageEntity));
+            LogUtil.info(LOGGER, "param:{}", JsonEntityTransform.Object2Json(packageEntity));
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("系统错误");
             return dto;
@@ -174,6 +181,9 @@ public class SupplierProductPackageController {
         productCla01sifyList(request);
         //当前编辑的组合套餐
         SupplierPackageEntity packageEntity = supplierPackageService.getSupplierPackageById(id).getData();
+        if(!Check.NuNObjs(packageEntity.getPackagePic())){
+            packageEntity.setPackagePic(pathConstant.IMAGE_URL+packageEntity.getPackagePic());
+        }
         request.setAttribute("packageEntity", packageEntity);
         return "supplierPackage/editSupplierPackage";
     }
@@ -181,22 +191,25 @@ public class SupplierProductPackageController {
     /**
      * @author:zhangzhengguang
      * @date:2017/10/13
-     * @description:新增组合套餐
+     * @description:修改组合套餐
      **/
     @RequestMapping("updateSupplierProductPackage")
     @ResponseBody
-    public DataTransferObject<Void> updateSupplierProductPackage(HttpServletRequest request, SupplierPackageEntity supplierPackageEntity) {
+    public DataTransferObject<Void> updateSupplierProductPackage(HttpServletRequest request, SupplierPackageEntity packageEntity) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if (Check.NuNObj(supplierPackageEntity)) {
+        if (Check.NuNObj(packageEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if(!Check.NuNObjs(packageEntity.getPackagePic())){
+            packageEntity.setPackagePic(packageEntity.getPackagePic().replace(pathConstant.IMAGE_URL,""));
+        }
         try {
-            dto = supplierPackageService.updateSupplierPackage(supplierPackageEntity);
+            dto = supplierPackageService.updateSupplierPackage(packageEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
-            LogUtil.info(LOGGER, "param:{}", JsonEntityTransform.Object2Json(supplierPackageEntity));
+            LogUtil.info(LOGGER, "param:{}", JsonEntityTransform.Object2Json(packageEntity));
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("系统异常");
             return dto;
@@ -221,4 +234,5 @@ public class SupplierProductPackageController {
         request.setAttribute("zhushiList", zhushiList);
         request.setAttribute("shuiguoList", shuiguoList);
     }
+
 }

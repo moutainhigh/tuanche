@@ -6,11 +6,11 @@ import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
-import com.taisf.services.order.dto.OrderInfoRequest;
-import com.taisf.services.order.vo.OrderInfoVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>企业基本信息</p>
@@ -98,5 +98,12 @@ public class EnterpriseDao extends BaseDao {
         pageBounds.setPage(request.getPage());
         return mybatisDaoContext.findForPage(SQLID + "pageListAndManger", EnterpriseEntity.class, request,pageBounds);
     }
-
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/18
+     * @description:查询企业列表
+     **/
+    public List<EnterpriseEntity> findAll() {
+        return mybatisDaoContext.findAll(SQLID+"findAll");
+    }
 }

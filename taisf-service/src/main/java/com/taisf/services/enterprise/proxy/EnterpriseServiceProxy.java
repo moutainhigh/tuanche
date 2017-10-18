@@ -164,4 +164,17 @@ public class EnterpriseServiceProxy implements EnterpriseService {
         return dto;
     }
 
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/18
+     * @description:查询企业列表
+     **/
+    @Override
+    public DataTransferObject<List<EnterpriseEntity>> findAll() {
+        DataTransferObject<List<EnterpriseEntity>> dto = new DataTransferObject<>();
+        List<EnterpriseEntity> entityList = enterpriseDao.findAll();
+        dto.setData(entityList);
+        return dto;
+    }
+
 }

@@ -32,15 +32,93 @@
     <script src="${staticResourceUrl}/js/common/refresh.js${VERSION}"></script>
     <script src="${staticResourceUrl}/js/common/date.proto.js${VERSION}"></script>
     <script src="${staticResourceUrl}/js/plugins/layer/laydate/laydate.js${VERSION}001"></script>
+    <script src="${staticResourceUrl}/js/jquery.form.js${VERSION}"></script>
+    <link href="${staticResourceUrl}/css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
+    <script src="${staticResourceUrl}/js/plugins/blueimp/jquery.blueimp-gallery.min.js"></script>
     <style type=text/css>
         .tdfont {
             font-size: 13px
         }
     </style>
+    <style>
+        .lightBoxGallery img {
+            margin: 5px;
+            width: 160px;
+        }
+
+        .room-pic {
+            float: left;
+        }
+
+        .room-pic p {
+            text-align: center;
+        }
+
+        .blueimp-gallery > .title {
+            left: 0;
+            bottom: 45px;
+            top: auto;
+            width: 100%;
+            text-align: center;
+        }
+
+        .picline {
+            display: inline-block;
+        }
+
+        .picjz {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+    <style type="text/css">
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #1ab394;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #FFFFFF;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+            margin: 20px 0px 12px 0px;
+        }
+
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+
+        .content li {
+            float: left;
+        }
+    </style>
 </head>
 
 <body class="gray-bg">
-
+<!-- 图片预览continer -->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
         <div class="ibox-content">
@@ -149,13 +227,13 @@
             <div class="col-sm-14">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
-                        <form id="form" class="form-horizontal m-t">
+                        <form id="editForm1" class="form-horizontal m-t">
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">菜单名称:</label>
                                 <div class="col-sm-8">
                                     <input id="productName" name="productName" type="text"
-                                            class="form-control">
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -172,19 +250,19 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">供餐类型:</label>
                                 <div class="col-sm-8">
-                                    <input type="radio" value="1"  name="productType" > 全部
-                                    <input type="radio" value="2"  name="productType" > 老板餐
-                                    <input type="radio" value="3"  name="productType" > 员工餐(单选)
-                                </select>
+                                    <input type="radio" value="1" name="productType"> 全部
+                                    <input type="radio" value="2" name="productType"> 老板餐
+                                    <input type="radio" value="3" name="productType"> 员工餐(单选)
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">菜品属性:</label>
                                 <div class="col-sm-8">
-                                    <input type="radio" value="1"  name="productSource" > 普通餐
-                                    <input type="radio" value="2"  name="productSource" > 西餐
-                                    <input type="radio" value="3"  name="productSource" > 清真(单选)
-                                </select>
+                                    <input type="radio" value="1" name="productSource"> 普通餐
+                                    <input type="radio" value="2" name="productSource"> 西餐
+                                    <input type="radio" value="3" name="productSource"> 清真(单选)
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -203,7 +281,17 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">上传图片:</label>
                                 <div class="col-sm-8">
-                                  <input type="file" class="form-control"/>
+                                    <div>
+                                        <a id="showImg-1" href="${headPic }" title="图片" data-gallery="">
+                                            <img id='imgSizeImgSrc-1' style="" width="100" height="125"
+                                                 src="${headPic }"/></a>
+                                        <input id='imgUrl-1' type="hidden" name="headImg" value="${headPic}"/>
+                                        <a href="javascript:;" class="file">
+                                            <input type="file" onchange="uploadPic('1',this.files)" name="pics"
+                                                   multiple="multiple"/>
+                                            上传图片
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <input type="hidden" class="form-control" id="iduser" name="id" value=""/>
@@ -234,13 +322,13 @@
             <div class="col-sm-14">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
-                        <form id="formE" class="form-horizontal m-t">
+                        <form id="editForm2" class="form-horizontal m-t">
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">菜单名称:</label>
                                 <div class="col-sm-8">
                                     <input id="productNameE" name="productName" type="text"
-                                            class="form-control">
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -257,19 +345,19 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">供餐类型:</label>
                                 <div class="col-sm-8">
-                                    <input type="radio" value="1"  name="productTypeE" > 全部
-                                    <input type="radio" value="2"  name="productTypeE" > 老板餐
-                                    <input type="radio" value="3"  name="productTypeE" > 员工餐(单选)
-                                </select>
+                                    <input type="radio" value="1" name="productTypeE"> 全部
+                                    <input type="radio" value="2" name="productTypeE"> 老板餐
+                                    <input type="radio" value="3" name="productTypeE"> 员工餐(单选)
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">菜品属性:</label>
                                 <div class="col-sm-8">
-                                    <input type="radio" value="1"  name="productSourceE" > 普通餐
-                                    <input type="radio" value="2"  name="productSourceE" > 西餐
-                                    <input type="radio" value="3"  name="productSourceE" > 清真(单选)
-                                </select>
+                                    <input type="radio" value="1" name="productSourceE"> 普通餐
+                                    <input type="radio" value="2" name="productSourceE"> 西餐
+                                    <input type="radio" value="3" name="productSourceE"> 清真(单选)
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -286,9 +374,19 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">上传图片:</label>
+                                <label class="col-sm-3 control-label">图片:</label>
                                 <div class="col-sm-8">
-                                  <input type="file" class="form-control"/>
+                                    <div>
+                                        <a id="showImg-2" href="${headPic }" title="图片" data-gallery="">
+                                            <img id='imgSizeImgSrc-2' style="" width="100" height="125"
+                                                 src="${headPic }"/></a>
+                                        <input id='imgUrl-2' type="hidden" name="headImg" value="${headPic}"/>
+                                        <a href="javascript:;" class="file">
+                                            <input type="file" onchange="uploadPic('2',this.files)" name="pics"
+                                                   multiple="multiple"/>
+                                            上传图片
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <input type="hidden" class="form-control" id="productIdE" name="id" value=""/>
@@ -325,13 +423,14 @@
                                 <label class="col-sm-3 control-label">菜单名称:</label>
                                 <div class="col-sm-8">
                                     <input readonly id="productNameD" name="productName" type="text"
-                                            class="form-control">
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">选择分类:</label>
                                 <div class="col-sm-8">
-                                    <select disabled="disabled" class="form-control" name="productClassify" id="productClassifyD">
+                                    <select disabled="disabled" class="form-control" name="productClassify"
+                                            id="productClassifyD">
                                         <option value="">--请选择--</option>
                                         <option value="1">--大荤--</option>
                                         <option value="2">--小荤--</option>
@@ -342,19 +441,19 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">供餐类型:</label>
                                 <div class="col-sm-8">
-                                    <input disabled="disabled" type="radio" value="1"  name="productTypeD" > 全部
-                                    <input disabled="disabled" type="radio" value="2"  name="productTypeD" > 老板餐
-                                    <input disabled="disabled" type="radio" value="3"  name="productTypeD" > 员工餐(单选)
-                                </select>
+                                    <input disabled="disabled" type="radio" value="1" name="productTypeD"> 全部
+                                    <input disabled="disabled" type="radio" value="2" name="productTypeD"> 老板餐
+                                    <input disabled="disabled" type="radio" value="3" name="productTypeD"> 员工餐(单选)
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">菜品属性:</label>
                                 <div class="col-sm-8">
-                                    <input disabled="disabled" type="radio" value="1"  name="productSourceD" > 普通餐
-                                    <input disabled="disabled" type="radio" value="2"  name="productSourceD" > 西餐
-                                    <input disabled="disabled" type="radio" value="3"  name="productSourceD" > 清真(单选)
-                                </select>
+                                    <input disabled="disabled" type="radio" value="1" name="productSourceD"> 普通餐
+                                    <input disabled="disabled" type="radio" value="2" name="productSourceD"> 西餐
+                                    <input disabled="disabled" type="radio" value="3" name="productSourceD"> 清真(单选)
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -373,7 +472,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">上传图片:</label>
                                 <div class="col-sm-8">
-                                  <input type="file" class="form-control"/>
+                                    <input type="file" class="form-control"/>
                                 </div>
                             </div>
                             <input type="hidden" class="form-control" id="productIdD" name="id" value=""/>
@@ -428,35 +527,35 @@
     function formatProductType(value, row, index) {
         if (value == 1) {
             return "全部";
-        } else if(value == 2){
+        } else if (value == 2) {
             return "老板餐";
-        }else if(value == 3){
+        } else if (value == 3) {
             return "员工餐";
         }
     }
     function formatProductSource(value, row, index) {
         if (value == 1) {
             return "普通餐";
-        } else if(value == 2){
+        } else if (value == 2) {
             return "西餐";
-        }else if(value == 3){
+        } else if (value == 3) {
             return "清真";
         }
     }
     function formatProductClassify(value, row, index) {
         if (value == 1) {
             return "大荤";
-        } else if(value == 2){
+        } else if (value == 2) {
             return "小荤";
-        }else if(value == 3){
+        } else if (value == 3) {
             return "素";
         }
     }
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='编辑' onclick='toedit("+row.id+")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='查看' onclick='detail("+row.id+")'  data-toggle='modal' data-target='#detailModal')>查看</a>";
+        result = result + "<a title='编辑' onclick='toedit(" + row.id + ")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='查看' onclick='detail(" + row.id + ")'  data-toggle='modal' data-target='#detailModal')>查看</a>";
         return result;
     }
     //编辑菜品
@@ -473,11 +572,15 @@
                 if (result.code === 0) {
                     $('#productIdE').val(result.data.id);
                     $('#productNameE').val(result.data.productName);
-                    $("#productClassifyE option[value='"+result.data.productClassify+"']").attr("selected","selected");
+                    $("#productClassifyE option[value='" + result.data.productClassify + "']").attr("selected", "selected");
                     $(":radio[name='productTypeE'][value='" + result.data.productType + "']").prop("checked", "checked");
                     $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
                     $('#priceSaleE').val(result.data.priceSale);
                     $('#productDesE').val(result.data.productDes);
+
+                    $('#showImg').attr('href', result.data.productPic);
+                    $("#imgSizeImgSrc1").attr("src", result.data.productPic);
+                    $("#imgUrl").val(result.data.productPic)
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -501,7 +604,7 @@
                 if (result.code === 0) {
                     $('#productIdD').val(result.data.id);
                     $('#productNameD').val(result.data.productName);
-                    $("#productClassifyD option[value='"+result.data.productClassify+"']").attr("selected","selected");
+                    $("#productClassifyD option[value='" + result.data.productClassify + "']").attr("selected", "selected");
                     $(":radio[name='productTypeD'][value='" + result.data.productType + "']").prop("checked", "checked");
                     $(":radio[name='productSourceD'][value='" + result.data.productSource + "']").prop("checked", "checked");
                     $('#priceSaleD').val(result.data.priceSale);
@@ -525,39 +628,45 @@
             layer.alert("菜品名称不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
         if ($("#productClassify option:selected").val() == null || $("#productClassify option:selected").val() == "") {
             layer.alert("请选择分类", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
 
         var temp = document.getElementsByName("productType");
         var productType;
-        for(var i=0;i<temp.length;i++)
-        {
-            if(temp[i].checked)
+        for (var i = 0; i < temp.length; i++) {
+            if (temp[i].checked)
                 productType = temp[i].value;
         }
         if (productType == null || productType == "") {
             layer.alert("请选择供餐类型", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
         if ($('input[name="productSource"]:checked').val() == null || $('input[name="productSource"]:checked').val() == "") {
             layer.alert("请选择菜品属性", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
         if ($("#priceSale").val() == null || $("#priceSale").val() == "") {
             layer.alert("单价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
-        };if ($("#productDes").val() == null || $("#productDes").val() == "") {
+        }
+        ;
+        if ($("#productDes").val() == null || $("#productDes").val() == "") {
             layer.alert("描述不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
 
         $.ajax({
             data: {
@@ -567,6 +676,7 @@
                 'productSource': $('input[name="productSource"]:checked').val(),
                 'priceSale': $("#priceSale").val(),
                 'productDes': $("#productDes").val(),
+                'productPic': $("#imgUrl-1").val(),
             },
             type: "post",
             dataType: "json",
@@ -595,39 +705,45 @@
             layer.alert("菜品名称不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
         if ($("#productClassifyE option:selected").val() == null || $("#productClassifyE option:selected").val() == "") {
             layer.alert("请选择分类", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
 
         var temp = document.getElementsByName("productTypeE");
         var productType;
-        for(var i=0;i<temp.length;i++)
-        {
-            if(temp[i].checked)
+        for (var i = 0; i < temp.length; i++) {
+            if (temp[i].checked)
                 productType = temp[i].value;
         }
         if (productType == null || productType == "") {
             layer.alert("请选择供餐类型", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
         if ($('input[name="productSourceE"]:checked').val() == null || $('input[name="productSourceE"]:checked').val() == "") {
             layer.alert("请选择菜品属性", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
         if ($("#priceSaleE").val() == null || $("#priceSaleE").val() == "") {
             layer.alert("单价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
-        };if ($("#productDesE").val() == null || $("#productDesE").val() == "") {
+        }
+        ;
+        if ($("#productDesE").val() == null || $("#productDesE").val() == "") {
             layer.alert("描述不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
-        };
+        }
+        ;
 
         $.ajax({
             data: {
@@ -638,6 +754,7 @@
                 'priceSale': $("#priceSaleE").val(),
                 'productDes': $("#productDesE").val(),
                 'id': $("#productIdE").val(),
+                'productPic': $("#imgUrl-2").val(),
             },
             type: "post",
             dataType: "json",
@@ -663,7 +780,29 @@
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);
     }
-</script>
 
+    function uploadPic(type, files) {
+        //上传图片 异步的  	Jquery.form.js
+        console.log("上传图片")
+        var options = {
+            url: "upload/uploadPics",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (type == 1) {
+                    $('#showImg-1').attr('href', data[0]);
+                    $("#imgSizeImgSrc-1").attr("src", data[0]);
+                    $("#imgUrl-1").val(data[0])
+                } else {
+                    $('#showImg-2').attr('href', data[0]);
+                    $("#imgSizeImgSrc-2").attr("src", data[0]);
+                    $("#imgUrl-2").val(data[0])
+                }
+                console.log(data[0]);
+            }
+        }
+        $("#editForm"+type).ajaxSubmit(options);
+    }
+</script>
 </body>
 </html>

@@ -8,6 +8,7 @@ import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.product.api.ProductService;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
+import com.taisf.web.oms.common.constant.PathConstant;
 import com.taisf.web.oms.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private PathConstant pathConstant;
 
     /**
      * @author:zhangzhengguang
@@ -74,6 +78,9 @@ public class ProductController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if(!Check.NuNObj(productEntity.getProductPic())){
+            productEntity.setProductPic(productEntity.getProductPic().replace(pathConstant.IMAGE_URL,""));
+        }
         try {
             dto = productService.saveProduct(productEntity);
         } catch (Exception e) {
@@ -101,6 +108,9 @@ public class ProductController {
         }
         try {
             dto = productService.getProductById(Integer.parseInt(id));
+            if(!Check.NuNObjs(dto.getData(),dto.getData().getProductPic())){
+                dto.getData().setProductPic(pathConstant.IMAGE_URL+dto.getData().getProductPic());
+            }
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);
@@ -124,8 +134,11 @@ public class ProductController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if(!Check.NuNObj(productEntity.getProductPic())){
+            productEntity.setProductPic(productEntity.getProductPic().replace(pathConstant.IMAGE_URL,""));
+        }
         try {
-            dto = productService.updateProduct(productEntity);
+                dto = productService.updateProduct(productEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);

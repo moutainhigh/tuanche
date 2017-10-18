@@ -39,6 +39,41 @@
             margin: 0 0;
         }
     </style>
+    <style type="text/css">
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #1ab394;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #FFFFFF;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+            margin: 20px 0px 12px 0px;
+        }
+
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+
+        .content li {
+            float: left;
+        }
+    </style>
     <!-- 全局js -->
     <script src="${staticResourceUrl}/js/jquery.min.js${VERSION}"></script>
     <script src="${staticResourceUrl}/js/bootstrap.min.js${VERSION}"></script>
@@ -60,10 +95,51 @@
     <script src="${staticResourceUrl}/js/plugins/validate/jquery.validate.min.js${VERSION}"></script>
     <script src="${staticResourceUrl}/js/plugins/validate/messages_zh.min.js${VERSION}"></script>
     <script src="${staticResourceUrl}/js/plugins/layer/laydate/laydate.js${VERSION}001"></script>
+    <link href="${staticResourceUrl}/css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
+    <script src="${staticResourceUrl}/js/plugins/blueimp/jquery.blueimp-gallery.min.js"></script>
 </head>
+<style>
+    .lightBoxGallery img {
+        margin: 5px;
+        width: 160px;
+    }
 
+    .room-pic {
+        float: left;
+    }
+
+    .room-pic p {
+        text-align: center;
+    }
+
+    .blueimp-gallery > .title {
+        left: 0;
+        bottom: 45px;
+        top: auto;
+        width: 100%;
+        text-align: center;
+    }
+
+    .picline {
+        display: inline-block;
+    }
+
+    .picjz {
+        display: inline-block;
+        vertical-align: middle;
+    }
+</style>
 <body class="gray-bg">
-
+<!-- 图片预览continer -->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="float-e-margins">
         <div class="ibox-content">
@@ -170,7 +246,19 @@
                             </div>
                             <label class="col-xs-1 col-sm-1 control-label mtop">上传图片:</label>
                             <div class="col-xs-2 col-sm-2">
-                            <input type="file" id="pic">
+                                <form id="editForm1" class="form-horizontal m-t">
+                                <div>
+                                    <a id="showImg-1" href="${packageEntity.packagePic }" title="图片" data-gallery="">
+                                        <img id='imgSizeImgSrc-1' style="" width="100" height="125"
+                                             src="${packageEntity.packagePic }"/></a>
+                                    <input id='imgUrl-1' type="hidden" name="headImg" value="${packageEntity.packagePic}"/>
+                                    <a href="javascript:;" class="file">
+                                        <input type="file" onchange="uploadPic('1',this.files)" name="pics"
+                                               multiple="multiple"/>
+                                        上传图片
+                                    </a>
+                                </div>
+                                    </form>
                             </div>
                         </div>
                     </div>
@@ -216,6 +304,7 @@
                     'drinkCode': $("#yinpin option:selected").val(),
                     'foodCode': $("#zhushi option:selected").val(),
                     'fruitCode': $("#shuiguo option:selected").val(),
+                    'packagePic':  $("#imgUrl-1").val(),
                 },
                 type: "post",
                 dataType: "json",
@@ -242,6 +331,23 @@
         }
         function toList() {
             $.callBackParent("supplierProductPackage/list", true, callBack);
+        }
+
+        function uploadPic(type, files) {
+            //上传图片 异步的  	Jquery.form.js
+            console.log("上传图片")
+            var options = {
+                url: "upload/uploadPics",
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                        $('#showImg-1').attr('href', data[0]);
+                        $("#imgSizeImgSrc-1").attr("src", data[0]);
+                        $("#imgUrl-1").val(data[0])
+                    console.log(data[0]);
+                }
+            }
+            $("#editForm"+type).ajaxSubmit(options);
         }
     </script>
 </body>
