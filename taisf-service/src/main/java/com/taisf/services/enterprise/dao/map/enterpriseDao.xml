@@ -30,6 +30,11 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="last_modify_date" jdbcType="TIMESTAMP" property="lastModifyDate" />
   </resultMap>
+  
+  <resultMap id="BaseResultMapExt" type="com.taisf.services.enterprise.vo.EnterpriseExtVO" extends="BaseResultMap" >
+    <result column="for_lunch" property="forLunch" jdbcType="INTEGER" />
+    <result column="for_dinner" property="forDinner" jdbcType="INTEGER" />
+  </resultMap>
 
 
   <sql id="Base_Column_List">
@@ -37,8 +42,6 @@
     city_code, city_name, area_code, area_name, street, open_time, till_time, contact_name, contact_mail, contact_mobile, contact_tel, contact_tencent,
     create_time, last_modify_date
   </sql>
-
-
 
   <select id="getEnterpriseByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -78,7 +81,7 @@
 
 
 
-  <insert id="saveEnterprise" parameterType="com.taisf.services.enterprise.entity.EnterpriseEntity">
+  <insert id="saveEnterprise" useGeneratedKeys="true" keyProperty="id" parameterType="com.taisf.services.enterprise.entity.EnterpriseEntity">
     insert into t_enterprise
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="supplierCode != null">
@@ -266,6 +269,35 @@
       INNER JOIN t_enterprise e ON e.enterprise_code = o.enterprise_code
       /*WHERE TO_DAYS( now() ) - TO_DAYS(o.create_time) = 0*/
       GROUP BY o.enterprise_code
+  </select>
+  
+  <select id="getEnterpriseExtByPage" resultMap="BaseResultMapExt" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest">
+    select e.*,c.for_lunch,c.for_dinner
+    from t_enterprise e
+    LEFT JOIN t_enterprise_config c on e.enterprise_code=c.enterprise_code
+    where 1=1
+    <if test="enterpriseCode != null and enterpriseCode != '' ">
+     and enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+    </if>
+    <if test="enterpriseName != null and enterpriseName != '' ">
+     and enterprise_name like CONCAT('%',#{enterpriseName, jdbcType=VARCHAR},'%')
+    </if>
+    <if test="manger != null and manger != '' ">
+		and a.manger = #{manger, jdbcType=INTEGER}
+	</if>
+    <if test="openTime != null and openTime != '' ">
+   		<![CDATA[
+			and a.open_time >= #{openTime, jdbcType=TIMESTAMP}
+		]]>	
+	</if>
+	<if test="tillTime != null and tillTime != '' ">
+		<![CDATA[
+			and a.till_time <= #{tillTime, jdbcType=TIMESTAMP}
+		]]>
+	</if>
+	<if test="enterpriseType != null and enterpriseType != '' ">
+		and enterprise_type = #{enterpriseType, jdbcType=INTEGER}
+	</if>
   </select>
 
 </mapper>

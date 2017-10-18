@@ -1,24 +1,34 @@
 package com.taisf.services.enterprise.proxy;
 
-import com.jk.framework.base.entity.DataTransferObject;
-import com.jk.framework.base.page.PagingResult;
-import com.jk.framework.base.utils.Check;
-import com.taisf.services.enterprise.api.EnterpriseService;
-import com.taisf.services.enterprise.dto.EnterprisePageRequest;
-import com.taisf.services.enterprise.dao.EnterpriseDao;
-import com.taisf.services.enterprise.dto.EnterpriseListRequest;
-import com.taisf.services.enterprise.entity.EnterpriseEntity;
-import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
-import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
-import com.taisf.services.user.entity.UserAccountEntity;
-import com.taisf.services.user.manager.UserManagerImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.Check;
+import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.enterprise.api.EnterpriseService;
+import com.taisf.services.enterprise.dao.EnterpriseDao;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
+import com.taisf.services.enterprise.dto.EnterprisePageRequest;
+import com.taisf.services.enterprise.dto.EnterpriseUpdateRequest;
+import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
+import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
+import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
+import com.taisf.services.enterprise.vo.EnterpriseExtVO;
+import com.taisf.services.product.proxy.ProductServiceProxy;
+import com.taisf.services.user.entity.UserAccountEntity;
+import com.taisf.services.user.manager.UserManagerImpl;
 
 /**
  * <p>企业接口实现</p>
@@ -35,6 +45,8 @@ import java.util.Map;
  */
 @Component("enterprise.enterpriseServiceProxy")
 public class EnterpriseServiceProxy implements EnterpriseService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EnterpriseServiceProxy.class);
 
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
@@ -176,5 +188,41 @@ public class EnterpriseServiceProxy implements EnterpriseService {
         dto.setData(entityList);
         return dto;
     }
+
+	@Override
+	public DataTransferObject<Void> operateEnterprise(EnterpriseUpdateRequest request) {
+		DataTransferObject<Void> dto = new DataTransferObject<>();
+        try {
+            //配置信息
+        	EnterpriseConfigEntity configEntity = new EnterpriseConfigEntity();
+            BeanUtils.copyProperties(request,configEntity);
+           // enterpriseManager.insertProduct(product);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【企业】error:{}", e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("操作企业信息异常");
+            return dto;
+        }
+        return dto;
+	}
+	
+	/**
+	 * 查询企业信息列表
+	 */
+	@Override
+	public DataTransferObject<PagingResult<EnterpriseExtVO>> getEnterpriseExtByPage(EnterpriseListRequest request) {
+		DataTransferObject<PagingResult<EnterpriseExtVO>> dto = new DataTransferObject<PagingResult<EnterpriseExtVO>>();
+		try {
+			PagingResult<EnterpriseExtVO> vos = enterpriseManager.getEnterpriseExtByPage(request);
+			dto.setData(vos);
+			
+		} catch (Exception e) {
+			LogUtil.error(LOGGER, "error:{}", e);            
+			dto.setErrCode(DataTransferObject.ERROR);
+			dto.setMsg("系统异常");
+            return dto;
+		}		
+		return dto;
+	}	
 
 }

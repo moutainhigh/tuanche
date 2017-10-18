@@ -27,6 +27,8 @@
 	<link href="${staticResourceUrl}/css/custom-z.css${VERSION}" rel="stylesheet">
 	<style type=text/css>
 		.td-title{font-weight:bold;font-size:13px}
+		.inner-title{float:left; width:60px; font-size:13px;}
+		.inner-input{float:left; width:80px; margin:0px 10px}
 		.table>tbody>tr>td {
 			border: 0px solid white
 		}
@@ -80,7 +82,7 @@
 							
 							<tr>
 								<td align="right" class="td-title">供餐单位:</td>
-								<td><select class="form-control" id="supplierCode" name="supplierCode" >  
+								<td><select class="form-control" id="supplierCode" name="supplierCode">  
 				                        <option value="">-请选择-</option>  
 				                    	<c:if test="${ not empty suppliers}" > 
 				                        <c:forEach var="su" items="${suppliers}">  
@@ -182,6 +184,63 @@
 								<td align="center"><input type="text" id="tillTime" name="tillTime" class="form-control"
 									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.tillTime}"></td>
 							</tr>
+							
+							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">供餐信息</td></tr>
+							<tr>
+								<td align="right" class="td-title">餐费标准:</td>
+								<td colspan="5">
+									<font class="mtop inner-title" style="text-align:right;">老板餐</font>
+								 	<input type="text" id="empPrice" name="empPrice" class="form-control inner-input"
+				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.empPrice}"/>
+				                    <font class="mtop inner-title">元</font>
+				                    <font class="mtop inner-title" style="text-align:right;">员工餐</font>
+								 	<input type="text" id="bossPrice" name="bossPrice" class="form-control inner-input"
+				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.empPrice}"/>
+				                    <font class="mtop inner-title">元</font>
+				                </td>
+							</tr>
+							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
+							<tr>
+								<td align="right" class="td-title">配送午餐:</td>
+								<td align="center">
+									<select class="form-control" name="forLunch" id="forLunch">
+										<option <c:if test="${enterprise.forLunch=='1'}" > selected="selected" </c:if> value="1">是</option>
+										<option <c:if test="${enterprise.forLunch=='0'}" > selected="selected" </c:if> value="0">否</option>
+	                        		</select>
+                        		</td>
+								<td align="right" class="td-title">开始时间:</td>
+								<td align="center"><input type="text" id="lunchStart" name="lunchStart" class="form-control" placeholder="HH:mm"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.lunchStart}"></td>
+								<td align="right" style="font-weight:bold;">截止时间:</td>
+								<td align="center"><input type="text" id="lunchEnd" name="lunchEnd" class="form-control" placeholder="HH:mm"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.lunchEnd}"></td>
+							</tr>
+							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
+							<tr>
+								<td align="right" class="td-title">配送晚餐:</td>
+								<td align="center">
+									<select class="form-control" name="forDinner" id="forDinner">
+										<option <c:if test="${enterprise.forDinner=='1'}" > selected="selected" </c:if> value="1">是</option>
+										<option <c:if test="${enterprise.forDinner=='0'}" > selected="selected" </c:if> value="0">否</option>
+	                        		</select>
+                        		</td>
+								<td align="right" class="td-title">开始时间:</td>
+								<td align="center"><input type="text" id="dinnerStart" name="dinnerStart" class="form-control" placeholder="HH:mm"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.dinnerStart}"></td>
+								<td align="right" style="font-weight:bold;">截止时间:</td>
+								<td align="center"><input type="text" id="dinnerEnd" name="dinnerEnd" class="form-control" placeholder="HH:mm"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.dinnerEnd}"></td>
+							</tr>
+							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
+							<tr>
+								<td align="right" class="td-title">送餐地址:</td>
+								<td align="center"><input type="text" id="address" name="address" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.address}"></td>
+								<td align="right" class="td-title">其他地址:</td>
+								<td align="center"><input type="text" id="otherAddress" name="otherAddress" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.otherAddress}"></td>
+							</tr>
+							
 							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">财务信息</td></tr>
 							<tr>
 								<td align="right" class="td-title">发票抬头:</td>
