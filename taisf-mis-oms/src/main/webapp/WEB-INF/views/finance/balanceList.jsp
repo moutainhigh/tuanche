@@ -110,7 +110,7 @@
 </div>
 
 
-<!-- 弹出药品的选择 -->
+<!-- 弹出用户详情 -->
 <div class="modal inmodal" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -129,7 +129,7 @@
 
                     <!-- 搜索框panel -->
 
-                    <input id="id_enterpriseCode" name="enterpriseCode" type="text"
+                    <input id="id_enterpriseCode" name="enterpriseCode" type="hidden"
                            class="form-control">
 
                     <label class="col-sm-1 control-label mtop">电话:</label>
@@ -170,10 +170,12 @@
                                         <tr>
                                             <th data-field="userCode" data-width="20%">编号</th>
                                             <th data-field="userPhone" data-width="30%" data-align="center">手机号</th>
+                                            <th data-field="userName" data-width="30%" data-align="center">姓名</th>
                                             <th data-field="drawBalance" data-width="30%" data-formatter="formatePrice"
                                                 data-align="center">账户余额
                                             </th>
-                                            <th data-field="accountStatus" data-width="20%" data-align="center">状态</th>
+                                            <th data-field="userStatus" data-width="20%" data-formatter="formateUserStatus"
+                                                data-align="center">状态</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -192,91 +194,105 @@
 <!-- end -->
 
 
+
+
+
+
 <!-- 平均分配 -->
-<div class="modal inmodal" id="evgModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="avgModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
-    <div class="modal-dialog">
-        <div class="modal-content animated bounceInRight">
-            <div class="modal-header">
+
+            <div class="modal-header" style="padding: 15px 6px;">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">关闭</span>
-                </button>
-                <h4 class="modal-title">编辑菜单</h4>
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">平均分配金额-金额填写之后会自动平均分配</h4>
             </div>
-            <div class="col-sm-14">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-                        <form id="formE" class="form-horizontal m-t">
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">菜单名称:</label>
-                                <div class="col-sm-8">
-                                    <input id="productNameE" name="productName" type="text"
-                                           class="form-control">
+            <div class="ibox float-e-margins">
+
+                <input id="avg_enterpriseCode" name="enterpriseCode" type="hidden"
+                       class="form-control">
+
+                <div class="ibox-content">
+
+                    <!-- 搜索框panel -->
+
+                    <label class="col-sm-1 control-label mtop">员工()人,每人分配金额:</label>
+                    <div class="col-sm-2">
+                        <input id="empMoney" name="empMoney" type="text"
+                               class="form-control">
+                    </div>
+
+                </div>
+
+                <div class="ibox-content">
+                    <label class="col-sm-1 control-label mtop">老板()人,每人分配金额:</label>
+                    <div class="col-sm-2">
+                        <input id="bossMoney" name="bossMoney" type="text"
+                               class="form-control">
+                    </div>
+
+                </div>
+
+                <div class="ibox-content">
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary" type="button" onclick="queryEmp();">
+                            <i class="fa fa-search"></i>&nbsp;确认
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- 列表 -->
+            <div class="ibox float-e-margins" style="margin-bottom:0px">
+                <div class="ibox-content">
+                    <div class="row row-lg">
+                        <div class="col-sm-12">
+                            <div class="example-wrap">
+                                <div class="example">
+                                    <!-- 弹出框列表 -->
+                                    <table id="listTableEmp" class="table table-bordered" data-click-to-select="true"
+                                           data-toggle="table" data-side-pagination="server"
+                                           data-pagination="true" data-page-list="[5,10,20,50]"
+                                           data-pagination="true" data-page-size="10"
+                                           data-pagination-first-text="首页" data-pagination-pre-text="上一页"
+                                           data-pagination-next-text="下一页" data-pagination-last-text="末页"
+                                           data-content-type="application/x-www-form-urlencoded"
+                                           data-query-params="paginationAccountS" data-method="post"
+                                           data-single-select="true"
+                                           data-url="finance/accountPage">
+                                        <thead>
+                                        <tr>
+                                            <th data-field="userCode" data-width="20%">编号</th>
+                                            <th data-field="userPhone" data-width="30%" data-align="center">手机号</th>
+                                            <th data-field="userName" data-width="30%" data-align="center">姓名</th>
+                                            <th data-field="drawBalance" data-width="30%" data-formatter="formatePrice"
+                                                data-align="center">账户余额
+                                            </th>
+                                            <th data-field="userStatus" data-width="20%" data-formatter="formateUserStatus"
+                                                data-align="center">状态</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">选择分类:</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="productClassify" id="productClassifyE">
-                                        <option value="">--请选择--</option>
-                                        <option value="1">--大荤--</option>
-                                        <option value="2">--小荤--</option>
-                                        <option value="3">--素--</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">供餐类型:</label>
-                                <div class="col-sm-8">
-                                    <input type="radio" value="1" name="productTypeE"> 全部
-                                    <input type="radio" value="2" name="productTypeE"> 老板餐
-                                    <input type="radio" value="3" name="productTypeE"> 员工餐(单选)
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">菜品属性:</label>
-                                <div class="col-sm-8">
-                                    <input type="radio" value="1" name="productSourceE"> 普通餐
-                                    <input type="radio" value="2" name="productSourceE"> 西餐
-                                    <input type="radio" value="3" name="productSourceE"> 清真(单选)
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">单价(元):</label>
-                                <div class="col-sm-8">
-                                    <input id="priceSaleE" name="priceSale" type="text"
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">描述:</label>
-                                <div class="col-sm-8">
-                                    <textarea id="productDesE" style="width: 100%;height: 80;">描述</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">上传图片:</label>
-                                <div class="col-sm-8">
-                                    <input type="file" class="form-control"/>
-                                </div>
-                            </div>
-                            <input type="hidden" class="form-control" id="productIdE" name="id" value=""/>
-                            <!-- 用于 将表单缓存清空 -->
-                            <input id="editReset" type="reset" style="display:none;"/>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="saveBtnE" type="button" onclick="editSaveProduct();">保存</button>
-                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">返回</button>
             </div>
         </div>
     </div>
 </div>
+<!-- end -->
+
+
 
 
 <script>
@@ -286,6 +302,12 @@
         CommonUtils.datePickerFormat('startTime');
         CommonUtils.datePickerFormat('endTime');
     });
+
+
+    function formatePrice(value, row, index) {
+        return (value/100).toFixed(2);
+    }
+
 
     function paginationAccount(params) {
         return {
@@ -325,6 +347,20 @@
             return "";
         }
     }
+    
+    function formateUserStatus(value, row, index) {
+        if (value == 1) {
+            return "可用";
+        } else if (value == 2) {
+            return "激活";
+        }else if (value == 3) {
+            return "注销";
+        }else if (value == 4) {
+            return "冻结";
+        } else {
+            return value;
+        }
+    }
 
     function formatRechargeType(value, row, index) {
         if (value == 1) {
@@ -354,7 +390,33 @@
     }
 
     function avgMoney(enterpriseCode) {
-        alert(enterpriseCode);
+
+        console.log(enterpriseCode)
+        $("#avg_enterpriseCode").val(enterpriseCode)
+
+
+        $.ajax({
+            data: {},
+            type: "post",
+            dataType: "json",
+            url: 'finance/enterpriseStats?enterpriseCode='+enterpriseCode,
+            success: function (result) {
+
+                console.log(enterpriseCode)
+                if (result.code === 0) {
+                    var drawBalance = result.drawBalance;
+                    alert(drawBalance);
+
+                    $('#avgModal').modal('show');
+
+                } else {
+                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+            }
+        });
     }
 
     function detail(enterpriseCode) {
@@ -362,15 +424,23 @@
         $('#detailModal').modal('show');
         queryEmp();
     }
+
+
+    function oneMoney(enterpriseCode) {
+        $("#avg_enterpriseCode").val(enterpriseCode)
+        $('#avgModal').modal('show');
+        queryEmp();
+    }
+
+
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
         result = result + "<a title='编辑' onclick='detail(\"" + row.enterpriseCode + "\")' >查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='编辑' onclick='avgMoney(" + row.enterpriseCode + ")'  data-toggle='modal' data-target='#evgModal')>平均分配</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='查看' onclick='detail(" + row.enterpriseCode + ")'  data-toggle='modal' data-target='#detailModal')>个人分配</a>";
+        result = result + "<a title='编辑' onclick='avgMoney(" + row.enterpriseCode + ")'  >平均分配</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='查看' onclick='oneMoney(" + row.enterpriseCode + ")'  >个人分配</a>";
         return result;
     }
-
 
 </script>
 

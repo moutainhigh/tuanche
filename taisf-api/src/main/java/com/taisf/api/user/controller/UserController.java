@@ -313,11 +313,12 @@ public class UserController extends AbstractController {
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
         }
-        //获取当前参数
-        UserLogoutRequest paramRequest = getEntity(request, UserLogoutRequest.class);
-        if (Check.NuNObj(paramRequest)) {
-            return new ResponseDto("参数异常");
+        String  token = getToken(request);
+        if (Check.NuNStr(token)){
+            return new ResponseDto("",DataTransferObject.SUCCESS);
         }
+        //获取当前参数
+        UserLogoutRequest paramRequest = new UserLogoutRequest();
         paramRequest.setToken(getToken(request));
         paramRequest.setHeader(header);
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));

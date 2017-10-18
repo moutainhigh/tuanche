@@ -9,6 +9,7 @@ import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.recharge.api.RechargeService;
+import com.taisf.services.recharge.vo.EnterpriseStatsNumber;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserAccountRequest;
 import com.taisf.services.user.vo.UserAccountVO;
@@ -59,6 +60,31 @@ public class FinanceController {
     public String list(HttpServletRequest request) {
         return "finance/balanceList";
     }
+
+
+    /**
+     * 获取企业的统计信息
+     * @author afi
+     * @param request
+     * @param enterpriseCode
+     * @return
+     */
+    @RequestMapping("/enterpriseStats")
+    @ResponseBody
+    public DataTransferObject balanceListPage(HttpServletRequest request, String enterpriseCode) {
+        DataTransferObject<EnterpriseStatsNumber> dto = new DataTransferObject<>();
+        PageResult pageResult = new PageResult();
+        try {
+            return rechargeService.getEnterpriseStatsNumber(enterpriseCode);
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params :{}", JsonEntityTransform.Object2Json(enterpriseCode));
+            LogUtil.error(LOGGER, "error :{}", e);
+            dto.setErrorMsg("处理异常");
+        }
+        return dto;
+    }
+
+
 
 
     /**

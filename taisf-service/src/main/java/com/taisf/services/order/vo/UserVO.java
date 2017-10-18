@@ -65,6 +65,11 @@ public class UserVO extends BaseEntity {
      */
     private Integer productSource;
 
+    /**
+     * 默认设置了密码
+     */
+    private Boolean pwdFlag = true;
+
 
     public String getUserUid() {
         return userUid;
@@ -128,5 +133,13 @@ public class UserVO extends BaseEntity {
 
     public void setUserCode(String userCode) {
         this.userCode = userCode;
+    }
+
+    public Boolean getPwdFlag() {
+        return pwdFlag;
+    }
+
+    public void setPwdFlag(Boolean pwdFlag) {
+        this.pwdFlag = pwdFlag;
     }
 }

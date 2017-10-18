@@ -174,7 +174,6 @@ public class MyController extends AbstractController {
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
-        paramRequest.setBalanceFlag(false);
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 

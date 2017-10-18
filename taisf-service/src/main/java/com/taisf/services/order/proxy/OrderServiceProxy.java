@@ -706,6 +706,12 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.getOrderBase().setUserName(userEntity.getUserName());
         orderSaveVO.getOrderBase().setUserTel(userEntity.getUserPhone());
         orderSaveVO.getOrderBase().setUserUid(userEntity.getUserUid());
+        UserAccountEntity accountEntity = userManager.fillAndGetAccountUser(createOrderRequest.getUserUid());
+        if (Check.NuNObj(accountEntity)
+                || Check.NuNStr(accountEntity.getAccountPassword())){
+            //默认设置了密码,当前为设置密码
+            user.setPwdFlag(false);
+        }
 
         //设置当前的用户关联的企业的用餐信息
         this.dealEnterpriseInfo( dto, orderSaveVO,userEntity, createOrderRequest);
