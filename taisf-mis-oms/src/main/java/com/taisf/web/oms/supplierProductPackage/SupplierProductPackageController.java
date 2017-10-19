@@ -83,6 +83,7 @@ public class SupplierProductPackageController {
                     vo.setDrinkName(productService.getProductById(x.getDrinkCode()).getData().getProductName());
                     vo.setFoodName(productService.getProductById(x.getFoodCode()).getData().getProductName());
                     vo.setFruitName(productService.getProductById(x.getFruitCode()).getData().getProductName());
+                    vo.setPackagePic(pathConstant.IMAGE_URL+x.getPackagePic());
                     listVo.add(vo);
                 });
                 pageResult.setRows(listVo);

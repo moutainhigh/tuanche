@@ -110,7 +110,7 @@
                                 data-align="center"><span class="tdfont">维护企业</span></th>
                             <th data-field="1" data-width="10%" data-formatter="formatSupplier"
                                 data-align="center"><span class="tdfont">维护供餐商</span></th>
-                            <th data-field="userStatus" data-width="10%"
+                            <th data-field="userStatus" data-width="10%" data-formatter="formatUserStatus"
                                 data-align="center"><span class="tdfont">状态</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
@@ -199,21 +199,20 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</label>
                                 <div class="col-sm-8">
-                                   <span id="userStatusE">在职</span>
-                                    <button class="btn btn-primary" type="button" onclick="dimission();">离职</button>
+                                   <span id="userStatusE"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</label>
                                 <div class="col-sm-8">
-                                    <input readonly id="" name="userPhone" type="text"
+                                    <input readonly id="userPhoneDD" name="userPhone" type="text"
                                            value="" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
                                 <div class="col-sm-8">
-                                    <input readonly id="password" name="userPhone" type="text"
+                                    <input readonly id="password" name="password" type="text"
                                            value="" class="form-control">
                                 </div>
                             </div>
@@ -328,6 +327,13 @@
     function formatSupplier(value, row, index) {
        return "<button  onclick='showSupplier(\""+row.userUid+"\",\""+row.userName+"\")'   style=\"height:30px;\" type=\"button\" class=\"btn btn-primary\" >查看 </button>"
     }
+    function formatUserStatus(value, row, index) {
+        if(row.userStatus == 1 || row.userStatus == 2){
+            return "正常";
+        }else{
+            return "离职";
+        }
+    }
 
     function showEnterprise(userUid,userName) {
         $.openNewTab(new Date().getTime(),"user/toEnterprisePageList?manger="+userUid+"&userName="+userName, "企业列表");
@@ -341,8 +347,38 @@
     function formatOperate(value, row, index) {
         var result = "";
         result = result + "<a title='编辑' onclick='toedit("+row.id+")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='查看' onclick='detail(\""+row.id+"\")'  data-toggle='modal' data-target='#detailModal')>查看</a>";
+        result = result + "<a title='查看' onclick='detail(\""+row.id+"\")'  data-toggle='modal' data-target='#detailModal')>查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        if(row.userStatus == 1 || row.userStatus == 2){
+            result = result + "<a title='离职' onclick='updateUserStatus(\""+row.userUid+"\",\"3\")'  >离职</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        }else{
+            result = result + "<a title='正常' onclick='updateUserStatus(\""+row.userUid+"\",\"2\")' >激活</a>";
+        }
         return result;
+    }
+
+    function updateUserStatus(id,status) {
+        $.ajax({
+            data: {
+                'userUid': id,
+                'userStatus': status,
+            },
+            type: "post",
+            dataType: "json",
+            url: 'user/updateUserStatus',
+            success: function (result) {
+                if (result.code === 0) {
+                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                    $('#listTable').bootstrapTable('refresh');
+                } else {
+                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                    $("#saveBtn").removeAttr("disabled");
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtn").removeAttr("disabled");
+            }
+        });
     }
     //编辑员工
     function toedit(id) {
@@ -358,7 +394,7 @@
                 if (result.code === 0) {
                     $('#UserUidE').val(result.data.userUid);
                     $('#userNameE').val(result.data.userName);
-                    $('#userPhoneE').val(result.data.userPhone);
+                    $('#userNameE').val(result.data.userName);
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -383,6 +419,13 @@
                     $('#UserUidD').val(result.data.userUid);
                     $('#userNameD').val(result.data.userName);
                     $('#userPhoneD').val(result.data.userPhone);
+                    $('#userPhoneDD').val(result.data.userPhone);
+                    $('#password').val(result.data.userPassword);
+                    if(result.data.userStatus == 3){
+                        $('#userStatusE').html("离职");
+                    }else{
+                        $('#userStatusE').html("在职");
+                    }
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");

@@ -39,6 +39,16 @@ public class OrderInfoRequest extends PageRequest {
      */
     private String tillTime;
 
+    private String enterpriseCode;
+
+    public String getEnterpriseCode() {
+        return enterpriseCode;
+    }
+
+    public void setEnterpriseCode(String enterpriseCode) {
+        this.enterpriseCode = enterpriseCode;
+    }
+
     public String getKnightUid() {
         return knightUid;
     }

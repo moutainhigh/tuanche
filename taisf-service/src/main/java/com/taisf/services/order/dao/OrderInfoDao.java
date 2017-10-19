@@ -1,10 +1,14 @@
 package com.taisf.services.order.dao;
 
 import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.vo.OrderInfoVO;
+import com.taisf.services.order.vo.OrderListVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -69,8 +73,38 @@ public class OrderInfoDao extends BaseDao{
         return mybatisDaoContext.findForPage(SQLID + "pageListOrder", OrderInfoVO.class, orderInfoRequest,pageBounds);
     }
 
-    
+	/**
+     * @author:zhangzhengguang
+     * @date:2017/10/18
+     * @description:企业订单配送
+     **/
+    public PagingResult<OrderListVo> finOrderDistributionList(EnterpriseListRequest enterpriseListRequest){
+		PageBounds pageBounds=new PageBounds();
+		pageBounds.setLimit(enterpriseListRequest.getLimit());
+		pageBounds.setPage(enterpriseListRequest.getPage());
+        return mybatisDaoContext.findForPage(SQLID + "enterpriseOrderDistributionList", OrderListVo.class, enterpriseListRequest,pageBounds);
+    }
 
-
-
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/18
+     * @description:修改订单状态根据企业编号
+     **/
+    public int updateByEnterpriseCode(OrderEntity orderEntity){
+        return mybatisDaoContext.update(SQLID+"updateByEnterpriseCode",orderEntity);
+    }
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/19
+     * @description:根据企业code查询企业下所有待配送订单
+     **/
+    public PagingResult<OrderEntity> findListByEnterpriseCode(OrderInfoRequest orderInfoRequest){
+    	if(Check.NuNObjs(orderInfoRequest,orderInfoRequest.getEnterpriseCode())){
+    		return null;
+		}
+    	PageBounds pageBounds = new PageBounds();
+    	pageBounds.setPage(orderInfoRequest.getPage());
+    	pageBounds.setLimit(orderInfoRequest.getLimit());
+        return mybatisDaoContext.findForPage(SQLID+"findListByEnterpriseCode",OrderEntity.class,orderInfoRequest,pageBounds);
+    }
 }

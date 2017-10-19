@@ -14,6 +14,7 @@ import com.taisf.services.order.dto.OrderProductListRequest;
 import com.taisf.services.order.entity.*;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
+import com.taisf.services.order.vo.OrderListVo;
 import com.taisf.services.order.vo.OrderSaveVO;
 import com.taisf.services.user.dao.AccountLogDao;
 import com.taisf.services.user.dao.UserAccountDao;
@@ -140,6 +141,16 @@ public class OrderManagerImpl {
 
 	/**
 	 * @author:zhangzhengguang
+	 * @date:2017/10/18
+	 * @description:企业订单配送
+	 **/
+	public PagingResult<OrderListVo> finOrderDistributionList(EnterpriseListRequest enterpriseListRequest){
+		PagingResult<OrderListVo> orderListVoPagingResult = orderInfoDao.finOrderDistributionList(enterpriseListRequest);
+		return orderListVoPagingResult;
+	}
+
+	/**
+	 * @author:zhangzhengguang
 	 * @date:2017/10/17
 	 * @description:分页查询订单详情商品列表
 	 **/
@@ -156,6 +167,25 @@ public class OrderManagerImpl {
 	public PagingResult<OrderProductEntity>  getEverydayTaskPgeList(EnterpriseListRequest request){
 		PagingResult<OrderProductEntity> orderProductPageList = orderProductDao.getEverydayTaskPgeList(request);
 		return orderProductPageList;
+	}
+
+	/**
+	 * @author:zhangzhengguang
+	 * @date:2017/10/18
+	 * @description:修改订单状态根据企业编号
+	 **/
+	public void updateByEnterpriseCode(OrderEntity orderEntity){
+		orderInfoDao.updateByEnterpriseCode(orderEntity);
+	}
+
+	/**
+	 * @author:zhangzhengguang
+	 * @date:2017/10/19
+	 * @description:修改订单状态根据企业编号
+	 **/
+	public PagingResult<OrderEntity>  findListByEnterpriseCode(OrderInfoRequest orderInfoRequest){
+		PagingResult<OrderEntity> listByEnterpriseCode = orderInfoDao.findListByEnterpriseCode(orderInfoRequest);
+		return listByEnterpriseCode;
 	}
 
 

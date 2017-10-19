@@ -35,6 +35,7 @@
         <result column="pay_balance" property="payBalance" jdbcType="INTEGER" />
         <result column="carry_money" property="carryMoney" jdbcType="INTEGER" />
         <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+        <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR" />
 
     </resultMap>
 
@@ -102,4 +103,42 @@
         </if>
     </select>
 
+    <resultMap id="ResultListMap" type="com.taisf.services.order.vo.OrderListVo" extends="BaseResultMap">
+        <result column="lunchCommon" property="lunchCommon" jdbcType="INTEGER" />
+        <result column="lunchExt" property="lunchExt" jdbcType="INTEGER" />
+        <result column="dinnerCommon" property="dinnerCommon" jdbcType="INTEGER" />
+        <result column="dinnerExt" property="dinnerExt" jdbcType="INTEGER" />
+        <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="enterpriseOrderDistributionList" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest" resultMap="ResultListMap">
+        SELECT  o.enterprise_code,e.enterprise_name,w.num AS 'lunchCommon',wb.num AS 'lunchExt',wc.num AS 'dinnerCommon',wcb.num AS 'dinnerExt',o.user_name,o.user_tel
+        FROM t_order  o LEFT JOIN t_enterprise e ON o.enterprise_code = e.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '20' GROUP BY enterprise_code) w ON w.enterprise_code = o.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21' GROUP BY enterprise_code) wb ON wb.enterprise_code = o.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30' GROUP BY enterprise_code) wc ON wc.enterprise_code = o.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31' GROUP BY enterprise_code) wcb ON wcb.enterprise_code = o.enterprise_code
+        WHERE o.order_status = 50
+        <if test="enterpriseName != null and enterpriseName != '' ">
+            AND e.enterprise_name = #{enterpriseName,jdbcType=VARCHAR}
+        </if>
+        GROUP BY o.enterprise_code
+
+    </select>
+
+    <update id="updateByEnterpriseCode" parameterType="com.taisf.services.order.entity.OrderEntity">
+        UPDATE  t_order SET order_status = #{orderStatus}
+        WHERE  enterprise_code = #{enterpriseCode}
+    </update>
+
+
+    <select id="findListByEnterpriseCode" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status, t.order_status, t.accounts_status,
+        t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,
+        t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark
+        FROM t_order t
+        WHERE t.enterprise_code = #{enterpriseCode}
+        AND t.order_status = 50
+    </select>
 </mapper>
