@@ -99,6 +99,15 @@ public class OrderEntity extends BaseEntity {
     /** 备注 */
     private String mark;
 
+    private String enterpriseCode;
+
+    public String getEnterpriseCode() {
+        return enterpriseCode;
+    }
+
+    public void setEnterpriseCode(String enterpriseCode) {
+        this.enterpriseCode = enterpriseCode;
+    }
 
     public String getAddress() {
         return address;

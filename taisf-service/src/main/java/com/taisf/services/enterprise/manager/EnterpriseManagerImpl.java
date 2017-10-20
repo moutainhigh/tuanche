@@ -10,11 +10,13 @@ import com.taisf.services.enterprise.dao.EnterpriseConfigDao;
 import com.taisf.services.enterprise.dao.EnterpriseDao;
 import com.taisf.services.enterprise.dao.EnterpriseDayDao;
 import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.order.dao.CartDao;
 import com.taisf.services.order.dto.CartBaseRequest;
@@ -117,6 +119,27 @@ public class EnterpriseManagerImpl {
 	 * @return
 	 */
 	public EnterpriseInfoVO getEnterpriseInfoByCode(String enterpriseCode){
+		//默认获取一个月内的配送信息
+		return getEnterpriseInfoByCode(enterpriseCode,1);
+	}
+
+	/**
+	 * 分页获取企业扩展信息列表
+	 * @param request
+	 * @return
+	 */
+	public PagingResult<EnterpriseExtVO> getEnterpriseExtByPage(EnterpriseListRequest request) {
+		return enterpriseDao.getEnterpriseExtByPage(request);
+	}
+
+
+	/**
+	 * 获取当前的企业比较全的信息
+	 * @author afi
+	 * @param enterpriseCode
+	 * @return
+	 */
+	public EnterpriseInfoVO getEnterpriseInfoByCode(String enterpriseCode,int jumpMonth){
 		if (Check.NuNStr(enterpriseCode)){
 			return null;
 		}

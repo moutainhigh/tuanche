@@ -5,9 +5,11 @@ import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
+import com.taisf.services.enterprise.dto.EnterpriseUpdateRequest;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
+import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.enterprise.vo.EnterpriseDispatchVO;
 import com.taisf.services.enterprise.vo.EnterpriseListDay;
 
@@ -103,4 +105,13 @@ public interface EnterpriseService {
      * @description:查询企业列表
      **/
     DataTransferObject<List<EnterpriseEntity>> findAll();
+
+    /**
+     * 操作（新增、删除）企业信息
+     * @param request
+     * @return
+     */
+    DataTransferObject<Void> operateEnterprise(EnterpriseUpdateRequest request);
+
+    DataTransferObject<PagingResult<EnterpriseExtVO>> getEnterpriseExtByPage(EnterpriseListRequest request);
 }

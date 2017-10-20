@@ -1,4 +1,4 @@
-<%@page import="com.taisf.services.common.valenum.EnterpriseTypeEnum"%>
+<%@ page import="com.taisf.services.common.valenum.*"%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="customtag" uri="http://minsu.ziroom.com" %> 
@@ -72,8 +72,8 @@
 						<div class="col-sm-2">
 							<select class="form-control" name="productType"  id="productType">
 								<option value="">--请选择--</option>
-								<c:forEach items="${drugType}" var="d" >
-									<option value="${d.typeCode}">${d.typeName}</option>
+								<c:forEach items="<%=EnterpriseStatusEnum.values()%>" var="e" >
+									<option value="${e.code}">${e.name}</option>
 								</c:forEach>
                         	</select>
 						</div>
@@ -113,13 +113,13 @@
 										data-align="center"><span class="tdfont">企业编号</span></th>
 									<th data-field="enterpriseName" data-width="10%"
 										data-align="center" ><span class="tdfont">企业名称</span></th>
-									<th data-field="enterpriseType" data-width="15%"
+									<th data-field="enterpriseType" data-width="15%" data-formatter="formatType"
 										data-align="center" ><span class="tdfont">企业类型</span></th>
 									<th data-field="packing" data-width="10%"
 										data-align="center" ><span class="tdfont">用餐总数</span></th>
-									<th data-field="unit" data-width="10%" data-formatter="formatDate"
+									<th data-field="unit" data-width="10%" data-formatter="formatMeal"
 										data-align="center" ><span class="tdfont">供餐信息</span></th>
-									<th data-field="openTime" data-width="10%"
+									<th data-field="openTime" data-width="10%" data-formatter="formatDate"
 										data-align="center" ><span class="tdfont">开户日期</span></th>
 									<th data-field="tillTime" data-width="10%" data-formatter="formatDate"
 										data-align="center" ><span class="tdfont">截止日期</span></th>
@@ -159,12 +159,6 @@
 			//初始化日期
 			CommonUtils.datePickerFormat("openTime");
 			CommonUtils.datePickerFormat("tillTime");
-			/*
-			laydate.render({
-				elem : 'tillTime',
-				type : 'datetime'
-			});
-			*/
 		});
 
 		function paginationParam(params) {
@@ -201,6 +195,45 @@
 			} else {
 				return "-";
 			}
+		}
+		
+		// 企业类型
+		function formatMeal(value, row, index) {
+			if(row.forLunch == "1") {
+				if(row.forDinner == "1") {
+					return "午餐/晚餐";
+				}
+				return "午餐";
+			}
+			if(row.forDinner == "1") {
+				return "晚餐";
+			}
+		}
+		
+		// 企业状态
+		function formatStatus(value, row, index) {
+			if (value == '0') {
+				return "未提交";
+			} else if(value=='1'){
+				return "正常";
+			} else if(value=='2'){
+				return "TIME_OUT";
+			} else if (value=='3'){
+				return "STOP";
+			} else{
+				return "未提交";
+			} 
+		}
+		
+		// 企业类型
+		function formatType(value, row, index) {
+			if (value == '1') {
+				return "平台委托";
+			} else if(value=='2'){
+				return "自主开发";
+			} else{
+				return "平台委托";
+			} 
 		}
 
 		// 操作列

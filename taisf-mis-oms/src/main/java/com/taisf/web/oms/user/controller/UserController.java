@@ -170,20 +170,30 @@ public class UserController {
      * @date:2017/10/11
      * @description:离职
      **/
-    @RequestMapping("dimission")
+    @RequestMapping("updateUserStatus")
     @ResponseBody
-    public DataTransferObject<Void> dimission(HttpServletRequest request, String userUid) {
+    public DataTransferObject<Void> updateUserStatus(HttpServletRequest request,UserEntity userEntity) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if (Check.NuNObj(userUid)) {
+        if (Check.NuNObjs(userEntity,userEntity.getUserUid(),userEntity.getUserStatus())) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        //查询企业表和供餐商表 判断是否有维护数据,如果有不允许离职
+        EnterpriseListRequest enterpriseListRequest = new EnterpriseListRequest();
+        enterpriseListRequest.setManger(userEntity.getUserUid());
+        SupplierRequest supplierRequest = new SupplierRequest();
+        supplierRequest.setManger(userEntity.getUserUid());
+        PagingResult<EnterpriseEntity> entityPagingResult = enterpriseService.pageListAndManger(enterpriseListRequest).getData();
+        PagingResult<SupplierEntity> supplierEntityPagingResult = supplierService.supplierPageList(supplierRequest).getData();
+        if(!Check.NuNObjs(entityPagingResult,supplierEntityPagingResult)){
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("请先将该员工下维护信息做变更后方可做离职变更");
+            return dto;
+        }
         try {
-            //todo
-            //1.根据userUid查询是否有维护信息  如果有直接return ,提示信息: 请先将该员工下维护信息做变更后方可做离职变更
-            //2.如果无维护信息 修改状态
-            //3.离职后账号自动解除
+            userService.updateUser(userEntity);
+            //离职后账号自动解除?
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);
@@ -247,7 +257,7 @@ public class UserController {
     /**
      * @author:zhangzhengguang
      * @date:2017/10/14
-     * @description:企业列表
+     * @description:供餐商列表
      **/
     @RequestMapping("supplierPageList")
     @ResponseBody

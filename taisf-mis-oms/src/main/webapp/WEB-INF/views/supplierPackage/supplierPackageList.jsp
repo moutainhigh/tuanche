@@ -32,15 +32,56 @@
     <script src="${staticResourceUrl}/js/common/refresh.js${VERSION}"></script>
     <script src="${staticResourceUrl}/js/common/date.proto.js${VERSION}"></script>
     <script src="${staticResourceUrl}/js/plugins/layer/laydate/laydate.js${VERSION}001"></script>
+    <link href="${staticResourceUrl}/css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
+    <script src="${staticResourceUrl}/js/plugins/blueimp/jquery.blueimp-gallery.min.js"></script>
     <style type=text/css>
         .tdfont {
             font-size: 13px
         }
     </style>
+    <style>
+        .lightBoxGallery img {
+            margin: 5px;
+            width: 160px;
+        }
+
+        .room-pic {
+            float: left;
+        }
+
+        .room-pic p {
+            text-align: center;
+        }
+
+        .blueimp-gallery > .title {
+            left: 0;
+            bottom: 45px;
+            top: auto;
+            width: 100%;
+            text-align: center;
+        }
+
+        .picline {
+            display: inline-block;
+        }
+
+        .picjz {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 
 <body class="gray-bg">
-
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
         <div class="ibox-content">
@@ -131,8 +172,8 @@
                                 data-align="center"><span class="tdfont">主食</span></th>
                             <th data-field="fruitName" data-width="10%"
                                 data-align="center"><span class="tdfont">水果</span></th>
-                            <th data-field="handle" data-width="10%" data-align="center"
-                            ><span class="tdfont">图片</span></th>
+                            <th data-field="packagePic" data-width="10%" data-formatter="formatePackagePic"
+                                data-align="center"><span class="tdfont">图片</span></th>
                             <th data-field="packagePrice" data-width="10%"
                                 data-align="center"><span class="tdfont">价格</span></th>
                             <th data-field="handle" data-width="5%" data-align="center"
@@ -161,6 +202,14 @@
         var result = "";
         result = result + "<a title='编辑' onclick='toeditSupplierPackage(" + row.id + ")')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         result = result + "<a title='删除' onclick='deleteSupplierPackage(" + row.id + ")')>删除</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        return result;
+    }
+
+    function formatePackagePic(value, row, index) {
+        var result = "";
+        result += "</nobr><a  title=\"图片\"  href='"+value+"'  data-gallery=\"\">";
+        result += "<img style='width:100px;height:100px;' src=\""+ value + "\" /></br>";
+        result += "</a><nobr>";
         return result;
     }
     function query() {

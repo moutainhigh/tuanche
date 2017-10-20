@@ -184,7 +184,9 @@
             manger: $("#UID").val(),
         };
     }
-
+    function formatAmount(value, row, index) {
+        return (value / 100).toFixed(2);
+    }
 
     // 格式化时间
     function formatDate(value, row, index) {

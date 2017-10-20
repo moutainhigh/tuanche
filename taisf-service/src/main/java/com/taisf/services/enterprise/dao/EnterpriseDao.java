@@ -6,6 +6,8 @@ import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.vo.EnterpriseExtVO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -45,6 +47,18 @@ public class EnterpriseDao extends BaseDao {
      */
     public EnterpriseEntity getEnterpriseByCode(String enterpriseCode) {
         return mybatisDaoContext.findOne(SQLID + "getEnterpriseByCode", EnterpriseEntity.class, enterpriseCode);
+    }
+    
+    /**
+     * 分页获取企业扩展信息列表
+     * @param request
+     * @return
+     */
+    public PagingResult<EnterpriseExtVO> getEnterpriseExtByPage(EnterpriseListRequest request) {
+    	PageBounds pageBounds=new PageBounds();
+        pageBounds.setLimit(request.getLimit());
+        pageBounds.setPage(request.getPage());
+    	return mybatisDaoContext.findForPage(SQLID + "getEnterpriseExtByPage", EnterpriseExtVO.class, request, pageBounds);
     }
 
 

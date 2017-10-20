@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.base.entity.AreaRegionEntity;
 import com.taisf.services.base.service.AreaRegionService;
+import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
+import com.taisf.services.enterprise.dto.EnterpriseUpdateRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.permission.api.EmployeeService;
 import com.taisf.services.permission.entity.EmployeeEntity;
 import com.taisf.services.supplier.api.SupplierService;
@@ -43,6 +47,9 @@ public class EnterpriseController {
 	@Resource(name = "supplier.supplierServiceProxy")
 	private SupplierService supplierService;
 	
+	@Resource(name = "enterprise.enterpriseServiceProxy")
+	private EnterpriseService enterpriseService;
+	
 	@RequestMapping("list")
 	public String list(HttpServletRequest request) {
 		// 员工列表
@@ -62,13 +69,14 @@ public class EnterpriseController {
             if(Check.NuNObj(enterpriseRequest)){
                 enterpriseRequest = new EnterpriseListRequest();
             }
-            /*DataTransferObject<PagingResult<ProductVO>> resultDto = productService.getProductListPage(enterpriseRequest);
+            
+            DataTransferObject<PagingResult<EnterpriseExtVO>> resultDto = enterpriseService.getEnterpriseExtByPage(enterpriseRequest);
             if(resultDto.getCode()==DataTransferObject.ERROR){
                 return result;
             }
-            PagingResult<ProductVO> page = resultDto.getData();
+            PagingResult<EnterpriseExtVO> page = resultDto.getData();
             result.setRows(page.getList());
-            result.setTotal(page.getTotal());*/
+            result.setTotal(page.getTotal());
         }catch (Exception e){
             LogUtil.error(LOGGER, "分页查询企业列表异常:{}",e);
             return result;
@@ -78,9 +86,9 @@ public class EnterpriseController {
 	
 	@RequestMapping("save")
 	@ResponseBody
-	public DataTransferObject<Void> saveHospital(EnterpriseEntity enterprise){
+	public DataTransferObject<Void> saveHospital(EnterpriseUpdateRequest request){
 		DataTransferObject<Void> dto = new DataTransferObject<>();
-		String jsonString = JSONObject.toJSONString(enterprise);
+		String jsonString = JSONObject.toJSONString(request);
 		System.out.println(jsonString);
 		return dto;
 	}

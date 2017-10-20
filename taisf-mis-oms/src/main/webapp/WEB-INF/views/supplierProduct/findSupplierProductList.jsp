@@ -192,6 +192,14 @@
             return "小荤";
         } else if (value == 3) {
             return "素";
+        }else if (value == 4) {
+            return "汤";
+        }else if (value == 5) {
+            return "饮品";
+        }else if (value == 6) {
+            return "主食";
+        }else if (value == 7) {
+            return "水果";
         }
     }
     function formatStatus(value, row, index) {
