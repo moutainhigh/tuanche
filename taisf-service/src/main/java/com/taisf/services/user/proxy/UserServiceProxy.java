@@ -758,9 +758,14 @@ public class UserServiceProxy implements UserService {
             //1.根据uid查询user表
             UserEntity userEntity = userDao.getUserByUid(uid);
             //2.判断二维码是否为空
-            if (Check.NuNObjs(userEntity, userEntity.getQrCode())) {//3.为空
+            if (Check.NuNObjs(userEntity, userEntity.getQrCode())) {
+                dbPath =  File.separator + "card" + File.separator;
+                File dest = new File(pathConstant.FILE_PATH+dbPath);
+                if (!dest.exists()){
+                    dest.mkdirs();
+                }
                 //1.生成二维码 并上传
-                dbPath =  File.separator + "card" + File.separator  + uid+".jpg";
+                dbPath +=  uid+".jpg";
                 String fullPath = pathConstant.FILE_PATH+ dbPath;
                 BufferedImage image = QRCodeUtils.createImage(uid, false);
                 ImageIO.write(image, "jpg", new File(fullPath));
