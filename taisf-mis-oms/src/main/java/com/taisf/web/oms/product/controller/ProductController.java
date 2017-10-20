@@ -78,9 +78,7 @@ public class ProductController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if(!Check.NuNObj(productEntity.getProductPic())){
-            productEntity.setProductPic(productEntity.getProductPic().replace(pathConstant.IMAGE_URL,""));
-        }
+
         try {
             dto = productService.saveProduct(productEntity);
         } catch (Exception e) {
@@ -109,7 +107,7 @@ public class ProductController {
         try {
             dto = productService.getProductById(Integer.parseInt(id));
             if(!Check.NuNObjs(dto.getData(),dto.getData().getProductPic())){
-                dto.getData().setProductPic(pathConstant.IMAGE_URL+dto.getData().getProductPic());
+                dto.getData().setProductPic(pathConstant.PIC_URL+dto.getData().getProductPic());
             }
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
@@ -134,9 +132,7 @@ public class ProductController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if(!Check.NuNObj(productEntity.getProductPic())){
-            productEntity.setProductPic(productEntity.getProductPic().replace(pathConstant.IMAGE_URL,""));
-        }
+
         try {
                 dto = productService.updateProduct(productEntity);
         } catch (Exception e) {

@@ -65,6 +65,36 @@ public class MyController extends AbstractController {
 
 
     /**
+     * 获取用户的二维码
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value ="card")
+    public @ResponseBody
+    ResponseDto card(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        String userUid = getUserId(request);
+        if (Check.NuNStr(userUid)) {
+            return new ResponseDto("参数异常");
+        }
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(userUid));
+        try {
+            DataTransferObject<String> dto =userService.getQRcode(userUid);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【用户信息】错误,par:{}, e={}",JsonEntityTransform.Object2Json(userUid), e);
+            return new ResponseDto("未知错误");
+        }
+
+    }
+
+
+    /**
      * 获取用户的地址列表
      * @param request
      * @param response

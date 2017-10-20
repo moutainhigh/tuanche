@@ -1,7 +1,10 @@
 package com.taisf.web.oms.basedata.controller;
 
+import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
+import com.jk.framework.base.utils.UUIDGenerator;
 import com.taisf.services.common.constant.PathConstant;
+import com.taisf.web.oms.basedata.vo.ImageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,24 +37,44 @@ public class UploadController {
     @RequestMapping("/uploadPics")
     public
     @ResponseBody
-    List<String> uploadPics(@RequestParam(required = false) MultipartFile[] pics, HttpServletRequest request) throws Exception {
-        List<String> urls = new ArrayList<String>();
+    List<ImageVO> uploadPics(@RequestParam(required = false) MultipartFile[] pics, HttpServletRequest request,String type) throws Exception {
+        if (Check.NuNStr(type)){
+            type = "common";
+        }
+        List<ImageVO> urls = new ArrayList<>();
         String filePath = "";
         try {
             for (MultipartFile file : pics) {
-                int date = DateUtil.currentTimeSecond();
-                filePath = request.getSession().getServletContext().getRealPath("/") + "file/" + date + file.getOriginalFilename();
-                //data/share
-                //filePath = pathConstant.IMAGE_PATH + date + file.getOriginalFilename();
-                file.transferTo(new File(filePath));
-                System.out.println("图片上传================================" + filePath);
-                String str = "/file/" + date + file.getOriginalFilename();
-                urls.add(pathConstant.IMAGE_URL + str);
+                ImageVO vo = getStorePath(type,file.getOriginalFilename());
+                file.transferTo(new File(vo.getPath()));
+                urls.add(vo);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return urls;
+    }
+
+    /**
+     * 获取文件的存档路径
+     * @param type
+     * @return
+     */
+    private ImageVO getStorePath(String type,String fileName) {
+        ImageVO vo = new ImageVO();
+        int date = DateUtil.currentTimeSecond();
+
+        String tmpPath = File.separator  + type + File.separator +DateUtil.dateFormat(new Date()) + File.separator;
+        File dest = new File(pathConstant.FILE_PATH+tmpPath);
+        if (!dest.exists()){
+            dest.mkdirs();
+        }
+        //设置路径
+        tmpPath +=  UUIDGenerator.hexUUID()+fileName;
+        vo.setDbPath(tmpPath);
+        vo.setPath(pathConstant.FILE_PATH + tmpPath);
+        vo.setFullPath(pathConstant.PIC_URL + tmpPath);
+        return vo;
     }
 
 

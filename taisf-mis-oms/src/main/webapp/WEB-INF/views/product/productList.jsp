@@ -798,13 +798,13 @@
             dataType: "json",
             success: function (data) {
                 if (type == 1) {
-                    $('#showImg-1').attr('href', data[0]);
-                    $("#imgSizeImgSrc-1").attr("src", data[0]);
-                    $("#imgUrl-1").val(data[0])
+                    $('#showImg-1').attr('href', data[0].fullPath);
+                    $("#imgSizeImgSrc-1").attr("src", data[0].fullPath);
+                    $("#imgUrl-1").val(data[0].dbPath)
                 } else {
-                    $('#showImg-2').attr('href', data[0]);
-                    $("#imgSizeImgSrc-2").attr("src", data[0]);
-                    $("#imgUrl-2").val(data[0])
+                    $('#showImg-2').attr('href', data[0].fullPath);
+                    $("#imgSizeImgSrc-2").attr("src", data[0].fullPath);
+                    $("#imgUrl-2").val(data[0].dbPath)
                 }
                 console.log(data[0]);
             }

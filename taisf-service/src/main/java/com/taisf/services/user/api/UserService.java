@@ -147,6 +147,6 @@ public interface UserService {
      * @date:2017/10/20
      * @description:生成二维码
      **/
-    String createQRcode(String uid);
+    DataTransferObject<String> getQRcode(String uid);
 
 }

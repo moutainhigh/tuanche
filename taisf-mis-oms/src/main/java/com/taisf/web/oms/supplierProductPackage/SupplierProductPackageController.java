@@ -83,7 +83,7 @@ public class SupplierProductPackageController {
                     vo.setDrinkName(productService.getProductById(x.getDrinkCode()).getData().getProductName());
                     vo.setFoodName(productService.getProductById(x.getFoodCode()).getData().getProductName());
                     vo.setFruitName(productService.getProductById(x.getFruitCode()).getData().getProductName());
-                    vo.setPackagePic(pathConstant.IMAGE_URL+x.getPackagePic());
+                    vo.setPackagePic(pathConstant.PIC_URL+x.getPackagePic());
                     listVo.add(vo);
                 });
                 pageResult.setRows(listVo);
@@ -123,9 +123,7 @@ public class SupplierProductPackageController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if(!Check.NuNObjs(packageEntity.getPackagePic())){
-            packageEntity.setPackagePic(packageEntity.getPackagePic().replace(pathConstant.IMAGE_URL,""));
-        }
+
         try {
             //商家code
             HttpSession session = request.getSession();
@@ -183,7 +181,7 @@ public class SupplierProductPackageController {
         //当前编辑的组合套餐
         SupplierPackageEntity packageEntity = supplierPackageService.getSupplierPackageById(id).getData();
         if(!Check.NuNObjs(packageEntity.getPackagePic())){
-            packageEntity.setPackagePic(pathConstant.IMAGE_URL+packageEntity.getPackagePic());
+            packageEntity.setPackagePic(pathConstant.PIC_URL+packageEntity.getPackagePic());
         }
         request.setAttribute("packageEntity", packageEntity);
         return "supplierPackage/editSupplierPackage";
@@ -203,9 +201,7 @@ public class SupplierProductPackageController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if(!Check.NuNObjs(packageEntity.getPackagePic())){
-            packageEntity.setPackagePic(packageEntity.getPackagePic().replace(pathConstant.IMAGE_URL,""));
-        }
+
         try {
             dto = supplierPackageService.updateSupplierPackage(packageEntity);
         } catch (Exception e) {

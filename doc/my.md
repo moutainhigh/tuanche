@@ -395,3 +395,68 @@ demo:
    -H 'traceinfo: applicationCode=aa;deviceUuid=deviceUuid;'
 
 ````
+
+
+
+
+
+## 5.我的二维码
+
+###  地址
+
+    my/card
+
+
+###  提交方式
+提交方式|post
+Content-Type|application/json
+参数|放在body流中,依照json格式
+
+
+### 参数
+
+不要参数
+    
+
+返回信息:成功
+
+    {
+        "msg": {
+            "info": "",
+            "code": 0,
+            "success": true
+        },
+        "data": 
+            {
+                "aaaa"
+            }
+        
+    }
+    
+
+
+返回信息:失败
+
+    {
+    msg: {
+        info: "参数异常",
+        code: 1,
+        success: false
+    },
+    data: null
+    }
+
+
+demo:
+
+
+````
+  curl -X POST \
+  http://localhost:8080/my/card \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: ad7965d1-c4db-5b11-ed8e-13578afc7210' \
+  -H 'token: token' \
+  -H 'traceinfo: applicationCode=aa;deviceUuid=deviceUuid;'
+
+````

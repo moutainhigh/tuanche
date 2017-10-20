@@ -6,11 +6,10 @@ import org.springframework.stereotype.Component;
 @Component("pathConstant")
 public class PathConstant {
 
-	@Value("#{'${static.resource.url}'}")
-	public  String IMAGE_URL;
+	@Value("#{'${pic.url}'}")
+	public  String PIC_URL;
 
-	@Value("#{'${image.path}'}")
-	public  String IMAGE_PATH;
-
+	@Value("#{'${file.path}'}")
+	public  String FILE_PATH;
 
 }

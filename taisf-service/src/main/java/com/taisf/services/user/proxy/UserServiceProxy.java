@@ -747,33 +747,36 @@ public class UserServiceProxy implements UserService {
      * @description:生成二维码
      **/
     @Override
-    public String createQRcode(String uid){
-        InputStream stream;
-        String filePath = null;
-        int date = DateUtil.currentTimeSecond();
+    public DataTransferObject<String> getQRcode(String uid){
+        DataTransferObject<String> dto = new DataTransferObject<>();
+        if (Check.NuNStr(uid)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        String dbPath = null;
         try {
             //1.根据uid查询user表
             UserEntity userEntity = userDao.getUserByUid(uid);
             //2.判断二维码是否为空
             if (Check.NuNObjs(userEntity, userEntity.getQrCode())) {//3.为空
                 //1.生成二维码 并上传
-                //filePath = request.getSession().getServletContext().getRealPath("/") + "file/" + date + uid + ".jpg";//测试路径
-                filePath = pathConstant.IMAGE_PATH+ date + uid+".jpg";
+                dbPath =  File.separator + "card" + File.separator  + uid+".jpg";
+                String fullPath = pathConstant.FILE_PATH+ dbPath;
                 BufferedImage image = QRCodeUtils.createImage(uid, false);
-                ImageIO.write(image, "jpg", new File(filePath));
+                ImageIO.write(image, "jpg", new File(fullPath));
                 //2.修改user二维码路径
-                userEntity.setQrCode(filePath);
+                userEntity.setQrCode(dbPath);
                 userDao.updateUser(userEntity);
-                //3.返回路径
-                return filePath;
             } else {
                 //4.不为空,返回路径
-                filePath = userEntity.getQrCode();
+                dbPath = userEntity.getQrCode();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return filePath;
+        dbPath += pathConstant.PIC_URL+ dbPath;
+        dto.setData(dbPath);
+        return dto;
     }
 
 
