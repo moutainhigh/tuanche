@@ -111,6 +111,11 @@
 
 
 
+  <update id="updateUserQrCode" parameterType="java.util.Map" >
+    update t_user set qr_code = #{qrCode,jdbcType=VARCHAR}
+    where user_uid = #{userUid,jdbcType=VARCHAR}
+  </update>
+
   <update id="updateUserPwd" parameterType="java.util.Map" >
     update t_user set user_password = #{userPassword,jdbcType=VARCHAR}
     where user_uid = #{userUid,jdbcType=VARCHAR}

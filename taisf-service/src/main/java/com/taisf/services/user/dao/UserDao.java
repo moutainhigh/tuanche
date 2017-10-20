@@ -61,6 +61,13 @@ public class UserDao extends BaseDao {
     }
 
 
+    public int updateUserQrCode(String uid,String qrCode) {
+        Map<String,Object> par = new HashMap<>();
+        par.put("userUid",uid);
+        par.put("qrCode",qrCode);
+        return mybatisDaoContext.update(SQLID + "updateUserQrCode", par);
+    }
+
     /**
      * 根据用户entrpriseCode 查询当前的用户
      * @param entrpriseCode
