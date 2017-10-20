@@ -83,6 +83,16 @@ public class UserEntity extends BaseEntity {
 	private Integer amount;
 	private Integer accountStatus;
 
+	private String QrCode;
+
+	public String getQrCode() {
+		return QrCode;
+	}
+
+	public void setQrCode(String qrCode) {
+		QrCode = qrCode;
+	}
+
 	public Integer getAccountStatus() {
 		return accountStatus;
 	}

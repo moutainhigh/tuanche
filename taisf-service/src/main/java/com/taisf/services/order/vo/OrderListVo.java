@@ -18,6 +18,26 @@ public class OrderListVo extends OrderEntity {
 
     private String enterpriseName;
 
+    private Integer countNum;
+
+    private Integer successNum;
+
+    public Integer getCountNum() {
+        return countNum;
+    }
+
+    public void setCountNum(Integer countNum) {
+        this.countNum = countNum;
+    }
+
+    public Integer getSuccessNum() {
+        return successNum;
+    }
+
+    public void setSuccessNum(Integer successNum) {
+        this.successNum = successNum;
+    }
+
     public String getEnterpriseName() {
         return enterpriseName;
     }

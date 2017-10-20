@@ -3,16 +3,13 @@ package com.taisf.services.user.api;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.user.dto.*;
-import com.taisf.services.order.dto.OrderInfoRequest;
-import com.taisf.services.order.vo.OrderInfoVO;
-import com.taisf.services.user.dto.*;
 import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.vo.RegistInfoVO;
+import com.taisf.services.user.vo.UserAccountVO;
 
 import java.util.List;
-import com.taisf.services.user.vo.UserAccountVO;
 
 /**
  * <p>用户</p>
@@ -144,5 +141,12 @@ public interface UserService {
      * @description:修改账户信息
      **/
     void updateAccountUser(UserAccountEntity accountUserEntity);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/20
+     * @description:生成二维码
+     **/
+    String createQRcode(String uid);
 
 }

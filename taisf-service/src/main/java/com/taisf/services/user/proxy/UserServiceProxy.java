@@ -6,6 +6,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.*;
 import com.jk.framework.cache.redis.api.RedisOperations;
 import com.jk.framework.cache.redis.constant.RedisConstant;
+import com.taisf.services.common.constant.PathConstant;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
@@ -29,6 +30,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -70,6 +75,9 @@ public class UserServiceProxy implements UserService {
 
     @Resource(name="ups.employeeDao")
     private EmployeeDao employeeDao;
+
+    @Autowired
+    private PathConstant pathConstant;
 
 
     /**
@@ -731,6 +739,41 @@ public class UserServiceProxy implements UserService {
     @Override
     public void updateAccountUser(UserAccountEntity  accountUserEntity){
         userAccountDao.updateAccountUser(accountUserEntity);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/20
+     * @description:生成二维码
+     **/
+    @Override
+    public String createQRcode(String uid){
+        InputStream stream;
+        String filePath = null;
+        int date = DateUtil.currentTimeSecond();
+        try {
+            //1.根据uid查询user表
+            UserEntity userEntity = userDao.getUserByUid(uid);
+            //2.判断二维码是否为空
+            if (Check.NuNObjs(userEntity, userEntity.getQrCode())) {//3.为空
+                //1.生成二维码 并上传
+                //filePath = request.getSession().getServletContext().getRealPath("/") + "file/" + date + uid + ".jpg";//测试路径
+                filePath = pathConstant.IMAGE_PATH+ date + uid+".jpg";
+                BufferedImage image = QRCodeUtils.createImage(uid, false);
+                ImageIO.write(image, "jpg", new File(filePath));
+                //2.修改user二维码路径
+                userEntity.setQrCode(filePath);
+                userDao.updateUser(userEntity);
+                //3.返回路径
+                return filePath;
+            } else {
+                //4.不为空,返回路径
+                filePath = userEntity.getQrCode();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return filePath;
     }
 
 

@@ -4,11 +4,13 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.dto.OrderProductListRequest;
 import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.OrderInfoVO;
+import com.taisf.services.order.vo.OrderListVo;
 import com.taisf.web.oms.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,4 +98,47 @@ public class OrderController {
     }
 
 
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/17
+     * @description:订单配送
+     **/
+    @RequestMapping("orderDispatching")
+    public String orderDispatching(HttpServletRequest request) {
+        return "order/orderDispatching";
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/20
+     * @description:配送记录页面
+     **/
+    @RequestMapping("toDistributionRecord")
+    public String toDistributionRecord(HttpServletRequest request) {
+        return "order/distributionRecordList";
+    }
+
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/20
+     * @description:配送记录
+     **/
+    @RequestMapping("distributionRecord")
+    @ResponseBody
+    public PageResult distributionRecord(HttpServletRequest request, EnterpriseListRequest enterpriseListRequest) {
+        PageResult pageResult = new PageResult();
+        try {
+            PagingResult<OrderListVo> pagingResult = orderManagerImpl.findPageLsit(enterpriseListRequest);
+            if (!Check.NuNObj(pagingResult)) {
+                pageResult.setRows(pagingResult.getList());
+                pageResult.setTotal(pagingResult.getTotal());
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(enterpriseListRequest));
+            LogUtil.error(LOGGER, "error:{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
 }
