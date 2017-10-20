@@ -779,7 +779,7 @@ public class UserServiceProxy implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        dbPath += pathConstant.PIC_URL+ dbPath;
+        dbPath = pathConstant.PIC_URL+ dbPath;
         dto.setData(dbPath);
         return dto;
     }
