@@ -60,7 +60,7 @@
 
 
                     <div class="col-sm-1">
-                        <button class="btn btn-primary" type="button" onclick="query();">
+                        <button class="btn btn-primary"  type="button" onclick="query();">
                             <i class="fa fa-search"></i>&nbsp;搜索
                         </button>
                     </div>
@@ -207,84 +207,108 @@
             <div class="modal-header" style="padding: 15px 6px;">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
-                <h4 class="modal-title">平均分配金额-金额填写之后会自动平均分配</h4>
+                <h4 class="modal-title">金额填写之后会自动平均分配</h4>
             </div>
 
+
+            <!-- 搜索框panel -->
             <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <input id="avg_enterpriseCode" name="enterpriseCode" type="hidden"
+                           class="form-control">
+                    <input id="avg_empNum" name="avg_empNum" type="hidden"
+                           class="form-control">
+                    <input id="avg_bossNum" name="avg_bossNum" type="hidden"
+                           class="form-control">
+                    <div class="ibox-content">
+                        <label class="col-sm-3 control-label mtop">可分配金额:( <span style="color: red" id="allMoney"></span>
+                            )元</label>
 
-                <input id="avg_enterpriseCode" name="enterpriseCode" type="hidden"
-                       class="form-control">
+                    </div>
+
+                </div>
 
                 <div class="ibox-content">
 
-                    <!-- 搜索框panel -->
-
-                    <label class="col-sm-1 control-label mtop">员工()人,每人分配金额:</label>
+                    <label class="col-sm-3 control-label mtop">员工( <span style="color: red" id="spanEmp"></span>
+                        )人,每人分配金额:</label>
                     <div class="col-sm-2">
-                        <input id="empMoney" name="empMoney" type="text"
+                        <input id="empMoney" name="empMoney" type="text" value="0"
+                               class="form-control">
+                    </div>
+                    <label class="col-sm-3 control-label mtop">老板(<span style="color: red" id="spanBoss"></span>
+                        )人,每人分配金额:</label>
+                    <div class="col-sm-2">
+                        <input id="bossMoney" name="bossMoney" type="text" value="0"
                                class="form-control">
                     </div>
 
                 </div>
 
-                <div class="ibox-content">
-                    <label class="col-sm-1 control-label mtop">老板()人,每人分配金额:</label>
-                    <div class="col-sm-2">
-                        <input id="bossMoney" name="bossMoney" type="text"
-                               class="form-control">
-                    </div>
-
-                </div>
-
-                <div class="ibox-content">
-                    <div class="col-sm-1">
-                        <button class="btn btn-primary" type="button" onclick="queryEmp();">
-                            <i class="fa fa-search"></i>&nbsp;确认
-                        </button>
-                    </div>
-                </div>
-
             </div>
 
 
-            <!-- 列表 -->
-            <div class="ibox float-e-margins" style="margin-bottom:0px">
-                <div class="ibox-content">
-                    <div class="row row-lg">
-                        <div class="col-sm-12">
-                            <div class="example-wrap">
-                                <div class="example">
-                                    <!-- 弹出框列表 -->
-                                    <table id="listTableEmp" class="table table-bordered" data-click-to-select="true"
-                                           data-toggle="table" data-side-pagination="server"
-                                           data-pagination="true" data-page-list="[5,10,20,50]"
-                                           data-pagination="true" data-page-size="10"
-                                           data-pagination-first-text="首页" data-pagination-pre-text="上一页"
-                                           data-pagination-next-text="下一页" data-pagination-last-text="末页"
-                                           data-content-type="application/x-www-form-urlencoded"
-                                           data-query-params="paginationAccountS" data-method="post"
-                                           data-single-select="true"
-                                           data-url="finance/accountPage">
-                                        <thead>
-                                        <tr>
-                                            <th data-field="userCode" data-width="20%">编号</th>
-                                            <th data-field="userPhone" data-width="30%" data-align="center">手机号</th>
-                                            <th data-field="userName" data-width="30%" data-align="center">姓名</th>
-                                            <th data-field="drawBalance" data-width="30%" data-formatter="formatePrice"
-                                                data-align="center">账户余额
-                                            </th>
-                                            <th data-field="userStatus" data-width="20%" data-formatter="formateUserStatus"
-                                                data-align="center">状态</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="confirmAvg();">
+                    <i class="fa fa-search"></i>&nbsp;确认
+                </button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end -->
+
+
+
+
+<!-- 个人分配 -->
+<div class="modal inmodal" id="oneModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+
+            <div class="modal-header" style="padding: 15px 6px;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">金额分配给单一用户</h4>
+            </div>
+
+
+            <!-- 搜索框panel -->
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <input id="one_enterpriseCode" name="enterpriseCode" type="hidden"
+                           class="form-control">
+                    <div class="ibox-content">
+                        <label class="col-sm-3 control-label mtop">可分配金额:( <span style="color: red" id="allMoneyOne"></span>
+                            )元</label>
+
+                    </div>
+
+                </div>
+                <div class="ibox-content">
+
+                    <label class="col-sm-3 control-label mtop">手机号:</label>
+                    <div class="col-sm-2">
+                        <input id="one_userPhone" name="userPhone" type="text"
+                               class="form-control">
+                    </div>
+                    <label class="col-sm-3 control-label mtop">分配金额(元):</label>
+                    <div class="col-sm-2">
+                        <input id="one_moneyYuan" name="moneyYuan" type="text" value="0"
+                               class="form-control">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="confirmOne();">
+                    <i class="fa fa-search"></i>&nbsp;确认
+                </button>
                 <button type="button" class="btn btn-white" data-dismiss="modal">返回</button>
             </div>
         </div>
@@ -296,13 +320,79 @@
 
 
 <script>
-    var enterpriseCode = "123";
+   
+    
+    
     $(function () {
         //初始化日期
         CommonUtils.datePickerFormat('startTime');
         CommonUtils.datePickerFormat('endTime');
     });
 
+
+    //确认平均分配
+    function confirmOne() {
+
+        var enterpriseCode = $("#one_enterpriseCode").val();
+        var userPhone = $("#one_userPhone").val();
+        var moneyYuan = $("#one_moneyYuan").val();
+        $.ajax({
+            data: {
+
+                'enterpriseCode': enterpriseCode,
+                'userPhone': userPhone,
+                'moneyYuan': moneyYuan
+            },
+            type: "post",
+            dataType: "json",
+            url: 'finance/balanceMoneyOne',
+            success: function (result) {
+                if (result.code === 0) {
+                    $('#oneModal').modal('hide');
+                } else {
+                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+            }
+        });
+
+    }
+
+
+
+    //确认平均分配
+    function confirmAvg() {
+        var empMoney = $("#empMoney").val();
+        var bossMoney = $("#bossMoney").val();
+        var enterpriseCode = $("#avg_enterpriseCode").val();
+        var bossNum = $("#avg_bossNum").val();
+        var empNum = $("#avg_empNum").val();
+        $.ajax({
+            data: {
+                'bossMoneyYuan': bossMoney,
+                'empMoneyYuan': empMoney,
+                'enterpriseCode': enterpriseCode,
+                'bossNum': bossNum,
+                'empNum': empNum
+            },
+            type: "post",
+            dataType: "json",
+            url: 'finance/balanceMoneyAvg',
+            success: function (result) {
+                if (result.code === 0) {
+                    $('#avgModal').modal('hide');
+                } else {
+                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+            }
+        });
+
+    }
 
     function formatePrice(value, row, index) {
         return (value/100).toFixed(2);
@@ -391,22 +481,20 @@
 
     function avgMoney(enterpriseCode) {
 
-        console.log(enterpriseCode)
         $("#avg_enterpriseCode").val(enterpriseCode)
-
-
         $.ajax({
             data: {},
             type: "post",
             dataType: "json",
             url: 'finance/enterpriseStats?enterpriseCode='+enterpriseCode,
             success: function (result) {
-
-                console.log(enterpriseCode)
+                console.log(result);
                 if (result.code === 0) {
-                    var drawBalance = result.drawBalance;
-                    alert(drawBalance);
-
+                    $("#allMoney").html(result.data.drawBalance/100);
+                    $("#spanBoss").html(result.data.bossNum);
+                    $("#spanEmp").html(result.data.empNum);
+                    $("#avg_bossNum").val(result.data.bossNum);
+                    $("#avg_empNum").val(result.data.empNum);
                     $('#avgModal').modal('show');
 
                 } else {
@@ -427,18 +515,36 @@
 
 
     function oneMoney(enterpriseCode) {
-        $("#avg_enterpriseCode").val(enterpriseCode)
-        $('#avgModal').modal('show');
-        queryEmp();
+        $("#one_enterpriseCode").val(enterpriseCode)
+        $.ajax({
+            data: {},
+            type: "post",
+            dataType: "json",
+            url: 'finance/enterpriseStats?enterpriseCode='+enterpriseCode,
+            success: function (result) {
+                if (result.code === 0) {
+                    $("#allMoneyOne").html(result.data.drawBalance/100);
+                    $('#oneModal').modal('show');
+
+                } else {
+                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+            }
+        });
+
+
     }
 
 
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='编辑' onclick='detail(\"" + row.enterpriseCode + "\")' >查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='编辑' onclick='avgMoney(\"" + row.enterpriseCode + "\")'  >平均分配</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='查看' onclick='oneMoney(\"" + row.enterpriseCode + "\")'  >个人分配</a>";
+        result = result + "<a title='查看' onclick='detail(\"" + row.enterpriseCode + "\")' >查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='平均分配' onclick='avgMoney(\"" + row.enterpriseCode + "\")'  >平均分配</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='个人分配' onclick='oneMoney(\"" + row.enterpriseCode + "\")'  >个人分配</a>";
         return result;
     }
 

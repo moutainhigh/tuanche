@@ -95,13 +95,5 @@ public class OrderController {
         return pageResult;
     }
 
-    /**
-     * @author:zhangzhengguang
-     * @date:2017/10/17
-     * @description:订单配送
-     **/
-    @RequestMapping("orderDispatching")
-    public String orderDispatching(HttpServletRequest request) {
-        return "order/orderDispatching";
-    }
+
 }

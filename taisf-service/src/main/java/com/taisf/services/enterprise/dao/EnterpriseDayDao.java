@@ -1,6 +1,7 @@
 package com.taisf.services.enterprise.dao;
 
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import org.slf4j.Logger;
@@ -60,6 +61,23 @@ public class EnterpriseDayDao extends BaseDao {
         return mybatisDaoContext.findAll(SQLID+"getEnterpriseDaysByTime", EnterpriseDayEntity.class, par);
     }
 
+
+    /**
+     * 获取对象
+     * @param enterpriseDayRequest
+     */
+    public EnterpriseDayEntity  getEnterpriseDays(EnterpriseDayRequest enterpriseDayRequest){
+        return mybatisDaoContext.findOne(SQLID + "getEnterpriseDays",EnterpriseDayEntity.class, enterpriseDayRequest);
+    }
+
+    /**
+     * 删除
+     * @param enterpriseDayRequest
+     */
+    public int  delEnterpriseDays(EnterpriseDayRequest enterpriseDayRequest){
+
+        return mybatisDaoContext.delete(SQLID + "delEnterpriseDays", enterpriseDayRequest);
+    }
 
     /**
      * 增加企业

@@ -6,13 +6,20 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.enterprise.api.EnterpriseService;
+import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
+import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
+import com.taisf.services.permission.entity.EmployeeEntity;
 import com.taisf.services.recharge.api.RechargeService;
+import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
+import com.taisf.services.recharge.dto.BalanceMoneyOneRequest;
+import com.taisf.services.recharge.dto.ChargeRequest;
 import com.taisf.services.recharge.vo.EnterpriseStatsNumber;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserAccountRequest;
 import com.taisf.services.user.vo.UserAccountVO;
+import com.taisf.web.oms.common.constant.LoginConstant;
 import com.taisf.web.oms.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,8 +63,44 @@ public class FinanceController {
 
 
 
+    @RequestMapping("/enterpriseRechargeList")
+    public String enterpriseRechargeList(HttpServletRequest request) {
+        return "finance/enterpriseRechargeList";
+    }
+
+
+    /**
+     * 企业列表
+     * @param request
+     * @param req
+     * @return
+     */
+    @RequestMapping("enterprisePageListPage")
+    @ResponseBody
+    public PageResult enterprisePageListPage(HttpServletRequest request, EnterprisePageRequest req) {
+        PageResult pageResult = new PageResult();
+        try {
+            DataTransferObject<PagingResult<EnterpriseEntity>> dto = enterpriseService.getEnterpriseByPage(req);
+            if (dto.checkSuccess()){
+                PagingResult<EnterpriseEntity> pagingResult = dto.getData();
+                if(Check.NuNObj(pagingResult)){
+                    return pageResult;
+                }
+                pageResult.setRows(pagingResult.getList());
+                pageResult.setTotal(pagingResult.getTotal());
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(req));
+            LogUtil.error(LOGGER, "error:{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
+
+
+
     @RequestMapping("/balanceList")
-    public String list(HttpServletRequest request) {
+    public String balanceList(HttpServletRequest request) {
         return "finance/balanceList";
     }
 
@@ -73,7 +116,6 @@ public class FinanceController {
     @ResponseBody
     public DataTransferObject balanceListPage(HttpServletRequest request, String enterpriseCode) {
         DataTransferObject<EnterpriseStatsNumber> dto = new DataTransferObject<>();
-        PageResult pageResult = new PageResult();
         try {
             return rechargeService.getEnterpriseStatsNumber(enterpriseCode);
         } catch (Exception e) {
@@ -84,6 +126,81 @@ public class FinanceController {
         return dto;
     }
 
+
+
+
+    /**
+     * 企业充值
+     * @author afi
+     * @param request
+     * @param chargeRequest
+     * @return
+     */
+    @RequestMapping("/chargeMoney")
+    @ResponseBody
+    public DataTransferObject chargeMoney(HttpServletRequest request, ChargeRequest chargeRequest) {
+        DataTransferObject<EnterpriseStatsNumber> dto = new DataTransferObject<>();
+        try {
+            EmployeeEntity loginUser = (EmployeeEntity) request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            if(loginUser!=null&&loginUser.getUserId()!=null){
+                chargeRequest.setOpId(loginUser.getUserId());
+                chargeRequest.setOpName(loginUser.getEmpName());
+            }else {
+                dto.setErrorMsg("获取操作人失败");
+            }
+            return rechargeService.chargeMoney(chargeRequest);
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params :{}", JsonEntityTransform.Object2Json(chargeRequest));
+            LogUtil.error(LOGGER, "error :{}", e);
+            dto.setErrorMsg("处理异常");
+        }
+        return dto;
+    }
+
+
+
+    /**
+     * 平均分配金额
+     * @author afi
+     * @param request
+     * @param balanceMoneyAvgRequest
+     * @return
+     */
+    @RequestMapping("/balanceMoneyAvg")
+    @ResponseBody
+    public DataTransferObject balanceMoneyAvg(HttpServletRequest request, BalanceMoneyAvgRequest balanceMoneyAvgRequest) {
+        DataTransferObject<EnterpriseStatsNumber> dto = new DataTransferObject<>();
+        try {
+            return rechargeService.balanceMoneyAvg(balanceMoneyAvgRequest);
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params :{}", JsonEntityTransform.Object2Json(balanceMoneyAvgRequest));
+            LogUtil.error(LOGGER, "error :{}", e);
+            dto.setErrorMsg("处理异常");
+        }
+        return dto;
+    }
+
+
+    /**
+     * 个人充值
+     * @author afi
+     * @param request
+     * @param balanceMoneyOneRequest
+     * @return
+     */
+    @RequestMapping("/balanceMoneyOne")
+    @ResponseBody
+    public DataTransferObject balanceMoneyOne(HttpServletRequest request, BalanceMoneyOneRequest balanceMoneyOneRequest) {
+        DataTransferObject<EnterpriseStatsNumber> dto = new DataTransferObject<>();
+        try {
+            return rechargeService.balanceMoneyOne(balanceMoneyOneRequest);
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params :{}", JsonEntityTransform.Object2Json(balanceMoneyOneRequest));
+            LogUtil.error(LOGGER, "error :{}", e);
+            dto.setErrorMsg("处理异常");
+        }
+        return dto;
+    }
 
 
 

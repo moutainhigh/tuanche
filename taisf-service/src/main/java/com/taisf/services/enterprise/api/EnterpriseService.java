@@ -2,10 +2,14 @@ package com.taisf.services.enterprise.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
+import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
+import com.taisf.services.enterprise.vo.EnterpriseDispatchVO;
+import com.taisf.services.enterprise.vo.EnterpriseListDay;
 
 import java.util.List;
 
@@ -24,6 +28,45 @@ import java.util.List;
  */
 public interface EnterpriseService {
 
+
+    /**
+     * 改变配送信息
+     * @param enterpriseDayRequest
+     * @return
+     */
+    DataTransferObject<Void> changeEnterpriseDay(EnterpriseDayRequest enterpriseDayRequest);
+
+
+    /**
+     * 获取企业配送的信息
+     * @param enterpriseCode
+     * @return
+     */
+    DataTransferObject<List<EnterpriseListDay>> getEnterpriseListDay(String enterpriseCode);
+
+
+
+    /**
+     * 获取企业配送的信息
+     * @param request
+     * @return
+     */
+    DataTransferObject<PagingResult<EnterpriseDispatchVO>> getEnterpriseDispatchByPage(EnterprisePageRequest request);
+
+    /**
+     * 获取月内时间节点信息
+     * @author afi
+     * @param enterpriseCode
+     */
+    DataTransferObject<List<EnterpriseDayEntity>> dealEnterpriseDays(String enterpriseCode);
+
+
+    /**
+     * 获取企业的信息
+     * @param request
+     * @return
+     */
+    DataTransferObject<PagingResult<EnterpriseEntity>> getEnterpriseByPage(EnterprisePageRequest request);
 
     /**
      * 获取企业的账户统计信息

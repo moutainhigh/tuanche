@@ -19,7 +19,7 @@ public enum UserTypeEnum {
 
     YONGHU(1,"用户"),
     SONGCAN(2,"送餐员"),
-    QIYE(2,"企业")
+    QIYE(3,"企业")
     ;
     private int code;
     private String name;

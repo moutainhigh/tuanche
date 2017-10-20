@@ -260,7 +260,6 @@ public class RechargeServiceProxy implements RechargeService {
             return dto;
         }
 
-
         EnterpriseInfoVO infoVO = enterpriseManager.getEnterpriseInfoByCode(request.getEnterpriseCode());
         //校验当前的企业状态
         this.checkEnterpriseInfo(dto,infoVO);
@@ -387,7 +386,7 @@ public class RechargeServiceProxy implements RechargeService {
             return dto;
         }
 
-        int total = chargeRequest.getMoneyYuan() * 100;
+        int total = ValueUtil.getintValue(chargeRequest.getMoneyYuan() * 100);
         if (total <= 0){
             dto.setErrorMsg("异常的充值金额");
             return dto;
@@ -441,6 +440,8 @@ public class RechargeServiceProxy implements RechargeService {
         record.setBossNum(bossList.size());
         record.setCommonNum(empList.size());
         record.setRechargeSn(rechargeSn);
+        record.setTotalPrice(total);
+        record.setPayMoney(total);
         rechargeManager.saveRecharge(record);
         return dto;
 

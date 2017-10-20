@@ -48,6 +48,27 @@
   </delete>
 
 
+
+
+  <select id="getEnterpriseDays" parameterType="com.taisf.services.enterprise.dto.EnterpriseDayRequest" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_enterprise_day
+    where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+    and day_time = #{dayTimeStr,jdbcType=VARCHAR}
+    and day_type = #{dayType,jdbcType=INTEGER}
+  </select>
+
+
+
+  <delete id="delEnterpriseDays" parameterType="com.taisf.services.enterprise.dto.EnterpriseDayRequest">
+    delete from t_enterprise_day
+    where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+    and day_time = #{dayTimeStr,jdbcType=VARCHAR}
+  </delete>
+
+
+
   <insert id="saveEnterpriseDay" parameterType="com.taisf.services.enterprise.entity.EnterpriseDayEntity">
     insert into t_enterprise_day
     <trim prefix="(" suffix=")" suffixOverrides=",">

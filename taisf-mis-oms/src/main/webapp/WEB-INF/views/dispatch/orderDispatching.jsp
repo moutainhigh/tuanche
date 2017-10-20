@@ -47,9 +47,12 @@
             <div class="row">
                 <div class="form-group">
 
+
+
+
                     <label class="col-sm-1 control-label mtop">企业名称:</label>
                     <div class="col-sm-2">
-                        <input id="productNameS" type="text" value="" class="form-control">
+                        <input id="enterpriseCode"  type="text" value="" class="form-control">
                     </div>
                     <div class="col-sm-1">
                         <button class="btn btn-primary" type="button" onclick="query();">
@@ -75,26 +78,27 @@
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
                            data-single-select="true"
-                           data-url="product/pageList">
+                           data-url="dispatch/orderDispatchPage">
                         <thead>
                         <tr>
-                            <th data-field="id" data-width="10%"
+                            <th data-field="enterpriseCode" data-width="10%"
                                 data-align="center"><span class="tdfont">企业编号</span></th>
-                            <th data-field="productName" data-width="10%"
+                            <th data-field="enterpriseName" data-width="10%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
-                            <th data-field="productType" data-width="10%"
+
+                            <th data-field="day1" data-width="10%"  data-formatter="formatDay"
                                 data-align="center"><span class="tdfont">周一</span></th>
-                            <th data-field="productType" data-width="10%"
+                            <th data-field="day2" data-width="10%"  data-formatter="formatDay"
                                 data-align="center"><span class="tdfont">周二</span></th>
-                            <th data-field="productType" data-width="10%"
+                            <th data-field="day3" data-width="10%"  data-formatter="formatDay"
                                 data-align="center"><span class="tdfont">周三</span></th>
-                            <th data-field="productType" data-width="10%"
+                            <th data-field="day4" data-width="10%"  data-formatter="formatDay"
                                 data-align="center"><span class="tdfont">周四</span></th>
-                            <th data-field="productType" data-width="10%"
+                            <th data-field="day5" data-width="10%"  data-formatter="formatDay"
                                 data-align="center"><span class="tdfont">周五</span></th>
-                            <th data-field="productType" data-width="10%"
+                            <th data-field="day6" data-width="10%"  data-formatter="formatDay"
                                 data-align="center"><span class="tdfont">周六</span></th>
-                            <th data-field="productType" data-width="10%"
+                            <th data-field="day7" data-width="10%"  data-formatter="formatDay"
                                 data-align="center"><span class="tdfont">周日</span></th>
                             <th data-field="handle" data-width="10%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
@@ -174,7 +178,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="saveBtnE" type="button" onclick="editSaveProduct();">保存</button>
+                <%--<button class="btn btn-primary" id="saveBtnE" type="button" onclick="editSaveProduct();">保存</button>--%>
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -185,10 +189,7 @@
         return {
             limit: params.limit,
             page: $("#listTable").bootstrapTable("getOptions").pageNumber,
-            productName: $("#productNameS").val(),
-            productClassify: $("#productClassifyS").val(),
-            productType: $("#productTypeS").val(),
-            productSource: $("#productSourceS").val(),
+            enterpriseCode: $("#enterpriseCode").val()
         };
     }
     // 格式化时间
@@ -200,70 +201,117 @@
             return "-";
         }
     }
+    
+    function formatDay(value, row, index) {
+        var result = "";
+
+        var span = "";
+        if(value.dayType == 1){
+            span = "<span style='color:green'>配送</span>";
+        }else if(value.dayType == 2){
+            span = "<span style='color:red'>不配送</span>";
+        }else{
+            span = "<span style='color:red'>异常</span>";
+        }
+        var dayTime = value.dayTime;
+        var day = dayTime.substring(4,6) + "." + dayTime.substring(6,8);
+        result = result + "<span style='color:blue'>"+ day +"</span>  " + span;
+        return result;
+    }
+
+    function getHtml(day) {
+        var dayStr = day.dayTime.substring(4,6) + "." + day.dayTime.substring(6,8);
+        var par =  day.dayTime.substring(0,4)+"/" + day.dayTime.substring(4,6) + "/" + day.dayTime.substring(6,8);
+        var html ='<td><div><div><div style="text-align:center;margin-top: 20px;">' +
+            '<span style="color: #0099ff;font-size: 15px;">' + dayStr+'</span></div><div  style="height: 27px;text-align:center;">' ;
+            var send = "配送";
+            html += '<label><input name="" type="checkbox" ';
+
+            if(day.changeFlag == true){
+                //可配送
+                if(day.dayType == 1){
+                    send =' <span style="color:green">配送</span> ';
+                }else {
+                    send =' <span style="color:red">配送</span> ';
+                }
+            }else {
+                html += ' disabled ';
+            }
+            if(day.dayType == 1){
+                html += ' checked ';
+            }
+            html += ' value="" onclick="dispatching(this,\''+ day.enterpriseCode +'\',\''+ par +'\')" /> '+send+'</label>';
+
+        html += '</div></div></div></td>';
+        return html;
+
+    }
+
+
+    
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='设置' onclick='toedit(" + row.id + ")'  data-toggle='modal' data-target='#editModal')>设置</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='设置' onclick='changeDay(\"" + row.enterpriseCode + "\")'  data-toggle='modal' data-target='#editModal')>设置</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         return result;
     }
-    function toedit(id) {
+    function changeDay(enterpriseCode) {
+
         $.ajax({
             data: {
-                'id': id,
+                'enterpriseCode': enterpriseCode,
             },
             type: "post",
             dataType: "json",
-            url: 'product/toedit',
+            url: 'dispatch/getEnterpriseListDay',
             success: function (result) {
+                console.log(result);
                 if (result.code === 0) {
                     $("#table").empty();
+                    var list = result.data;
                     var html = ""
-                    for (var i = 0; i < 3; i++) {
+                    for (var i = 0; i < list.length; i++) {
+                        var eleList = list[i];
                         html += '<tr>';
-                        for (var j = 0; j < 7; j++) {
-                            html += '<td><div><div><div style="text-align:center;margin-top: 20px;">' +
-                                '<span style="color: #0099ff;font-size: 15px;">6.14</span></div><div  style="height: 27px;text-align:center;">' +
-                                '<label><input name="" type="checkbox" value="" onclick="dispatching(this,\'1\')" />配送</label>' +
-                                '</div></div></div></td>';
+                        for (var j = 0; j < eleList.list.length; j++) {
+                            html += getHtml(eleList.list[j])
                         }
                         html += '</tr>';
                     }
                     $("#table").append(html);
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
-                    $("#saveBtn").removeAttr("disabled");
                 }
             },
             error: function (result) {
                 layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
-                $("#saveBtn").removeAttr("disabled");
             }
         });
     }
-    function dispatching(obj,id) {
+    
+
+    function dispatching(obj,enterpriseCode,dayTime) {
         var status;
-        obj.checked == true ? status =1 : status = 2
-        console.log(obj.checked);
-        console.log(status);
+         obj.checked == true ? status =1 : status = 2
             $.ajax({
                 data: {
-                    'id': id,
+                    'enterpriseCode': enterpriseCode,
                     'dayType': status,
+                    'dayTime': dayTime
                 },
                 type: "post",
                 dataType: "json",
-                url: '',
+                url: 'dispatch/changeEnterpriseDay',
                 success: function (result) {
                     if (result.code === 0) {
                         layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
                     } else {
                         layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
-                        $("#saveBtn").removeAttr("disabled");
                     }
                 },
                 error: function (result) {
                     layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
-                    $("#saveBtn").removeAttr("disabled");
+//                    $("#saveBtn").removeAttr("disabled");
                 }
             });
     }

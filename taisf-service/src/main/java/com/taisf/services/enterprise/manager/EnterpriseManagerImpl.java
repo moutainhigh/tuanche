@@ -9,6 +9,7 @@ import com.taisf.services.enterprise.dao.EnterpriseAddressDao;
 import com.taisf.services.enterprise.dao.EnterpriseConfigDao;
 import com.taisf.services.enterprise.dao.EnterpriseDao;
 import com.taisf.services.enterprise.dao.EnterpriseDayDao;
+import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
@@ -116,18 +117,6 @@ public class EnterpriseManagerImpl {
 	 * @return
 	 */
 	public EnterpriseInfoVO getEnterpriseInfoByCode(String enterpriseCode){
-		//默认获取一个月内的配送信息
-		return getEnterpriseInfoByCode(enterpriseCode,1);
-	}
-
-
-	/**
-	 * 获取当前的企业比较全的信息
-	 * @author afi
-	 * @param enterpriseCode
-	 * @return
-	 */
-	public EnterpriseInfoVO getEnterpriseInfoByCode(String enterpriseCode,int jumpMonth){
 		if (Check.NuNStr(enterpriseCode)){
 			return null;
 		}
@@ -149,23 +138,65 @@ public class EnterpriseManagerImpl {
 		info.setEnterpriseConfigEntity(enterpriseConfig);
 
 		//设置配送时间
-		List<EnterpriseDayEntity> days = this.dealEnterpriseDays(enterpriseCode,jumpMonth);
+		List<EnterpriseDayEntity> days = this.dealEnterpriseDays(enterpriseCode);
 		info.setList(days);
 		return info;
 	}
 
 
+	public static void main(String[] args) {
+		System.out.println(getMonthStart());
+	}
+
+
 	/**
-	 * 获取月内时间节点信息
+	 * 获取当前月份的第一个周日
+	 * @return
+	 */
+	private static Date getMonthStart(){
+		Date firstDay = DateUtil.getFirstDayOfMonth(0);
+		Date week = DateUtil.getFirstDayOfWeekDay(firstDay);
+		return DateUtil.jumpDate(week,-1);
+	}
+
+
+	/**
+	 * 删除
+	 * @param enterpriseDayRequest
+	 */
+	public void  delEnterpriseDays(EnterpriseDayRequest enterpriseDayRequest){
+		enterpriseDayDao.delEnterpriseDays(enterpriseDayRequest);
+	}
+
+
+	/**
+	 * 获取对象
+	 * @param enterpriseDayRequest
+	 */
+	public EnterpriseDayEntity  getEnterpriseDays(EnterpriseDayRequest enterpriseDayRequest){
+		return enterpriseDayDao.getEnterpriseDays(enterpriseDayRequest);
+	}
+	/**
+	 * 增加企业
+	 * @author afi
+	 * @param record
+	 * @return
+	 */
+	public void saveEnterpriseDay(EnterpriseDayEntity record){
+		enterpriseDayDao.saveEnterpriseDay(record);
+	}
+	/**
+	 * 获取一段时间内的企业配送情况
 	 * @author afi
 	 * @param enterpriseCode
+	 * @param firstDay
+	 * @param lastDay
+	 * @return
 	 */
-	public List<EnterpriseDayEntity> dealEnterpriseDays(String enterpriseCode,int jumpMonth){
+	private List<EnterpriseDayEntity> getEnterpriseDaysByTime(String enterpriseCode,Date  firstDay,Date lastDay){
 
 		List<EnterpriseDayEntity> list = new ArrayList<>();
 
-		Date firstDay = DateUtil.getFirstDayOfMonth(0);
-		Date lastDay = DateUtil.jumpMonth(firstDay,jumpMonth);
 		Map<String,EnterpriseDayEntity> map = new HashMap<>();
 		//获取当前的时间表格
 		List<EnterpriseDayEntity> days = enterpriseDayDao.getEnterpriseDaysByTime(enterpriseCode, firstDay, lastDay);
@@ -183,6 +214,7 @@ public class EnterpriseManagerImpl {
 			}
 			EnterpriseDayEntity day = new EnterpriseDayEntity();
 			day.setDayTime(key);
+			day.setEnterpriseCode(enterpriseCode);
 			if (DateUtil.isWorkDay(firstDay)){
 				//工作日添加
 				day.setDayType(DayTypeEnum.SEND.getCode());
@@ -195,13 +227,37 @@ public class EnterpriseManagerImpl {
 			firstDay = DateUtil.jumpDate(firstDay,1);
 		}
 		return list;
+
 	}
 
-	public static void main(String[] args) {
-		Date aa = DateUtil.getFirstDayOfMonth(0);
-		System.out.println(aa);
 
-		System.out.println(DateUtil.timestampFormat(aa));
+	/**
+	 * 获取月内时间节点信息
+	 * @author afi
+	 * @param enterpriseCode
+	 */
+	public List<EnterpriseDayEntity> dealEnterpriseDays(String enterpriseCode){
+		return getEnterpriseDaysByTime(enterpriseCode,getMonthStart(),DateUtil.jumpDate(getMonthStart(),42));
 	}
+
+
+	/**
+	 * 获取月内时间节点信息
+	 * @author afi
+	 * @param enterpriseCode
+	 */
+	public Map<String,EnterpriseDayEntity> dealEnterpriseMapDays(String enterpriseCode){
+		Map<String,EnterpriseDayEntity> map = new HashMap<>();
+		List<EnterpriseDayEntity>  list = getEnterpriseDaysByTime(enterpriseCode,getMonthStart(),DateUtil.jumpDate(getMonthStart(),42));
+		if (!Check.NuNCollection(list)){
+			for (EnterpriseDayEntity dayEntity : list) {
+				map.put(dayEntity.getDayTime(),dayEntity);
+			}
+		}
+		return map;
+	}
+
+
+
 
 }

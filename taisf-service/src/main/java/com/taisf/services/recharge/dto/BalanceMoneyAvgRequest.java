@@ -21,10 +21,7 @@ public class BalanceMoneyAvgRequest extends BaseEntity{
 
 
     private String enterpriseCode;
-    /**
-     * 提现金额
-     */
-    private Integer drawBalance = 0;
+
 
     /**
      * 老板数量
@@ -50,13 +47,6 @@ public class BalanceMoneyAvgRequest extends BaseEntity{
      */
     private Integer empMoneyYuan = 0;
 
-    public Integer getDrawBalance() {
-        return drawBalance;
-    }
-
-    public void setDrawBalance(Integer drawBalance) {
-        this.drawBalance = drawBalance;
-    }
 
     public Integer getBossNum() {
         return bossNum;
