@@ -41,6 +41,16 @@ public class OrderInfoRequest extends PageRequest {
 
     private String enterpriseCode;
 
+    private String orderStatus;
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     public String getEnterpriseCode() {
         return enterpriseCode;
     }

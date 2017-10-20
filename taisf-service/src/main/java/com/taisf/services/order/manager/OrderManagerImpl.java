@@ -191,11 +191,21 @@ public class OrderManagerImpl {
 	/**
 	 * @author:zhangzhengguang
 	 * @date:2017/10/19
-	 * @description:修改订单状态根据企业编号
+	 * @description:据企业code查询企业下所有待配送订单
 	 **/
 	public PagingResult<OrderEntity>  findListByEnterpriseCode(OrderInfoRequest orderInfoRequest){
 		PagingResult<OrderEntity> listByEnterpriseCode = orderInfoDao.findListByEnterpriseCode(orderInfoRequest);
 		return listByEnterpriseCode;
+	}
+
+	/**
+	 * @author:zhangzhengguang
+	 * @date:2017/10/20
+	 * @description:配送记录
+	 **/
+	public PagingResult<OrderListVo>  findPageLsit(EnterpriseListRequest enterpriseListRequest){
+		PagingResult<OrderListVo> pagingResult = orderInfoDao.findPageLsit(enterpriseListRequest);
+		return pagingResult;
 	}
 
 

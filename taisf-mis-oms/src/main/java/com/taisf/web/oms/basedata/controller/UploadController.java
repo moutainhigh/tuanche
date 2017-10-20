@@ -1,7 +1,7 @@
 package com.taisf.web.oms.basedata.controller;
 
 import com.jk.framework.base.utils.DateUtil;
-import com.taisf.web.oms.common.constant.PathConstant;
+import com.taisf.services.common.constant.PathConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +40,8 @@ public class UploadController {
             for (MultipartFile file : pics) {
                 int date = DateUtil.currentTimeSecond();
                 filePath = request.getSession().getServletContext().getRealPath("/") + "file/" + date + file.getOriginalFilename();
+                //data/share
+                //filePath = pathConstant.IMAGE_PATH + date + file.getOriginalFilename();
                 file.transferTo(new File(filePath));
                 System.out.println("图片上传================================" + filePath);
                 String str = "/file/" + date + file.getOriginalFilename();
@@ -50,4 +52,6 @@ public class UploadController {
         }
         return urls;
     }
+
+
 }

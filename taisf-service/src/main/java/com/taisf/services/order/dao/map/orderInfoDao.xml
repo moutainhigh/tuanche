@@ -132,14 +132,59 @@
     </update>
 
 
-    <select id="findListByEnterpriseCode" parameterType="String" resultMap="BaseResultMap">
+    <select id="findListByEnterpriseCode" parameterType="com.taisf.services.order.dto.OrderInfoRequest" resultMap="BaseResultMap">
         SELECT
         t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status, t.order_status, t.accounts_status,
         t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,
         t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark
         FROM t_order t
         WHERE t.enterprise_code = #{enterpriseCode}
-        AND t.order_status = 50
+        <if test="orderStatus != null">
+				AND t.order_status = #{orderStatus}
+        </if>
+        <if test="openTime != null and openTime != '' ">
+            <![CDATA[
+				AND t.create_time >= #{openTime}
+			]]>
+        </if>
+        <if test="tillTime != null and tillTime != '' ">
+            <![CDATA[
+				AND t.create_time <= #{tillTime}
+			]]>
+        </if>
+    </select>
+    <resultMap id="ListMap" type="com.taisf.services.order.vo.OrderListVo">
+        <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR" />
+        <result column="enterprise_name" jdbcType="VARCHAR" property="enterpriseName" />
+        <result column="orderType" jdbcType="INTEGER" property="orderType" />
+        <result column="countNum" jdbcType="INTEGER" property="countNum" />
+        <result column="successNum" jdbcType="INTEGER" property="successNum" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_tel" jdbcType="VARCHAR" property="userTel" />
+    </resultMap>
+    <!-- 配送记录 -->
+    <select id="findPageLsit" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest" resultMap="ListMap">
+        SELECT e.enterprise_code, e.enterprise_name,orderType,COUNT(1) AS countNum,SUM(orderStatus) successNum,user_name,user_tel
+        FROM(
+                SELECT * ,
+                CASE WHEN t.order_type = 20 OR t.order_type = 21 THEN 1
+                        WHEN t.order_type = 30 OR t.order_type = 31 THEN 2
+                         ELSE 0  END AS orderType,
+                CASE WHEN t.order_status = 70 THEN 1
+                         ELSE 0  END AS orderStatus
+                FROM t_order t) od LEFT JOIN t_enterprise e ON od.enterprise_code = e.enterprise_code
+        WHERE orderType !=0
+        <if test="openTime != null and openTime != '' ">
+            <![CDATA[
+				AND od.create_time >= #{openTime}
+			]]>
+        </if>
+        <if test="tillTime != null and tillTime != '' ">
+            <![CDATA[
+				AND od.create_time <= #{tillTime}
+			]]>
+        </if>
+        GROUP BY od.enterprise_code,od.orderType
     </select>
 
 

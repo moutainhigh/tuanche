@@ -143,7 +143,7 @@ public class EverydayTaskController {
     /**
      * @author:zhangzhengguang
      * @date:2017/10/19
-     * @description:修改订单状态根据企业编号
+     * @description:据企业code查询企业下所有待配送订单
      **/
     @RequestMapping("findListByEnterpriseCode")
     @ResponseBody

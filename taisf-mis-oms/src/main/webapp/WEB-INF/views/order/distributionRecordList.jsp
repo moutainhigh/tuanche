@@ -133,6 +133,13 @@
                             </c:forEach>
                         </select>
                     </div>
+                    <label class="col-sm-1 control-label mtop">日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期:</label>
+                    <div class="col-sm-2">
+                        <input id="openTime" name="openTime" value="" class="laydate-icon form-control layer-date">
+                    </div>
+                    <div class="col-sm-2">
+                        <input id="tillTime" name="tillTime" value="" class="laydate-icon form-control layer-date">
+                    </div>
                     <div class="col-sm-1">
                         <button class="btn btn-primary" type="button" onclick="query();">
                             <i class="fa fa-search"></i>&nbsp;搜索
@@ -156,22 +163,21 @@
                            data-pagination-next-text="下一页" data-pagination-last-text="末页"
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
-                           data-single-select="true"
-                           data-url="everydayTask/finOrderDistributionList">
+                           data-single-select="false"
+                           data-url="order/distributionRecord">
                         <thead>
                         <tr>
-                            <th data-field="enterpriseCode" data-width="10%"
-                                data-align="center"><span class="tdfont">企业编号</span></th>
+                            <th data-field="enterpriseCode" data-visible="false"></th>
                             <th data-field="enterpriseName" data-width="10%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
-                            <th data-field="lunchCommon" data-width="10%"
-                                data-align="center"><span class="tdfont">午餐</span></th>
-                            <th data-field="lunchExt" data-width="10%"
-                                data-align="center"><span class="tdfont">午餐补餐</span></th>
-                            <th data-field="dinnerCommon" data-width="10%"
-                                data-align="center"><span class="tdfont">晚餐</span></th>
+                            <th data-field="orderType" data-width="10%" data-formatter="formatOrderType"
+                                data-align="center"><span class="tdfont">供餐信息</span></th>
+                            <th data-field="countNum" data-width="10%"
+                                data-align="center"><span class="tdfont">订单数量</span></th>
+                            <th data-field="successNum" data-width="10%"
+                                data-align="center"><span class="tdfont">已完成数量</span></th>
                             <th data-field="dinnerExt" data-width="10%"
-                                data-align="center"><span class="tdfont">晚餐补餐</span></th>
+                                data-align="center"><span class="tdfont">联系人</span></th>
                             <th data-field="userName" data-width="10%"
                                 data-align="center"><span class="tdfont">联系人</span></th>
                             <th data-field="userTel" data-width="10%"
@@ -219,7 +225,7 @@
                                            data-pagination-next-text="下一页" data-pagination-last-text="末页"
                                            data-content-type="application/x-www-form-urlencoded"
                                            data-query-params="paginationAccountS" data-method="post"
-                                           data-single-select="true"
+                                           data-single-select="false"
                                            data-url="everydayTask/findListByEnterpriseCode">
                                         <thead>
                                         <tr>
@@ -245,28 +251,48 @@
     </div>
 </div>
 <script>
+    $(function () {
+        //初始化日期
+        CommonUtils.datePickerFormat("openTime");
+        CommonUtils.datePickerFormat("tillTime");
+    });
     function paginationParam(params) {
+        var openTime = $("#openTime").val();
+        var tillTime = $("#tillTime").val();
 
+        if (openTime == "") {
+            openTime = undefined;
+        } else {
+            openTime += " 00:00:00";
+            openTime = openTime.replace(/\-/g,"/");
+        }
+        if (tillTime == "") {
+            tillTime = undefined;
+        } else{
+            tillTime += " 23:59:59";
+            tillTime = tillTime.replace(/\-/g,"/");
+        }
+        console.log(openTime)
+        console.log(tillTime)
         return {
             limit: params.limit,
+            openTime: openTime,
+            tillTime: tillTime,
             page: $("#listTable").bootstrapTable("getOptions").pageNumber,
             enterpriseCode: $("#enterpriseCodeS").val(),
         };
     }
-    function formatProductClassify(value, row, index) {
+    function formatOrderType(value, row, index) {
         if (value == 1) {
-            return "大荤";
+            return "午餐";
         } else if (value == 2) {
-            return "小荤";
-        } else if (value == 3) {
-            return "素";
+            return "晚餐";
         }
     }
 
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='编辑' onclick='toedit(\"" + row.enterpriseCode + "\")'>开始配送</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         result = result + "<a title='查看' onclick='detail(\"" + row.enterpriseCode + "\")'>详情</a>";
         return result;
     }
@@ -274,8 +300,8 @@
     function toedit(enterpriseCode) {
         layer.confirm("确认配送吗", {
             //icon : iconNum,
-            title : '开始配送'
-        }, function(index) {
+            title: '开始配送'
+        }, function (index) {
             $.ajax({
                 data: {
                     'enterpriseCode': enterpriseCode,
@@ -302,11 +328,24 @@
     }
 
     function paginationAccountS(params) {
+        var openTime = $("#openTime").val();
+        var tillTime = $("#tillTime").val();
+
+        if (openTime == "") {
+            openTime = undefined;
+        } else {
+            openTime += " 00:00:00";
+        }
+        if (tillTime == "") {
+            tillTime = undefined;
+        } else
+            tillTime += " 23:59:59";
         return {
             limit: params.limit,
+            openTime: openTime,
+            tillTime: tillTime,
             page: $("#listTableEmp").bootstrapTable("getOptions").pageNumber,
             enterpriseCode: $("#id_enterpriseCode").val(),
-            orderStatus: 50,
         };
 
     }
