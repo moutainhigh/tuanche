@@ -4,6 +4,8 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.UUIDGenerator;
 import com.taisf.services.common.valenum.AccountTypeEnum;
+import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.recharge.dao.RechargeDao;
 import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.entity.RechargeEntity;
@@ -50,6 +52,16 @@ public class RechargeManagerImpl {
     @Resource(name = "user.accountUserDao")
     private UserAccountDao userAccountDao;
 
+
+    /**
+     * 获取企业充值统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    public List<EnterpriseRechargeStatsVO> getEnterpriseRechargeStats(EnterpriseStatsRequest request){
+        return rechargeDao.getEnterpriseRechargeStats(request);
+    }
 
 
     /**

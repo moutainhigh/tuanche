@@ -1,0 +1,59 @@
+package com.taisf.services.order.dto;
+
+import com.jk.framework.base.entity.BaseEntity;
+
+/**
+ * <p>订单的统计参数</p>
+ * <p/>
+ * <PRE>
+ * <BR>	修改记录
+ * <BR>-----------------------------------------------
+ * <BR>	修改日期			修改人			修改内容
+ * </PRE>
+ *
+ * @author afi on on 2017/10/20.
+ * @version 1.0
+ * @since 1.0
+ */
+public class EnterpriseStatsRequest extends BaseEntity{
+
+
+    /**
+     * 企业编码
+     */
+    private String enterpriseCode;
+
+    /**
+     * 开始时间
+     */
+    private String startStr;
+
+    /**
+     * 结束时间
+     */
+    private String endStr;
+
+    public String getEnterpriseCode() {
+        return enterpriseCode;
+    }
+
+    public void setEnterpriseCode(String enterpriseCode) {
+        this.enterpriseCode = enterpriseCode;
+    }
+
+    public String getStartStr() {
+        return startStr;
+    }
+
+    public void setStartStr(String startStr) {
+        this.startStr = startStr;
+    }
+
+    public String getEndStr() {
+        return endStr;
+    }
+
+    public void setEndStr(String endStr) {
+        this.endStr = endStr;
+    }
+}

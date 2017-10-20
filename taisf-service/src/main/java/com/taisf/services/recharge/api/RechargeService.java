@@ -2,12 +2,16 @@ package com.taisf.services.recharge.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
 import com.taisf.services.recharge.dto.BalanceMoneyOneRequest;
 import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.dto.ChargeRequest;
 import com.taisf.services.recharge.entity.RechargeEntity;
 import com.taisf.services.recharge.vo.EnterpriseStatsNumber;
+
+import java.util.List;
 
 /**
  * <p>充值</p>
@@ -23,6 +27,14 @@ import com.taisf.services.recharge.vo.EnterpriseStatsNumber;
  * @since 1.0
  */
 public interface RechargeService {
+
+    /**
+     * 获取企业充值的统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    DataTransferObject<List<EnterpriseRechargeStatsVO>> getEnterpriseRechargeStats(EnterpriseStatsRequest request);
 
 
     /**

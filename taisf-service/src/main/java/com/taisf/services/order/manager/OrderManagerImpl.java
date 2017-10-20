@@ -7,15 +7,14 @@ import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.AccountTypeEnum;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
+import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.dao.*;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.dto.OrderProductListRequest;
 import com.taisf.services.order.entity.*;
-import com.taisf.services.order.vo.OrderDetailVO;
-import com.taisf.services.order.vo.OrderInfoVO;
-import com.taisf.services.order.vo.OrderListVo;
-import com.taisf.services.order.vo.OrderSaveVO;
+import com.taisf.services.order.vo.*;
 import com.taisf.services.user.dao.AccountLogDao;
 import com.taisf.services.user.dao.UserAccountDao;
 import com.taisf.services.user.entity.AccountLogEntity;
@@ -69,6 +68,17 @@ public class OrderManagerImpl {
 	@Resource(name = "order.orderInfoDao")
 	private OrderInfoDao orderInfoDao;
 
+
+	/**
+	 * 获取企业订单的统计信息
+	 * @author afi
+	 * @param request
+	 * @return
+	 */
+	public List<EnterpriseOrderStatsVO> getEnterpriseOrderStats(EnterpriseStatsRequest request){
+
+		return orderInfoDao.getEnterpriseOrderStats(request);
+	}
 
 	/**
 	 * 结束当前订单

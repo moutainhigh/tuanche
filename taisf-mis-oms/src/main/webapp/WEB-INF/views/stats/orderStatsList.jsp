@@ -56,50 +56,21 @@
                         <input id="endTime" name="endTime"  class="laydate-icon form-control layer-date">
                     </div>
 
-
-                    <label class="col-xs-1 col-sm-1 control-label mtop">充值类型:</label>
-                    <div class="col-xs-2 col-sm-2">
-                        <select class="form-control" name="rechargeType" id="rechargeType">
-                            <option value="">--请选择--</option>
-                            <option value="1">--用户--</option>
-                            <option value="2">--企业--</option>
-                        </select>
-                    </div>
-
-                    <label class="col-sm-1 control-label mtop">手机号:</label>
-                    <div class="col-sm-2">
-                        <input id="rechargeTel" name="rechargeTel"  class="form-control">
-                    </div>
-
-                </div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="form-group">
-
-
-                    <label class="col-sm-1 control-label mtop">充值流水号:</label>
-                    <div class="col-sm-2">
-                        <input id="rechargeSn" name="rechargeSn"  class="form-control">
-                    </div>
-
                     <label class="col-sm-1 control-label mtop">企业编号:</label>
                     <div class="col-sm-2">
                         <input id="enterpriseCode" name="enterpriseCode"  class="form-control">
                     </div>
-                    <label class="col-sm-1 control-label mtop">企业名称:</label>
-                    <div class="col-sm-2">
-                        <input id="enterpriseName" name="enterpriseName"  class="form-control">
-                    </div>
-
-
 
                     <div class="col-sm-1">
                         <button class="btn btn-primary" type="button" onclick="query();">
                             <i class="fa fa-search"></i>&nbsp;搜索
                         </button>
                     </div>
+
+
                 </div>
             </div>
+
         </div>
     </div>
     <!-- Panel Other -->
@@ -118,33 +89,26 @@
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
                            data-single-select="true"
-                           data-url="recharge/historyPage">
+                           data-url="stats/orderStatsListPage">
                         <thead>
                         <tr>
-                            <th data-field="rechargeSn" data-width="10%"
-                                data-align="center"><span class="tdfont">流水号</span></th>
 
-                            <th data-field="createTime" data-width="20%"
-                                data-align="center" data-formatter="formateDate"><p
-                                    class="tdfont">充值时间</p></th>
-
-                            <th data-field="rechargeType" data-width="15%" data-formatter="formatRechargeType"
-                                data-align="center"><span class="tdfont">充值类型</span></th>
+                            <th data-field="time" data-width="10%"
+                                data-align="center"><span class="tdfont">统计区间</span></th>
                             <th data-field="enterpriseCode" data-width="10%"
                                 data-align="center"><span class="tdfont">企业编号</span></th>
                             <th data-field="enterpriseName" data-width="10%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
-                            <th data-field="rechargeTel" data-width="10%"
-                                data-align="center"><span class="tdfont">手机号</span></th>
-                            <th data-field="totalPrice" data-width="10%" data-formatter="formatAmount"
-
-                                data-align="center"><span class="tdfont">充值金额</span></th>
-
-                            <th data-field="rechargeStatus" data-width="10%" data-formatter="formatRechargeStatus"
-                                data-align="center"><span class="tdfont">状态</span></th>
-
-                            <th data-field="createName" data-width="15%" data-align="center"
-                                ><span class="tdfont">操作人</span></th>
+                            <th data-field="allNum" data-width="10%"
+                                data-align="center"><span class="tdfont">下单总数量</span></th>
+                            <th data-field="noExtNum" data-width="10%"
+                                data-align="center"><span class="tdfont">线上预定</span></th>
+                            <th data-field="extNum" data-width="10%"
+                                data-align="center"><span class="tdfont">补单</span></th>
+                            <th data-field="payMoney" data-width="10%"  data-formatter="formatAmount"
+                                data-align="center"><span class="tdfont">账户支付</span></th>
+                            <th data-field="payBalance" data-width="10%"  data-formatter="formatAmount"
+                                data-align="center"><span class="tdfont">网银支付</span></th>
                         </tr>
                         </thead>
                     </table>
@@ -166,66 +130,29 @@
         return (value / 100).toFixed(2);
     }
 
-
     function paginationParam(params) {
-
         var startTime = $('#startTime').val();
         var endTime = $('#endTime').val();
 
-//
+        if (startTime == "") {
+            startTime = undefined;
+        } else {
+            startTime += " 00:00:00";
+        }
+        if (endTime == "") {
+            endTime = undefined;
+        } else{
+            endTime += " 23:59:59";
+        }
 
         return {
             startStr: startTime,
             endStr: endTime,
-            rechargeSn: $("#rechargeSn").val(),
-            rechargeType: $("#rechargeType").find("option:selected").val(),
             enterpriseCode:$("#enterpriseCode").val(),
-            enterpriseName:$("#enterpriseName").val(),
-            rechargeTel:$("#rechargeTel").val(),
             limit: params.limit,
             page: $("#listTable").bootstrapTable("getOptions").pageNumber
         };
-//
-//        return {
-//            limit: params.limit,
-//            page: $("#listTable").bootstrapTable("getOptions").pageNumber,
-//            openTime: openTime,
-//            tillTime: tillTime,
-//            productName: $("#productNameS").val(),
-//            productClassify: $("#productClassifyS").val(),
-//            productType: $("#productTypeS").val(),
-//            productSource: $("#productSourceS").val(),
-//        };
-    }
 
-    // 格式化时间
-    function formateDate(value, row, index) {
-        if (value != null) {
-            var vDate = new Date(value);
-            return vDate.format("yyyy-MM-dd HH:mm:ss");
-        } else {
-            return "";
-        }
-    }
-
-
-    function formatRechargeType(value, row, index) {
-        if (value == 1) {
-            return "企业充值";
-        } else if(value == 2){
-            return "个人充值";
-        }else{
-            return "其他";
-        }
-    }
-    function formatRechargeStatus(value, row, index) {
-        if (value == 1) {
-            return "成功";
-        } else if(value == 2){
-            return "失败";
-        }else {
-            return value;
-        }
     }
 
     function query() {

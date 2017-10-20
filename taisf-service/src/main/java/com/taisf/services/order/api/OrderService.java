@@ -2,13 +2,14 @@ package com.taisf.services.order.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.dto.CreateOrderRequest;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
-import com.taisf.services.order.vo.OrderSaveVO;
 
 import java.util.List;
 
@@ -28,6 +29,14 @@ import java.util.List;
 public interface OrderService {
 
 
+
+    /**
+     * 获取企业订单的统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    DataTransferObject<List<EnterpriseOrderStatsVO>> getEnterpriseOrderStats(EnterpriseStatsRequest request);
     /**
      * 结束订单
      * @author afi

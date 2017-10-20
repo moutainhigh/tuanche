@@ -4,6 +4,8 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.recharge.dto.ChargeHisRequest;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>充值信息</p>
@@ -36,6 +39,20 @@ public class RechargeDao extends BaseDao {
      * 日志对象
      */
     private static Logger logger = LoggerFactory.getLogger(RechargeDao.class);
+
+
+
+    /**
+     * 获取企业充值统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    public List<EnterpriseRechargeStatsVO> getEnterpriseRechargeStats(EnterpriseStatsRequest request){
+        return mybatisDaoContext.findAll(SQLID + "getEnterpriseRechargeStats", EnterpriseRechargeStatsVO.class, request);
+    }
+
+
 
     /**
      * 获取充值信息

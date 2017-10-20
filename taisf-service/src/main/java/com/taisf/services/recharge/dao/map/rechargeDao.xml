@@ -220,4 +220,40 @@
         where  recharge_sn = #{rechargeSn,jdbcType=VARCHAR}
     </update>
 
+
+    <select id="getEnterpriseRechargeStats" parameterType="com.taisf.services.order.dto.EnterpriseStatsRequest"
+            resultType="com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO">
+
+        SELECT
+            ll.enterprise_code AS enterpriseCode,
+            ll.num AS num,
+            ll.price AS price,
+            p.enterprise_name AS enterpriseName
+        FROM
+
+          (SELECT
+                enterprise_code,
+                COUNT( 1 ) AS num,
+                SUM( total_price ) AS price
+            FROM
+                t_recharge t
+                WHERE 1 =1
+                <if test="enterpriseCode != null and enterpriseCode != '' ">
+                    and t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+                </if>
+
+                <if test="startStr != null and startStr != '' ">
+                    and t.create_time <![CDATA[  >= ]]>#{startStr,jdbcType=VARCHAR}
+                </if>
+                <if test="endStr != null and endStr != '' ">
+                    and t.create_time <![CDATA[  <= ]]> #{endStr,jdbcType=VARCHAR}
+                </if>
+            GROUP BY
+                enterprise_code
+            ) ll
+          LEFT JOIN t_enterprise p ON ll.enterprise_code = p.enterprise_code
+
+    </select>
+
+
 </mapper>

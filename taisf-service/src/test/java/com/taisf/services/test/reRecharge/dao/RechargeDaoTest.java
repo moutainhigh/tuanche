@@ -2,6 +2,8 @@ package com.taisf.services.test.reRecharge.dao;
 
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.recharge.dao.RechargeDao;
 import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.entity.RechargeEntity;
@@ -9,6 +11,7 @@ import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>TODO</p>
@@ -28,6 +31,17 @@ public class RechargeDaoTest extends BaseTest {
 
     @Resource(name = "recharge.rechargeDao")
     private RechargeDao rechargeDao;
+
+
+
+
+    @Test
+    public void getEnterpriseRechargeStatsTest() {
+        EnterpriseStatsRequest record = new EnterpriseStatsRequest();
+        List<EnterpriseRechargeStatsVO> rechargeStats = rechargeDao.getEnterpriseRechargeStats(record);
+        System.out.println(JsonEntityTransform.Object2Json(rechargeStats));
+    }
+
 
 
     @Test

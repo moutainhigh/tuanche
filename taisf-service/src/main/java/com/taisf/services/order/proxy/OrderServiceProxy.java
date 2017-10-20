@@ -7,6 +7,7 @@ import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.*;
+import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
@@ -14,6 +15,7 @@ import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.entity.OrderEntity;
@@ -74,6 +76,23 @@ public class OrderServiceProxy implements OrderService {
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
 
+
+    /**
+     * 获取企业订单的统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    public DataTransferObject<List<EnterpriseOrderStatsVO>> getEnterpriseOrderStats(EnterpriseStatsRequest request){
+        DataTransferObject<List<EnterpriseOrderStatsVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(request)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        List<EnterpriseOrderStatsVO> list = orderManager.getEnterpriseOrderStats(request);
+        dto.setData(list);
+        return dto;
+    }
 
     /**
      * 结束订单

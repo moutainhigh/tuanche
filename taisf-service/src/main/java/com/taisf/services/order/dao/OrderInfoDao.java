@@ -5,8 +5,10 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.entity.OrderEntity;
+import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderListVo;
 import org.slf4j.Logger;
@@ -36,6 +38,18 @@ public class OrderInfoDao extends BaseDao{
 	private static Logger logger = LoggerFactory.getLogger(OrderInfoDao.class);
 
 	private String SQLID = "order.orderInfoDao.";
+
+
+	/**
+	 * 获取企业订单的统计信息
+	 * @author afi
+	 * @param request
+	 * @return
+	 */
+	public List<EnterpriseOrderStatsVO> getEnterpriseOrderStats(EnterpriseStatsRequest request){
+		return mybatisDaoContext.findAll(SQLID + "getEnterpriseOrderStats", EnterpriseOrderStatsVO.class, request);
+	}
+
 
 
     /**
