@@ -245,8 +245,13 @@
 					+ "base/enterprise/operatePage?id=" + row.id + "&operate=2')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			result = result + "<a title='查看' href=javascript:viewEnterprise('"
 					+ "base/enterprise/operatePage?id=" + row.id + "&operate=1')>查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+			
+			if(row.enterpriseStatus == 0) {
+				result = result + "<a title='提交' href='javascript:changeStatus(" + row.id + ", 1)'>提交</a>";
+			}
+					
 			if(row.enterpriseStatus == 1) {
-			result = result + "<a title='停止合作' href=javascript:stopEnterprise('" + row.id + "')>停止</a>";
+				result = result + "<a title='停止合作' href='javascript:changeStatus(" + row.id + ", 3)'>停止</a>";
 			}
 			return result;
 		}
@@ -259,11 +264,19 @@
 			$.openNewTab(new Date().getTime(), url, "查看企业");
 		}
 		
-		function stopEnterprise(id) {
-			var status = 3;
-			
-	   	    //确认是否停止合作
-	   		layer.confirm("确认停止与该企业合作吗？", {icon: 5, title:'提示'},function(index){
+		function changeStatus(id, status) {
+			debugger;
+			var message;
+			var iconNum; //显示icon层设置 6：笑脸  5：沮丧
+			if(status == 1) {
+				message = "确认要提交企业信息吗？";
+				iconNum = 6;
+			}
+			if(status == 3) {
+				message = "确认停止与该企业合作吗？";
+				iconNum = 5;
+			}
+	   		layer.confirm(message, {icon: iconNum, title:'提示'},function(index){
 	   			$.ajax({
 	   				type: "POST",
 	   				url: "base/enterprise/changeStatus",
