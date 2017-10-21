@@ -253,7 +253,10 @@
 			                        <c:if test="${operate==1}">readonly="true"</c:if>></td>
 								<td align="right" class="td-title">其他地址:</td>
 								<td align="center"><input type="text" id="otherAddress" name="otherAddress" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.otherAddress}"></td>
+									<c:forEach items="${model.addressEntityList}" var="addr" >
+			                    		<c:if test="${addr.fid=='otherAddress'}">value="${addr.address}"</c:if>
+			                        </c:forEach>
+			                        <c:if test="${operate==1}">readonly="true"</c:if>></td>
 							</tr>
 							
 							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">财务信息</td></tr>
