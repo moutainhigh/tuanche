@@ -62,6 +62,14 @@
     where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
     limit 1
   </select>
+  
+  <select id="getEnterpriseById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_enterprise
+    where id = #{id,jdbcType=INTEGER}
+    limit 1
+  </select>
 
   <select id="pageListAndManger" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest" resultMap="BaseResultMap">
     select
@@ -79,13 +87,6 @@
       AND  enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
     </if>
   </select>
-
-
-
-
-
-
-
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_enterprise
@@ -146,6 +147,21 @@
       <if test="tillTime != null">
         till_time,
       </if>
+      <if test="contactName != null">
+        contact_name,
+      </if>
+      <if test="contactMail != null">
+        contact_mail,
+      </if>
+      <if test="contactMobile != null">
+        contact_mobile,
+      </if>
+      <if test="contactTel != null">
+        contact_tel,
+      </if>
+      <if test="contactTencent != null">
+        contact_tencent,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>
@@ -204,6 +220,21 @@
       </if>
       <if test="tillTime != null">
         #{tillTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contactName != null">
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMail != null">
+        #{contactMail,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMobile != null">
+        #{contactMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTel != null">
+        #{contactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTencent != null">
+        #{contactTencent,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -266,6 +297,21 @@
       <if test="tillTime != null">
         till_time = #{tillTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="contactName != null">
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMail != null">
+        contact_mail = #{contactMail,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMobile != null">
+        contact_mobile = #{contactMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTel != null">
+        contact_tel = #{contactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTencent != null">
+        contact_tencent = #{contactTencent,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -273,7 +319,7 @@
         last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 
   <select id="findAll"  resultMap="BaseResultMap">
@@ -290,22 +336,22 @@
     LEFT JOIN t_enterprise_config c on e.enterprise_code=c.enterprise_code
     where 1=1
     <if test="enterpriseCode != null and enterpriseCode != '' ">
-     and enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+     and e.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
     </if>
     <if test="enterpriseName != null and enterpriseName != '' ">
-     and enterprise_name like CONCAT('%',#{enterpriseName, jdbcType=VARCHAR},'%')
+     and e.enterprise_name like CONCAT('%',#{enterpriseName, jdbcType=VARCHAR},'%')
     </if>
     <if test="manger != null and manger != '' ">
-		and a.manger = #{manger, jdbcType=INTEGER}
+		and e.manger = #{manger, jdbcType=INTEGER}
 	</if>
     <if test="openTime != null and openTime != '' ">
    		<![CDATA[
-			and a.open_time >= #{openTime, jdbcType=TIMESTAMP}
+			and e.open_time >= #{openTime, jdbcType=TIMESTAMP}
 		]]>	
 	</if>
 	<if test="tillTime != null and tillTime != '' ">
 		<![CDATA[
-			and a.till_time <= #{tillTime, jdbcType=TIMESTAMP}
+			and e.till_time <= #{tillTime, jdbcType=TIMESTAMP}
 		]]>
 	</if>
 	<if test="enterpriseType != null and enterpriseType != '' ">

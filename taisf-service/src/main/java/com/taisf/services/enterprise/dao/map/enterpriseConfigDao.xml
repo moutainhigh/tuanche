@@ -136,5 +136,38 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="updateConfigByEnterpriseCode" parameterType="com.taisf.services.enterprise.entity.EnterpriseConfigEntity">
+    update t_enterprise_config
+    <set>
+      <if test="enterpriseCode != null">
+        enterprise_code = #{enterpriseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bossPrice != null">
+        boss_price = #{bossPrice,jdbcType=INTEGER},
+      </if>
+      <if test="empPrice != null">
+        emp_price = #{empPrice,jdbcType=INTEGER},
+      </if>
+      <if test="forLunch != null">
+        for_lunch = #{forLunch,jdbcType=INTEGER},
+      </if>
+      <if test="lunchStart != null">
+        lunch_start = #{lunchStart,jdbcType=VARCHAR},
+      </if>
+      <if test="lunchEnd != null">
+        lunch_end = #{lunchEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="forDinner != null">
+        for_dinner = #{forDinner,jdbcType=INTEGER},
+      </if>
+      <if test="dinnerStart != null">
+        dinner_start = #{dinnerStart,jdbcType=VARCHAR},
+      </if>
+      <if test="dinnerEnd != null">
+        dinner_end = #{dinnerEnd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where enterprise_code = #{enterpriseCode,jdbcType=INTEGER}
+  </update>
 
 </mapper>

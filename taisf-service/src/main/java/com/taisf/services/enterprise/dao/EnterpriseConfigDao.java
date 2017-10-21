@@ -1,13 +1,11 @@
 package com.taisf.services.enterprise.dao;
 
-import com.taisf.services.common.dao.BaseDao;
-import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
-import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 
 /**
  * <p>企业配置</p>
@@ -63,4 +61,14 @@ public class EnterpriseConfigDao extends BaseDao {
         return mybatisDaoContext.update(SQLID + "updateEnterpriseConfig", record);
     }
 
+    /**
+     * 根据企业编号修改配置信息
+     * @author afi
+     * @param record
+     * @return
+     */
+    public int updateConfigByEnterpriseCode(EnterpriseConfigEntity record){
+        return mybatisDaoContext.update(SQLID + "updateConfigByEnterpriseCode", record);
+    }
+    
 }

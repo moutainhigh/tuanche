@@ -7,7 +7,7 @@ public class EnterpriseUpdateRequest extends EnterpriseEntity{
 	private static final long serialVersionUID = 8601157678495331557L;
 	
 	/**
-	 * 操作类型
+	 * 操作类型 新增：1 修改：0
 	 */
 	private Integer operateType;
 	
@@ -52,14 +52,39 @@ public class EnterpriseUpdateRequest extends EnterpriseEntity{
     private String dinnerEnd;
     
     /**
-     * 送餐地址
+     * 主送餐地址
      */
-    private String address;
+    private String mainAddress;
     
     /**
      * 其他送餐地址
      */
     private String otherAddress;
+    
+    /**
+     * 账期 T + x
+     */
+    private Integer feeDay;
+
+    /**
+     * 结算方式 1.月结算
+     */
+    private Integer checkType;
+
+    /**
+     * 发票抬头
+     */
+    private String invoiceTitle;
+
+    /**
+     * 账号
+     */
+    private String enterpriseAccount;
+
+    /**
+     * 税号
+     */
+    private String enterpriseTax;
 
 	public Integer getEmpPrice() {
 		return empPrice;
@@ -125,12 +150,12 @@ public class EnterpriseUpdateRequest extends EnterpriseEntity{
 		this.dinnerEnd = dinnerEnd;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getMainAddress() {
+		return mainAddress;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setMainAddress(String mainAddress) {
+		this.mainAddress = mainAddress;
 	}
 
 	public String getOtherAddress() {
@@ -147,6 +172,46 @@ public class EnterpriseUpdateRequest extends EnterpriseEntity{
 
 	public void setOperateType(Integer operateType) {
 		this.operateType = operateType;
+	}
+
+	public Integer getFeeDay() {
+		return feeDay;
+	}
+
+	public void setFeeDay(Integer feeDay) {
+		this.feeDay = feeDay;
+	}
+
+	public Integer getCheckType() {
+		return checkType;
+	}
+
+	public void setCheckType(Integer checkType) {
+		this.checkType = checkType;
+	}
+
+	public String getInvoiceTitle() {
+		return invoiceTitle;
+	}
+
+	public void setInvoiceTitle(String invoiceTitle) {
+		this.invoiceTitle = invoiceTitle;
+	}
+
+	public String getEnterpriseAccount() {
+		return enterpriseAccount;
+	}
+
+	public void setEnterpriseAccount(String enterpriseAccount) {
+		this.enterpriseAccount = enterpriseAccount;
+	}
+
+	public String getEnterpriseTax() {
+		return enterpriseTax;
+	}
+
+	public void setEnterpriseTax(String enterpriseTax) {
+		this.enterpriseTax = enterpriseTax;
 	}
 
 }

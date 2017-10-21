@@ -78,57 +78,65 @@
 				<div class="row row-lg">
 					<div class="col-sm-12">
 						<table class="table">
-							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">基本信息</td></tr>
+							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">基本信息
+								<input type="hidden" id="id" name="id" value="${model.enterpriseEntity.id}"></td></tr>
 							
 							<tr>
-								<td align="right" class="td-title">供餐单位:</td>
+								<td align="right" class="td-title"><font color="red">*&nbsp;</font>供餐单位:</td>
 								<td><select class="form-control" id="supplierCode" name="supplierCode">  
 				                        <option value="">-请选择-</option>  
 				                    	<c:if test="${ not empty suppliers}" > 
 				                        <c:forEach var="su" items="${suppliers}">  
-				                            <option  value="${su.supplierCode}">${su.supplierName}</option>
+				                            <option <c:if test="${model.enterpriseEntity.supplierCode==su.supplierCode}" > selected="selected"</c:if>
+				                            value="${su.supplierCode}">${su.supplierName}</option>
 				                        </c:forEach>  
 				                        </c:if>
 				                    </select></td>
 							</tr>
 							<tr>
-								<td align="right" class="td-title">企业编号:</td>
+								<td align="right" class="td-title"><font color="red">*&nbsp;</font>企业编号:</td>
 								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseCode}"></td>
-								<td align="right" class="td-title">企业名称:</td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.enterpriseCode}"></td>
+								<td align="right" class="td-title"><font color="red">*&nbsp;</font>企业名称:</td>
 								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseName}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.enterpriseName}"></td>
 								<td align="right" style="font-weight:bold;">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</td>
 								<td align="center"><input type="text" id="enterpriseTel" name="enterpriseTel" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.enterpriseTel}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.enterpriseTel}"></td>
 							</tr>
 							<tr>
 								<td align="right" class="td-title">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:</td>
 								<td colspan="5">
-									 <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="provinceCode" name="provinceCode" onchange="selectCitys(this)" >  
+									<input type="hidden" id="provinceName" name="provinceName" value="${model.enterpriseEntity.provinceName}"/>
+									<select class="form-control" style="width:150px;float:left;margin-right:8px;" id="provinceCode" name="provinceCode" onchange="selectCitys(this)" >  
 				                        <option value="">-请选择省-</option>  
 				                        <c:forEach var="pv" items="${provinceList}">  
-				                            <option  value="${pv.code}">${pv.name}</option>
+				                            <option <c:if test="${model.enterpriseEntity.provinceCode==pv.code}" > selected="selected"</c:if>
+				                            value="${pv.code}">${pv.name}</option>
 				                        </c:forEach>  
 				                    </select>
+				                    <input type="hidden" id="cityName" name="cityName" value="${model.enterpriseEntity.cityName}"/>
 				                    <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="cityCode" name="cityCode" onchange="selectAreas(this)">  
 				                        <option value="">-请选择市-</option>
 				                        <c:if test="${ not empty citylist}" > 
 				                        <c:forEach var="pv" items="${citylist}">  
-				                            <option  value="${pv.code}">${pv.name}</option>
+				                            <option <c:if test="${model.enterpriseEntity.cityCode==pv.code}" > selected="selected"</c:if>
+				                            value="${pv.code}">${pv.name}</option>
 				                        </c:forEach> 
 				                         </c:if>
 				                    </select>
-				                    <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="countyCode" name="countyCode"> 
+				                    <input type="hidden" id="areaName" name="areaName" value="${model.enterpriseEntity.areaName}"/>
+				                    <select class="form-control" style="width:150px;float:left;margin-right:8px;" id="areaCode" name="areaCode"> 
 				                    	<option value="">-请选择区\县-</option>
 				                        <c:if test="${ not empty countylist}" > 
 				                        <c:forEach var="pv" items="${countylist}">  
-				                            <option  value="${pv.code}">${pv.name}</option>
+				                            <option <c:if test="${model.enterpriseEntity.areaCode==pv.code}" > selected="selected"</c:if>
+				                            value="${pv.code}">${pv.name}</option>
 				                        </c:forEach>  
 				                        </c:if>
 				                    </select>
 				                    <input type="text" id="street" name="street" class="form-control" style="width:300px;"
-				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.street}"/>
+				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.street}"/>
 								</td>
 							</tr>
 							
@@ -136,66 +144,70 @@
 							
 							<tr>
 								<td align="right" class="td-title">联&nbsp;&nbsp;络&nbsp;人:</td>
-								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactName}"></td>
+								<td align="center"><input type="text" id="contactName" name="contactName" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.contactName}"></td>
 								<td align="right" class="td-title">公司邮箱:</td>
-								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactMail}"></td>
+								<td align="center"><input type="text" id="contactMail" name="contactMail" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.contactMail}"></td>
 								<td align="right" style="font-weight:bold;">手&nbsp;&nbsp;机&nbsp;&nbsp;号:</td>
-								<td align="center"><input type="text" id="enterpriseTel" name="enterpriseTel" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactMobile}"></td>
+								<td align="center"><input type="text" id="contactMobile" name="contactMobile" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.contactMobile}"></td>
 							</tr>
 							<tr>
 								<td align="right" class="td-title">微信/QQ:</td>
-								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactTencent}"></td>
+								<td align="center"><input type="text" id="contactTencent" name="contactTencent" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.contactTencent}"></td>
 								<td align="right" style="font-weight:bold;">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:</td>
-								<td align="center"><input type="text" id="enterpriseTel" name="enterpriseTel" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.contactTel}"></td>
+								<td align="center"><input type="text" id="contactTel" name="contactTel" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.contactTel}"></td>
 							</tr>
 							
 							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
 							
 							<tr>
-								<td align="right" class="td-title">企业类型:</td>
+								<td align="right" class="td-title"><font color="red">*&nbsp;</font>企业类型:</td>
 								<td align="center">
 									<select class="form-control" name="enterpriseType" id="enterpriseType">
 										<option value="">--请选择--</option>
 										<c:forEach items="<%=EnterpriseTypeEnum.values()%>" var="e" >
-											<option value="${e.code}">${e.name}</option>
+											<option <c:if test="${model.enterpriseEntity.enterpriseType==e.code}" > selected="selected"</c:if>
+											value="${e.code}">${e.name}</option>
 										</c:forEach>
 	                        		</select>
                         		</td>
-								<td align="right" class="td-title">平台经理:</td>
+								<td align="right" class="td-title"><font color="red">*&nbsp;</font>平台经理:</td>
 								<td align="center">
 									<select class="form-control" name="manger" id="manger">
 			                            <option value="">--请选择--</option>
 			                            <c:forEach items="${employees}" var="emp" >
-			                                <option  value="${emp.userId}">${emp.empName}</option>
+			                                <option <c:if test="${model.enterpriseEntity.manger==emp.userId}" > selected="selected"</c:if>
+			                                value="${emp.userId}">${emp.empName}</option>
 			                            </c:forEach>
 			                        </select>
 								</td>
 							</tr>
 							<tr>
-								<td align="right" class="td-title">开户日期:</td>
+								<td align="right" class="td-title"><font color="red">*&nbsp;</font>开户日期:</td>
 								<td align="center"><input type="text" id="openTime" name="openTime" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.openTime}"></td>
-								<td align="right" style="font-weight:bold;">截止日期:</td>
+									<c:if test="${operate==1}">readonly="true"</c:if> 
+									value="<fmt:formatDate value="${model.enterpriseEntity.openTime}" pattern="yyyy-MM-dd"/>"></td>
+								<td align="right" style="font-weight:bold;"><font color="red">*&nbsp;</font>截止日期:</td>
 								<td align="center"><input type="text" id="tillTime" name="tillTime" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.tillTime}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> 
+									value="<fmt:formatDate value="${model.enterpriseEntity.tillTime}" pattern="yyyy-MM-dd"/>"></td>
 							</tr>
 							
 							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">供餐信息</td></tr>
 							<tr>
 								<td align="right" class="td-title">餐费标准:</td>
 								<td colspan="5">
-									<font class="mtop inner-title" style="text-align:right;">老板餐</font>
-								 	<input type="text" id="empPrice" name="empPrice" class="form-control inner-input"
-				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.empPrice}"/>
-				                    <font class="mtop inner-title">元</font>
-				                    <font class="mtop inner-title" style="text-align:right;">员工餐</font>
+									<font class="mtop inner-title" style="text-align:right;"><font color="red">*&nbsp;</font>老板餐</font>
 								 	<input type="text" id="bossPrice" name="bossPrice" class="form-control inner-input"
-				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.empPrice}"/>
+				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.bossPrice}"/>
+				                    <font class="mtop inner-title">元</font>
+				                    <font class="mtop inner-title" style="text-align:right;"><font color="red">*&nbsp;</font>员工餐</font>
+								 	<input type="text" id="empPrice" name="empPrice" class="form-control inner-input"
+				                    	<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.empPrice}"/>
 				                    <font class="mtop inner-title">元</font>
 				                </td>
 							</tr>
@@ -204,38 +216,41 @@
 								<td align="right" class="td-title">配送午餐:</td>
 								<td align="center">
 									<select class="form-control" name="forLunch" id="forLunch">
-										<option <c:if test="${enterprise.forLunch=='1'}" > selected="selected" </c:if> value="1">是</option>
-										<option <c:if test="${enterprise.forLunch=='0'}" > selected="selected" </c:if> value="0">否</option>
+										<option <c:if test="${model.configEntity.forLunch=='1'}" > selected="selected" </c:if> value="1">是</option>
+										<option <c:if test="${model.configEntity.forLunch=='0'}" > selected="selected" </c:if> value="0">否</option>
 	                        		</select>
                         		</td>
 								<td align="right" class="td-title">开始时间:</td>
 								<td align="center"><input type="text" id="lunchStart" name="lunchStart" class="form-control" placeholder="HH:mm"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.lunchStart}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.lunchStart}"></td>
 								<td align="right" style="font-weight:bold;">截止时间:</td>
 								<td align="center"><input type="text" id="lunchEnd" name="lunchEnd" class="form-control" placeholder="HH:mm"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.lunchEnd}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.lunchEnd}"></td>
 							</tr>
 							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
 							<tr>
 								<td align="right" class="td-title">配送晚餐:</td>
 								<td align="center">
 									<select class="form-control" name="forDinner" id="forDinner">
-										<option <c:if test="${enterprise.forDinner=='1'}" > selected="selected" </c:if> value="1">是</option>
-										<option <c:if test="${enterprise.forDinner=='0'}" > selected="selected" </c:if> value="0">否</option>
+										<option <c:if test="${model.configEntity.forDinner=='1'}" > selected="selected" </c:if> value="1">是</option>
+										<option <c:if test="${model.configEntity.forDinner=='0'}" > selected="selected" </c:if> value="0">否</option>
 	                        		</select>
                         		</td>
 								<td align="right" class="td-title">开始时间:</td>
 								<td align="center"><input type="text" id="dinnerStart" name="dinnerStart" class="form-control" placeholder="HH:mm"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.dinnerStart}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.dinnerStart}"></td>
 								<td align="right" style="font-weight:bold;">截止时间:</td>
 								<td align="center"><input type="text" id="dinnerEnd" name="dinnerEnd" class="form-control" placeholder="HH:mm"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.dinnerEnd}"></td>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.dinnerEnd}"></td>
 							</tr>
 							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
 							<tr>
 								<td align="right" class="td-title">送餐地址:</td>
-								<td align="center"><input type="text" id="address" name="address" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.address}"></td>
+								<td align="center"><input type="text" id="mainAddress" name="mainAddress" class="form-control"
+									<c:forEach items="${model.addressEntityList}" var="addr" >
+			                    		<c:if test="${addr.fid=='mainAddress'}">value="${addr.address}"</c:if>
+			                        </c:forEach>
+			                        <c:if test="${operate==1}">readonly="true"</c:if>></td>
 								<td align="right" class="td-title">其他地址:</td>
 								<td align="center"><input type="text" id="otherAddress" name="otherAddress" class="form-control"
 									<c:if test="${operate==1}">readonly="true"</c:if> value="${enterprise.otherAddress}"></td>
@@ -244,14 +259,14 @@
 							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">财务信息</td></tr>
 							<tr>
 								<td align="right" class="td-title">发票抬头:</td>
-								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${finance.invoiceTitle}"></td>
+								<td align="center"><input type="text" id="invoiceTitle" name="invoiceTitle" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.financeEntity.invoiceTitle}"></td>
 								<td align="right" class="td-title">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</td>
-								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${finance.enterpriseAccount}"></td>
+								<td align="center"><input type="text" id="enterpriseAccount" name="enterpriseAccount" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.financeEntity.enterpriseAccount}"></td>
 								<td align="right" class="td-title">税&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</td>
-								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${finance.enterpriseTax}"></td>
+								<td align="center"><input type="text" id="enterpriseTax" name="enterpriseTax" class="form-control"
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.financeEntity.enterpriseTax}"></td>
 							</tr>
 							<tr>
 								<td align="right" class="td-title">结算周期:</td>
@@ -259,7 +274,8 @@
 									<select class="form-control" name="checkType" id="checkType">
 										<option value="">--请选择--</option>
 										<c:forEach items="<%=FinanceCheckTypeEnum.values()%>" var="e" >
-											<option value="${e.code}">${e.name}</option>
+											<option <c:if test="${model.financeEntity.checkType==e.code}" > selected="selected"</c:if>
+											value="${e.code}">${e.name}</option>
 										</c:forEach>
 	                        		</select>
                         		</td>
@@ -267,26 +283,33 @@
 								<td align="center">
 									<label class="td-title mtop" style="width:10%;float:left;">T+</label>
 									<div style="width:90%;float:left;"><input type="text" id="feeDay" name="feeDay" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${finance.feeDay}"></div>
+									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.financeEntity.feeDay}"></div>
 								</td>
 							</tr>
 						</table>
 						
 						<div class="row">
 							<div class="col-sm-5"></div>
-							<div class="col-sm-2">
-								<c:if test="${operate==1}">
-									<button class="btn btn-white" type="button" onclick="toList();">返回</button>
-								</c:if>
-								<c:if test="${operate==2}">
-									<button class="btn btn-primary" id="saveBtn" type="button"
-										onclick="editEnterprise();">保存</button>
-								</c:if>
-								<c:if test="${operate==3}">
-									<button class="btn btn-primary" id="saveBtn" type="button"
-										onclick="addEnterprise();">添加</button>
-								</c:if>
-							</div>
+							
+							<c:if test="${operate==1}">
+								<div class="col-sm-1"><button class="btn btn-white" type="button" onclick="toList();">返回</button></div>
+							</c:if>
+							<c:if test="${operate==2}">
+								<div class="col-sm-1">
+									<button class="btn btn-primary" id="saveBtn" type="button" onclick="operateEnterprise(0,0);">保存</button>
+								</div>
+								<div class="col-sm-1">
+									<button class="btn btn-primary" id="submitBtn" type="button" onclick="operateEnterprise(0,1);">提交</button>
+								</div>
+							</c:if>
+							<c:if test="${operate==3}">
+								<div class="col-sm-1">
+									<button class="btn btn-primary" id="saveBtn" type="button" onclick="operateEnterprise(1,0);">保存</button>
+								</div>
+								<div class="col-sm-1">
+									<button class="btn btn-primary" id="submitBtn" type="button" onclick="operateEnterprise(1,1);">提交</button>
+								</div>
+							</c:if>
 							<div class="col-sm-1">
 								<button class="btn btn-white" type="button" onclick="toList();">取消</button>
 							</div>
@@ -306,7 +329,7 @@
 	
     function selectCitys() {
 		$("#cityCode option").remove();
-	    $("#countyCode option").remove();
+	    $("#areaCode option").remove();
 	    var p= $('#provinceCode option:selected') .val(); 
 	     $.ajax({
 	        type: "post",
@@ -320,12 +343,12 @@
 	                var a = "<option value='" + json[i].code + "'>" + json[i].name + "</option>";
 	                $("#cityCode").append(a);
 	            }
-	        	$("#countyCode").append("<option value=\"\">--请选择--</option>");
+	        	$("#areaCode").append("<option value=\"\">--请选择--</option>");
 	        }
 	    }) 
 	}
 	function selectAreas() {
-	    $("#countyCode option").remove();
+	    $("#areaCode option").remove();
 	    var p= $('#cityCode option:selected') .val(); 
 	     $.ajax({
 	        type: "post",
@@ -333,11 +356,11 @@
 	        url: "base/region/listByParentCode",
 	        data: "{pid:'" +  p + "'}",
 	        success: function (data) {
-	        	$("#countyCode").append("<option value=\"\">--请选择--</option>");
+	        	$("#areaCode").append("<option value=\"\">--请选择--</option>");
 	        	json = eval(data)
 	            for (var i = 0; i < json.length; i++) {
 	                var a = "<option value='" + json[i].code + "'>" + json[i].name + "</option>";
-	                $("#countyCode").append(a);
+	                $("#areaCode").append(a);
 	            }
 	        }
 	    }) 
@@ -351,17 +374,36 @@
 	}
 	
 	//添加企业
-    function addEnterprise() {
+    function operateEnterprise(operateType,status) {
         $("#saveBtn").attr("disabled","disabled");
-       /*  var checkMsg = checkParam();
+        
+       var checkMsg = checkParam();
         if(!isNullOrBlank(checkMsg)){
             layer.alert(checkMsg, {icon: 5,time: 2000, title:'提示'});
             $("#saveBtn").removeAttr("disabled");
             return;
-        } */
+        }
+        
+        var openTime = $("#openTime").val();
+		var tillTime = $("#tillTime").val();
 
-        CommonUtils.ajaxPostSubmit("base/enterprise/save", {
-                "operateType" : 1,
+		if (openTime == "") {
+			openTime = undefined;
+		} else {
+			openTime = openTime.replace(/-/g,"/");
+			openTime += " 00:00:00";
+		}
+		if (tillTime == "") {
+			tillTime = undefined;
+		} else
+			tillTime = tillTime.replace(/-/g,"/");
+			tillTime += " 23:59:59";
+
+        CommonUtils.ajaxPostSubmit("base/enterprise/operate", {
+                "operateType" : operateType,
+                "enterpriseStatus" : status,
+                "id" :  $("#id").val(),
+                "supplierCode" :  $("#supplierCode").val(),
                 "enterpriseCode" :  $("#enterpriseCode").val(),
                 "enterpriseName" : $("#enterpriseName").val(),
                 "enterpriseTel" : $("#enterpriseTel").val(),
@@ -371,13 +413,28 @@
                 "cityCode" : $("#cityCode").val(),
                 "areaCode" : $("#areaCode").val(),
                 "street" : $("#street").val(),
-               /*  "openTime" : $("#openTime").val(),
-                "tillTime" : $("#tillTime").val(), */
+                "openTime" : openTime,
+				"tillTime" : tillTime,
                 "contactName" : $("#contactName").val(),
                 "contactMail" : $("#contactMail").val(),
                 "contactMobile" : $("#contactMobile").val(),
                 "contactTel" : $("#contactTel").val(),
-                "contactTencent" : $("#contactTencent").val()
+                "contactTencent" : $("#contactTencent").val(),
+                "empPrice" : $("#empPrice").val(),
+                "bossPrice" : $("#bossPrice").val(),
+                "forLunch" : $("#forLunch").val(),
+                "lunchStart" : $("#lunchStart").val(),
+                "lunchEnd" : $("#lunchEnd").val(),
+                "forDinner" : $("#forDinner").val(),
+                "dinnerStart" : $("#dinnerStart").val(),
+                "dinnerEnd" : $("#dinnerEnd").val(),
+                "mainAddress" : $("#mainAddress").val(),
+                "otherAddress" : $("#otherAddress").val(),
+                "invoiceTitle" : $("#invoiceTitle").val(),
+                "enterpriseAccount" : $("#enterpriseAccount").val(),
+                "enterpriseTax" : $("#enterpriseTax").val(),
+                "checkType" : $("#checkType").val(),
+                "feeDay" : $("#feeDay").val()
             }, function(data){
                 if(data){
                     if(data.code == 0){
@@ -393,22 +450,125 @@
         );
     }
 
-    function array_remove_repeat(a) { // 去重
-        var r = [];
-        for(var i = 0; i < a.length; i ++) {
-            var flag = true;
-            var temp = a[i];
-            for(var j = 0; j < r.length; j ++) {
-                if(temp.productName === r[j].productName && temp.productId === r[j].productId) {
-                    flag = false;
-                    break;
-                }
-            }
-            if(flag) {
-                r.push(temp);
-            }
+  	//参数校验
+    function checkParam() {
+        if(isNullOrBlank($("#supplierCode").val())){
+            return "供餐单位为必填项"
         }
-        return r;
+        
+        if(isNullOrBlank($("#enterpriseCode").val())){
+            return "企业编号为必填项"
+        }
+        if($("#enterpriseCode").val().length > 50) {
+        	return "企业编号长度不能超过50";
+        }
+        
+        if(isNullOrBlank($("#enterpriseName").val())){
+            return "企业名称为必填项"
+        }
+        if($("#enterpriseName").val().length > 50) {
+        	return "企业名称长度不能超过50";
+        }
+        
+        if(isNullOrBlank($("#enterpriseType").val())){
+            return "企业类型为必填项"
+        }
+        
+        if(isNullOrBlank($("#manger").val())){
+            return "平台经理为必填项"
+        }
+        
+        if(isNullOrBlank($("#openTime").val())){
+            return "开户时期为必填项"
+        }
+        
+        if(isNullOrBlank($("#tillTime").val())){
+            return "截止日期为必填项"
+        }
+        
+        var bossPrice = $("#bossPrice").val();
+        if(isNullOrBlank(bossPrice)){
+            return "老板餐费为必填项"
+        }
+        if(!isNumber(bossPrice)) {
+        	return "老板餐费只能是正整数";
+        }
+        
+        var empPrice = $("#empPrice").val();
+        if(isNullOrBlank(empPrice)){
+            return "员工餐费为必填项"
+        }
+        if(!isNumber(empPrice)) {
+        	return "员工餐费只能是正整数";
+        }
+        
+        if(!isMallCheck($("#contactMail").val())){
+            return "公司邮箱输入不合法";
+        }
+        
+        if(!isPhoneNumber($("#contactMobile").val())){
+            return "手机号输入不合法";
+        }
+        
+        if(!hourMinuteCheck($("#lunchStart").val())){
+            return "午餐配送开始时间为HH:mm格式";
+        }
+        
+        if(!hourMinuteCheck($("#lunchEnd").val())){
+            return "午餐配送截止时间为HH:mm格式";
+        }
+        
+        if(!hourMinuteCheck($("#dinnerStart").val())){
+            return "晚餐配送开始时间为HH:mm格式";
+        }
+        
+        if(!hourMinuteCheck($("#dinnerEnd").val())){
+            return "晚餐配送截止时间为HH:mm格式";
+        }
+        
+        if(!isNumber($("#feeDay").val())) {
+        	return "账期只能是正整数";
+        }
+        
+	}
+  	
+  	//正整数校验
+  	function isNumber(obj) {
+  		var pattern = /^[1-9]*[1-9][0-9]*$/;
+  		return patternCheck(obj, pattern);
+  	}
+  	
+  	//手机号校验
+  	function isPhoneNumber(obj) {
+  		var pattern = /^((1[34578][0-9])\d{8})$/;
+  		return patternCheck(obj, pattern);
+  	}
+  	
+  	//邮箱校验
+  	function isMallCheck(obj) {
+  		var pattern = /^(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)$/;
+  		return patternCheck(obj, pattern);
+  	}
+  	
+  	//时分校验
+  	function hourMinuteCheck(obj) {
+ 		var pattern = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+ 		return patternCheck(obj, pattern);
+ 	}
+  	
+  	//正则校验
+  	function patternCheck(obj, pattern) {
+ 		if(!isNullOrBlank(obj)){
+ 			if(!pattern.test(obj)) {
+   			return false;
+ 			}
+ 		}
+ 		return true;
+  	}
+   
+  	//为空校验
+    function isNullOrBlank(obj){
+        return obj == undefined || obj == null || $.trim(obj).length == 0;
     }
 
 </script>
