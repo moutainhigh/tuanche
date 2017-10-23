@@ -29,7 +29,7 @@
     </if>
 
     <if test="end != null">
-      and <![CDATA[ day_time < #{end,jdbcType=VARCHAR} ]]>
+      and <![CDATA[ day_time <= #{end,jdbcType=VARCHAR} ]]>
     </if>
   </select>
 

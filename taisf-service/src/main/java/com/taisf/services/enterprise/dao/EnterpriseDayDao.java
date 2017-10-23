@@ -1,5 +1,6 @@
 package com.taisf.services.enterprise.dao;
 
+import com.jk.framework.base.utils.DateUtil;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
@@ -56,8 +57,8 @@ public class EnterpriseDayDao extends BaseDao {
     public List<EnterpriseDayEntity> getEnterpriseDaysByTime(String enterpriseCode, Date start,Date end){
         Map<String,Object> par = new HashMap<>();
         par.put("enterpriseCode",enterpriseCode);
-        par.put("start",start);
-        par.put("end",end);
+        par.put("start", DateUtil.intFormat(start));
+        par.put("end",DateUtil.intFormat(end));
         return mybatisDaoContext.findAll(SQLID+"getEnterpriseDaysByTime", EnterpriseDayEntity.class, par);
     }
 
