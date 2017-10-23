@@ -96,7 +96,7 @@
 							<tr>
 								<td align="right" class="td-title"><font color="red">*&nbsp;</font>企业编号:</td>
 								<td align="center"><input type="text" id="enterpriseCode" name="enterpriseCode" class="form-control"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.enterpriseCode}"></td>
+									<c:if test="${operate!=3}">readonly="true"</c:if> value="${model.enterpriseEntity.enterpriseCode}"></td>
 								<td align="right" class="td-title"><font color="red">*&nbsp;</font>企业名称:</td>
 								<td align="center"><input type="text" id="enterpriseName" name="enterpriseName" class="form-control"
 									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.enterpriseEntity.enterpriseName}"></td>

@@ -358,5 +358,12 @@
 		and enterprise_type = #{enterpriseType, jdbcType=INTEGER}
 	</if>
   </select>
+  
+  <update id="expiredEnterprise">
+    update t_enterprise set enterprise_status=2 where enterprise_status=1
+    <![CDATA[
+    	and till_time <= now()
+	]]>
+  </update>
 
 </mapper>

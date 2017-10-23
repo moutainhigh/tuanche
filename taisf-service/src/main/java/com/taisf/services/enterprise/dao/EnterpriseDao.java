@@ -111,6 +111,18 @@ public class EnterpriseDao extends BaseDao {
     public int updateEnterprise(EnterpriseEntity record) {
         return mybatisDaoContext.update(SQLID + "updateEnterprise", record);
     }
+    
+    /**
+     * 设置企业过期状态(正常->过期)
+     *
+     * @param record
+     * @return
+     * @author afi
+     */
+    public void expiredEnterprise() {
+        mybatisDaoContext.update(SQLID + "expiredEnterprise");
+    }
+
 
     /**
      * @author:zhangzhengguang
