@@ -1,5 +1,15 @@
 package com.taisf.services.enterprise.manager;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
@@ -9,6 +19,7 @@ import com.taisf.services.enterprise.dao.EnterpriseAddressDao;
 import com.taisf.services.enterprise.dao.EnterpriseConfigDao;
 import com.taisf.services.enterprise.dao.EnterpriseDao;
 import com.taisf.services.enterprise.dao.EnterpriseDayDao;
+import com.taisf.services.enterprise.dao.EnterpriseFinanceDao;
 import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
@@ -16,15 +27,9 @@ import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.entity.EnterpriseModel;
 import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
-import com.taisf.services.order.dao.CartDao;
-import com.taisf.services.order.dto.CartBaseRequest;
-import com.taisf.services.order.entity.CartEntity;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.*;
 
 
 /**
@@ -55,6 +60,9 @@ public class EnterpriseManagerImpl {
 
 	@Resource(name = "enterprise.enterpriseAddressDao")
 	private EnterpriseAddressDao enterpriseAddressDao;
+	
+	@Resource(name = "enterprise.enterpriseFinanceDao")
+	private EnterpriseFinanceDao enterpriseFinanceDao;
 
 
 	/**
@@ -280,7 +288,66 @@ public class EnterpriseManagerImpl {
 		return map;
 	}
 
-
-
+	public EnterpriseModel getEnterpriseModelById(Integer id) {
+		if(Check.NuNObj(id)){
+            return null;
+        }
+		
+		EnterpriseEntity entity = enterpriseDao.getEnterpriseById(id);
+		if(Check.NuNObj(entity)){
+            return null;
+        }
+		String enterpriseCode = entity.getEnterpriseCode();
+		EnterpriseModel model = new EnterpriseModel();
+		model.setEnterpriseEntity(entity);
+		model.setConfigEntity(enterpriseConfigDao.getEnterpriseConfigByCode(enterpriseCode));
+		model.setFinanceEntity(enterpriseFinanceDao.getEnterpriseFinanceByCode(enterpriseCode));
+		model.setAddressEntityList(enterpriseAddressDao.getEnterpriseAddressByCode(enterpriseCode));
+		return model;
+	}
+	
+	public void saveEnterpriseModel(EnterpriseModel enterpriseModel) {
+		if(Check.NuNObj(enterpriseModel)) {
+			return;
+		}
+		
+		EnterpriseEntity entity = enterpriseModel.getEnterpriseEntity();
+		if(Check.NuNObj(entity) || Check.NuNObj(entity.getEnterpriseCode())) {
+			return;
+		}
+		
+		enterpriseDao.saveEnterprise(entity);
+		enterpriseConfigDao.saveEnterpriseConfig(enterpriseModel.getConfigEntity());
+		enterpriseFinanceDao.saveEnterpriseFinance(enterpriseModel.getFinanceEntity());
+		
+		if(enterpriseModel.getAddressEntityList() == null) return;
+		
+		for(EnterpriseAddressEntity record : enterpriseModel.getAddressEntityList()) {
+			enterpriseAddressDao.saveEnterpriseAddress(record);
+		}
+	}
+	
+	public void updateEnterpriseModel(EnterpriseModel enterpriseModel) {
+		if(Check.NuNObj(enterpriseModel)) {
+			return;
+		}
+		
+		EnterpriseEntity entity = enterpriseModel.getEnterpriseEntity();
+		if(Check.NuNObj(entity) || Check.NuNObj(entity.getId())) {
+			return;
+		}
+		enterpriseDao.updateEnterprise(entity);
+		
+		EnterpriseConfigEntity configEntity = enterpriseModel.getConfigEntity();
+		if(Check.NuNObj(configEntity) || Check.NuNObj(configEntity.getEnterpriseCode())) {
+			return;
+		}
+		enterpriseConfigDao.updateConfigByEnterpriseCode(configEntity);
+		
+		enterpriseFinanceDao.updateEnterpriseFinance(enterpriseModel.getFinanceEntity());
+		
+		if(enterpriseModel.getAddressEntityList() == null) return;
+		//for()
+	}
 
 }

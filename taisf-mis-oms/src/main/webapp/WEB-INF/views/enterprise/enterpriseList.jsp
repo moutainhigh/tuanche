@@ -168,9 +168,11 @@
 			if (openTime == "") {
 				openTime = undefined;
 			} else {
+				openTime = openTime.replace(/-/g,"/");
 				openTime += " 00:00:00";
 			}
 			if (tillTime == "") {
+				tillTime = tillTime.replace(/-/g,"/");
 				tillTime = undefined;
 			} else
 				tillTime += " 23:59:59";
@@ -217,9 +219,9 @@
 			} else if(value=='1'){
 				return "正常";
 			} else if(value=='2'){
-				return "TIME_OUT";
+				return "已过期";
 			} else if (value=='3'){
-				return "STOP";
+				return "停止合作";
 			} else{
 				return "未提交";
 			} 
@@ -240,11 +242,17 @@
 		function formatOperate(value, row, index) {
 			var result = "";
 			result = result + "<a title='编辑' href=javascript:editEnterprise('"
-					+ "base/enterprise/operate?id=" + row.id + "&operate=2"
-					+ "')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+					+ "base/enterprise/operatePage?id=" + row.id + "&operate=2')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			result = result + "<a title='查看' href=javascript:viewEnterprise('"
-					+ "base/enterprise/operate?id=" + row.id + "&operate=1"
-					+ "')>查看</a>";
+					+ "base/enterprise/operatePage?id=" + row.id + "&operate=1')>查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+			
+			if(row.enterpriseStatus == 0) {
+				result = result + "<a title='提交' href='javascript:changeStatus(" + row.id + ", 1)'>提交</a>";
+			}
+					
+			if(row.enterpriseStatus == 1) {
+				result = result + "<a title='停止合作' href='javascript:changeStatus(" + row.id + ", 3)'>停止</a>";
+			}
 			return result;
 		}
 
@@ -255,10 +263,45 @@
 		function viewEnterprise(url) {
 			$.openNewTab(new Date().getTime(), url, "查看企业");
 		}
+		
+		function changeStatus(id, status) {
+			debugger;
+			var message;
+			var iconNum; //显示icon层设置 6：笑脸  5：沮丧
+			if(status == 1) {
+				message = "确认要提交企业信息吗？";
+				iconNum = 6;
+			}
+			if(status == 3) {
+				message = "确认停止与该企业合作吗？";
+				iconNum = 5;
+			}
+	   		layer.confirm(message, {icon: iconNum, title:'提示'},function(index){
+	   			$.ajax({
+	   				type: "POST",
+	   				url: "base/enterprise/changeStatus",
+		           	dataType:"json",
+		           	traditional: true,
+		           	data: {'id':id, 'enterpriseStatus':status},
+		           	success: function (result) {
+		        	   if(result.code === 0){
+			        		$('#listTable').bootstrapTable('refresh');
+	                	}else{
+			        		layer.alert(result.msg, {icon: 5,time: 2000, title:'提示'});
+	                	}
+		          	},
+		           	error: function(result) {
+		              alert("error:"+result);
+		            }
+			     });
+	   		  
+	   		  layer.close(index);
+	   		});
+		}
 
 		//跳转添加企业页
 		function addEnterprise() {
-			var url = "base/enterprise/operate?operate=3";
+			var url = "base/enterprise/operatePage?operate=3";
 			$.openNewTab(new Date().getTime(), url, "添加企业");
 		}
 

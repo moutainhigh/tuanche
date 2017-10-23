@@ -23,7 +23,7 @@ public enum EnterpriseStatusEnum {
             return true;
         }
     },
-    TIME_OUT(2,"过期","该企业合作已过期"),
+    TIME_OUT(2,"已过期","该企业合作已过期"),
     STOP(3,"停止合作","该企业已停止合作"),
     ;
     private int code;

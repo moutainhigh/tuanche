@@ -1,7 +1,8 @@
 package com.taisf.services.enterprise.proxy;
 
-import com.jk.framework.base.constant.YesNoEnum;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
@@ -20,30 +22,25 @@ import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.enterprise.api.EnterpriseService;
-import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
-import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.dao.EnterpriseDao;
+import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
-import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.dto.EnterpriseUpdateRequest;
+import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
+import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.entity.EnterpriseFinanceEntity;
+import com.taisf.services.enterprise.entity.EnterpriseModel;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.enterprise.vo.EnterpriseDayVO;
 import com.taisf.services.enterprise.vo.EnterpriseDispatchVO;
-import com.taisf.services.enterprise.vo.EnterpriseListDay;
 import com.taisf.services.enterprise.vo.EnterpriseExtVO;
-import com.taisf.services.product.proxy.ProductServiceProxy;
+import com.taisf.services.enterprise.vo.EnterpriseListDay;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.*;
 
 /**
  * <p>企业接口实现</p>
@@ -409,21 +406,89 @@ public class EnterpriseServiceProxy implements EnterpriseService {
         return dto;
     }
 
-	@Override
+    @Override
 	public DataTransferObject<Void> operateEnterprise(EnterpriseUpdateRequest request) {
 		DataTransferObject<Void> dto = new DataTransferObject<>();
-        try {
-            //配置信息
-        	EnterpriseConfigEntity configEntity = new EnterpriseConfigEntity();
-            BeanUtils.copyProperties(request,configEntity);
-           // enterpriseManager.insertProduct(product);
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【企业】error:{}", e);
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setMsg("操作企业信息异常");
-            return dto;
-        }
-        return dto;
+		try {
+			boolean flag = checkRequest(request);
+			if (flag == false) {
+				dto.setErrCode(DataTransferObject.ERROR);
+				dto.setMsg("参数错误");
+				return dto;
+			}
+
+			EnterpriseConfigEntity configEntity = new EnterpriseConfigEntity();
+			BeanUtils.copyProperties(request, configEntity);
+			
+			EnterpriseFinanceEntity financeEntity = new EnterpriseFinanceEntity();
+			BeanUtils.copyProperties(request, financeEntity);
+			
+			List<EnterpriseAddressEntity> addressEntityList = dealAddressEntityList(request);
+			EnterpriseModel enterpriseModel = new EnterpriseModel();
+			enterpriseModel.setEnterpriseEntity(request);
+			enterpriseModel.setConfigEntity(configEntity);
+			enterpriseModel.setFinanceEntity(financeEntity);
+			enterpriseModel.setAddressEntityList(addressEntityList);
+			
+			if (request.getOperateType() == YesNoEnum.YES.getCode()) {
+				EnterpriseEntity _entity = enterpriseManager.getEnterpriseByCode(request.getEnterpriseCode());
+				if (!Check.NuNObj(_entity)) {
+					dto.setErrCode(DataTransferObject.ERROR);
+					dto.setMsg("存在重名企业编号");
+					return dto;
+				}
+				
+				enterpriseManager.saveEnterpriseModel(enterpriseModel);
+			}
+			if (request.getOperateType() == YesNoEnum.NO.getCode()) {
+				EnterpriseEntity _entity = enterpriseManager.getEnterpriseByCode(request.getEnterpriseCode());
+				if(!Check.NuNObj(_entity) && _entity.getId() != request.getId()) {
+					dto.setErrCode(DataTransferObject.ERROR);
+					dto.setMsg("存在重名企业编号");
+					return dto;
+				}
+				enterpriseManager.updateEnterpriseModel(enterpriseModel);
+			}
+
+		} catch (Exception e) {
+			LogUtil.error(LOGGER, "【企业】error:{}", e);
+			dto.setErrCode(DataTransferObject.ERROR);
+			dto.setMsg("操作企业信息异常");
+			return dto;
+		}
+		return dto;
+	}
+	
+	private List<EnterpriseAddressEntity> dealAddressEntityList(EnterpriseUpdateRequest request) {
+		List<EnterpriseAddressEntity> addressEntityList = new ArrayList<>();
+		EnterpriseAddressEntity addressEntity = null;
+		
+		if(!Check.NuNObj(request.getMainAddress())) {
+			addressEntity = new EnterpriseAddressEntity();
+			addressEntity.setEnterpriseCode(request.getEnterpriseCode());
+			addressEntity.setFid("mainAddress");
+			addressEntity.setAddress(request.getMainAddress());
+		}
+		addressEntityList.add(addressEntity);
+		
+		if(!Check.NuNObj(request.getOtherAddress())) {
+			addressEntity = new EnterpriseAddressEntity();
+			addressEntity.setEnterpriseCode(request.getEnterpriseCode());
+			addressEntity.setFid("otherAddress");
+			addressEntity.setAddress(request.getOtherAddress());
+		}
+		addressEntityList.add(addressEntity);
+		
+		return addressEntityList;
+		
+	}
+	
+	private boolean checkRequest(EnterpriseUpdateRequest request) {
+		if (Check.NuNObjs(request.getEnterpriseCode(), request.getEnterpriseName(), request.getEnterpriseType(),
+				request.getBossPrice(), request.getEmpPrice())) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -444,5 +509,24 @@ public class EnterpriseServiceProxy implements EnterpriseService {
 		}
 		return dto;
 	}
+	
+	@Override
+    public DataTransferObject<EnterpriseModel> getEnterpriseModelById(Integer id) {
+        LogUtil.info(LOGGER,"查询企业信息入参:{}",id);
+        DataTransferObject<EnterpriseModel> dto = new DataTransferObject<>();
+        try{
+        	EnterpriseModel model = enterpriseManager.getEnterpriseModelById(id);
+            if(Check.NuNObj(model)){
+                dto.setErrCode(DataTransferObject.ERROR);
+                dto.setMsg("不存在此编号企业");
+                return dto;
+            }
+            dto.setData(model);
+        }catch (Exception e){
+            dto.setErrCode(DataTransferObject.ERROR);
+            LogUtil.error(LOGGER,"查询企业信息异常:{}",e);
+        }
+        return dto;
+    }
 
 }

@@ -119,7 +119,7 @@
 										</select>
 									</div>
 								</div>
-								<input type="hidden" class="form-control" id="enterpriseCodeC" name="enterpriseCode" value=""/>
+								<input type="hidden" class="form-control" id="enterpriseId" name="enterpriseId" value=""/>
 								<input type="hidden" class="form-control" id="UID" name="UID" value=""/>
 								<!-- 用于 将表单缓存清空 -->
 								<input id="addReset" type="reset" style="display:none;"/>
@@ -176,11 +176,11 @@
 		// 操作列
 		function formatOperate(value, row, index) {
 			var result = "";
-			result = result + "<a title='转让' onclick='transfer(\""+row.enterpriseCode+"\")'  data-toggle='modal' data-target='#myModal'>转让</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+			result = result + "<a title='转让' onclick='transfer(\""+row.id+"\")'  data-toggle='modal' data-target='#myModal'>转让</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			return result;
 		}
 		function transfer(id){
-		    $("#enterpriseCodeC").val(id);
+		    $("#enterpriseId").val(id);
 		}
 		//跳转添加企业页
 		function addEnterprise() {
@@ -214,7 +214,7 @@
                 },
                 data: {
                     'manger': $("#userId").val(),
-                    'enterpriseCode': $("#enterpriseCodeC").val()
+                    'id': $("#enterpriseId").val()
                 },
                 type: "post",
                 dataType: "json",

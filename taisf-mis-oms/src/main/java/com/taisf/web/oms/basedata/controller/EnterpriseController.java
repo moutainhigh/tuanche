@@ -1,6 +1,5 @@
 package com.taisf.web.oms.basedata.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,12 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.base.entity.AreaRegionEntity;
 import com.taisf.services.base.service.AreaRegionService;
@@ -25,6 +23,7 @@ import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterpriseUpdateRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.enterprise.entity.EnterpriseModel;
 import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.permission.api.EmployeeService;
 import com.taisf.services.permission.entity.EmployeeEntity;
@@ -84,13 +83,37 @@ public class EnterpriseController {
         return result;
 	}
 	
-	@RequestMapping("save")
+	@RequestMapping("operate")
 	@ResponseBody
-	public DataTransferObject<Void> saveHospital(EnterpriseUpdateRequest request){
+	public DataTransferObject<Void> operateEnterprise(EnterpriseUpdateRequest request){
 		DataTransferObject<Void> dto = new DataTransferObject<>();
-		String jsonString = JSONObject.toJSONString(request);
-		System.out.println(jsonString);
-		return dto;
+        try {
+        	return enterpriseService.operateEnterprise(request);
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params :{}", JsonEntityTransform.Object2Json(request));
+            LogUtil.error(LOGGER, "error :{}", e);
+            dto.setErrorMsg("操作企业信息异常");
+        }
+        return dto;
+	}
+	
+	@RequestMapping("changeStatus")
+	@ResponseBody
+	public DataTransferObject<Void> changeEnterpriseStatus(Integer id, Integer enterpriseStatus) {
+		LogUtil.info(LOGGER, "停止企业合作请求参数:{}", id, enterpriseStatus);
+		
+		DataTransferObject<Void> dto = new DataTransferObject<>();
+        try {
+        	EnterpriseEntity entity = new EnterpriseEntity();
+        	entity.setId(id);
+        	entity.setEnterpriseStatus(enterpriseStatus);
+        	return enterpriseService.updateEnterprise(entity);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "error :{}", e);
+            dto.setErrorMsg("处理异常");
+        }
+        
+        return dto;
 	}
 
 	/**
@@ -99,8 +122,8 @@ public class EnterpriseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("operate")
-	public String operate(HttpServletRequest request) {
+	@RequestMapping("operatePage")
+	public String operatePage(HttpServletRequest request) {
 		// operate=3 添加 operate=2 编辑 operate=1 查看详情
 		String operate = request.getParameter("operate");
 		String id = request.getParameter("id");
@@ -117,15 +140,15 @@ public class EnterpriseController {
 		request.setAttribute("provinceList", provinceList);
 		
 		if(!("3").equals(operate) && !Check.NuNObj(id)) {
-			/* DataTransferObject<ProductEntity> resultDto = productService.getProductById(ValueUtil.getintValue(id));
-             if(resultDto.getCode()==DataTransferObject.ERROR){
-                 return "redirect:/his/product/productList";
-             }
-             ProductEntity product = resultDto.getData();
-             request.setAttribute("product",product);*/
 			
-			EnterpriseEntity entity = new EnterpriseEntity();
-			
+			DataTransferObject<EnterpriseModel> resultDto = enterpriseService.getEnterpriseModelById(ValueUtil.getintValue(id));
+            if(resultDto.getCode()==DataTransferObject.ERROR){
+            	return "redirect:/base/enterprise/list";
+            }
+            EnterpriseModel model = resultDto.getData();
+            request.setAttribute("model",model);
+             
+			EnterpriseEntity entity = model.getEnterpriseEntity();
 			if(!Check.NuNStr(entity.getProvinceCode())){
 				List<AreaRegionEntity> citylist = areaRegionService.findAllByParentCode(Integer.parseInt(entity.getProvinceCode()));
 				request.setAttribute("citylist", citylist);
@@ -135,14 +158,13 @@ public class EnterpriseController {
 				request.setAttribute("countylist", countylist);
 			}
 		}
-		
 
 		// 员工列表
 		DataTransferObject<List<EmployeeEntity>> employeeDto = employeeService.findAllEmployee();
 		List<EmployeeEntity> employees = employeeDto.getData();
 		request.setAttribute("employees", employees);
 		
-		// 员工列表
+		// 供应商列表
 		DataTransferObject<List<SupplierEntity>> supplierDto = supplierService.getAllSupplierList();
 		List<SupplierEntity> suppliers = supplierDto.getData();
 		request.setAttribute("suppliers", suppliers);

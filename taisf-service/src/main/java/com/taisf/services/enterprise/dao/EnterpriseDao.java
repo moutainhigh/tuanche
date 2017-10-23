@@ -39,7 +39,7 @@ public class EnterpriseDao extends BaseDao {
 
 
     /**
-     * 获取当前的企业进本信息
+     * 获取当前的企业基本信息
      *
      * @param enterpriseCode
      * @return
@@ -47,6 +47,17 @@ public class EnterpriseDao extends BaseDao {
      */
     public EnterpriseEntity getEnterpriseByCode(String enterpriseCode) {
         return mybatisDaoContext.findOne(SQLID + "getEnterpriseByCode", EnterpriseEntity.class, enterpriseCode);
+    }
+    
+    /**
+     * 根据ID获取企业基本信息
+     *
+     * @param id
+     * @return
+     * @author wen
+     */
+    public EnterpriseEntity getEnterpriseById(Integer id) {
+        return mybatisDaoContext.findOne(SQLID + "getEnterpriseById", EnterpriseEntity.class, id);
     }
     
     /**
@@ -100,6 +111,18 @@ public class EnterpriseDao extends BaseDao {
     public int updateEnterprise(EnterpriseEntity record) {
         return mybatisDaoContext.update(SQLID + "updateEnterprise", record);
     }
+    
+    /**
+     * 设置企业过期状态(正常->过期)
+     *
+     * @param record
+     * @return
+     * @author afi
+     */
+    public void expiredEnterprise() {
+        mybatisDaoContext.update(SQLID + "expiredEnterprise");
+    }
+
 
     /**
      * @author:zhangzhengguang
