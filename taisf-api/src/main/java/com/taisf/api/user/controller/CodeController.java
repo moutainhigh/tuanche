@@ -1,5 +1,6 @@
 package com.taisf.api.user.controller;
 
+import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
 import com.jk.framework.base.rst.ResponseDto;
 import com.jk.framework.base.utils.*;
@@ -119,7 +120,7 @@ public class CodeController extends AbstractController {
             String msg = XmlUtils.getDocumentNode(document, "/returnsms/desc");
             return new ResponseDto(msg);
         }
-        return new ResponseDto();
+        return new ResponseDto("提交成功", DataTransferObject.SUCCESS);
     }
 
 
