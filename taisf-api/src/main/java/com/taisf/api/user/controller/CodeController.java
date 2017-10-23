@@ -107,7 +107,7 @@ public class CodeController extends AbstractController {
         par.put("password","Xg@2017chandi");
         par.put("ac","10691306077");
         par.put("mobiles",userTel);
-        String content = "短信验证码为:" + msgCode +"[馋滴]";
+        String content = "短信验证码为:" + msgCode +" 【馋滴】";
         par.put("content", content);
         redisOperation.setex(key, smsTypeEnum.getTime(), msgCode);
 
