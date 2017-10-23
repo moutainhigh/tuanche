@@ -8,7 +8,7 @@
 
 	<task:scheduled-tasks>
 		<task:scheduled ref="basedata.expiredEnterpriseJob"
-			method="expiredEnterprise" cron="0 * 1 * * ?" />
+			method="expiredEnterprise" cron="0 0 1 * * ?" />
 	</task:scheduled-tasks>
 
 </beans>
