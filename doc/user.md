@@ -389,6 +389,10 @@ demo:
 ---|---|---
 code|String|修改支付密码传103 用户登录:101  
 userTel|String|用户电话
+random|String|随机数
+sign|String|验签的key:Oj0mUTVY
+
+
 
 
 返回信息:成功
