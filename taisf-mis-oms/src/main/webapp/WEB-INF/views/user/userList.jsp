@@ -394,7 +394,7 @@
                 if (result.code === 0) {
                     $('#UserUidE').val(result.data.userUid);
                     $('#userNameE').val(result.data.userName);
-                    $('#userNameE').val(result.data.userName);
+                    $('#userPhoneE').val(result.data.userPhone);
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");

@@ -341,9 +341,9 @@
                 type: "post",
                 dataType: "json",
                 success: function (data) {
-                        $('#showImg-1').attr('href', data[0]);
-                        $("#imgSizeImgSrc-1").attr("src", data[0]);
-                        $("#imgUrl-1").val(data[0])
+                    $('#showImg-1').attr('href', data[0].fullPath);
+                    $("#imgSizeImgSrc-1").attr("src", data[0].fullPath);
+                    $("#imgUrl-1").val(data[0].dbPath)
                     console.log(data[0]);
                 }
             }
