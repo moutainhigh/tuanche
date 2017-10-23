@@ -423,13 +423,14 @@ demo:
 
 
 ````
-   curl -X GET \
-   'http://localhost:8080/send/code?code=103' \
-   -H 'cache-control: no-cache' \
-   -H 'content-type: application/json' \
-   -H 'postman-token: 3ca76eb6-5f57-6c71-c54a-2aaadac01820' \
-   -H 'token: token' \
-   -H 'traceinfo: applicationCode=aa;deviceUuid=deviceUuid;'
+    curl -X GET \
+      'http://59.110.222.82/send/code?code=101&userTel=18618499887&random=123&sign=E5DA874815ED0B2E7228C64D087B703C' \
+      -H 'cache-control: no-cache' \
+      -H 'content-type: application/json' \
+      -H 'postman-token: cea12c2c-aeab-8eb5-7c51-e47ed906a6b4' \
+      -H 'token: ff8080815f0bc096015f0bc096530001' \
+      -H 'traceinfo: applicationCode=user;deviceUuid=deviceUuid;versionCode=versionCode;source=1;' \
+      -d '{"userPhone":"15120095720","pwd":"fcea920f7412b5da7be0cf42b8c93759"}'
 
 ````
 
