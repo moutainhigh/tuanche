@@ -58,6 +58,7 @@
         FROM t_order t
         INNER join t_order_money m on  t.order_sn = m.order_sn
         WHERE t.user_uid = #{userUid,jdbcType=VARCHAR}
+        AND t.order_status = 60
     </select>
 
     <!-- 获取订单列表的信息 -->

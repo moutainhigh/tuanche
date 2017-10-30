@@ -2,6 +2,7 @@ package com.taisf.web.oms.product.controller;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.BigDecimalUtil;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
@@ -71,7 +72,7 @@ public class ProductController {
      **/
     @RequestMapping("addProduct")
     @ResponseBody
-    public DataTransferObject<Void> addProduct(HttpServletRequest request, ProductEntity productEntity) {
+    public DataTransferObject<Void> addProduct(HttpServletRequest request, ProductEntity productEntity,Double price) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(productEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
@@ -79,6 +80,12 @@ public class ProductController {
             return dto;
         }
 
+        if (Check.NuNObj(price)){
+            dto.setErrorMsg("异常的金额");
+            return dto;
+        }
+        Double priceSale = BigDecimalUtil.mul(price,100);
+        productEntity.setPriceSale(priceSale.intValue());
         try {
             dto = productService.saveProduct(productEntity);
         } catch (Exception e) {
@@ -125,13 +132,19 @@ public class ProductController {
      **/
     @RequestMapping("updateProduct")
     @ResponseBody
-    public DataTransferObject<Void> updateProduct(HttpServletRequest request, ProductEntity productEntity) {
+    public DataTransferObject<Void> updateProduct(HttpServletRequest request, ProductEntity productEntity,Double price) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(productEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if (Check.NuNObj(price)){
+            dto.setErrorMsg("异常的金额");
+            return dto;
+        }
+        Double priceSale = BigDecimalUtil.mul(price,100);
+        productEntity.setPriceSale(priceSale.intValue());
 
         try {
                 dto = productService.updateProduct(productEntity);

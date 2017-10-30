@@ -604,7 +604,8 @@
                     $("#productClassifyE option[value='" + result.data.productClassify + "']").attr("selected", "selected");
                     $(":radio[name='productTypeE'][value='" + result.data.productType + "']").prop("checked", "checked");
                     $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
-                    $('#priceSaleE').val(result.data.priceSale);
+                    var price = (result.data.priceSale/100).toFixed(2);
+                    $('#priceSaleE').val(price);
                     $('#productDesE').val(result.data.productDes);
 
                     $('#showImg').attr('href', result.data.productPic);
@@ -707,7 +708,7 @@
                 'productClassify': $("#productClassify option:selected").val(),
                 'productType': productType,
                 'productSource': $('input[name="productSource"]:checked').val(),
-                'priceSale': $("#priceSale").val(),
+                'price': $("#priceSale").val(),
                 'productDes': $("#productDes").val(),
                 'productPic': $("#imgUrl-1").val(),
             },
@@ -784,7 +785,7 @@
                 'productClassify': $("#productClassifyE option:selected").val(),
                 'productType': productType,
                 'productSource': $('input[name="productSourceE"]:checked').val(),
-                'priceSale': $("#priceSaleE").val(),
+                'price': $("#priceSaleE").val(),
                 'productDes': $("#productDesE").val(),
                 'id': $("#productIdE").val(),
                 'productPic': $("#imgUrl-2").val(),
