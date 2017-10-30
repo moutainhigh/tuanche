@@ -45,6 +45,7 @@
             <mvc:exclude-mapping path="/user/regist"/>
             <mvc:exclude-mapping path="/user/loginByCode"/>
             <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/user/logout"/>
 
             <bean class="com.taisf.api.common.interceptor.TokenInterceptor" />
         </mvc:interceptor>
