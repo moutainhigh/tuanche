@@ -45,7 +45,9 @@ public class IndexController extends AbstractController {
     @RequestMapping("")
     public @ResponseBody
     ResponseDto getIndex(HttpServletRequest request, HttpServletResponse response) {
-        return new ResponseDto("api ok");
+
+        DataTransferObject dto = new DataTransferObject<>();
+        return dto.trans2Res();
     }
 
 

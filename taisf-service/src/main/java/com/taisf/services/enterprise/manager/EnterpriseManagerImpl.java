@@ -241,6 +241,8 @@ public class EnterpriseManagerImpl {
 			if (map.containsKey(key)){
 				//DB包含直接过
 				list.add(map.get(key));
+				//明天
+				firstDay = DateUtil.jumpDate(firstDay,1);
 				continue;
 			}
 			EnterpriseDayEntity day = new EnterpriseDayEntity();

@@ -476,13 +476,11 @@ public class UserServiceProxy implements UserService {
             dto.setData(token.getUserToken());
         }else {
 
-            String userToken = UUIDGenerator.hexUUID();
             token = new LoginTokenEntity();
             token.setUserId(userEntity.getUserUid());
-            token.setUserToken(userToken);
             token = transHeader2Token(userLoginRequest.getHeader(),token);
             userManager.saveLoginToken(token);
-            dto.setData(userToken);
+            dto.setData(token.getUserToken());
         }
         if (Check.NuNObj(token)){
             dto.setErrorMsg("获取token异常");
@@ -540,6 +538,11 @@ public class UserServiceProxy implements UserService {
         if (dto.checkSuccess()){
             userManager.deleteById(token.getId());
         }
+
+        //设置redis信息
+        String loginKey = RedisConstant.LOGIN_KEY + token.getUserToken();
+        //设置缓存信息
+        redisOperations.del(loginKey);
         return dto;
     }
 

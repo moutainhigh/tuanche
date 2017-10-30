@@ -6,6 +6,7 @@ import com.jk.framework.base.rst.ResponseDto;
 import com.jk.framework.base.utils.*;
 import com.jk.framework.cache.redis.api.RedisOperations;
 import com.jk.framework.common.utils.CloseableHttpUtil;
+import com.jk.framework.log.utils.LogUtil;
 import com.taisf.api.common.abs.AbstractController;
 import com.taisf.api.util.HeaderUtil;
 import com.taisf.services.common.valenum.SmsTypeEnum;
@@ -100,27 +101,27 @@ public class CodeController extends AbstractController {
         if (!checkMsgCode(userTel)){
             return new ResponseDto("超出条数限制");
         }
-
         String msgCode = getRandom(6);
         Map<String, String> par = new HashMap<>();
         par.put("spid","80012");
         par.put("password","Xg@2017chandi");
         par.put("ac","10691306077");
         par.put("mobiles",userTel);
-        String content = "短信验证码为:" + msgCode +" 【馋滴】";
+        String content = "【馋滴网】验证码:" + msgCode +"，您正在使用短信验证。";
         par.put("content", content);
         redisOperation.setex(key, smsTypeEnum.getTime(), msgCode);
-
         String rst = CloseableHttpUtil.sendFormPost(url,par);
+        LogUtil.info(LOGGER,rst);
         Document document = DocumentHelper.parseText(rst);
         Integer result = Integer.parseInt(XmlUtils.getDocumentNode(document, "/returnsms/result"));
-        if (Check.NuNObj(result) && result== 0){
+        if (!Check.NuNObj(result) && result== 0){
             //成功
         }else {
             String msg = XmlUtils.getDocumentNode(document, "/returnsms/desc");
             return new ResponseDto(msg);
         }
-        return new ResponseDto("提交成功", DataTransferObject.SUCCESS);
+        DataTransferObject dto = new DataTransferObject<>();
+        return dto.trans2Res();
     }
 
 
