@@ -1,16 +1,5 @@
 package com.taisf.web.oms.basedata.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
@@ -30,6 +19,15 @@ import com.taisf.services.permission.entity.EmployeeEntity;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.web.oms.common.page.PageResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("base/enterprise")
@@ -81,6 +79,21 @@ public class EnterpriseController {
             return result;
         }
         return result;
+	}
+
+	@RequestMapping("findAll")
+    @ResponseBody
+	public DataTransferObject<List<EnterpriseEntity>> findAll(HttpServletRequest request) {
+		DataTransferObject<List<EnterpriseEntity>> dto = new DataTransferObject<>();
+        try{
+			dto = enterpriseService.findAll();
+        }catch (Exception e){
+            LogUtil.error(LOGGER, "分页查询企业列表异常:{}",e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("查询企业列表错误");
+            return dto;
+        }
+        return dto;
 	}
 	
 	@RequestMapping("operate")

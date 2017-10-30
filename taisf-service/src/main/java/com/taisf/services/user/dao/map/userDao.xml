@@ -302,7 +302,7 @@
 
 
   <select id="pageListCompanyUser" resultMap="BaseResultMap" parameterType="com.taisf.services.user.dto.UserRequest" >
-    SELECT id, user_uid,user_name, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,
+    SELECT id, user_uid,user_name, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,user_code,
     update_time
     FROM t_user
     where 1=1
@@ -328,6 +328,7 @@
     <if test="userPhone != null and userPhone != '' ">
       and user_phone = #{userPhone,jdbcType=VARCHAR}
     </if>
+    ORDER BY create_time DESC
   </select>
 
 </mapper>
