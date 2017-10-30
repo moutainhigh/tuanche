@@ -5,11 +5,13 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.constant.PathConstant;
 import com.taisf.services.common.valenum.ProductClassifyEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.api.SupplierProductService;
+import com.taisf.services.supplier.dao.SupplierProductDao;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
@@ -20,6 +22,7 @@ import com.taisf.services.supplier.vo.SupplierProductVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -51,7 +54,10 @@ public class SupplierProductServiceProxy implements SupplierProductService {
     private SupplierManagerImpl supplierManager;
 
     @Resource(name = "supplier.supplierProductDao")
-    private com.taisf.services.supplier.dao.SupplierProductDao supplierProductDao;
+    private SupplierProductDao supplierProductDao;
+
+    @Autowired
+    private PathConstant pathConstant;
 
 
     /**
@@ -96,6 +102,19 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return dto;
         }
         return dto;
+    }
+
+
+    /**
+     * 商品图片信息
+     * @param pro
+     */
+    private void dealPic(SupplierProductVO pro){
+        if (Check.NuNObj(pro)){
+            return;
+        }
+        pro.setProductPic(pathConstant.PIC_URL + pro.getProductPic());
+
     }
 
     /**
@@ -143,6 +162,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             vo.setPriceSale(packageEntity.getPackagePrice());
             vo.setProductName(packageEntity.getTitle());
             vo.setProductPic(packageEntity.getPackagePic());
+            dealPic(vo);
             voList.add(vo);
         }
         return voList;
