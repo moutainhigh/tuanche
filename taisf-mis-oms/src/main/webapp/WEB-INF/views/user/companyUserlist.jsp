@@ -97,7 +97,7 @@
             <div class="row row-lg">
                 <!-- Example Pagination -->
                 <div class="col-sm-12">
-                    <button id="addMenuButton" type="button" class="btn btn-primary"
+                    <button id="addMenuButton" type="button" class="btn btn-primary" onclick="toAddUser()"
                             data-toggle='modal' data-target='#myModal'>
                         <i class="fa fa-plus"></i>&nbsp;新增
                     </button>
@@ -116,7 +116,7 @@
                             <%--<th data-field="id" data-visible="false"></th>--%>
                             <th data-field="id" data-width="10%"
                                 data-align="center"><span class="tdfont">ID</span></th>
-                            <th data-field="userUid" data-width="10%"
+                            <th data-field="userCode" data-width="10%"
                                 data-align="center"><span class="tdfont">编号</span></th>
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
                                 data-align="center"><span class="tdfont">注册时间</span></th>
@@ -172,15 +172,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">企业编号:</label>
                                 <div class="col-sm-8">
-                                    <input id="enterpriseCodeA" name="enterpriseCodeA" type="text"
-                                           value="${backstageUser.relationName }" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">企业名称:</label>
-                                <div class="col-sm-8">
-                                    <input id="enterpriseNameA" name="enterpriseNameA" type="text"
-                                           value="${backstageUser.relationName }" class="form-control">
+                                        <select class="form-control m-b" id="enterpriseCodeA" name="enterpriseCodeA"  ></select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -249,17 +241,10 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">企业编号:</label>
                                 <div class="col-sm-8">
-                                    <input id="enterpriseCodeE" name="enterpriseCodeA" type="text"
-                                           value="${backstageUser.relationName }" class="form-control">
+                                    <select class="form-control m-b" id="enterpriseCodeE" name="enterpriseCodeE"  ></select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">企业名称:</label>
-                                <div class="col-sm-8">
-                                    <input id="enterpriseNameE" name="enterpriseNameA" type="text"
-                                           value="${backstageUser.relationName }" class="form-control">
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">类型选择:</label>
                                 <div class="col-sm-8">
@@ -337,6 +322,7 @@
     </div>
 </div>
 <script>
+    var Listenterprise = null;
     $(function () {
         //初始化日期
         CommonUtils.datePickerFormat("openTime");
@@ -436,6 +422,7 @@
     }
     //编辑员工
     function toedit(id) {
+        toAddUser();
         $.ajax({
             data: {
                 'id': id,
@@ -452,6 +439,8 @@
                     $('#enterpriseNameE').val(result.data.enterpriseName);
                     $('#userRoleE').val(result.data.userRole);
                     $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
+                    console.log(Listenterprise.toString())
+                    option(Listenterprise,"enterpriseCodeE",result.data.enterpriseCode);
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -497,14 +486,8 @@
             return false;
         }
         ;
-        if ($("#enterpriseCodeE").val() == null || $("#enterpriseCodeE").val() == "") {
-            layer.alert("企业编号不能为空", {icon: 5, time: 2000, title: '提示'});
-            $("#saveBtn").removeAttr("disabled");
-            return false;
-        }
-        ;
-        if ($("#enterpriseNameE").val() == null || $("#enterpriseNameE").val() == "") {
-            layer.alert("企业名称不能为空", {icon: 5, time: 2000, title: '提示'});
+        if ($("#enterpriseCodeE option:selected").val() == null || $("#enterpriseCodeE option:selected").val() == "") {
+            layer.alert("请选择企业", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
@@ -529,8 +512,8 @@
                 'userUid': $("#UserUidE").val(),
                 'userCode': $("#userCodeE").val(),
                 'userPhone': $("#userPhoneU").val(),
-                'enterpriseCode': $("#enterpriseCodeE").val(),
-                'enterpriseName': $("#enterpriseNameE").val(),
+                'enterpriseCode': $("#enterpriseCodeE option:selected").val(),
+                'enterpriseName': $("#enterpriseNameE option:selected").text(),
                 'productSource': $('input[name="productSourceE"]:checked').val(),
                 'userRole': $("#userRoleE").val(),
             },
@@ -565,14 +548,8 @@
             return false;
         }
         ;
-        if ($("#enterpriseCodeA").val() == null || $("#enterpriseCodeA").val() == "") {
-            layer.alert("企业编号不能为空", {icon: 5, time: 2000, title: '提示'});
-            $("#saveBtn").removeAttr("disabled");
-            return false;
-        }
-        ;
-        if ($("#enterpriseNameA").val() == null || $("#enterpriseNameA").val() == "") {
-            layer.alert("企业名称不能为空", {icon: 5, time: 2000, title: '提示'});
+        if ($('input[name="productSource"]:checked').val() == null || $('input[name="productSource"]:checked').val() == "") {
+            layer.alert("请选择企业", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
@@ -604,8 +581,8 @@
             data: {
                 'userCode': $("#userCode").val(),
                 'userPhone': $("#userPhoneA").val(),
-                'enterpriseCode': $("#enterpriseCodeA").val(),
-                'enterpriseName': $("#enterpriseNameA").val(),
+                'enterpriseCode': $("#enterpriseCodeA  option:selected").val(),
+                'enterpriseName': $("#enterpriseCodeA  option:selected").text(),
                 'productSource': $('input[name="productSource"]:checked').val(),
                 'userRole': $("#userRoleA").val(),
             },
@@ -632,6 +609,40 @@
     }
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);
+    }
+
+    function toAddUser() {
+        $.ajax({
+            type : "post",
+            dataType : "json",
+            url : 'base/enterprise/findAll',
+            success : function(result) {
+                if(result.code === 0){
+                    $("#addSaveReset").trigger("click");
+                    Listenterprise = result.data;
+                    console.log(Listenterprise[0])
+                    option(Listenterprise,"enterpriseCodeA",null)
+                }else{
+                    layer.alert("操作失败:"+result.msg, {icon: 5,time: 2000, title:'提示'});
+                }
+            },
+            error : function(result) {
+                layer.alert("未知错误", {icon: 5,time: 2000, title:'提示'});
+            }
+        });
+    }
+    function option(list,id,selected){
+        var str = "<option value='-1'>请选择</option>";
+        for(var i=0;i<list.length;i++) {
+            if(selected == list[i].enterpriseCode){
+                str = str + "<option  selected value='"+list[i].enterpriseCode+"'>"+list[i].enterpriseName+"</option>";
+            }else {
+                str = str + "<option  value='"+list[i].enterpriseCode+"'>"+list[i].enterpriseName+"</option>";
+            }
+
+        }
+        $("#"+id).html(str);
+        console.log(str)
     }
 </script>
 

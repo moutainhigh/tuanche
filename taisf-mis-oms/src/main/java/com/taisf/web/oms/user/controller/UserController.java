@@ -186,7 +186,7 @@ public class UserController {
         supplierRequest.setManger(userEntity.getUserUid());
         PagingResult<EnterpriseEntity> entityPagingResult = enterpriseService.pageListAndManger(enterpriseListRequest).getData();
         PagingResult<SupplierEntity> supplierEntityPagingResult = supplierService.supplierPageList(supplierRequest).getData();
-        if(!Check.NuNObjs(entityPagingResult,supplierEntityPagingResult)){
+        if(!Check.NuNCollection(supplierEntityPagingResult.getList()) || !Check.NuNCollection(entityPagingResult.getList())){
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("请先将该员工下维护信息做变更后方可做离职变更");
             return dto;
@@ -424,4 +424,8 @@ public class UserController {
         }
         return dto;
     }
+
+   //根据code 获取枚举
+    //如果获取到了
+
 }

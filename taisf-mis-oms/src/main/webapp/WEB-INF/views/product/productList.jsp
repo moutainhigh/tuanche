@@ -136,6 +136,10 @@
                             <option value="1">--大荤--</option>
                             <option value="2">--小荤--</option>
                             <option value="3">--素--</option>
+                            <option value="4">--汤--</option>
+                            <option value="5">--饮品--</option>
+                            <option value="6">--主食--</option>
+                            <option value="7">--水果--</option>
                         </select>
                     </div>
                     <label class="col-xs-1 col-sm-1 control-label mtop">供餐类型:</label>
@@ -244,6 +248,10 @@
                                         <option value="1">--大荤--</option>
                                         <option value="2">--小荤--</option>
                                         <option value="3">--素--</option>
+                                        <option value="4">--汤--</option>
+                                        <option value="5">--饮品--</option>
+                                        <option value="6">--主食--</option>
+                                        <option value="7">--水果--</option>
                                     </select>
                                 </div>
                             </div>
@@ -339,6 +347,10 @@
                                         <option value="1">--大荤--</option>
                                         <option value="2">--小荤--</option>
                                         <option value="3">--素--</option>
+                                        <option value="4">--汤--</option>
+                                        <option value="5">--饮品--</option>
+                                        <option value="6">--主食--</option>
+                                        <option value="7">--水果--</option>
                                     </select>
                                 </div>
                             </div>
@@ -435,6 +447,10 @@
                                         <option value="1">--大荤--</option>
                                         <option value="2">--小荤--</option>
                                         <option value="3">--素--</option>
+                                        <option value="4">--汤--</option>
+                                        <option value="5">--饮品--</option>
+                                        <option value="6">--主食--</option>
+                                        <option value="7">--水果--</option>
                                     </select>
                                 </div>
                             </div>
@@ -472,7 +488,12 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">上传图片:</label>
                                 <div class="col-sm-8">
-                                    <input type="file" class="form-control"/>
+                                    <div>
+                                        <a id="showImg-3" href="${headPic }" title="图片" data-gallery="">
+                                            <img id='imgSizeImgSrc-3' style="" width="100" height="125"
+                                                 src="${headPic }"/></a>
+                                        <input id='imgUrl-3' type="hidden" name="headImg" value="${headPic}"/>
+                                    </div>
                                 </div>
                             </div>
                             <input type="hidden" class="form-control" id="productIdD" name="id" value=""/>
@@ -617,6 +638,10 @@
                     $(":radio[name='productSourceD'][value='" + result.data.productSource + "']").prop("checked", "checked");
                     $('#priceSaleD').val(result.data.priceSale);
                     $('#productDesD').val(result.data.productDes);
+
+                    $('#showImg-3').attr('href', result.data.productPic);
+                    $("#imgSizeImgSrc-3").attr("src", result.data.productPic);
+                    $("#imgUrl-3").val(result.data.productPic)
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");

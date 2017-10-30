@@ -87,7 +87,7 @@
 							</button>
 						</div>
 						<h1 class="threed" style="text-align: center;">
-							<strong>广州市白云区景泰医院</strong>
+							<strong>馋滴运营后台</strong>
 						</h1>
 					</div>
 				</nav>
