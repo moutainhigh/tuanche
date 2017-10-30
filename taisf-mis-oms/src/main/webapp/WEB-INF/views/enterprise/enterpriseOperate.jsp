@@ -3,6 +3,7 @@
 <%@ page language="java" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="customtag" uri="http://minsu.ziroom.com" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -221,11 +222,13 @@
 	                        		</select>
                         		</td>
 								<td align="right" class="td-title">开始时间:</td>
-								<td align="center"><input type="text" id="lunchStart" name="lunchStart" class="form-control" placeholder="HH:mm"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.lunchStart}"></td>
+								<td align="center"><input type="text" id="lunchStart" name="lunchStart" class="form-control" placeholder="时:分(24小时制 半角冒号)"
+									<c:if test="${operate==1}">readonly="true"</c:if> 
+									value="${fn:substring(model.configEntity.dinnerStart, 0, fn:length(model.configEntity.lunchStart)-3)}"></td>
 								<td align="right" style="font-weight:bold;">截止时间:</td>
-								<td align="center"><input type="text" id="lunchEnd" name="lunchEnd" class="form-control" placeholder="HH:mm"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.lunchEnd}"></td>
+								<td align="center"><input type="text" id="lunchEnd" name="lunchEnd" class="form-control" placeholder="时:分(24小时制 半角冒号)"
+									<c:if test="${operate==1}">readonly="true"</c:if> 
+									value="${fn:substring(model.configEntity.dinnerStart, 0, fn:length(model.configEntity.lunchEnd)-3)}"></td>
 							</tr>
 							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
 							<tr>
@@ -237,11 +240,13 @@
 	                        		</select>
                         		</td>
 								<td align="right" class="td-title">开始时间:</td>
-								<td align="center"><input type="text" id="dinnerStart" name="dinnerStart" class="form-control" placeholder="HH:mm"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.dinnerStart}"></td>
+								<td align="center"><input type="text" id="dinnerStart" name="dinnerStart" class="form-control" placeholder="时:分(24小时制 半角冒号)"
+									<c:if test="${operate==1}">readonly="true"</c:if> 
+									value="${fn:substring(model.configEntity.dinnerStart, 0, fn:length(model.configEntity.dinnerEnd)-3)}"></td>
 								<td align="right" style="font-weight:bold;">截止时间:</td>
-								<td align="center"><input type="text" id="dinnerEnd" name="dinnerEnd" class="form-control" placeholder="HH:mm"
-									<c:if test="${operate==1}">readonly="true"</c:if> value="${model.configEntity.dinnerEnd}"></td>
+								<td align="center"><input type="text" id="dinnerEnd" name="dinnerEnd" class="form-control" placeholder="时:分(24小时制 半角冒号)"
+									<c:if test="${operate==1}">readonly="true"</c:if> 
+									value="${fn:substring(model.configEntity.dinnerEnd, 0, fn:length(model.configEntity.dinnerEnd)-3)}"></td>
 							</tr>
 							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
 							<tr>
@@ -401,7 +406,7 @@
 		} else
 			tillTime = tillTime.replace(/-/g,"/");
 			tillTime += " 23:59:59";
-
+		
         CommonUtils.ajaxPostSubmit("base/enterprise/operate", {
                 "operateType" : operateType,
                 "enterpriseStatus" : status,
@@ -426,11 +431,11 @@
                 "empPrice" : $("#empPrice").val(),
                 "bossPrice" : $("#bossPrice").val(),
                 "forLunch" : $("#forLunch").val(),
-                "lunchStart" : $("#lunchStart").val(),
-                "lunchEnd" : $("#lunchEnd").val(),
+                "lunchStart" : handleTime($("#lunchStart").val()),
+                "lunchEnd" : handleTime($("#lunchEnd").val()),
                 "forDinner" : $("#forDinner").val(),
-                "dinnerStart" : $("#dinnerStart").val(),
-                "dinnerEnd" : $("#dinnerEnd").val(),
+                "dinnerStart" : handleTime($("#dinnerStart").val()),
+                "dinnerEnd" : handleTime($("#dinnerEnd").val()),
                 "mainAddress" : $("#mainAddress").val(),
                 "otherAddress" : $("#otherAddress").val(),
                 "invoiceTitle" : $("#invoiceTitle").val(),
@@ -573,6 +578,10 @@
     function isNullOrBlank(obj){
         return obj == undefined || obj == null || $.trim(obj).length == 0;
     }
+  	
+  	function handleTime(value) {
+  		return value == "" ? "" : value+":00"; 
+  	}
 
 </script>
 </body>
