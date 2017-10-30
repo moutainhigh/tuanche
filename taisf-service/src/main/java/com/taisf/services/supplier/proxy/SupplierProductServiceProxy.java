@@ -134,6 +134,10 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         vo.setProductClassifyName(c.getName());
         List<SupplierProductVO> tmp = map.get(key);
         if (!Check.NuNCollection(tmp)) {
+            for (SupplierProductVO productVO : tmp) {
+                dealPic(productVO);
+            }
+
             vo.setList(tmp);
         }
         list.add(vo);
