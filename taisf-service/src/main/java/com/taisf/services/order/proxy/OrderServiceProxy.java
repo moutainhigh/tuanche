@@ -1,5 +1,6 @@
 package com.taisf.services.order.proxy;
 
+import com.jk.framework.base.entity.BaseEntity;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
@@ -83,6 +84,7 @@ public class OrderServiceProxy implements OrderService {
      * @param request
      * @return
      */
+    @Override
     public DataTransferObject<List<EnterpriseOrderStatsVO>> getEnterpriseOrderStats(EnterpriseStatsRequest request){
         DataTransferObject<List<EnterpriseOrderStatsVO>> dto = new DataTransferObject<>();
         if (Check.NuNObj(request)) {
@@ -100,6 +102,7 @@ public class OrderServiceProxy implements OrderService {
      * @param finishOrderRequest
      * @return
      */
+    @Override
     public DataTransferObject<Void>  finishOrder(FinishOrderRequest finishOrderRequest){
 
         DataTransferObject<Void> dto = new DataTransferObject<>();
@@ -153,10 +156,38 @@ public class OrderServiceProxy implements OrderService {
         }
         //分页获取订单列表
         List<OrderInfoVO> list = orderManager.getOrderInfoWaitingList(userUid);
+        this.dealOrderStatus(list);
         dto.setData(list);
         return dto;
     }
 
+
+    /**
+     * 处理订单状态
+     * @param list
+     */
+    private void dealOrderStatus(List<? extends OrderEntity> list){
+        if (!Check.NuNCollection(list)){
+            for (OrderEntity vo : list) {
+                dealOrderStatus(vo);
+            }
+        }
+    }
+
+
+    /**
+     * 处理订单状态
+     * @param vo
+     */
+    private void dealOrderStatus(OrderEntity vo){
+        OrdersStatusEnum ordersStatusEnum = OrdersStatusEnum.getByCode(vo.getOrderStatus());
+        if (Check.NuNObj(ordersStatusEnum)){
+            vo.setOrderStatus(OrdersStatusShowEnum.UNKNOWN.getCode());
+        }else {
+            vo.setOrderStatus(ordersStatusEnum.getForeignType().getCode());
+        }
+
+    }
     /**
      * 获取当前订单的信息
      * @author afi
@@ -172,6 +203,7 @@ public class OrderServiceProxy implements OrderService {
         }
         //分页获取订单列表
         PagingResult<OrderInfoVO> page = orderManager.getOrderInfoPage(orderInfoRequest);
+        this.dealOrderStatus(page.getList());
         dto.setData(page);
         return dto;
     }
@@ -195,6 +227,7 @@ public class OrderServiceProxy implements OrderService {
         if (Check.NuNObj(orderDetail)){
             return dto;
         }
+        dealOrderStatus(orderDetail.getOrderEntity());
         dto.setData(orderDetail);
         return dto;
 
