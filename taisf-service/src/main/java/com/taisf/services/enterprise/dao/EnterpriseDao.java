@@ -138,9 +138,17 @@ public class EnterpriseDao extends BaseDao {
     /**
      * @author:zhangzhengguang
      * @date:2017/10/18
-     * @description:查询企业列表
+     * @description:查询存在订单的企业列表
      **/
     public List<EnterpriseEntity> findAll() {
         return mybatisDaoContext.findAll(SQLID+"findAll");
+    }
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/31
+     * @description:查询所有企业列表
+     **/
+    public List<EnterpriseEntity> findAllEnterprise() {
+        return mybatisDaoContext.findAll(SQLID+"findAllEnterprise");
     }
 }

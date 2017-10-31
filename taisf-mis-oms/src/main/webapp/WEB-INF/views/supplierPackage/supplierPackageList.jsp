@@ -178,7 +178,7 @@
                                 data-align="center"><span class="tdfont">水果</span></th>
                             <th data-field="packagePic" data-width="10%" data-formatter="formatePackagePic"
                                 data-align="center"><span class="tdfont">图片</span></th>
-                            <th data-field="packagePrice" data-width="10%"
+                            <th data-field="packagePrice" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">价格</span></th>
                             <th data-field="handle" data-width="5%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
@@ -263,6 +263,14 @@
             }
         });
     }
+    function formatPrice(value, row, index) {
+        if (value != null) {
+            return (value/100).toFixed(2);
+        } else {
+            return "-";
+        }
+    }
+
 </script>
 
 </body>

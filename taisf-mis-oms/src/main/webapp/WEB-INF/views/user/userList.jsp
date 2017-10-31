@@ -209,13 +209,13 @@
                                            value="" class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group">
+                           <%-- <div class="form-group">
                                 <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
                                 <div class="col-sm-8">
                                     <input readonly id="password" name="password" type="text"
                                            value="" class="form-control">
                                 </div>
-                            </div>
+                            </div>--%>
                             <input type="hidden" class="form-control" id="iduserD" name="id" value=""/>
                             <!-- 用于 将表单缓存清空 -->
                             <input id="addResetD" type="reset" style="display:none;"/>

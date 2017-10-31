@@ -1,19 +1,5 @@
 package com.taisf.services.enterprise.proxy;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
@@ -27,20 +13,19 @@ import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.dto.EnterpriseUpdateRequest;
-import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
-import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
-import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
-import com.taisf.services.enterprise.entity.EnterpriseEntity;
-import com.taisf.services.enterprise.entity.EnterpriseFinanceEntity;
-import com.taisf.services.enterprise.entity.EnterpriseModel;
+import com.taisf.services.enterprise.entity.*;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
-import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
-import com.taisf.services.enterprise.vo.EnterpriseDayVO;
-import com.taisf.services.enterprise.vo.EnterpriseDispatchVO;
-import com.taisf.services.enterprise.vo.EnterpriseExtVO;
-import com.taisf.services.enterprise.vo.EnterpriseListDay;
+import com.taisf.services.enterprise.vo.*;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * <p>企业接口实现</p>
@@ -396,12 +381,25 @@ public class EnterpriseServiceProxy implements EnterpriseService {
     /**
      * @author:zhangzhengguang
      * @date:2017/10/18
-     * @description:查询企业列表
+     * @description:查询存在订单的企业列表
      **/
     @Override
     public DataTransferObject<List<EnterpriseEntity>> findAll() {
         DataTransferObject<List<EnterpriseEntity>> dto = new DataTransferObject<>();
         List<EnterpriseEntity> entityList = enterpriseDao.findAll();
+        dto.setData(entityList);
+        return dto;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/31
+     * @description:查询所有企业列表
+     **/
+    @Override
+    public DataTransferObject<List<EnterpriseEntity>> findAllEnterprise() {
+        DataTransferObject<List<EnterpriseEntity>> dto = new DataTransferObject<>();
+        List<EnterpriseEntity> entityList = enterpriseDao.findAllEnterprise();
         dto.setData(entityList);
         return dto;
     }

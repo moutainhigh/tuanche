@@ -123,7 +123,7 @@
                                 data-align="center"><span class="tdfont">菜品属性</span></th>
                             <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                 data-align="center"><span class="tdfont">分类</span></th>
-                            <th data-field="priceSale" data-width="10%"
+                            <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">单价</span></th>
                             <th data-field="isDel" data-width="10%" data-formatter="formatStatus"
                                 data-align="center"><span class="tdfont">状态</span></th>
@@ -173,6 +173,14 @@
             return "-";
         }
     }
+    function formatPrice(value, row, index) {
+        if (value != null) {
+            return (value/100).toFixed(2);
+        } else {
+            return "-";
+        }
+    }
+
     function formatProductType(value, row, index) {
         if (value == 1) {
             return "全部";
