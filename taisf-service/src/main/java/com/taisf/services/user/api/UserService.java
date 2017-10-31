@@ -33,6 +33,15 @@ public interface UserService {
      */
     DataTransferObject<PagingResult<UserAccountVO>> getUserAccountPage(UserAccountRequest userAccountRequest);
 
+
+
+    /**
+     * 校验电话是否注册
+     * @param phone
+     * @return
+     */
+    DataTransferObject<Void> checkRegist(String phone);
+
     /**
      * 用户注册
      * @param userRegistRequest

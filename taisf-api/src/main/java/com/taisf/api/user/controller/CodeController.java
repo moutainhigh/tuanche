@@ -10,6 +10,7 @@ import com.jk.framework.log.utils.LogUtil;
 import com.taisf.api.common.abs.AbstractController;
 import com.taisf.api.util.HeaderUtil;
 import com.taisf.services.common.valenum.SmsTypeEnum;
+import com.taisf.services.user.api.UserService;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
@@ -50,6 +51,8 @@ public class CodeController extends AbstractController {
     private static final   String url = "http://112.90.92.102:16655/smsgwhttp/sms/submit";
 
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RedisOperations redisOperation;
@@ -85,6 +88,14 @@ public class CodeController extends AbstractController {
         if (Check.NuNObj(smsTypeEnum)){
             return new ResponseDto("异常的code");
         }
+
+        if (smsTypeEnum.getCode() == SmsTypeEnum.USER_REGIST.getCode()){
+            //注册,先校验手机号
+            DataTransferObject dtoCheck =userService.checkRegist(userTel);
+            if (!dtoCheck.checkSuccess()){
+                return dtoCheck.trans2Res();
+            }
+        }
         Map<String,Object> parSign = new HashMap<>();
         parSign.put("code",code);
         parSign.put("userTel",userTel);
@@ -101,7 +112,7 @@ public class CodeController extends AbstractController {
         if (!checkMsgCode(userTel)){
             return new ResponseDto("超出条数限制");
         }
-        String msgCode = getRandom(6);
+        String msgCode = getRandom(4);
         Map<String, String> par = new HashMap<>();
         par.put("spid","80012");
         par.put("password","Xg@2017chandi");

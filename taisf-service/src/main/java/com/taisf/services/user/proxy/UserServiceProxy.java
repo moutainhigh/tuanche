@@ -98,6 +98,58 @@ public class UserServiceProxy implements UserService {
     }
 
 
+    /**
+     * 校验电话是否注册
+     * @param phone
+     * @return
+     */
+    @Override
+    public DataTransferObject<Void> checkRegist(String phone){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNStr(phone)){
+            dto.setErrorMsg("请输入正确的手机号");
+            return dto;
+        }
+
+        //1. 验证手机号信息
+        UserEntity userEntity = userManager.getUserByUserPhone(phone);
+        if (Check.NuNObj(userEntity)){
+            dto.setErrorMsg("该手机号不存在");
+            return dto;
+        }
+        checkUserStats(dto, userEntity);
+        return dto;
+    }
+
+    /**
+     * 校验用户状态
+     * @param dto
+     * @param userEntity
+     * @return
+     */
+    private void checkUserStats(DataTransferObject dto, UserEntity userEntity) {
+        if (!dto.checkSuccess()){
+            return;
+        }
+        //2. 判断用户状态
+        UserStatusEnum userStatusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());
+        if (Check.NuNObj(userStatusEnum)){
+            dto.setErrorMsg("异常的用户状态");
+            return ;
+        }
+        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+            dto.setErrorMsg("该帐户已注销");
+            return ;
+        }else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()){
+            dto.setErrorMsg("该帐户已冻结");
+            return ;
+        }else if (userStatusEnum.getCode() == UserStatusEnum.ACTIVITY.getCode()){
+            dto.setErrorMsg("该手机号已注册");
+            return ;
+        }
+
+    }
+
     @Override
     public DataTransferObject<RegistInfoVO> regist(UserRegistRequest userRegistRequest) {
         DataTransferObject<RegistInfoVO> dto = new DataTransferObject<>();
