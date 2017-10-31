@@ -71,7 +71,7 @@ public class SupplierProductController {
                 if (!Check.NuNCollection(entityList)) {
                     dto.getData().getList().stream().forEach((x) -> {
                         entityList.stream().forEach((y) -> {
-                            if (x.getId() == y.getProductCode()) {
+                            if (x.getId().equals(y.getProductCode())) {
                                 x.setIsDel(1);
                             }
                         });
