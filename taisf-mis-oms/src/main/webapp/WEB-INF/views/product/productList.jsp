@@ -608,16 +608,16 @@
                 if (result.code === 0) {
                     $('#productIdE').val(result.data.id);
                     $('#productNameE').val(result.data.productName);
-                    $("#productClassifyE option[value='" + result.data.productClassify + "']").attr("selected", "selected");
+                    document.getElementById("productClassifyE").selectedIndex = result.data.productClassify;
                     $(":radio[name='productTypeE'][value='" + result.data.productType + "']").prop("checked", "checked");
                     $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
                     var price = (result.data.priceSale/100).toFixed(2);
                     $('#priceSaleE').val(price);
                     $('#productDesE').val(result.data.productDes);
 
-                    $('#showImg').attr('href', result.data.productPic);
-                    $("#imgSizeImgSrc1").attr("src", result.data.productPic);
-                    $("#imgUrl").val(result.data.productPic)
+                    $('#showImg-2').attr('href', result.data.productPic);
+                    $("#imgSizeImgSrc-2").attr("src", result.data.productPic);
+                    $("#imgUrl-2").val(result.data.productPic)
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -629,6 +629,7 @@
             }
         });
     }
+
     function detail(id) {
         $.ajax({
             data: {
