@@ -389,6 +389,8 @@
             return "禁用";
         }else if(value == 3){
             return "冻结";
+        }else{
+            return "无账户";
         }
     }
 
@@ -414,7 +416,7 @@
         if(row.accountStatus == 1){
             result = result + "<a title='禁用' onclick='updateAccountUser(\""+row.userUid+"\",\"2\")'  >禁用</a>&nbsp;&nbsp;&nbsp;&nbsp;";
             result = result + "<a title='冻结' onclick='updateAccountUser(\""+row.userUid+"\",\"3\")' >冻结</a>";
-        }else{
+        }else if(row.accountStatus ==2 || row.accountStatus == 3){
             result = result + "<a title='激活' onclick='updateAccountUser(\""+row.userUid+"\",\"1\")' >激活</a>";
         }
 
