@@ -179,7 +179,7 @@
             <div class="row row-lg">
                 <!-- Example Pagination -->
                 <div class="col-sm-12">
-                    <button id="addMenuButton" type="button" class="btn btn-primary"
+                    <button id="addMenuButton" type="button" class="btn btn-primary" onclick="formReset()"
                             data-toggle='modal' data-target='#myModal'>
                         <i class="fa fa-plus"></i>&nbsp;新增
                     </button>
@@ -205,7 +205,7 @@
                                 data-align="center"><span class="tdfont">菜品属性</span></th>
                             <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                 data-align="center"><span class="tdfont">分类</span></th>
-                            <th data-field="priceSale" data-width="10%"
+                            <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">单价</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
@@ -545,6 +545,13 @@
             return "-";
         }
     }
+    function formatPrice(value, row, index) {
+        if (value != null) {
+            return (value/100).toFixed(2);
+        } else {
+            return "-";
+        }
+    }
     function formatProductType(value, row, index) {
         if (value == 1) {
             return "全部";
@@ -601,16 +608,16 @@
                 if (result.code === 0) {
                     $('#productIdE').val(result.data.id);
                     $('#productNameE').val(result.data.productName);
-                    $("#productClassifyE option[value='" + result.data.productClassify + "']").attr("selected", "selected");
+                    document.getElementById("productClassifyE").selectedIndex = result.data.productClassify;
                     $(":radio[name='productTypeE'][value='" + result.data.productType + "']").prop("checked", "checked");
                     $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
                     var price = (result.data.priceSale/100).toFixed(2);
                     $('#priceSaleE').val(price);
                     $('#productDesE').val(result.data.productDes);
 
-                    $('#showImg').attr('href', result.data.productPic);
-                    $("#imgSizeImgSrc1").attr("src", result.data.productPic);
-                    $("#imgUrl").val(result.data.productPic)
+                    $('#showImg-2').attr('href', result.data.productPic);
+                    $("#imgSizeImgSrc-2").attr("src", result.data.productPic);
+                    $("#imgUrl-2").val(result.data.productPic)
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -622,6 +629,7 @@
             }
         });
     }
+
     function detail(id) {
         $.ajax({
             data: {
@@ -837,6 +845,13 @@
         }
         $("#editForm"+type).ajaxSubmit(options);
     }
+
+    function formReset(){
+        $('#showImg-1').attr('href', "");
+        $("#imgSizeImgSrc-1").attr("src", "");
+        $("#imgUrl-1").val("")
+    }
+
 </script>
 </body>
 </html>

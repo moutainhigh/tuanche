@@ -83,10 +83,10 @@ public class EnterpriseController {
 
 	@RequestMapping("findAll")
     @ResponseBody
-	public DataTransferObject<List<EnterpriseEntity>> findAll(HttpServletRequest request) {
+	public DataTransferObject<List<EnterpriseEntity>> findAllEnterprise(HttpServletRequest request) {
 		DataTransferObject<List<EnterpriseEntity>> dto = new DataTransferObject<>();
         try{
-			dto = enterpriseService.findAll();
+			dto = enterpriseService.findAllEnterprise();
         }catch (Exception e){
             LogUtil.error(LOGGER, "分页查询企业列表异常:{}",e);
             dto.setErrCode(DataTransferObject.ERROR);

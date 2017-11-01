@@ -92,9 +92,9 @@
                                 data-align="center"><span class="tdfont">企业编号</span></th>
                             <th data-field="enterpriseName" data-width="10%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
-                            <th data-field="allBalance" data-width="10%"
+                            <th data-field="allBalance" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">账号总金额</span></th>
-                            <th data-field="drawBalance" data-width="10%"
+                            <th data-field="drawBalance" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">可分配金额</span></th>
 
                             <th data-field="handle" data-width="15%" data-align="center"
@@ -320,8 +320,14 @@
 
 
 <script>
-   
-    
+
+    function formatPrice(value, row, index) {
+        if (value != null) {
+            return (value/100).toFixed(2);
+        } else {
+            return "-";
+        }
+    }
     
     $(function () {
         //初始化日期

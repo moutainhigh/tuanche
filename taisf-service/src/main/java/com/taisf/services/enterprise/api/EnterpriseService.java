@@ -1,7 +1,5 @@
 package com.taisf.services.enterprise.api;
 
-import java.util.List;
-
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
@@ -15,6 +13,8 @@ import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.enterprise.vo.EnterpriseDispatchVO;
 import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.enterprise.vo.EnterpriseListDay;
+
+import java.util.List;
 
 /**
  * <p>企业接口信息</p>
@@ -117,4 +117,11 @@ public interface EnterpriseService {
     DataTransferObject<PagingResult<EnterpriseExtVO>> getEnterpriseExtByPage(EnterpriseListRequest request);
     
     DataTransferObject<EnterpriseModel> getEnterpriseModelById(Integer id);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/31
+     * @description:查询所有企业列表
+     **/
+    DataTransferObject<List<EnterpriseEntity>> findAllEnterprise();
 }

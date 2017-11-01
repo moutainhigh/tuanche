@@ -366,4 +366,9 @@
 	]]>
   </update>
 
+  <select id="findAllEnterprise"  resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM t_enterprise
+  </select>
+
 </mapper>
