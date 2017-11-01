@@ -79,8 +79,8 @@ public class UserServiceProxyTest extends BaseTest {
         header.setDeviceUuid("uid");
         header.setVersionCode("versionCode");
         userRegistRequest.setHeader(header);
-        userRegistRequest.setUserPhone("123");
-        userRegistRequest.setPwd("123");
+        userRegistRequest.setUserPhone("18210174986");
+        userRegistRequest.setPwd("e807f1fcf82d132f9bb018ca6738a19f");
         DataTransferObject<String>  dto = userService.login(userRegistRequest);
 
         System.out.println(JsonEntityTransform.Object2Json(dto));
