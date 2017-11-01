@@ -28,6 +28,7 @@
     <if test="accountType != null" >
      and account_type =  #{accountType,jdbcType=INTEGER}
     </if>
+    ORDER BY id DESC
   </select>
 
 
