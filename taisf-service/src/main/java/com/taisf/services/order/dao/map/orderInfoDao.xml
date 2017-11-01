@@ -102,7 +102,6 @@
 				and create_time <= #{tillTime}
 			]]>
         </if>
-
         ORDER  BY t.id DESC
     </select>
 
@@ -121,7 +120,7 @@
         LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21' GROUP BY enterprise_code) wb ON wb.enterprise_code = o.enterprise_code
         LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30' GROUP BY enterprise_code) wc ON wc.enterprise_code = o.enterprise_code
         LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31' GROUP BY enterprise_code) wcb ON wcb.enterprise_code = o.enterprise_code
-        WHERE o.order_status = 50
+        WHERE o.order_status = 50 AND o.enterprise_code != ""
         <if test="enterpriseName != null and enterpriseName != '' ">
             AND e.enterprise_name = #{enterpriseName,jdbcType=VARCHAR}
         </if>
