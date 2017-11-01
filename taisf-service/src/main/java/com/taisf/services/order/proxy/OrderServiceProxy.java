@@ -810,6 +810,10 @@ public class OrderServiceProxy implements OrderService {
         //地址
         List<EnterpriseAddressEntity> list = enterpriseManager.getEnterpriseAddressByCode(userEntity.getEnterpriseCode());
         if (!Check.NuNCollection(list)){
+            for (EnterpriseAddressEntity entity : list) {
+                entity.setConTel(userEntity.getUserPhone());
+                entity.setConName(userEntity.getUserName() + "["+userEntity.getUserCode()+"]");
+            }
             orderSaveVO.setAddressList(list);
         }
         //设置城市code

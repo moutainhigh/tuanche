@@ -87,7 +87,12 @@ public class IndexServiceProxy implements IndexService {
             return dto;
         }
         List<EnterpriseAddressEntity> list = enterpriseManager.getEnterpriseAddressByCode(userEntity.getEnterpriseCode());
-
+        if (!Check.NuNCollection(list)){
+            for (EnterpriseAddressEntity entity : list) {
+                entity.setConTel(userEntity.getUserPhone());
+                entity.setConName(userEntity.getUserName() + "["+userEntity.getUserCode()+"]");
+            }
+        }
         dto.setData(list);
         return dto;
     }

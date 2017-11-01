@@ -1,6 +1,7 @@
 package com.taisf.services.test.supplier.dao;
 
 import com.taisf.services.supplier.dao.SupplierProductDao;
+import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
@@ -25,6 +26,18 @@ public class SupplierProductDaoTest extends BaseTest {
 
     @Resource(name = "supplier.supplierProductDao")
     private SupplierProductDao supplierProductDao;
+
+
+
+
+
+    @Test
+    public void getProductListBySupplierAndTypeTest() {
+        SupplierProductRequest entity = new SupplierProductRequest();
+        entity.setSupplierCode("code");
+
+        supplierProductDao.getProductListBySupplierAndType(entity);
+    }
 
 
     @Test
