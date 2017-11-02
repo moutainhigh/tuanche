@@ -515,7 +515,7 @@
                 'userCode': $("#userCodeE").val(),
                 'userPhone': $("#userPhoneU").val(),
                 'enterpriseCode': $("#enterpriseCodeE option:selected").val(),
-                'enterpriseName': $("#enterpriseNameE option:selected").text(),
+                'enterpriseName': $("#enterpriseCodeE option:selected").text(),
                 'productSource': $('input[name="productSourceE"]:checked').val(),
                 'userRole': $("#userRoleE").val(),
             },
@@ -551,7 +551,7 @@
         }
         ;
         if ($('input[name="productSource"]:checked').val() == null || $('input[name="productSource"]:checked').val() == "") {
-            layer.alert("请选择企业", {icon: 5, time: 2000, title: '提示'});
+            layer.alert("请选择类型", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
