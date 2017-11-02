@@ -143,6 +143,9 @@ public class ProductController {
             dto.setErrorMsg("异常的金额");
             return dto;
         }
+        if(!Check.NuNObj(productEntity.getProductPic())){
+            productEntity.setProductPic(productEntity.getProductPic().replace(pathConstant.PIC_URL,""));
+        }
         Double priceSale = BigDecimalUtil.mul(price,100);
         productEntity.setPriceSale(priceSale.intValue());
 
