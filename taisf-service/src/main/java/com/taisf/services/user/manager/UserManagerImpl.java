@@ -268,6 +268,17 @@ public class UserManagerImpl {
         return userDao.getUserById(id);
     }
 
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/11/3
+     * @description:根据手机号查询
+     **/
+    public UserEntity getByUserPhone(String userPhone){
+        if (Check.NuNObj(userPhone)){
+            return null;
+        }
+        return userDao.getByUserPhone(userPhone);
+    }
 
     /**
      * 根据用户userid查询用户

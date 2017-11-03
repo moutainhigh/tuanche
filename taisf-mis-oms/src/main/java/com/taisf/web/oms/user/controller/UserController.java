@@ -99,6 +99,14 @@ public class UserController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if(!Check.NuNObj(userEntity.getUserPhone())){
+            UserEntity byUserPhone = userManager.getByUserPhone(userEntity.getUserPhone());
+            if(!Check.NuNObj(byUserPhone)){
+                dto.setErrorMsg("手机号已存在");
+                dto.setErrCode(DataTransferObject.ERROR);
+                return dto;
+            }
+        }
         try {
             String uuid = UUIDGenerator.hexUUID();
             userEntity.setUserPassword("123456");
@@ -358,6 +366,14 @@ public class UserController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if(!Check.NuNObj(userEntity.getUserPhone())){
+            UserEntity byUserPhone = userManager.getByUserPhone(userEntity.getUserPhone());
+            if(!Check.NuNObj(byUserPhone)){
+                dto.setErrorMsg("手机号已存在");
+                dto.setErrCode(DataTransferObject.ERROR);
+                return dto;
+            }
+        }
         try {
             String uuid = UUIDGenerator.hexUUID();
             userEntity.setUserPassword("123456");
@@ -424,8 +440,4 @@ public class UserController {
         }
         return dto;
     }
-
-   //根据code 获取枚举
-    //如果获取到了
-
 }

@@ -133,6 +133,12 @@
     from t_user
     where user_uid = #{userUid,jdbcType=VARCHAR}
   </select>
+  <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_phone = #{userPhone,jdbcType=VARCHAR}
+  </select>
 
   <select id="getUserByType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select

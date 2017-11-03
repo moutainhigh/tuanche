@@ -2,7 +2,6 @@ package com.taisf.services.product.entity;
 
 import com.jk.framework.base.entity.BaseEntity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -73,7 +72,9 @@ public class ProductEntity extends BaseEntity {
      */
     private Integer isDel;
 
+
     private static final long serialVersionUID = 1L;
+
 
     public Integer getId() {
         return id;

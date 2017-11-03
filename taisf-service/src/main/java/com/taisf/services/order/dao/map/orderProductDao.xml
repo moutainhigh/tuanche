@@ -84,6 +84,7 @@
         FROM t_order_product op INNER JOIN t_product p ON op.product_code = p.id
         INNER JOIN t_order o ON o.order_sn = op.order_sn
         WHERE 1=1
+        and TO_DAYS( now() ) - TO_DAYS(o.create_time) = 0
         <if test="enterpriseCode != null and enterpriseCode != '' ">
             AND o.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
         </if>

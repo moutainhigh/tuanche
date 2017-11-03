@@ -5,8 +5,6 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.user.dto.UserAccountRequest;
-import com.taisf.services.user.entity.AccountLogEntity;
-import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.dto.UserRequest;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.vo.UserAccountVO;
@@ -166,6 +164,15 @@ public class UserDao extends BaseDao {
         par.put("userUid",userId);
         par.put("userPassword",userPassword);
         return mybatisDaoContext.update(SQLID + "updateUserPwd", par );
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/11/3
+     * @description:根据手机号查询
+     **/
+    public UserEntity getByUserPhone(String userPhone){
+        return mybatisDaoContext.findOne(SQLID + "selectByUserPhone", UserEntity.class, userPhone);
     }
 
 }
