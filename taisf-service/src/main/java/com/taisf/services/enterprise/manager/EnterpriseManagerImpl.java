@@ -325,7 +325,9 @@ public class EnterpriseManagerImpl {
 		if(enterpriseModel.getAddressEntityList() == null) return;
 		
 		for(EnterpriseAddressEntity record : enterpriseModel.getAddressEntityList()) {
-			enterpriseAddressDao.saveEnterpriseAddress(record);
+			if(!Check.NuNObj(record.getAddress())) {
+				enterpriseAddressDao.saveEnterpriseAddress(record);
+			}
 		}
 	}
 	
@@ -349,7 +351,25 @@ public class EnterpriseManagerImpl {
 		enterpriseFinanceDao.updateEnterpriseFinance(enterpriseModel.getFinanceEntity());
 		
 		if(enterpriseModel.getAddressEntityList() == null) return;
-		//for()
+		//方案一 全部删除重新添加
+		/*enterpriseAddressDao.deleteByEnterpriseCode(entity.getEnterpriseCode());
+		for(EnterpriseAddressEntity record : enterpriseModel.getAddressEntityList()) {
+			if(!Check.NuNObj(record.getAddress())) {
+				enterpriseAddressDao.saveEnterpriseAddress(record);
+			}
+		}*/
+		
+		//方案二
+		for(EnterpriseAddressEntity record : enterpriseModel.getAddressEntityList()) {
+			if(!Check.NuNObj(record.getAddress())) {
+				int count = enterpriseAddressDao.updateEnterpriseAddress(record);
+				if (count == 0) {
+					enterpriseAddressDao.saveEnterpriseAddress(record);
+				}
+			} else {
+				enterpriseAddressDao.deleteByFid(record.getFid());
+			}
+		}
 	}
 
 }

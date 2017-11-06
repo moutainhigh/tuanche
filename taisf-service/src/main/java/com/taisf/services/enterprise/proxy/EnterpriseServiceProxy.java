@@ -461,18 +461,18 @@ public class EnterpriseServiceProxy implements EnterpriseService {
 		List<EnterpriseAddressEntity> addressEntityList = new ArrayList<>();
 		EnterpriseAddressEntity addressEntity = null;
 		
+		addressEntity = new EnterpriseAddressEntity();
+		addressEntity.setEnterpriseCode(request.getEnterpriseCode());
+		addressEntity.setFid(request.getEnterpriseCode() + "#mainAddress");
 		if(!Check.NuNObj(request.getMainAddress())) {
-			addressEntity = new EnterpriseAddressEntity();
-			addressEntity.setEnterpriseCode(request.getEnterpriseCode());
-			addressEntity.setFid("mainAddress");
 			addressEntity.setAddress(request.getMainAddress());
 		}
 		addressEntityList.add(addressEntity);
 		
+		addressEntity = new EnterpriseAddressEntity();
+		addressEntity.setEnterpriseCode(request.getEnterpriseCode());
+		addressEntity.setFid(request.getEnterpriseCode() + "#otherAddress");
 		if(!Check.NuNObj(request.getOtherAddress())) {
-			addressEntity = new EnterpriseAddressEntity();
-			addressEntity.setEnterpriseCode(request.getEnterpriseCode());
-			addressEntity.setFid("otherAddress");
 			addressEntity.setAddress(request.getOtherAddress());
 		}
 		addressEntityList.add(addressEntity);
