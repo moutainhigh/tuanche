@@ -103,5 +103,15 @@
     </set>
     where fid = #{fid,jdbcType=INTEGER}
   </update>
+  
+  <delete id="deleteByFid" parameterType="java.lang.String">
+    delete from t_enterprise_address
+    where fid = #{fid,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByEnterpriseCode" parameterType="java.lang.String">
+    delete from t_enterprise_address
+    where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+  </delete>
 
 </mapper>

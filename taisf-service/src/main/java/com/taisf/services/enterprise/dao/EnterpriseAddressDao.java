@@ -14,8 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>企业地址</p>
+ * <p>
+ * 企业地址
+ * </p>
  * <p/>
+ * 
  * <PRE>
  * <BR>	修改记录
  * <BR>-----------------------------------------------
@@ -29,52 +32,73 @@ import java.util.Map;
 @Repository("enterprise.enterpriseAddressDao")
 public class EnterpriseAddressDao extends BaseDao {
 
-    private String SQLID = "enterprise.enterpriseAddressDao.";
+	private String SQLID = "enterprise.enterpriseAddressDao.";
 
-    /**
-     * 日志对象
-     */
-    private static Logger logger = LoggerFactory.getLogger(EnterpriseAddressDao.class);
+	/**
+	 * 日志对象
+	 */
+	private static Logger logger = LoggerFactory.getLogger(EnterpriseAddressDao.class);
 
-    /**
-     * 根据fid获取企业的信息
-     * @author afi
-     * @param fid
-     * @return
-     */
-    public EnterpriseAddressEntity getEnterpriseAddressByFid(String fid){
-        return mybatisDaoContext.findOne(SQLID+"getEnterpriseAddressByFid", EnterpriseAddressEntity.class, fid);
-    }
+	/**
+	 * 根据fid获取企业的信息
+	 * 
+	 * @author afi
+	 * @param fid
+	 * @return
+	 */
+	public EnterpriseAddressEntity getEnterpriseAddressByFid(String fid) {
+		return mybatisDaoContext.findOne(SQLID + "getEnterpriseAddressByFid", EnterpriseAddressEntity.class, fid);
+	}
 
+	/**
+	 * 获取当前的企业地址列表
+	 * 
+	 * @author afi
+	 * @param enterpriseCode
+	 * @return
+	 */
+	public List<EnterpriseAddressEntity> getEnterpriseAddressByCode(String enterpriseCode) {
+		return mybatisDaoContext.findAll(SQLID + "getEnterpriseAddressByCode", EnterpriseAddressEntity.class,
+				enterpriseCode);
+	}
 
-    /**
-     * 获取当前的企业地址列表
-     * @author afi
-     * @param enterpriseCode
-     * @return
-     */
-    public List<EnterpriseAddressEntity> getEnterpriseAddressByCode(String enterpriseCode){
-        return mybatisDaoContext.findAll(SQLID+"getEnterpriseAddressByCode", EnterpriseAddressEntity.class, enterpriseCode);
-    }
+	/**
+	 * 增加地址
+	 * 
+	 * @author afi
+	 * @param record
+	 * @return
+	 */
+	public int saveEnterpriseAddress(EnterpriseAddressEntity record) {
 
-    /**
-     * 增加地址
-     * @author afi
-     * @param record
-     * @return
-     */
-    public int saveEnterpriseAddress(EnterpriseAddressEntity record){
+		return mybatisDaoContext.save(SQLID + "saveEnterpriseAddress", record);
+	}
 
-        return mybatisDaoContext.save(SQLID + "saveEnterpriseAddress", record);
-    }
-    /**
-     * 修改地址信息
-     * @author afi
-     * @param record
-     * @return
-     */
-    public int updateEnterpriseAddress(EnterpriseAddressEntity record){
-        return mybatisDaoContext.update(SQLID + "updateEnterpriseAddress", record);
-    }
+	/**
+	 * 修改地址信息
+	 * 
+	 * @author afi
+	 * @param record
+	 * @return
+	 */
+	public int updateEnterpriseAddress(EnterpriseAddressEntity record) {
+		return mybatisDaoContext.update(SQLID + "updateEnterpriseAddress", record);
+	}
 
+	/**
+	 * 删除地址
+	 * 
+	 * @return
+	 */
+	public int deleteByFid(String fid) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("fid", fid);
+		return mybatisDaoContext.delete(SQLID + "deleteByFid", map);
+	}
+
+	public int deleteByEnterpriseCode(String enterpriseCode) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("enterpriseCode", enterpriseCode);
+		return mybatisDaoContext.delete(SQLID + "deleteByEnterpriseCode", map);
+	}
 }
