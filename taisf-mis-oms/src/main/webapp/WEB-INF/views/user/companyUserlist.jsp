@@ -163,6 +163,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</label>
+                                <div class="col-sm-8">
+                                    <input id="userName" name="userName" type="text"
+                                           value="${backstageUser.userName }" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;号:</label>
                                 <div class="col-sm-8">
                                     <input id="userPhoneA" name="userPhoneA" type="text"
@@ -229,6 +236,13 @@
                                 <div class="col-sm-8">
                                     <input id="userCodeE" name="userCode" type="text"
                                            value="${user.userCode }" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</label>
+                                <div class="col-sm-8">
+                                    <input id="userName-E" name="userNameE" type="text"
+                                           value="${backstageUser.userName }" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -435,6 +449,7 @@
             success: function (result) {
                 if (result.code === 0) {
                     $('#UserUidE').val(result.data.userUid);
+                    $('#userName-E').val(result.data.userName);
                     $('#userCodeE').val(result.data.userCode);
                     $('#userPhoneU').val(result.data.userPhone);
                     $('#enterpriseCodeE').val(result.data.enterpriseCode);
@@ -487,6 +502,11 @@
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
+        ;if ($("#userName-E").val() == null || $("#userName-E").val() == "") {
+            layer.alert("员工姓名不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
         ;
         if ($("#enterpriseCodeE option:selected").val() == null || $("#enterpriseCodeE option:selected").val() == "") {
             layer.alert("请选择企业", {icon: 5, time: 2000, title: '提示'});
@@ -512,6 +532,7 @@
         $.ajax({
             data: {
                 'userUid': $("#UserUidE").val(),
+                'userName': $("#userName-E").val(),
                 'userCode': $("#userCodeE").val(),
                 'userPhone': $("#userPhoneU").val(),
                 'enterpriseCode': $("#enterpriseCodeE option:selected").val(),
@@ -549,6 +570,11 @@
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
+        ;if ($("#userName").val() == null || $("#userName").val() == "") {
+            layer.alert("员工姓名不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
         ;
         if ($('input[name="productSource"]:checked').val() == null || $('input[name="productSource"]:checked').val() == "") {
             layer.alert("请选择类型", {icon: 5, time: 2000, title: '提示'});
@@ -582,6 +608,7 @@
             },
             data: {
                 'userCode': $("#userCode").val(),
+                'userName': $("#userName").val(),
                 'userPhone': $("#userPhoneA").val(),
                 'enterpriseCode': $("#enterpriseCodeA  option:selected").val(),
                 'enterpriseName': $("#enterpriseCodeA  option:selected").text(),
