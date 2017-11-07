@@ -423,15 +423,20 @@ public class UserController {
      **/
     @RequestMapping("updateAccountUser")
     @ResponseBody
-    public DataTransferObject<Void> updateAccountUser(HttpServletRequest request,UserAccountEntity accountUserEntity) {
+    public DataTransferObject<Void> updateAccountUser(HttpServletRequest request,UserEntity userEntity) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if (Check.NuNObj(accountUserEntity)) {
+        if (Check.NuNObj(userEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
         try {
-            userService.updateAccountUser(accountUserEntity);
+            //如果是注销
+            if(userEntity.getUserStatus() == UserStatusEnum.FORBIDDEN.getCode()){
+                userService.forbiddenUser(userEntity.getUserUid());
+            }else{
+                userService.updateUser(userEntity);
+            }
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);

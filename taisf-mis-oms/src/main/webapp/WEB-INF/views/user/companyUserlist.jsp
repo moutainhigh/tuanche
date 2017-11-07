@@ -114,6 +114,7 @@
                         <thead>
                         <tr>
                             <%--<th data-field="id" data-visible="false"></th>--%>
+                                <th data-field="userUid" data-visible="false"></th>
                             <th data-field="id" data-width="10%"
                                 data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="userCode" data-width="10%"
@@ -128,7 +129,7 @@
                                 data-align="center"><span class="tdfont">餐食标准</span></th>
                                 <th data-field="amount" data-width="15%" data-formatter="formatAmount"
                                 data-align="center"><span class="tdfont">账户金额(元)</span></th>
-                            <th data-field="accountStatus" data-width="10%" data-formatter="formatAccountStatus"
+                            <th data-field="userStatus" data-width="10%" data-formatter="formatAccountStatus"
                                 data-align="center"><span class="tdfont">状态</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
@@ -400,11 +401,11 @@
         if(value == 1){
             return "可用";
         }else if(value == 2){
-            return "禁用";
+            return "激活";
         }else if(value == 3){
+            return "注销";
+        }else if(value == 4){
             return "冻结";
-        }else{
-            return "无账户";
         }
     }
 
@@ -427,13 +428,12 @@
     function formatOperate(value, row, index) {
         var result = "";
         result = result + "<a title='编辑' onclick='toedit("+row.id+")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        if(row.accountStatus == 1){
-            result = result + "<a title='禁用' onclick='updateAccountUser(\""+row.userUid+"\",\"2\")'  >禁用</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-            result = result + "<a title='冻结' onclick='updateAccountUser(\""+row.userUid+"\",\"3\")' >冻结</a>";
-        }else if(row.accountStatus ==2 || row.accountStatus == 3){
-            result = result + "<a title='激活' onclick='updateAccountUser(\""+row.userUid+"\",\"1\")' >激活</a>";
+        if(row.userStatus == 1 || row.userStatus == 2){
+            result = result + "<a title='禁用' onclick='updateUserStatus(\""+row.userUid+"\",\"3\")'  >注销</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result = result + "<a title='冻结' onclick='updateUserStatus(\""+row.userUid+"\",\"4\")' >冻结</a>";
+        }else if(row.userStatus ==3 || row.userStatus == 4){
+            result = result + "<a title='激活' onclick='updateUserStatus(\""+row.userUid+"\",\"2\")' >激活</a>";
         }
-
         return result;
     }
     //编辑员工
@@ -469,11 +469,11 @@
             }
         });
     }
-    function updateAccountUser(id,status) {
+    function updateUserStatus(id,status) {
         $.ajax({
             data: {
-                'userId': id,
-                'accountStatus': status,
+                'userUid': id,
+                'userStatus': status,
             },
             type: "post",
             dataType: "json",

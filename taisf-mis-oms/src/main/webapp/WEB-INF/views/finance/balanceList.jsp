@@ -412,8 +412,8 @@
 
     function paginationAccount(params) {
         return {
-            enterpriseCode: $("#id_enterpriseCode").val(),
-            userPhone: $("#userPhone").val(),
+            enterpriseCode: $("#enterpriseCode").val(),
+            /*userPhone: $("#userPhone").val(),*/
             limit: params.limit,
             page: $("#listTable").bootstrapTable("getOptions").pageNumber
         };
