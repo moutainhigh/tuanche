@@ -197,6 +197,7 @@
                 url: 'finance/chargeMoney',
                 success: function (result) {
                     if (result.code === 0) {
+                        layer.alert("充值成功", {icon: 6, time: 2000, title: '提示'});
                         $('#chargeModal').modal('hide');
                     } else {
                         layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});

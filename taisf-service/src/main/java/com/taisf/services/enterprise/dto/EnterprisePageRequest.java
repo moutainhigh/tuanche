@@ -22,11 +22,24 @@ public class EnterprisePageRequest extends PageRequest {
      */
     private String enterpriseCode;
 
+    /**
+     * 企业状态
+     */
+    private Integer enterpriseStatus;
+
     public String getEnterpriseCode() {
         return enterpriseCode;
     }
 
     public void setEnterpriseCode(String enterpriseCode) {
         this.enterpriseCode = enterpriseCode;
+    }
+
+    public Integer getEnterpriseStatus() {
+        return enterpriseStatus;
+    }
+
+    public void setEnterpriseStatus(Integer enterpriseStatus) {
+        this.enterpriseStatus = enterpriseStatus;
     }
 }

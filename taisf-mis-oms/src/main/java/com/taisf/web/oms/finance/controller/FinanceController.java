@@ -5,6 +5,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.EnterpriseStatusEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
@@ -80,6 +81,10 @@ public class FinanceController {
     public PageResult enterprisePageListPage(HttpServletRequest request, EnterprisePageRequest req) {
         PageResult pageResult = new PageResult();
         try {
+            if (Check.NuNObj(req)){
+                req = new EnterprisePageRequest();
+            }
+            req.setEnterpriseStatus(EnterpriseStatusEnum.SUCCESS.getCode());
             DataTransferObject<PagingResult<EnterpriseEntity>> dto = enterpriseService.getEnterpriseByPage(req);
             if (dto.checkSuccess()){
                 PagingResult<EnterpriseEntity> pagingResult = dto.getData();

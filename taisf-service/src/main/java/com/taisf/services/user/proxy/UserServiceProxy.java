@@ -13,6 +13,7 @@ import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.permission.dao.EmployeeDao;
 import com.taisf.services.permission.entity.EmployeeEntity;
+import com.taisf.services.recharge.manager.RechargeManagerImpl;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.*;
 import com.taisf.services.user.entity.AccountLogEntity;
@@ -58,6 +59,9 @@ public class UserServiceProxy implements UserService {
 
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
+
+    @Resource(name = "recharge.rechargeManagerImpl")
+    private RechargeManagerImpl rechargeManager;
 
     @Resource(name = "user.userDao")
     private com.taisf.services.user.dao.UserDao userDao;
@@ -783,6 +787,60 @@ public class UserServiceProxy implements UserService {
         employeeEntity.setEmpValid(1);
         employeeEntity.setUserRole(2);
         employeeDao.insertEmployeeSysc(employeeEntity);
+    }
+
+
+    /**
+     * 禁用员工
+     * @param userUid
+     * @return
+     */
+    @Override
+    public DataTransferObject<Void> forbiddenUser(String userUid){
+        DataTransferObject dto = new DataTransferObject();
+        if (Check.NuNStr(userUid)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
+        //1. 验证手机号信息
+        UserEntity userEntity = userManager.getUserByUid(userUid);
+        if (Check.NuNObj(userEntity)){
+            dto.setErrorMsg("当前用户不存在");
+            return dto;
+        }
+
+        //2. 判断用户状态
+        UserStatusEnum userStatusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());
+        if (Check.NuNObj(userStatusEnum)){
+            dto.setErrorMsg("异常的用户状态");
+            return dto;
+        }
+        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+            return dto;
+        }
+
+        UserAccountEntity has =userManager.fillAndGetAccountUser(userUid);
+        if (Check.NuNObj(has)){
+            dto.setErrorMsg("创建用户账号失败");
+            return dto;
+        }
+
+
+        //2. 获取企业信息
+        EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
+        if (Check.NuNObj(infoVO)){
+            dto.setErrorMsg("异常的企业信息");
+            return dto;
+        }
+
+        UserAccountEntity userAccountEntity =userManager.fillAndGetAccountUser(infoVO.getEnterpriseCode());
+        if (Check.NuNObj(userAccountEntity)){
+            dto.setErrorMsg("创建企业账号信息");
+            return dto;
+        }
+        rechargeManager.forbiddenUserAccountOneByEnterprise(infoVO.getEnterpriseCode(),userUid,has.getDrawBalance());
+        return dto;
     }
 
 

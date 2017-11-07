@@ -257,7 +257,7 @@ public class OrderManagerImpl {
 		//记录当前的消费记录
 		AccountLogEntity log = new AccountLogEntity();
 		log.setAccountType(AccountTypeEnum.CONSUME.getCode());
-		log.setBizMoney(money);
+		log.setBizMoney(-money);
 		log.setBizSn(orderSn);
 		log.setUserId(userUid);
 		log.setTitle("下单消费");

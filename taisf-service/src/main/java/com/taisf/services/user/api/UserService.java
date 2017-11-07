@@ -26,6 +26,13 @@ import java.util.List;
  */
 public interface UserService {
 
+
+    /**
+     * 禁用员工
+     * @param userUid
+     * @return
+     */
+    DataTransferObject<Void> forbiddenUser(String userUid);
     /**
      * 获取当前的账户信息
      * @param userAccountRequest

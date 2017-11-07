@@ -106,6 +106,14 @@ public class UserServiceProxyTest extends BaseTest {
 
 
 
+
+    @Test
+    public void forbiddenUserTest() {
+        DataTransferObject  dto = userService.forbiddenUser("afi");
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
+
+
     @Test
     public void rechargeLogTest() {
 

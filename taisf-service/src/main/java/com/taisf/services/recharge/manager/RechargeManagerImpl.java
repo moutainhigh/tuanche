@@ -126,6 +126,28 @@ public class RechargeManagerImpl {
 
 
     /**
+     * 企业金额转到用户
+     * @param enterpriseCode
+     * @param userUid
+     * @param money
+     */
+    public void forbiddenUserAccountOneByEnterprise(String enterpriseCode,String userUid,int money){
+
+        //xxxx TODO 修改状态
+
+        if (money <= 0){
+            return;
+        }
+        //将账户钱转到企业
+        forbiddenUserAccount(userUid,money,UUIDGenerator.hexUUID());
+
+        //还原企业的金额
+        this.rollBackEnterpriseAccount(enterpriseCode,money, UUIDGenerator.hexUUID());
+    }
+
+
+
+    /**
      * 充值
      * @param enterpriseCode
      * @param money
@@ -144,6 +166,47 @@ public class RechargeManagerImpl {
         accountLogDao.saveAccountLog(log);
     }
 
+
+    /**
+     * 充值
+     * @param enterpriseCode
+     * @param money
+     * @param bizSn
+     */
+    private void rollBackEnterpriseAccount(String enterpriseCode,int money,String bizSn){
+        //消费当前的余额信息
+        userAccountDao.changeUserBalance(enterpriseCode,money);
+        //记录当前的消费记录
+        AccountLogEntity log = new AccountLogEntity();
+        log.setAccountType(AccountTypeEnum.CHANGE.getCode());
+        log.setBizMoney(money);
+        log.setBizSn(bizSn);
+        log.setUserId(enterpriseCode);
+        log.setTitle("员工禁用返还企业");
+        accountLogDao.saveAccountLog(log);
+    }
+
+
+
+
+    /**
+     * 充值
+     * @param userUid
+     * @param money
+     * @param bizSn
+     */
+    private void forbiddenUserAccount(String userUid,int money,String bizSn){
+        //消费当前的余额信息
+        userAccountDao.changeUserBalance(userUid,-money);
+        //记录当前的消费记录
+        AccountLogEntity log = new AccountLogEntity();
+        log.setAccountType(AccountTypeEnum.CHANGE.getCode());
+        log.setBizMoney(money);
+        log.setBizSn(bizSn);
+        log.setUserId(userUid);
+        log.setTitle("转到企业账户");
+        accountLogDao.saveAccountLog(log);
+    }
 
 
     /**
