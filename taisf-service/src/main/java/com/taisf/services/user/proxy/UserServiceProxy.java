@@ -34,7 +34,6 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -754,7 +753,7 @@ public class UserServiceProxy implements UserService {
     @Override
     public DataTransferObject<Void> updateUser(UserEntity userEntity){
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        int num = userDao.updateUser(userEntity);
+        userManager.updateUser(userEntity);
         return dto;
     }
 
@@ -779,6 +778,7 @@ public class UserServiceProxy implements UserService {
      **/
     @Override
     public void saveUser(UserEntity userEntity){
+        userEntity.setUserPassword(MD5Util.MD5Encode("123456"));
         userDao.add(userEntity);
         EmployeeEntity employeeEntity = new EmployeeEntity();
         employeeEntity.setUserId(userEntity.getUserUid());
@@ -786,6 +786,9 @@ public class UserServiceProxy implements UserService {
         employeeEntity.setUserPwd("123456");
         employeeEntity.setEmpValid(1);
         employeeEntity.setUserRole(2);
+        employeeEntity.setEmpValid(0);
+        employeeEntity.setEmpMobile(userEntity.getUserPhone());
+        employeeEntity.setEmpMail(userEntity.getEmpMail());
         employeeDao.insertEmployeeSysc(employeeEntity);
     }
 

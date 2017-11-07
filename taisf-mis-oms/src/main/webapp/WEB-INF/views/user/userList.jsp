@@ -151,6 +151,13 @@
                                            value="${backstageUser.relationName }" class="form-control">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</label>
+                                <div class="col-sm-8">
+                                    <input id="empMail" name="empMail" type="text"
+                                           value="" class="form-control">
+                                </div>
+                            </div>
                             <input type="hidden" class="form-control" id="iduser" name="id" value=""/>
                             <input type="hidden" class="form-control" id="UID" name="UID" value=""/>
                             <!-- 用于 将表单缓存清空 -->
@@ -174,7 +181,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
-                <h4 class="modal-title">销售个人信息</h4>
+                <h4 class="modal-title">修改密码</h4>
             </div>
             <div class="col-sm-14">
                 <div class="ibox float-e-margins">
@@ -190,22 +197,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;号:</label>
+                                <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
                                 <div class="col-sm-8">
-                                    <input readonly id="userPhoneD" name="userPhone" type="text"
-                                           value="" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</label>
-                                <div class="col-sm-8">
-                                   <span id="userStatusE"></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:</label>
-                                <div class="col-sm-8">
-                                    <input readonly id="userPhoneDD" name="userPhone" type="text"
+                                    <input  id="password-E" name="password-E" type="password"
                                            value="" class="form-control">
                                 </div>
                             </div>
@@ -224,7 +218,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="saveBtnD" type="button" onclick="editUser();">保存</button>
+                <button class="btn btn-primary" id="saveBtnD" type="button" onclick="editUserPasword();">保存</button>
                 <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -347,7 +341,7 @@
     function formatOperate(value, row, index) {
         var result = "";
         result = result + "<a title='编辑' onclick='toedit("+row.id+")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='查看' onclick='detail(\""+row.id+"\")'  data-toggle='modal' data-target='#detailModal')>查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='查看' onclick='detail(\""+row.id+"\")'  data-toggle='modal' data-target='#detailModal')>修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         if(row.userStatus == 1 || row.userStatus == 2){
             result = result + "<a title='离职' onclick='updateUserStatus(\""+row.userUid+"\",\"3\")'  >离职</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         }else{
@@ -532,6 +526,14 @@
             return false;
         }
         ;
+        var empMail = $("#empMail").val();
+        if (empMail == null || empMail == "") {
+            layer.alert("邮箱不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
+        ;
+
         var userPhoneSn = /^(1[34578][0-9])\d{8}$/;
         if (userPhone != null && userPhone != '' && userPhone != undefined) {
             if (!userPhoneSn.test(userPhone)) {
@@ -552,6 +554,7 @@
             data: {
                 'userPhone': $("#userPhone").val(),
                 'userName': $("#userName").val(),
+                'empMail': $("#empMail").val(),
             },
             type: "post",
             dataType: "json",
@@ -576,6 +579,39 @@
     }
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);
+    }
+
+    function editUserPasword() {
+        if ($("#password-E").val() == null || $("#password-E").val() == "") {
+            layer.alert("请输入密码", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
+        $.ajax({
+            data: {
+                'userUid': $("#UserUidD").val(),
+                'userPassword': $("#password-E").val(),
+            },
+            type: "post",
+            dataType: "json",
+            url: 'user/editUser',
+            success: function (result) {
+                if (result.code === 0) {
+                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                    $('#listTable').bootstrapTable('refresh');
+                    $('#detailModal').modal('hide');
+                    $("input[type=reset]").trigger("click");
+                    $("#saveBtn").removeAttr("disabled");
+                } else {
+                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                    $("#saveBtn").removeAttr("disabled");
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtn").removeAttr("disabled");
+            }
+        });
     }
 </script>
 

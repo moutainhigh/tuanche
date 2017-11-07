@@ -88,6 +88,7 @@
         <if test="enterpriseCode != null and enterpriseCode != '' ">
             AND o.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
         </if>
+        AND  o.order_status = 50
         GROUP BY p.id
         ORDER BY p.product_classify
     </select>
