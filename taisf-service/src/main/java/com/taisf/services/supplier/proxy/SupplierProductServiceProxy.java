@@ -16,6 +16,7 @@ import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
+import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
@@ -55,6 +56,12 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     @Resource(name = "supplier.supplierProductDao")
     private SupplierProductDao supplierProductDao;
+
+
+    @Resource(name = "supplier.supplierPackageManagerImpl")
+    private SupplierPackageManagerImpl supplierPackageManager;
+
+
 
     @Autowired
     private PathConstant pathConstant;
@@ -164,13 +171,16 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             vo.setId(packageEntity.getId());
             vo.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
             vo.setPriceSale(packageEntity.getPackagePrice());
-            vo.setProductName(packageEntity.getTitle());
+            //处理套餐标题
+            vo.setProductName(supplierPackageManager.getPackageTitle(packageEntity.getTitle(),packageEntity.getId()));
             vo.setProductPic(packageEntity.getPackagePic());
             dealPic(vo);
             voList.add(vo);
         }
         return voList;
     }
+
+
 
 
     /**
