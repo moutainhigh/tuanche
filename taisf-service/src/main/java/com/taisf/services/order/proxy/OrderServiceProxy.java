@@ -27,6 +27,7 @@ import com.taisf.services.order.vo.*;
 import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
+import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
@@ -64,8 +65,8 @@ public class OrderServiceProxy implements OrderService {
     @Resource(name = "order.orderManagerImpl")
     private OrderManagerImpl orderManager;
 
-    @Resource(name = "product.productManagerImpl")
-    private ProductManagerImpl productManager;
+    @Resource(name = "supplier.supplierPackageManagerImpl")
+    private SupplierPackageManagerImpl supplierPackageManager;
 
 
     @Resource(name = "supplier.supplierManagerImpl")
@@ -645,7 +646,13 @@ public class OrderServiceProxy implements OrderService {
             product.setProductType(vo.getSupplierProductType());
             product.setProductPrice(vo.getProductPrice());
             product.setProductNum(vo.getProductNum());
-            product.setProductName(vo.getProductName());
+
+
+            String name =vo.getProductName();
+            if (vo.getSupplierProductType().equals(SupplierProductTypeEnum.PACKAGE.getCode())){
+                name = supplierPackageManager.getPackageTitle(name,vo.getProductCode());
+            }
+            product.setProductName(name);
             //添加商品信息
             orderSaveVO.getList().add(product);
         }
