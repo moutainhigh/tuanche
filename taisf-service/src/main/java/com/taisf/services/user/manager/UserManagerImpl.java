@@ -3,9 +3,11 @@ package com.taisf.services.user.manager;
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.MD5Util;
 import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
+import com.taisf.services.permission.dao.EmployeeDao;
 import com.taisf.services.user.dao.*;
 import com.taisf.services.user.dto.AccountLogRequest;
 import com.taisf.services.user.dto.UserAccountRequest;
@@ -50,6 +52,9 @@ public class UserManagerImpl {
 
     @Resource(name = "user.loginTokenDao")
     private LoginTokenDao loginTokenDao;
+
+    @Resource(name="ups.employeeDao")
+    private EmployeeDao employeeDao;
 
 
 
@@ -322,6 +327,10 @@ public class UserManagerImpl {
      * @return
      */
     public int updateUser(UserEntity userEntity){
+        if(!Check.NuNObj(userEntity.getUserPassword())){
+            employeeDao.changePwd(userEntity.getUserUid(),userEntity.getUserPassword());
+            userEntity.setUserPassword(MD5Util.MD5Encode(userEntity.getUserPassword()));
+        }
         return userDao.updateUser(userEntity);
     }
 
@@ -346,6 +355,5 @@ public class UserManagerImpl {
     public int updateUserPwd(String userId,String userPassword){
         return userDao.updateUserPwd(userId,userPassword);
     }
-
 
 }

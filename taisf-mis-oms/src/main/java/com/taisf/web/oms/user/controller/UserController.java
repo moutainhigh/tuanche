@@ -11,6 +11,7 @@ import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.permission.entity.EmployeeEntity;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dto.SupplierRequest;
 import com.taisf.services.supplier.entity.SupplierEntity;
@@ -19,6 +20,7 @@ import com.taisf.services.user.dto.UserRequest;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
+import com.taisf.web.oms.common.constant.LoginConstant;
 import com.taisf.web.oms.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +53,8 @@ public class UserController {
 
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
+
+
 
     /**
      * @author:zhangzhengguang
@@ -107,12 +111,23 @@ public class UserController {
                 return dto;
             }
         }
+
+        //获取当前登录员工
+        EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+        EnterpriseEntity data = enterpriseService.getEnterpriseByCode(employeeEntity.getUserId()).getData();
+        if(Check.NuNObj(data)){
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("当前登录用户不是企业,不能创建员工");
+            return dto;
+        }
         try {
             String uuid = UUIDGenerator.hexUUID();
             userEntity.setUserPassword("123456");
             userEntity.setUserStatus(UserStatusEnum.ACTIVITY.getCode());
             userEntity.setUserUid(uuid);
             userEntity.setCreateTime(new Date());
+            userEntity.setEnterpriseCode(data.getEnterpriseCode());
+            userEntity.setEnterpriseName(data.getEnterpriseName());
             userService.saveUser(userEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
@@ -423,15 +438,20 @@ public class UserController {
      **/
     @RequestMapping("updateAccountUser")
     @ResponseBody
-    public DataTransferObject<Void> updateAccountUser(HttpServletRequest request,UserAccountEntity accountUserEntity) {
+    public DataTransferObject<Void> updateAccountUser(HttpServletRequest request,UserEntity userEntity) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if (Check.NuNObj(accountUserEntity)) {
+        if (Check.NuNObj(userEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
         try {
-            userService.updateAccountUser(accountUserEntity);
+            //如果是注销
+            if(userEntity.getUserStatus() == UserStatusEnum.FORBIDDEN.getCode()){
+                userService.forbiddenUser(userEntity.getUserUid());
+            }else{
+                userService.updateUser(userEntity);
+            }
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);

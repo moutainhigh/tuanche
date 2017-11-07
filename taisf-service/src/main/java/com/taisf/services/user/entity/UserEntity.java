@@ -85,6 +85,16 @@ public class UserEntity extends BaseEntity {
 
 	private String QrCode;
 
+	private String empMail;
+
+	public String getEmpMail() {
+		return empMail;
+	}
+
+	public void setEmpMail(String empMail) {
+		this.empMail = empMail;
+	}
+
 	public String getQrCode() {
 		return QrCode;
 	}
