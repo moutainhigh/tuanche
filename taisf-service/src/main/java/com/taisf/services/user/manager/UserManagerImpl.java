@@ -317,6 +317,16 @@ public class UserManagerImpl {
 
 
     /**
+     * 更新用户
+     * @param userEntity
+     * @return
+     */
+    public int updateUser(UserEntity userEntity){
+        return userDao.updateUser(userEntity);
+    }
+
+
+    /**
      * 修改当前的支付密码
      * @author afi
      * @param userId

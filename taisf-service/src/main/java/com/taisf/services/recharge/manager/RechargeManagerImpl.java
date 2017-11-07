@@ -4,6 +4,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.UUIDGenerator;
 import com.taisf.services.common.valenum.AccountTypeEnum;
+import com.taisf.services.common.valenum.UserStatusEnum;
 import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
 import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.recharge.dao.RechargeDao;
@@ -11,8 +12,10 @@ import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.entity.RechargeEntity;
 import com.taisf.services.user.dao.AccountLogDao;
 import com.taisf.services.user.dao.UserAccountDao;
+import com.taisf.services.user.dao.UserDao;
 import com.taisf.services.user.dto.UserAccounFillRequest;
 import com.taisf.services.user.entity.AccountLogEntity;
+import com.taisf.services.user.entity.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -52,6 +55,9 @@ public class RechargeManagerImpl {
     @Resource(name = "user.accountUserDao")
     private UserAccountDao userAccountDao;
 
+
+    @Resource(name = "user.userDao")
+    private UserDao userDao;
 
     /**
      * 获取企业充值统计信息
@@ -133,8 +139,11 @@ public class RechargeManagerImpl {
      */
     public void forbiddenUserAccountOneByEnterprise(String enterpriseCode,String userUid,int money){
 
-        //xxxx TODO 修改状态
-
+        //修改状态
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserUid(userUid);
+        userEntity.setUserStatus(UserStatusEnum.FORBIDDEN.getCode());
+        userDao.updateUser(userEntity);
         if (money <= 0){
             return;
         }
