@@ -58,6 +58,7 @@
 
     <if test="enterpriseCode != null and enterpriseCode != '' " >
       and  t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+      AND t.user_uid != #{enterpriseCode,jdbcType=VARCHAR}
     </if>
 
     <if test="userPhone != null and userPhone != '' " >
