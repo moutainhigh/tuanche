@@ -180,9 +180,9 @@
 								<td align="center">
 									<select class="form-control" name="manger" id="manger">
 			                            <option value="">--请选择--</option>
-			                            <c:forEach items="${employees}" var="emp" >
-			                                <option <c:if test="${model.enterpriseEntity.manger==emp.userId}" > selected="selected"</c:if>
-			                                value="${emp.userId}">${emp.empName}</option>
+			                            <c:forEach items="${users}" var="user" >
+			                                <option <c:if test="${model.enterpriseEntity.manger==user.userUid}" > selected="selected"</c:if>
+			                                value="${user.userUid}">${user.userName}</option>
 			                            </c:forEach>
 			                        </select>
 								</td>
