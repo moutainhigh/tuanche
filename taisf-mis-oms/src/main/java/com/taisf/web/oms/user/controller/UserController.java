@@ -139,14 +139,14 @@ public class UserController {
             }
         }
 
-//        //获取当前登录员工
-//        EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
-//        EnterpriseEntity data = enterpriseService.getEnterpriseByCode(employeeEntity.getUserId()).getData();
-//        if(Check.NuNObj(data)){
-//            dto.setErrCode(DataTransferObject.ERROR);
-//            dto.setErrorMsg("当前登录用户不是企业,不能创建员工");
-//            return dto;
-//        }
+        //获取当前登录员工
+        EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+        UserEntity has = userManager.getUserByUid(employeeEntity.getUserId());
+        if(Check.NuNObj(has)){
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("当前登录用户不是供应商,不能创建员工");
+            return dto;
+        }
         try {
             String uuid = UUIDGenerator.hexUUID();
             userEntity.setUserPassword(MD5Util.MD5Encode("123456"));
@@ -154,8 +154,8 @@ public class UserController {
             userEntity.setUserUid(uuid);
             userEntity.setCreateTime(new Date());
             userEntity.setUserType(UserTypeEnum.SONGCAN.getCode());
-//            userEntity.setEnterpriseCode(data.getEnterpriseCode());
-//            userEntity.setEnterpriseName(data.getEnterpriseName());
+            userEntity.setEnterpriseCode(has.getEnterpriseCode());
+            userEntity.setEnterpriseName(has.getEnterpriseName());
             userService.saveUser(userEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
