@@ -61,6 +61,7 @@
         LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
         WHERE t.user_uid = #{userUid,jdbcType=VARCHAR}
         AND t.order_status = 60
+        ORDER  BY t.id DESC
     </select>
 
 
