@@ -105,9 +105,9 @@
                                 data-align="center"><span class="tdfont">线上预定</span></th>
                             <th data-field="extNum" data-width="10%"
                                 data-align="center"><span class="tdfont">补单</span></th>
-                            <th data-field="payMoney" data-width="10%"  data-formatter="formatAmount"
-                                data-align="center"><span class="tdfont">账户支付</span></th>
                             <th data-field="payBalance" data-width="10%"  data-formatter="formatAmount"
+                                data-align="center"><span class="tdfont">账户支付</span></th>
+                            <th data-field="payMoney" data-width="10%"  data-formatter="formatAmount"
                                 data-align="center"><span class="tdfont">网银支付</span></th>
                         </tr>
                         </thead>
