@@ -250,7 +250,7 @@
 							</tr>
 							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
 							<tr>
-								<td align="right" class="td-title">送餐地址:</td>
+								<td align="right" class="td-title"><font color="red">*&nbsp;</font>送餐地址:</td>
 								<td align="center"><input type="text" id="mainAddress" name="mainAddress" class="form-control"
 			                        value="${model.addressEntityList[0].address}" <c:if test="${operate==1}">readonly="true"</c:if>></td>
 								<td align="right" class="td-title">其他地址:</td>
@@ -530,6 +530,10 @@
         
         if(!isNumber($("#feeDay").val())) {
         	return "账期只能是正整数";
+        }
+        
+        if(isNullOrBlank($("#mainAddress").val())){
+            return "送餐地址为必填项"
         }
         
 	}
