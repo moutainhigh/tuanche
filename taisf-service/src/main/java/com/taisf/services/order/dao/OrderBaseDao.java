@@ -46,7 +46,7 @@ public class OrderBaseDao extends BaseDao{
         Map<String,Object> par = new HashMap<>();
         par.put("orderSn",orderSn);
         par.put("oldStatus",oldStatus);
-        par.put("senderUid",senderUid);
+        par.put("knightUid",senderUid);
         return mybatisDaoContext.update(SQLID + "finishOrder", par);
     }
 

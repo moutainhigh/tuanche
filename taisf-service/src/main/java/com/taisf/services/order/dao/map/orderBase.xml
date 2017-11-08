@@ -122,6 +122,12 @@
             <if test="mark != null">
                 mark,
             </if>
+
+            <if test="enterpriseCode != null">
+                enterprise_code,
+            </if>
+
+
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderSn != null">
@@ -192,6 +198,9 @@
 
             <if test="mark != null">
                 #{mark,jdbcType=VARCHAR},
+            </if>
+            <if test="enterpriseCode != null">
+                #{enterpriseCode,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
