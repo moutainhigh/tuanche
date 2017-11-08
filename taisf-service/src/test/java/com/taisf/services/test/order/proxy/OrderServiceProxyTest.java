@@ -16,6 +16,7 @@ import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>TODO</p>
@@ -37,6 +38,14 @@ public class OrderServiceProxyTest extends BaseTest {
     private OrderService orderService;
 
 
+
+    @Test
+    public void getOrderInfoWaitingListTest() {
+
+        DataTransferObject<List<OrderInfoVO>> classify = orderService.getOrderInfoWaitingList("11");
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+
+    }
 
 
 

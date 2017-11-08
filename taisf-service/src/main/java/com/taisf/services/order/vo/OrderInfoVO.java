@@ -53,6 +53,12 @@ public class OrderInfoVO  extends OrderEntity{
 
     private String supplierName;
 
+    /**
+     * 企业name
+     */
+    private String enterpriseName;
+
+
     public String getSupplierName() {
         return supplierName;
     }
@@ -131,5 +137,13 @@ public class OrderInfoVO  extends OrderEntity{
 
     public void setCarryMoney(Integer carryMoney) {
         this.carryMoney = carryMoney;
+    }
+
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
     }
 }
