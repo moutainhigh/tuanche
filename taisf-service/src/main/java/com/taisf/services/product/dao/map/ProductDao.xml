@@ -42,7 +42,7 @@
         select
         <include refid="Base_Column_List"/>
         from t_product
-        where 1=1
+        where id > 0
         <if test="productName != null and productName != ''">
            AND product_name = #{productName}
         </if>
