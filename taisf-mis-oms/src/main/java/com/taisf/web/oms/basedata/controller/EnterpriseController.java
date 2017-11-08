@@ -1,5 +1,16 @@
 package com.taisf.web.oms.basedata.controller;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
@@ -15,19 +26,11 @@ import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.entity.EnterpriseModel;
 import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.permission.api.EmployeeService;
-import com.taisf.services.permission.entity.EmployeeEntity;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.entity.SupplierEntity;
+import com.taisf.services.user.api.UserService;
+import com.taisf.services.user.entity.UserEntity;
 import com.taisf.web.oms.common.page.PageResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 @RequestMapping("base/enterprise")
@@ -37,6 +40,9 @@ public class EnterpriseController {
 
 	@Resource(name = "ups.employeeServiceProxy")
 	private EmployeeService employeeService;
+	
+	@Resource(name = "user.userServiceProxy")
+	private UserService userService;
 	
 	@Resource(name = "base.areaRegionServiceProxy")
 	private AreaRegionService areaRegionService;
@@ -50,9 +56,9 @@ public class EnterpriseController {
 	@RequestMapping("list")
 	public String list(HttpServletRequest request) {
 		// 员工列表
-		DataTransferObject<List<EmployeeEntity>> employeeDto = employeeService.findAllEmployee();
-		List<EmployeeEntity> employees = employeeDto.getData();
-		request.setAttribute("employees", employees);
+		DataTransferObject<List<UserEntity>> userDto = userService.getUserByType(2);
+		List<UserEntity> users = userDto.getData();
+		request.setAttribute("users", users);
 
 		return "enterprise/enterpriseList";
 	}
@@ -172,10 +178,11 @@ public class EnterpriseController {
 			}
 		}
 
-		// 员工列表
-		DataTransferObject<List<EmployeeEntity>> employeeDto = employeeService.findAllEmployee();
-		List<EmployeeEntity> employees = employeeDto.getData();
-		request.setAttribute("employees", employees);
+		//销售用户
+		DataTransferObject<List<UserEntity>> userDto = userService.getUserByType(2);
+		List<UserEntity> users = userDto.getData();
+		request.setAttribute("users", users);
+		
 		
 		// 供应商列表
 		DataTransferObject<List<SupplierEntity>> supplierDto = supplierService.getAllSupplierList();

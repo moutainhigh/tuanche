@@ -63,8 +63,8 @@
 	                    <div class="col-sm-2">
 	                        <select class="form-control" name="manger" id="manger">
 	                            <option value="">--请选择--</option>
-	                            <c:forEach items="${employees}" var="emp" >
-	                                <option  value="${emp.userId}">${emp.empName}</option>
+	                            <c:forEach items="${users}" var="user" >
+	                                <option  value="${user.userUid}">${user.userName}</option>
 	                            </c:forEach>
 	                        </select>
 	                    </div>
