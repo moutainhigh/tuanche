@@ -46,8 +46,7 @@
         t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status, t.order_status, t.accounts_status,
         t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,
         t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark,
-        m.sum_money, m.coupon_money, m.discount_money,m.red_money, m.need_pay, m.pay_money, m.pay_balance, m.carry_money,
-        p.enterprise_name
+        m.sum_money, m.coupon_money, m.discount_money,m.red_money, m.need_pay, m.pay_money, m.pay_balance, m.carry_money
 
     </sql>
 
@@ -56,9 +55,10 @@
     <!-- 获取订单列表的信息 -->
     <select id="getOrderInfoWaitingList" resultMap="BaseResultMap" parameterType="java.lang.String" >
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List" />,p.enterprise_name
         FROM t_order t
         INNER join t_order_money m on  t.order_sn = m.order_sn
+        LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
         WHERE t.user_uid = #{userUid,jdbcType=VARCHAR}
         AND t.order_status = 60
     </select>
@@ -67,7 +67,7 @@
     <!-- 获取订单列表的信息 -->
     <select id="getOrderInfo" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest" >
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List" />,p.enterprise_name
         FROM t_order t
           INNER join t_order_money m on  t.order_sn = m.order_sn
           LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
