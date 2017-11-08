@@ -1,4 +1,4 @@
-package com.taisf.web.oms.everydaytask;
+package com.taisf.web.oms.task;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
@@ -9,10 +9,12 @@ import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
+import com.taisf.services.order.api.OrderService;
+import com.taisf.services.order.dto.DayTaskRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.entity.OrderEntity;
-import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
+import com.taisf.services.order.vo.DayTaskVO;
 import com.taisf.services.order.vo.OrderListVo;
 import com.taisf.web.oms.common.page.PageResult;
 import org.slf4j.Logger;
@@ -42,6 +44,9 @@ public class EverydayTaskController {
     @Autowired
     private EnterpriseService enterpriseService;
 
+    @Autowired
+    private OrderService orderService;
+
 
     /**
      * @author:zhangzhengguang
@@ -62,16 +67,20 @@ public class EverydayTaskController {
      **/
     @RequestMapping("pageList")
     @ResponseBody
-    public PageResult pageList(HttpServletRequest request, EnterpriseListRequest enterpriseListRequest) {
+    public PageResult pageList(HttpServletRequest request, DayTaskRequest dayTaskRequest) {
         PageResult pageResult = new PageResult();
         try {
-            PagingResult<OrderProductEntity> pagingResult = orderManagerImpl.getEverydayTaskPgeList(enterpriseListRequest);
+            DataTransferObject<PagingResult<DayTaskVO>> dto = orderService.getEverydayTaskPgeList(dayTaskRequest);
+            if (!dto.checkSuccess()){
+                return pageResult;
+            }
+            PagingResult<DayTaskVO> pagingResult = dto.getData();
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());
                 pageResult.setTotal(pagingResult.getTotal());
             }
         } catch (Exception e) {
-            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(enterpriseListRequest));
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(dayTaskRequest));
             LogUtil.error(LOGGER, "error:{}", e);
             return new PageResult();
         }

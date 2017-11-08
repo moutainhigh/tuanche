@@ -9,10 +9,7 @@ import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.dao.*;
-import com.taisf.services.order.dto.EnterpriseStatsRequest;
-import com.taisf.services.order.dto.FinishOrderRequest;
-import com.taisf.services.order.dto.OrderInfoRequest;
-import com.taisf.services.order.dto.OrderProductListRequest;
+import com.taisf.services.order.dto.*;
 import com.taisf.services.order.entity.*;
 import com.taisf.services.order.vo.*;
 import com.taisf.services.user.dao.AccountLogDao;
@@ -170,13 +167,13 @@ public class OrderManagerImpl {
 	}
 
 	/**
-	 * @author:zhangzhengguang
-	 * @date:2017/10/18
-	 * @description:分页查询订单详情商品列表
-	 **/
-	public PagingResult<OrderProductEntity>  getEverydayTaskPgeList(EnterpriseListRequest request){
-		PagingResult<OrderProductEntity> orderProductPageList = orderProductDao.getEverydayTaskPgeList(request);
-		return orderProductPageList;
+	 * 获取当前的统计情况
+	 * @param request
+	 * @return
+	 */
+	public List<DayTaskVO>  getEverydayTaskPgeList(DayTaskRequest request){
+		List<DayTaskVO> list = orderProductDao.getEverydayTaskPgeList(request);
+		return list;
 	}
 
 	/**

@@ -15,10 +15,7 @@ import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
-import com.taisf.services.order.dto.CreateOrderRequest;
-import com.taisf.services.order.dto.EnterpriseStatsRequest;
-import com.taisf.services.order.dto.FinishOrderRequest;
-import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.dto.*;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
@@ -77,6 +74,27 @@ public class OrderServiceProxy implements OrderService {
 
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
+
+
+
+    /**
+     * 获取当前的统计情况
+     * @param request
+     * @return
+     */
+    @Override
+    public DataTransferObject<PagingResult<DayTaskVO>> getEverydayTaskPgeList(DayTaskRequest request){
+        DataTransferObject<PagingResult<DayTaskVO>> dto = new DataTransferObject<>();
+        PagingResult page = null;
+        List<DayTaskVO> list = orderManager.getEverydayTaskPgeList(request);
+        if (Check.NuNCollection(list)){
+            page = new PagingResult();
+        }else {
+            page = new PagingResult(ValueUtil.getlongValue(list.size()),list);
+        }
+        dto.setData(page);
+        return dto;
+    }
 
 
     /**

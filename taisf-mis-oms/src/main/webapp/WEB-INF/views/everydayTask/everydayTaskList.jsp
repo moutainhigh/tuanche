@@ -150,8 +150,8 @@
                 <div class="col-sm-12">
                     <table id="listTable" class="table table-bordered" data-click-to-select="true"
                            data-toggle="table" data-side-pagination="server"
-                           data-pagination="true" data-page-list="[5,10,20,50]"
-                           data-pagination="true" data-page-size="10"
+                           data-pagination="true" data-page-list="[1000]"
+                           data-pagination="true" data-page-size="1000"
                            data-pagination-first-text="首页" data-pagination-pre-text="上一页"
                            data-pagination-next-text="下一页" data-pagination-last-text="末页"
                            data-content-type="application/x-www-form-urlencoded"
@@ -164,7 +164,7 @@
                                 data-align="center"><span class="tdfont">菜品名称</span></th>
                             <th data-field="productNum" data-width="10%"
                                 data-align="center"><span class="tdfont">数量</span></th>
-                            <th data-field="productType" data-width="10%" data-formatter="formatProductClassify"
+                            <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                 data-align="center"><span class="tdfont">分类</span></th>
                         </tr>
                         </thead>

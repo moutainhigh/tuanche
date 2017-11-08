@@ -79,18 +79,40 @@
         </trim>
     </insert>
 
-    <select id="getEverydayTaskPgeList" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest" resultMap="BaseResultMap">
-        SELECT op.product_name ,SUM(op.product_num) AS productNum,p.product_classify AS product_type
-        FROM t_order_product op INNER JOIN t_product p ON op.product_code = p.id
-        INNER JOIN t_order o ON o.order_sn = op.order_sn
-        WHERE 1=1
-        and TO_DAYS( now() ) - TO_DAYS(o.create_time) = 0
-        <if test="enterpriseCode != null and enterpriseCode != '' ">
-            AND o.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
-        </if>
-        AND  o.order_status = 50
-        GROUP BY p.id
-        ORDER BY p.product_classify
+    <select id="getEverydayTaskPgeList" parameterType="java.lang.String" resultType="com.taisf.services.order.vo.DayTaskVO">
+
+        select
+            ca.num as productNum,
+            p.product_name as productName,
+            p.product_classify as productClassify
+            from
+            (
+                select
+                tmp.product_code, sum(tmp.product_num) as num
+                from
+                (
+                    SELECT
+                    CASE WHEN op.product_type = 3 THEN op.product_code
+                    WHEN op.product_type = 2 THEN p2.id
+                    ELSE p1.id  END AS product_code,
+                    op.product_num
+                    FROM
+                    t_order_product op
+                    INNER JOIN t_order o ON o.order_sn = op.order_sn
+                    LEFT JOIN t_product p1 ON op.product_code = p1.id  and op.product_type = 1
+                    LEFT JOIN t_supplier_product_package package ON op.product_code = package.id
+                    LEFT JOIN t_product p2 ON  op.product_type = 2 and p2.id in (package.big_code,package.small_code,package.su_code,package.tang_code,package.drink_code,package.food_code,package.fruit_code)
+                    where  1=1
+                    and TO_DAYS( now() ) - TO_DAYS(o.create_time) = 0
+                    <if test="enterpriseCode != null and enterpriseCode != '' ">
+                        AND o.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+                    </if>
+                    AND  o.order_status = 50
+              )tmp
+              group by tmp.product_code
+            )ca inner JOIN t_product p ON ca.product_code = p.id
+        order by p.product_classify asc
+
     </select>
 
 

@@ -3,10 +3,8 @@ package com.taisf.services.order.api;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
-import com.taisf.services.order.dto.CreateOrderRequest;
-import com.taisf.services.order.dto.EnterpriseStatsRequest;
-import com.taisf.services.order.dto.FinishOrderRequest;
-import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.dto.*;
+import com.taisf.services.order.vo.DayTaskVO;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
@@ -28,6 +26,13 @@ import java.util.List;
  */
 public interface OrderService {
 
+
+    /**
+     * 获取当前的统计情况
+     * @param request
+     * @return
+     */
+    DataTransferObject<PagingResult<DayTaskVO>> getEverydayTaskPgeList(DayTaskRequest request);
 
 
     /**
