@@ -419,8 +419,8 @@ public class UserController {
         }
         try {
             String uuid = UUIDGenerator.hexUUID();
-            userEntity.setUserPassword("123456");
-            userEntity.setUserStatus(UserStatusEnum.ACTIVITY.getCode());
+            userEntity.setUserPassword(MD5Util.MD5Encode(userEntity.getUserPhone()));
+            userEntity.setUserStatus(UserStatusEnum.AVAILABLE.getCode());
             userEntity.setUserUid(uuid);
             userEntity.setUserType(UserTypeEnum.YONGHU.getCode());
             userEntity.setCreateTime(new Date());
