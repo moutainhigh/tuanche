@@ -42,10 +42,9 @@ public class UploadController {
             type = "common";
         }
         List<ImageVO> urls = new ArrayList<>();
-        String filePath = "";
         try {
             for (MultipartFile file : pics) {
-                ImageVO vo = getStorePath(type,file.getOriginalFilename());
+                ImageVO vo = getStorePath(type);
                 file.transferTo(new File(vo.getPath()));
                 urls.add(vo);
             }
@@ -60,17 +59,15 @@ public class UploadController {
      * @param type
      * @return
      */
-    private ImageVO getStorePath(String type,String fileName) {
+    private ImageVO getStorePath(String type) {
         ImageVO vo = new ImageVO();
-        int date = DateUtil.currentTimeSecond();
-
         String tmpPath = File.separator  + type + File.separator +DateUtil.dateFormat(new Date()) + File.separator;
         File dest = new File(pathConstant.FILE_PATH+tmpPath);
         if (!dest.exists()){
             dest.mkdirs();
         }
         //设置路径
-        tmpPath +=  UUIDGenerator.hexUUID()+fileName;
+        tmpPath +=  UUIDGenerator.hexUUID();
         vo.setDbPath(tmpPath);
         vo.setPath(pathConstant.FILE_PATH + tmpPath);
         vo.setFullPath(pathConstant.PIC_URL + tmpPath);
