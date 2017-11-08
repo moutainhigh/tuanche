@@ -4,6 +4,7 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.UUIDGenerator;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.UserStatusEnum;
@@ -138,22 +139,23 @@ public class UserController {
             }
         }
 
-        //获取当前登录员工
-        EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
-        EnterpriseEntity data = enterpriseService.getEnterpriseByCode(employeeEntity.getUserId()).getData();
-        if(Check.NuNObj(data)){
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setErrorMsg("当前登录用户不是企业,不能创建员工");
-            return dto;
-        }
+//        //获取当前登录员工
+//        EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+//        EnterpriseEntity data = enterpriseService.getEnterpriseByCode(employeeEntity.getUserId()).getData();
+//        if(Check.NuNObj(data)){
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setErrorMsg("当前登录用户不是企业,不能创建员工");
+//            return dto;
+//        }
         try {
             String uuid = UUIDGenerator.hexUUID();
-            userEntity.setUserPassword("123456");
+            userEntity.setUserPassword(MD5Util.MD5Encode("123456"));
             userEntity.setUserStatus(UserStatusEnum.ACTIVITY.getCode());
             userEntity.setUserUid(uuid);
             userEntity.setCreateTime(new Date());
-            userEntity.setEnterpriseCode(data.getEnterpriseCode());
-            userEntity.setEnterpriseName(data.getEnterpriseName());
+            userEntity.setUserType(UserTypeEnum.SONGCAN.getCode());
+//            userEntity.setEnterpriseCode(data.getEnterpriseCode());
+//            userEntity.setEnterpriseName(data.getEnterpriseName());
             userService.saveUser(userEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);

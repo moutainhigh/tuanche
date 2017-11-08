@@ -94,7 +94,7 @@
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
                            data-single-select="true"
-                           data-url="user/pageList">
+                           data-url="user/pageKnightList">
                         <thead>
                         <tr>
                             <th data-field="id" data-visible="false"></th>
@@ -151,6 +151,15 @@
                                            value="${backstageUser.relationName }" class="form-control">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">员工编号:</label>
+                                <div class="col-sm-8">
+                                    <input id="userCode" name="userCode" type="text"
+                                           value="" class="form-control">
+                                </div>
+                            </div>
+
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</label>
                                 <div class="col-sm-8">
@@ -555,6 +564,7 @@
                 'userPhone': $("#userPhone").val(),
                 'userName': $("#userName").val(),
                 'empMail': $("#empMail").val(),
+                'userCode': $("#userCode").val(),
             },
             type: "post",
             dataType: "json",
