@@ -341,7 +341,10 @@ public class UserServiceProxy implements UserService {
             dto.setErrorMsg("异常的用户状态");
             return dto;
         }
-        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+        if (userStatusEnum.getCode() == UserStatusEnum.AVAILABLE.getCode()){
+            dto.setErrorMsg("请先注册");
+            return dto;
+        }else if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
             dto.setErrorMsg("该帐户已注销");
             return dto;
         }else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()){
@@ -474,7 +477,10 @@ public class UserServiceProxy implements UserService {
             dto.setErrorMsg("异常的用户状态");
             return dto;
         }
-        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+        if (userStatusEnum.getCode() == UserStatusEnum.AVAILABLE.getCode()){
+            dto.setErrorMsg("请先注册");
+            return dto;
+        }else if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
             dto.setErrorMsg("该帐户已注销");
             return dto;
         }else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()){
