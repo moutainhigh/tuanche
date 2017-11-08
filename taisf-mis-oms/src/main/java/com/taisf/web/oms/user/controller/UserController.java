@@ -66,6 +66,32 @@ public class UserController {
         return "user/userList";
     }
 
+
+    /**
+     * 销售列表
+     * @param request
+     * @param userRequest
+     * @return
+     */
+    @RequestMapping("pageKnightList")
+    @ResponseBody
+    public PageResult pageKnightList(HttpServletRequest request, UserRequest userRequest) {
+        PageResult pageResult = new PageResult();
+        try {
+            DataTransferObject<PagingResult<UserEntity>> dto = userService.pageKnightListUser(userRequest);
+            if (!Check.NuNObj(dto.getData().getList())) {
+                pageResult.setRows(dto.getData().getList());
+                pageResult.setTotal(dto.getData().getTotal());
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(userRequest));
+            LogUtil.error(LOGGER, "error:{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
+
+
     /**
      * @author:zhangzhengguang
      * @date:2017/10/11

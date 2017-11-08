@@ -108,6 +108,14 @@ public class UserDao extends BaseDao {
         return mybatisDaoContext.findAll(SQLID + "getUserByType", UserEntity.class, type);
     }
 
+
+    public PagingResult<UserEntity> pageKnightListUser(UserRequest request) {
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setPage(request.getPage());
+        pageBounds.setLimit(request.getLimit());
+        return mybatisDaoContext.findForPage(SQLID + "pageKnightListUser", UserEntity.class,request, pageBounds);
+    }
+
     public PagingResult<UserEntity> pageListUser(UserRequest request) {
         PageBounds pageBounds = new PageBounds();
         pageBounds.setPage(request.getPage());

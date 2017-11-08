@@ -706,6 +706,20 @@ public class UserServiceProxy implements UserService {
     }
 
     /**
+     * 销售列表
+     * @param request
+     * @return
+     */
+    @Override
+    public  DataTransferObject<PagingResult<UserEntity>> pageKnightListUser(UserRequest request){
+        DataTransferObject<PagingResult<UserEntity>> dto = new DataTransferObject<>();
+        PagingResult<UserEntity> userEntityPagingResult = userDao.pageKnightListUser(request);
+        dto.setData(userEntityPagingResult);
+        return dto;
+    }
+
+
+    /**
      * @author:zhangzhengguang
      * @date:2017/10/14
      * @description:销售管理列表

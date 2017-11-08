@@ -116,6 +116,14 @@ public interface UserService {
      **/
     DataTransferObject<PagingResult<UserEntity>> pageListUser(UserRequest request);
 
+
+    /**
+     * 销售列表
+     * @param request
+     * @return
+     */
+    DataTransferObject<PagingResult<UserEntity>> pageKnightListUser(UserRequest request);
+
     /**
      * @author:zhangzhengguang
      * @date:2017/10/14

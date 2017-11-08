@@ -119,6 +119,9 @@
                                 data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="userCode" data-width="10%"
                                 data-align="center"><span class="tdfont">编号</span></th>
+                            <th data-field="userName" data-width="10%"
+                                data-align="center"><span class="tdfont">姓名</span></th>
+
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
                                 data-align="center"><span class="tdfont">注册时间</span></th>
                             <th data-field="userPhone" data-width="10%"

@@ -110,12 +110,12 @@
 							   class="form-control">
 
 						<div class="ibox-content">
-							<label class="col-sm-1 control-label mtop">企业编号:</label>
+							<label class="col-sm-2 control-label mtop">企业编号:</label>
 
 							<label class="col-sm-4 control-label mtop"><span style="color: red" id="charge_code"></span></label>
 
 
-							<label class="col-sm-1 control-label mtop">企业名称:</label>
+							<label class="col-sm-2 control-label mtop">企业名称:</label>
 
 							<label class="col-sm-4 control-label mtop"><span style="color: red" id="charge_name"></span></label>
 
@@ -127,8 +127,8 @@
 
 					<div class="ibox-content">
 
-						<label class="col-sm-1 control-label mtop">充值金额:</label>
-						<div class="col-sm-2">
+						<label class="col-sm-2 control-label mtop">充值金额:</label>
+						<div class="col-sm-4">
 							<input id="moneyYuan" name="moneyYuan" type="text" value="0"
 								   class="form-control">
 						</div>
