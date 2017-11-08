@@ -812,6 +812,7 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("异常的企业信息");
             return;
         }
+
         if (Check.NuNObj(infoVO.getEnterpriseEntity().getTillTime())){
             dto.setErrorMsg("异常的企业截止时间");
             return;
@@ -845,6 +846,7 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.getOrderBase().setProvinceCode(infoVO.getEnterpriseEntity().getProvinceCode());
         orderSaveVO.getOrderBase().setCityCode(infoVO.getEnterpriseEntity().getCityCode());
         orderSaveVO.getOrderBase().setAreaCode(infoVO.getEnterpriseEntity().getAreaCode());
+        orderSaveVO.getOrderBase().setEnterpriseCode(infoVO.getEnterpriseEntity().getEnterpriseCode());
 
         if (orderTypeEnum.isExt()){
             //补餐
