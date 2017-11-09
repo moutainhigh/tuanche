@@ -150,6 +150,9 @@
         <if test="orderStatus != null">
 				AND t.order_status = #{orderStatus}
         </if>
+        <if test="orderStatus == null">
+            AND t.order_status in (60,70)
+        </if>
         <if test="openTime != null and openTime != '' ">
             <![CDATA[
 				AND t.create_time >= #{openTime}
@@ -161,7 +164,14 @@
 			]]>
         </if>
 
-        ORDER  BY t.address DESC
+        <if test="orderStatus != null">
+            ORDER  BY t.address DESC
+        </if>
+
+        <if test="orderStatus == null">
+            ORDER  BY t.send_time DESC
+        </if>
+
 
     </select>
     <resultMap id="ListMap" type="com.taisf.services.order.vo.OrderListVo">

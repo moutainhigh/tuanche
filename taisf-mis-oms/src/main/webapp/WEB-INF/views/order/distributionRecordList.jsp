@@ -209,6 +209,9 @@
                 <input id="id_enterpriseCode" name="enterpriseCode" type="hidden"
                        class="form-control">
             </div>
+
+            <span style="color: red"></span>
+
             <!-- 列表 -->
             <div class="ibox float-e-margins" style="margin-bottom:0px">
                 <div class="ibox-content">
@@ -229,10 +232,16 @@
                                            data-url="everydayTask/findListByEnterpriseCode">
                                         <thead>
                                         <tr>
-                                            <th data-field="userName" data-width="20%">预订人</th>
-                                            <th data-field="title" data-width="30%" data-align="center">标题</th>
-                                            <th data-field="userTel" data-width="30%" data-align="center">电话</th>
-                                            <th data-field="address" data-width="30%"
+                                            <th data-field="userName" data-width="10%">预订人</th>
+                                            <th data-field="userCode" data-width="10%">工号</th>
+                                            <th data-field="title" data-width="40%" data-align="center">详情</th>
+                                            <th data-field="orderStatus" data-width="10%" data-formatter="formatAccountStatus"
+                                                data-align="center"><span class="tdfont">状态</span></th>
+                                            <th data-field="sendTime" data-width="10%"
+                                                data-align="center" data-formatter="formateDate"><span class="tdfont">配送时间</span></th>
+
+                                            <th data-field="userTel" data-width="10%" data-align="center">电话</th>
+                                            <th data-field="address" data-width="20%"
                                                 data-align="center">送餐地址
                                             </th>
                                         </tr>
@@ -362,6 +371,44 @@
     function queryEmp() {
         $("#listTableEmp").bootstrapTable("selectPage", 1);
     }
+
+    function formatAccountStatus(value, row, index) {
+
+        var start = ' <span style="color: ';
+        var clor = '#1ab394">';
+        var name = '-';
+        var end = '</span>';
+
+        if (value == 10) {
+            name = "待支付";
+        } else if (value == 11) {
+            name = "部分支付";
+        } else if (value == 30) {
+            name = "取消";
+        } else if (value == 40) {
+            name = "已经退款";
+        } else if (value == 50) {
+            name = "已支付";
+        } else if (value == 60) {
+            name = "已配送";
+        } else if (value == 70) {
+            clor = 'red">';
+            name = "已签收";
+        }
+        return start + clor + name + end;
+    }
+
+
+    // 格式化时间
+    function formateDate(value, row, index) {
+        if (value != null) {
+            var vDate = new Date(value);
+            return vDate.format("yyyy-MM-dd HH:mm:ss");
+        } else {
+            return "";
+        }
+    }
+
 </script>
 </body>
 </html>

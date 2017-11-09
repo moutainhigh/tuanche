@@ -163,7 +163,7 @@ public class EverydayTaskController {
             if (Check.NuNObj(orderInfoRequest)){
                 orderInfoRequest = new OrderInfoRequest();
             }
-            orderInfoRequest.setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
+//            orderInfoRequest.setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
             PagingResult<OrderEntity> pagingResult = orderManagerImpl.findListByEnterpriseCode(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());
