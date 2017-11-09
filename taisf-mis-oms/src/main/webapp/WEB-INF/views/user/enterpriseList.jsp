@@ -72,12 +72,10 @@
 										data-align="center"><span class="tdfont">企业编号</span></th>
 									<th data-field="enterpriseName" data-width="10%"
 										data-align="center" ><span class="tdfont">企业名称</span></th>
-									<th data-field="enterpriseType" data-width="15%"
+									<th data-field="enterpriseType" data-width="15%" data-formatter="formatEnterpriseType"
 										data-align="center" ><span class="tdfont">企业类型</span></th>
-									<th data-field="packing" data-width="10%"
-										data-align="center" ><span class="tdfont">用餐总数</span></th>
-									<th data-field="unit" data-width="10%" data-formatter="formatDate"
-										data-align="center" ><span class="tdfont">供餐信息</span></th>
+									<th data-field="cityName" data-width="10%"
+										data-align="center" ><span class="tdfont">城市</span></th>
 									<th data-field="openTime" data-width="10%" data-formatter="formatDate"
 										data-align="center" ><span class="tdfont">开户日期</span></th>
 									<th data-field="tillTime" data-width="10%" data-formatter="formatDate"
@@ -170,6 +168,24 @@
 				return _date.format("yyyy-MM-dd");
 			} else {
 				return "-";
+			}
+		}
+		function formatEnterpriseType(value, row, index) {
+			if (value == 1) {
+				return "平台委托";
+			} else if(value == 2) {
+				return "自主开发";
+			}
+		}
+		function formatStatus(value, row, index) {
+			if (value == 0) {
+				return "未提交";
+			} else if(value == 1) {
+				return "正常";
+			}else if(value == 1) {
+				return "已过期";
+			}else if(value == 1) {
+				return "停止合作";
 			}
 		}
 
