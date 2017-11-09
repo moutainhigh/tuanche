@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -138,7 +139,7 @@ public class EverydayTaskController {
         }
         try {
             orderEntity.setOrderStatus(OrdersStatusEnum.SEND.getCode());
-            orderManagerImpl.updateByEnterpriseCode(orderEntity);
+            orderManagerImpl.sendByEnterpriseCode(orderEntity);
         } catch (Exception e) {
             LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(orderEntity));
             LogUtil.error(LOGGER, "error:{}", e);

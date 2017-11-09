@@ -2,6 +2,8 @@ package com.taisf.services.supplier.manager;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.ValueUtil;
+import com.taisf.services.order.vo.OrderProductVO;
 import com.taisf.services.product.dao.ProductDao;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.dao.SupplierDao;
@@ -47,7 +49,10 @@ public class SupplierPackageManagerImpl {
 	 * @param packageId
 	 * @return
 	 */
-	public String getPackageTitle(String preTitle,Integer packageId){
+	public String dealPackageTitle(String preTitle,Integer packageId,Map<String,OrderProductVO> titleMap,int num){
+		if (Check.NuNObj(titleMap)){
+			titleMap = new HashMap<>();
+		}
 		StringBuffer sb = new StringBuffer();
 		sb.append("【");
 		sb.append(preTitle);
@@ -58,12 +63,25 @@ public class SupplierPackageManagerImpl {
 		}
 		int i= 0;
 		for (ProductEntity productEntity : list) {
-
+			String key = ValueUtil.getStrValue(productEntity.getId());
 			if (i > 0){
 				sb.append("+");
 			}
 			sb.append(productEntity.getProductName());
 			i++;
+			//处理普通商品
+			if (titleMap.containsKey(key)){
+				OrderProductVO has = titleMap.get(key);
+				has.setProductNum(has.getProductNum() + num);
+			}else {
+				OrderProductVO has = new OrderProductVO();
+				has.setProductNum(num);
+				has.setProductCode(productEntity.getId());
+				has.setProductName(productEntity.getProductName());
+				has.setProductPrice(productEntity.getPriceSale());
+				titleMap.put(key,has);
+			}
+
 		}
 		return sb.toString();
 	}

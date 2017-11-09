@@ -80,7 +80,7 @@ public class OrderServiceProxyTest extends BaseTest {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         createOrderRequest.setUserUid("baozi");
         createOrderRequest.setBusinessUid("123");
-        createOrderRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
+        createOrderRequest.setOrderType(OrderTypeEnum.LUNCH_COMMON.getCode());
         createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(1);
         createOrderRequest.setAddressFid("567890#otherAddress");
