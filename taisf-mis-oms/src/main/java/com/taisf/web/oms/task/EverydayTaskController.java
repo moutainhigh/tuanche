@@ -160,6 +160,10 @@ public class EverydayTaskController {
     public PageResult findListByEnterpriseCode(HttpServletRequest request, OrderInfoRequest orderInfoRequest) {
         PageResult pageResult = new PageResult();
         try {
+            if (Check.NuNObj(orderInfoRequest)){
+                orderInfoRequest = new OrderInfoRequest();
+            }
+            orderInfoRequest.setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
             PagingResult<OrderEntity> pagingResult = orderManagerImpl.findListByEnterpriseCode(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());

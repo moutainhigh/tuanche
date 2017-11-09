@@ -143,7 +143,7 @@
     <select id="findListByEnterpriseCode" parameterType="com.taisf.services.order.dto.OrderInfoRequest" resultMap="BaseResultMap">
         SELECT
         t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status, t.order_status, t.accounts_status,
-        t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,
+        t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,t.user_code,
         t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark
         FROM t_order t
         WHERE t.enterprise_code = #{enterpriseCode}
