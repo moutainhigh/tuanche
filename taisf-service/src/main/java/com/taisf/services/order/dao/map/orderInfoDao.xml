@@ -136,6 +136,7 @@
     <update id="updateByEnterpriseCode" parameterType="com.taisf.services.order.entity.OrderEntity">
         UPDATE  t_order SET order_status = #{orderStatus}
         WHERE  enterprise_code = #{enterpriseCode}
+        AND order_status = 50
     </update>
 
 
