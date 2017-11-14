@@ -181,8 +181,8 @@ public class OrderManagerImpl {
 	 * @date:2017/10/18
 	 * @description:修改订单状态根据企业编号
 	 **/
-	public void updateByEnterpriseCode(OrderEntity orderEntity){
-		orderInfoDao.updateByEnterpriseCode(orderEntity);
+	public void sendByEnterpriseCode(OrderEntity orderEntity){
+		orderInfoDao.sendByEnterpriseCode(orderEntity);
 	}
 
 	/**

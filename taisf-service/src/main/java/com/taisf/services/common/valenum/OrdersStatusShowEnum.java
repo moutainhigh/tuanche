@@ -39,7 +39,7 @@ public enum OrdersStatusShowEnum {
     /**
      * 已配送
      */
-    HAS_SEND("已配送", 6),
+    HAS_SEND("配送中", 6),
 
 
     /**

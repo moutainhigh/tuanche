@@ -172,7 +172,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             vo.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
             vo.setPriceSale(packageEntity.getPackagePrice());
             //处理套餐标题
-            vo.setProductName(supplierPackageManager.getPackageTitle(packageEntity.getTitle(),packageEntity.getId()));
+            vo.setProductName(supplierPackageManager.dealPackageTitle(packageEntity.getTitle(),packageEntity.getId(),null,1));
             vo.setProductPic(packageEntity.getPackagePic());
             dealPic(vo);
             voList.add(vo);

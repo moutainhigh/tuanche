@@ -80,9 +80,13 @@ public class OrderEntity extends BaseEntity {
     private String userName;
 
     /**
+     * 用户编号
+     */
+    private String userCode;
+    /**
      * 配送人
      */
-    private String senderUid;
+    private String knightUid;
     
     /** 订单支付时间 */
     private Date payTime;
@@ -285,11 +289,19 @@ public class OrderEntity extends BaseEntity {
         this.orderType = orderType;
     }
 
-    public String getSenderUid() {
-        return senderUid;
+    public String getKnightUid() {
+        return knightUid;
     }
 
-    public void setSenderUid(String senderUid) {
-        this.senderUid = senderUid;
+    public void setKnightUid(String knightUid) {
+        this.knightUid = knightUid;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 }

@@ -3,10 +3,7 @@ package com.taisf.services.order.proxy;
 import com.jk.framework.base.entity.BaseEntity;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.DateUtil;
-import com.jk.framework.base.utils.MD5Util;
-import com.jk.framework.base.utils.ValueUtil;
+import com.jk.framework.base.utils.*;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
@@ -34,8 +31,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>订单相关</p>
@@ -656,8 +652,11 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
 
+        Map<String,OrderProductVO> titleMap = new HashMap<>();
+
         //购物车中的商品
         for (CartVO vo : cartList) {
+            String key = ValueUtil.getStrValue(vo.getProductCode());
             OrderProductEntity product = new OrderProductEntity();
             product.setOrderSn(orderSaveVO.getOrderSn());
             product.setProductCode(vo.getProductCode());
@@ -668,15 +667,46 @@ public class OrderServiceProxy implements OrderService {
 
             String name =vo.getProductName();
             if (vo.getSupplierProductType().equals(SupplierProductTypeEnum.PACKAGE.getCode())){
-                name = supplierPackageManager.getPackageTitle(name,vo.getProductCode());
+                //处理礼包
+                name = supplierPackageManager.dealPackageTitle(name,vo.getProductCode(),titleMap,vo.getProductNum());
+            }else {
+                //处理普通商品
+                if (titleMap.containsKey(key)){
+                    OrderProductVO has = titleMap.get(key);
+                    has.setProductNum(has.getProductNum() + vo.getProductNum());
+                }else {
+                    OrderProductVO has = new OrderProductVO();
+                    has.setProductNum(vo.getProductNum());
+                    has.setProductCode(vo.getProductCode());
+                    has.setProductName(vo.getProductName());
+                    has.setProductPrice(vo.getProductPrice());
+                    titleMap.put(key,has);
+                }
             }
             product.setProductName(name);
             //添加商品信息
             orderSaveVO.getList().add(product);
         }
-
-
-        orderSaveVO.getOrderBase().setTitle("补单由供餐商随即分配菜品");
+        StringBuffer title = new StringBuffer();
+        List<OrderProductVO> list = new ArrayList(titleMap.values());
+        Collections.sort(list);
+        int i = 0;
+        if (!Check.NuNCollection(list)){
+            for (OrderProductVO vo : list) {
+                if (i>0){
+                    title.append(",");
+                }
+                title.append(vo.getProductName());
+                title.append("x");
+                title.append(vo.getProductNum());
+                i++;
+            }
+        }
+        String titleStr = title.toString();
+        if (titleStr.length()>256){
+            titleStr = titleStr.substring(0,252) +"等";
+        }
+        orderSaveVO.getOrderBase().setTitle(titleStr);
 
     }
 
@@ -779,10 +809,10 @@ public class OrderServiceProxy implements OrderService {
         BeanUtils.copyProperties(userEntity,user);
         //当前的用户信息
         orderSaveVO.setUser(user);
-
         orderSaveVO.getOrderBase().setUserName(userEntity.getUserName());
         orderSaveVO.getOrderBase().setUserTel(userEntity.getUserPhone());
         orderSaveVO.getOrderBase().setUserUid(userEntity.getUserUid());
+        orderSaveVO.getOrderBase().setUserCode(userEntity.getUserCode());
         UserAccountEntity accountEntity = userManager.fillAndGetAccountUser(createOrderRequest.getUserUid());
         if (Check.NuNObj(accountEntity)
                 || Check.NuNStr(accountEntity.getAccountPassword())){

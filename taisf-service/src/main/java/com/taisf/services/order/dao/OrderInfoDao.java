@@ -104,8 +104,8 @@ public class OrderInfoDao extends BaseDao{
      * @date:2017/10/18
      * @description:修改订单状态根据企业编号
      **/
-    public int updateByEnterpriseCode(OrderEntity orderEntity){
-        return mybatisDaoContext.update(SQLID+"updateByEnterpriseCode",orderEntity);
+    public int sendByEnterpriseCode(OrderEntity orderEntity){
+        return mybatisDaoContext.update(SQLID+"sendByEnterpriseCode",orderEntity);
     }
     /**
      * @author:zhangzhengguang

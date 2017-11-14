@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -138,7 +139,7 @@ public class EverydayTaskController {
         }
         try {
             orderEntity.setOrderStatus(OrdersStatusEnum.SEND.getCode());
-            orderManagerImpl.updateByEnterpriseCode(orderEntity);
+            orderManagerImpl.sendByEnterpriseCode(orderEntity);
         } catch (Exception e) {
             LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(orderEntity));
             LogUtil.error(LOGGER, "error:{}", e);
@@ -159,6 +160,10 @@ public class EverydayTaskController {
     public PageResult findListByEnterpriseCode(HttpServletRequest request, OrderInfoRequest orderInfoRequest) {
         PageResult pageResult = new PageResult();
         try {
+            if (Check.NuNObj(orderInfoRequest)){
+                orderInfoRequest = new OrderInfoRequest();
+            }
+//            orderInfoRequest.setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
             PagingResult<OrderEntity> pagingResult = orderManagerImpl.findListByEnterpriseCode(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());

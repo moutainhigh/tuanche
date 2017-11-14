@@ -21,6 +21,8 @@
         <result column="user_uid" jdbcType="VARCHAR" property="userUid" />
         <result column="user_tel" jdbcType="VARCHAR" property="userTel" />
         <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+
         <result column="knight_uid" jdbcType="VARCHAR" property="knightUid" />
         <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
         <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
@@ -33,7 +35,7 @@
     <sql id="Base_Column_List">
         <!--  -->
         id, order_sn,title, province_code,area_code, city_code,address, order_source,eva_status, order_status, accounts_status,
-        pay_status,order_type, business_uid, user_uid, user_tel, user_name,knight_uid,
+        pay_status,order_type, business_uid, user_uid, user_tel, user_name,user_code,knight_uid,
         send_time, pay_time,create_time, last_modify_date, mark
     </sql>
 
@@ -104,7 +106,9 @@
             <if test="userName != null">
                 user_name,
             </if>
-
+            <if test="userCode != null">
+                user_code,
+            </if>
             <if test="payTime != null">
                 pay_time,
             </if>
@@ -183,6 +187,10 @@
             <if test="userName != null">
                 #{userName,jdbcType=VARCHAR},
             </if>
+            <if test="userCode != null">
+                #{userCode,jdbcType=VARCHAR},
+            </if>
+
             <if test="payTime != null">
                 #{payTime,jdbcType=TIMESTAMP},
             </if>
