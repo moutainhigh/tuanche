@@ -645,7 +645,9 @@
                     $("#productClassifyD option[value='" + result.data.productClassify + "']").attr("selected", "selected");
                     $(":radio[name='productTypeD'][value='" + result.data.productType + "']").prop("checked", "checked");
                     $(":radio[name='productSourceD'][value='" + result.data.productSource + "']").prop("checked", "checked");
-                    $('#priceSaleD').val(result.data.priceSale);
+                    var price = (result.data.priceSale/100).toFixed(2);
+                    $('#priceSaleD').val(price);
+
                     $('#productDesD').val(result.data.productDes);
 
                     $('#showImg-3').attr('href', result.data.productPic);
