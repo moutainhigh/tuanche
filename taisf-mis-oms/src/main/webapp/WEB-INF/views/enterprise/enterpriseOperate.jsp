@@ -224,11 +224,11 @@
 								<td align="right" class="td-title">开始时间:</td>
 								<td align="center"><input type="text" id="lunchStart" name="lunchStart" class="form-control" placeholder="时:分(24小时制 半角冒号)"
 									<c:if test="${operate==1}">readonly="true"</c:if> 
-									value="${fn:substring(model.configEntity.dinnerStart, 0, fn:length(model.configEntity.lunchStart)-3)}"></td>
+									value="${fn:substring(model.configEntity.lunchStart, 0, fn:length(model.configEntity.lunchStart)-3)}"></td>
 								<td align="right" style="font-weight:bold;">截止时间:</td>
 								<td align="center"><input type="text" id="lunchEnd" name="lunchEnd" class="form-control" placeholder="时:分(24小时制 半角冒号)"
 									<c:if test="${operate==1}">readonly="true"</c:if> 
-									value="${fn:substring(model.configEntity.dinnerStart, 0, fn:length(model.configEntity.lunchEnd)-3)}"></td>
+									value="${fn:substring(model.configEntity.lunchEnd, 0, fn:length(model.configEntity.lunchEnd)-3)}"></td>
 							</tr>
 							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
 							<tr>
@@ -242,7 +242,7 @@
 								<td align="right" class="td-title">开始时间:</td>
 								<td align="center"><input type="text" id="dinnerStart" name="dinnerStart" class="form-control" placeholder="时:分(24小时制 半角冒号)"
 									<c:if test="${operate==1}">readonly="true"</c:if> 
-									value="${fn:substring(model.configEntity.dinnerStart, 0, fn:length(model.configEntity.dinnerEnd)-3)}"></td>
+									value="${fn:substring(model.configEntity.dinnerStart, 0, fn:length(model.configEntity.dinnerStart)-3)}"></td>
 								<td align="right" style="font-weight:bold;">截止时间:</td>
 								<td align="center"><input type="text" id="dinnerEnd" name="dinnerEnd" class="form-control" placeholder="时:分(24小时制 半角冒号)"
 									<c:if test="${operate==1}">readonly="true"</c:if> 
