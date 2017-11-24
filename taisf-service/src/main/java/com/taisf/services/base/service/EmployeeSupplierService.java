@@ -10,4 +10,6 @@ public interface EmployeeSupplierService {
      * @description:根据userId查询供餐商code
      **/
     EmployeeSupplierEntity getByUserId(String userId);
+
+    int saveEmployeeSupplier(EmployeeSupplierEntity entity);
 }

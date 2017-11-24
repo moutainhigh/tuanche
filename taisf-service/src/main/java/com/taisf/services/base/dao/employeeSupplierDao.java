@@ -38,4 +38,7 @@ public class employeeSupplierDao extends BaseDao {
         return mybatisDaoContext.findOneSlave(SQLID+"getByUserId", EmployeeSupplierEntity.class, userId);
     }
 
+    public int saveEmployeeSupplier(EmployeeSupplierEntity entity){
+        return mybatisDaoContext.save(SQLID+"insertSelective",entity);
+    }
 }

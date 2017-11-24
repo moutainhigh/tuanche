@@ -7,6 +7,8 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.UUIDGenerator;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.base.entity.EmployeeSupplierEntity;
+import com.taisf.services.base.service.EmployeeSupplierService;
 import com.taisf.services.common.valenum.UserStatusEnum;
 import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
@@ -16,6 +18,7 @@ import com.taisf.services.permission.entity.EmployeeEntity;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dto.SupplierRequest;
 import com.taisf.services.supplier.entity.SupplierEntity;
+import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserRequest;
 import com.taisf.services.user.entity.UserAccountEntity;
@@ -54,6 +57,14 @@ public class UserController {
 
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
+
+    @Resource(name = "supplier.supplierManagerImpl")
+    private SupplierManagerImpl supplierManagerImpl;
+
+
+    @Autowired
+    private EmployeeSupplierService employeeSupplierService;
+
 
 
 
@@ -157,6 +168,13 @@ public class UserController {
             userEntity.setEnterpriseCode(has.getEnterpriseCode());
             userEntity.setEnterpriseName(has.getEnterpriseName());
             userService.saveUser(userEntity);
+            //写映射表
+            //根据UserID查询 supplier 表 得到code
+            SupplierEntity supplierByCode = supplierManagerImpl.getSupplierByCode(employeeEntity.getUserId());
+            EmployeeSupplierEntity employeeSupplierEntity = new EmployeeSupplierEntity();
+            employeeSupplierEntity.setUserId(employeeEntity.getUserId());
+            employeeSupplierEntity.setSupplierCode(supplierByCode.getSupplierCode());
+            employeeSupplierService.saveEmployeeSupplier(employeeSupplierEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);
@@ -265,6 +283,7 @@ public class UserController {
         request.setAttribute("userName", userName);
 
         //查询所有用户
+
         DataTransferObject<List<UserEntity>> dto = userService.getUserByType(UserTypeEnum.YONGHU.getCode());
         request.setAttribute("userList", dto.getData());
         return "user/enterpriseList";

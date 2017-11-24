@@ -21,4 +21,10 @@ public class EmployeeSupplierServiceProxy implements EmployeeSupplierService {
     public EmployeeSupplierEntity getByUserId(String userId){
         return employeeSupplierDao.getByUserId(userId);
     }
+
+    public int saveEmployeeSupplier(EmployeeSupplierEntity entity){
+        return employeeSupplierDao.saveEmployeeSupplier(entity);
+    }
+
+
 }
