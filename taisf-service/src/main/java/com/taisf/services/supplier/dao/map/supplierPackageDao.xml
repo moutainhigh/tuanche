@@ -33,6 +33,16 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+
+
+  <select id="getSupplierPackageByCodeAndWeek" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_supplier_product_package
+    where supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    AND week = #{week,jdbcType=INTEGER}
+  </select>
+
   <select id="getSupplierPackageByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

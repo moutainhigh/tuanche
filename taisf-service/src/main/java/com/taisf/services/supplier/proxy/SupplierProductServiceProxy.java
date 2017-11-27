@@ -159,7 +159,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return null;
         }
 
-        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCode(supplierCode);
+        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCodeAndWeek(supplierCode,getWeek());
         if (Check.NuNCollection(list)) {
             list = new ArrayList<>();
         }

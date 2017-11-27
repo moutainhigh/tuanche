@@ -145,6 +145,16 @@ public class SupplierManagerImpl {
 	}
 
 
+	/**
+	 * 获取当前的供应商打包信息
+	 * @author afi
+	 * @param supplierCode
+	 * @return
+	 */
+	public List<SupplierPackageEntity> getSupplierPackageByCodeAndWeek(String supplierCode,Integer week){
+		//获取当前的推荐列表
+		return supplierPackageDao.getSupplierPackageByCodeAndWeek(supplierCode,week);
+	}
 
 
 

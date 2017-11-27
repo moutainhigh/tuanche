@@ -53,6 +53,20 @@ public class SupplierPackageDao extends BaseDao {
 
 
 
+
+    /**
+     * 获取当前的供应商打包信息
+     * @author afi
+     * @param supplierCode
+     * @return
+     */
+    public List<SupplierPackageEntity> getSupplierPackageByCodeAndWeek(String supplierCode,Integer week){
+        Map<String,Object> par = new HashMap<>();
+        par.put("supplierCode",supplierCode);
+        par.put("week",week);
+        return mybatisDaoContext.findAll(SQLID+"getSupplierPackageByCodeAndWeek", SupplierPackageEntity.class, supplierCode);
+    }
+
     /**
      * 获取当前的供应商打包信息
      * @author afi
