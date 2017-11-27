@@ -67,7 +67,7 @@ public class SupplierProductController {
             HttpSession session = request.getSession();
             EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
             if (!Check.NuNObj(dto.getData())) {
-                List<SupplierProductEntity> entityList = supplierProductService.getSupplierProductByUserId(employeeEntity.getUserId()).getData();
+                List<SupplierProductEntity> entityList = supplierProductService.getSupplierProductByUserIdAndWeek(employeeEntity.getUserId(),productListRequest.getWeek()).getData();
                 if (!Check.NuNCollection(entityList)) {
                     dto.getData().getList().stream().forEach((x) -> {
                         entityList.stream().forEach((y) -> {
@@ -95,9 +95,14 @@ public class SupplierProductController {
      **/
     @RequestMapping("revocation")
     @ResponseBody
-    public DataTransferObject<Void> revocation(HttpServletRequest request, Integer id) {
+    public DataTransferObject<Void> revocation(HttpServletRequest request, Integer id,Integer week) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(id)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNObj(week)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
@@ -122,13 +127,19 @@ public class SupplierProductController {
      **/
     @RequestMapping("addSupplierProduct")
     @ResponseBody
-    public DataTransferObject<Void> addSupplierProduct(HttpServletRequest request, Integer id) {
+    public DataTransferObject<Void> addSupplierProduct(HttpServletRequest request, Integer id,Integer week) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(id)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if (Check.NuNObj(week)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
         try {
             HttpSession session = request.getSession();
             EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
@@ -136,6 +147,11 @@ public class SupplierProductController {
             SupplierProductEntity supplierProductEntity = new SupplierProductEntity();
             //根据userId 得到 商家code
             EmployeeSupplierEntity employeeSupplierEntity = rmployeeSupplierService.getByUserId(employeeEntity.getUserId());
+            if (Check.NuNObj(employeeSupplierEntity)){
+                dto.setErrCode(DataTransferObject.ERROR);
+                dto.setErrorMsg("当前用户不是上架,不能添加");
+                return dto;
+            }
             //1商家code
             supplierProductEntity.setSupplierCode(employeeSupplierEntity.getSupplierCode());
             //2商品code
@@ -146,6 +162,8 @@ public class SupplierProductController {
             supplierProductEntity.setProductType(productEntity.getProductType());
             //5创建时间
             supplierProductEntity.setCreateTime(new Date());
+            //周几
+            supplierProductEntity.setWeek(week);
             //6.执行保存
             dto = supplierProductService.saveSupplierProduct(supplierProductEntity);
         } catch (Exception e) {

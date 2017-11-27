@@ -95,6 +95,30 @@ public class SupplierProductDao extends BaseDao {
         return mybatisDaoContext.findAll(SQLID+"getSupplierProductByUserId", SupplierProductEntity.class, userId);
     }
 
+
+    public List<SupplierProductEntity> getSupplierProductByUserIdAndWeek(String userId,Integer week){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userId",userId);
+        par.put("week",week);
+
+        return mybatisDaoContext.findAll(SQLID+"getSupplierProductByUserIdAndWeek", SupplierProductEntity.class, par);
+    }
+
+
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/12
+     * @description:撤回菜品
+     **/
+    public int deleteByUserIdAndProudctIdAndWeek(String userId,Integer productId,Integer week){
+        Map<String,Object> map = new HashMap<>();
+        map.put("productId",productId);
+        map.put("userId",userId);
+        map.put("week",week);
+        return mybatisDaoContext.delete(SQLID + "deleteByUserIdAndProudctIdAndWeek", map);
+    }
+
     /**
      * @author:zhangzhengguang
      * @date:2017/10/12

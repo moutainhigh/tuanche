@@ -39,9 +39,16 @@
     </style>
 </head>
 
+
+<script >
+
+
+</script>>
 <body class="gray-bg">
 
 <div class="wrapper wrapper-content animated fadeInRight">
+
+
     <div class="ibox">
         <div class="ibox-content">
             <div class="row">
@@ -95,8 +102,42 @@
             </div>
         </div>
     </div>
-    <!-- Panel Other -->
-    <div class="float-e-margins">
+
+
+
+
+    <div class="col-sm-9" style="width:100%; padding-left: 0px;">
+        <div class="float-e-margins">
+            <div class="ibox-content">
+                <div class="panel-heading">
+
+                    <div class="panel-options">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" onclick="change(2)">周一</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(3)">周二</a>
+
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(4)">周三</a>
+
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(5)">周四</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(6)">周五</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(7)">周六</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(1)">周日</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="ibox-content">
             <div class="row row-lg">
                 <!-- Example Pagination -->
@@ -135,9 +176,19 @@
                 </div>
             </div>
         </div>
+
+
     </div>
+
+
 </div>
 <script>
+    var week = 2;
+    function change(current) {
+        week = current;
+        query();
+    }
+
     function paginationParam(params) {
         var openTime = $("#openTime").val();
         var tillTime = $("#tillTime").val();
@@ -149,9 +200,9 @@
         }
         if (tillTime == "") {
             tillTime = undefined;
-        } else
+        } else{
             tillTime += " 00:00:00";
-
+        }
         return {
             limit: params.limit,
             page: $("#listTable").bootstrapTable("getOptions").pageNumber,
@@ -161,6 +212,7 @@
             productClassify: $("#productClassifyS").val(),
             productType: $("#productTypeS").val(),
             productSource: $("#productSourceS").val(),
+            week: week,
         };
     }
 
@@ -238,6 +290,7 @@
         $.ajax({
             data: {
                 'id': id,
+                'week': week
             },
             type: "post",
             dataType: "json",
@@ -257,11 +310,13 @@
             }
         });
     }
+
     //添加
     function addSupplierProduct(id) {
         $.ajax({
             data: {
                 'id': id,
+                'week': week
             },
             type: "post",
             dataType: "json",
@@ -281,6 +336,9 @@
             }
         });
     }
+
+
+
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);
     }
