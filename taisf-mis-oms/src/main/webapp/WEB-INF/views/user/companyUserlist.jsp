@@ -459,7 +459,7 @@
                     $('#enterpriseNameE').val(result.data.enterpriseName);
                     $('#userRoleE').val(result.data.userRole);
                     $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
-                    console.log(Listenterprise.toString())
+                    //console.log(Listenterprise.toString())
                     option(Listenterprise,"enterpriseCodeE",result.data.enterpriseCode);
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
@@ -511,7 +511,7 @@
             return false;
         }
         ;
-        if ($("#enterpriseCodeE option:selected").val() == null || $("#enterpriseCodeE option:selected").val() == "") {
+        if ($("#enterpriseCodeE").val() == "-1") {
             layer.alert("请选择企业", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
@@ -599,6 +599,11 @@
                 $("#saveBtn").removeAttr("disabled");
                 return false;
             }
+        }
+        if($("#enterpriseCodeA").val() == "-1"){
+            layer.alert("请选择企业", {icon: 5, time: 3000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
         }
         $.ajax({
             beforeSend: function () {
