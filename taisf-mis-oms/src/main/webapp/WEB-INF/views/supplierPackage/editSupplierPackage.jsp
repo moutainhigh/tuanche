@@ -148,6 +148,12 @@
                     <div class="row" style="margin-top: 10px;">
                         <div class="form-group">
                             <label class="col-xs-1 col-sm-1 control-label mtop">组合名称:</label>
+
+                            <input id="week" name="week" type="hidden" value="${packageEntity.week}"
+                                   class="form-control">
+
+
+
                             <div class="col-xs-2 col-sm-2">
                                 <input id="supplierPackageName" name="supplierPackage" type="text" value="${packageEntity.title}"
                                        class="form-control">
@@ -241,7 +247,7 @@
                         <div class="form-group">
                             <label class="col-xs-1 col-sm-1 control-label mtop">套餐价格:</label>
                             <div class="col-xs-2 col-sm-2">
-                                <input id="packagePrice" name="packagePrice" type="text" value="${packageEntity.packagePrice}"
+                                <input id="packagePriceDou" name="packagePriceDou" type="text" value="${packagePriceDou}"
                                        class="form-control">
                             </div>
                             <label class="col-xs-1 col-sm-1 control-label mtop">上传图片:</label>
@@ -296,7 +302,7 @@
                     'title': $("#supplierPackageName").val(),
                     'id': $("#supplierPackageId").val(),
                     'packagePic': $("#pic").val(),
-                    'packagePrice': $("#packagePrice").val(),
+                    'packagePriceDou': $("#packagePriceDou").val(),
                     'bigCode': $("#dahun option:selected").val(),
                     'smallCode': $("#xiaohun option:selected").val(),
                     'suCode': $("#su option:selected").val(),

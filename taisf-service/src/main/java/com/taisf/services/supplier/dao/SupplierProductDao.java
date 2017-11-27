@@ -96,12 +96,12 @@ public class SupplierProductDao extends BaseDao {
     }
 
 
-    public List<SupplierProductEntity> getSupplierProductByUserIdAndWeek(String userId,Integer week){
+    public List<SupplierProductEntity> getSupplierProductByCodeAndWeek(String supplierCode,Integer week){
         Map<String,Object> par = new HashMap<>();
-        par.put("userId",userId);
+        par.put("supplierCode",supplierCode);
         par.put("week",week);
 
-        return mybatisDaoContext.findAll(SQLID+"getSupplierProductByUserIdAndWeek", SupplierProductEntity.class, par);
+        return mybatisDaoContext.findAll(SQLID+"getSupplierProductByCodeAndWeek", SupplierProductEntity.class, par);
     }
 
 
@@ -111,10 +111,10 @@ public class SupplierProductDao extends BaseDao {
      * @date:2017/10/12
      * @description:撤回菜品
      **/
-    public int deleteByUserIdAndProudctIdAndWeek(String userId,Integer productId,Integer week){
+    public int deleteByUserIdAndProudctIdAndWeek(String supplierCode,Integer productId,Integer week){
         Map<String,Object> map = new HashMap<>();
         map.put("productId",productId);
-        map.put("userId",userId);
+        map.put("supplierCode",supplierCode);
         map.put("week",week);
         return mybatisDaoContext.delete(SQLID + "deleteByUserIdAndProudctIdAndWeek", map);
     }
@@ -124,11 +124,11 @@ public class SupplierProductDao extends BaseDao {
      * @date:2017/10/12
      * @description:撤回菜品
      **/
-    public int deleteByUserIdAndProudctId(String userId,Integer productId){
+    public int deleteBySupplierCodeAndProudctId(String supplierCode,Integer productId){
         Map<String,Object> map = new HashMap<>();
         map.put("productId",productId);
-        map.put("userId",userId);
-        return mybatisDaoContext.delete(SQLID + "deleteByUserIdAndProudctId", map);
+        map.put("supplierCode",supplierCode);
+        return mybatisDaoContext.delete(SQLID + "deleteBySupplierCodeAndProudctId", map);
     }
 
     /**

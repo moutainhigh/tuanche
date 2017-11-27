@@ -92,6 +92,20 @@ public class UserDao extends BaseDao {
     }
 
 
+
+
+    /**
+     * 根据用户userid查询用户
+     *
+     * @param userId
+     * @return
+     */
+    public UserEntity getUserByUidAndType(String userId,Integer userType) {
+        Map<String,Object> par = new HashMap<>();
+        par.put("userUid",userId);
+        par.put("userType",userType);
+        return mybatisDaoContext.findOne(SQLID + "getUserByUidAndType", UserEntity.class, par);
+    }
     /**
      * 根据用户userid查询用户
      *

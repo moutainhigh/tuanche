@@ -145,7 +145,6 @@
 
 		//跳转添加企业页
 		function addEnterprise() {
-			debugger;
 			var url = "base/enterprise/operate?operate=3";
 			$.openNewTab(new Date().getTime(), url, "添加企业");
 		}

@@ -152,12 +152,22 @@ public class UserController {
 
         //获取当前登录员工
         EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
-        UserEntity has = userManager.getUserByUid(employeeEntity.getUserId());
+        //获取当前供应商信息
+        UserEntity has = userManager.getUserByUid4Supply(employeeEntity.getUserId());
         if(Check.NuNObj(has)){
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("当前登录用户不是供应商,不能创建员工");
             return dto;
         }
+
+        //根据UserID查询 supplier 表 得到code
+        SupplierEntity supplier = supplierManagerImpl.getSupplierByEmp(employeeEntity.getUserId());
+        if (Check.NuNObj(supplier)){
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("当前登录用户不是供应商,不能创建员工");
+            return dto;
+        }
+
         try {
             String uuid = UUIDGenerator.hexUUID();
             userEntity.setUserPassword(MD5Util.MD5Encode("123456"));
@@ -169,11 +179,10 @@ public class UserController {
             userEntity.setEnterpriseName(has.getEnterpriseName());
             userService.saveUser(userEntity);
             //写映射表
-            //根据UserID查询 supplier 表 得到code
-            SupplierEntity supplierByCode = supplierManagerImpl.getSupplierByCode(employeeEntity.getUserId());
+
             EmployeeSupplierEntity employeeSupplierEntity = new EmployeeSupplierEntity();
-            employeeSupplierEntity.setUserId(employeeEntity.getUserId());
-            employeeSupplierEntity.setSupplierCode(supplierByCode.getSupplierCode());
+            employeeSupplierEntity.setUserId(uuid);
+            employeeSupplierEntity.setSupplierCode(supplier.getSupplierCode());
             employeeSupplierService.saveEmployeeSupplier(employeeSupplierEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);

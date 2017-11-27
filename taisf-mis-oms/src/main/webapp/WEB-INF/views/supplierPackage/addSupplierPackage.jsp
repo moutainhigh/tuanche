@@ -148,6 +148,11 @@
                     <div class="row" style="margin-top: 10px;">
                         <div class="form-group">
                             <label class="col-xs-1 col-sm-1 control-label mtop">组合名称:</label>
+
+
+                            <input id="week" name="week" type="hidden" value="${week}"
+                                   class="form-control">
+
                             <div class="col-xs-2 col-sm-2">
                                 <input id="supplierPackageName" name="supplierPackage" type="text"
                                        class="form-control">
@@ -293,7 +298,7 @@
                 data: {
                     'title': $("#supplierPackageName").val(),
                     'packagePic': $("#pic").val(),
-                    'packagePrice': $("#packagePrice").val(),
+                    'packagePriceDou': $("#packagePrice").val(),
                     'bigCode': $("#dahun option:selected").val(),
                     'smallCode': $("#xiaohun option:selected").val(),
                     'suCode': $("#su option:selected").val(),
@@ -302,6 +307,7 @@
                     'foodCode': $("#zhushi option:selected").val(),
                     'fruitCode': $("#shuiguo option:selected").val(),
                     'packagePic':  $("#imgUrl-1").val(),
+                    'week': $("#week").val(),
                 },
                 type: "post",
                 dataType: "json",

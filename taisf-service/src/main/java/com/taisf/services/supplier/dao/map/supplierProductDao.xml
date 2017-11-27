@@ -62,14 +62,13 @@
 
 
 
-    <select id="getSupplierProductByUserIdAndWeek" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="getSupplierProductByCodeAndWeek" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         FROM t_supplier_product sp
         WHERE
         sp.week = #{week,jdbcType=INTEGER} AND
-        sp.supplier_code =
-        (SELECT es.supplier_code FROM t_employee_supplier es WHERE es.user_id = #{userId,jdbcType=VARCHAR})
+        sp.supplier_code = #{supplierCode,jdbcType=VARCHAR}
     </select>
 
     <select id="getSupplierProductByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -85,13 +84,13 @@
         delete from t_supplier_product
         where product_code = #{productId,jdbcType=INTEGER}
         AND week =  #{week,jdbcType=INTEGER}
-        AND supplier_code = (SELECT es.supplier_code FROM t_employee_supplier es WHERE es.user_id = #{userId,jdbcType=VARCHAR})
+        AND supplier_code = #{supplierCode,jdbcType=VARCHAR}
     </delete>
 
-    <delete id="deleteByUserIdAndProudctId" parameterType="map">
+    <delete id="deleteBySupplierCodeAndProudctId" parameterType="map">
     delete from t_supplier_product
     where product_code = #{productId,jdbcType=INTEGER}
-    AND supplier_code = (SELECT es.supplier_code FROM t_employee_supplier es WHERE es.user_id = #{userId,jdbcType=VARCHAR})
+    AND supplier_code = #{supplierCode,jdbcType=VARCHAR}
   </delete>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -202,6 +201,9 @@
         </if>
         <if test="productSource != null and productSource != ''">
             AND t_product.product_source = #{productSource}
+        </if>
+        <if test="week != null ">
+            AND t_supplier_product.week = #{week}
         </if>
     </select>
 </mapper>

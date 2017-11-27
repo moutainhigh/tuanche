@@ -2,6 +2,7 @@ package com.taisf.services.base.proxy;
 
 import com.taisf.services.base.entity.EmployeeSupplierEntity;
 import com.taisf.services.base.service.EmployeeSupplierService;
+import com.taisf.services.supplier.dao.EmployeeSupplierDao;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -9,8 +10,8 @@ import javax.annotation.Resource;
 @Component("base.employeeSupplierServiceProxy")
 public class EmployeeSupplierServiceProxy implements EmployeeSupplierService {
 
-	@Resource(name = "basedata.employeeSupplierDao")
-	private com.taisf.services.base.dao.employeeSupplierDao employeeSupplierDao;
+	@Resource(name = "supplier.employeeSupplierDao")
+	private EmployeeSupplierDao employeeSupplierDao;
 
 
     /**

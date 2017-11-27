@@ -2,6 +2,7 @@ package com.taisf.web.oms.supplierProductPackage;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.BigDecimalUtil;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
@@ -103,9 +104,10 @@ public class SupplierProductPackageController {
      * @description:去添加组合套餐页面
      **/
     @RequestMapping("toAdd")
-    public String toAdd(HttpServletRequest request) {
+    public String toAdd(HttpServletRequest request,Integer week) {
         //不同分类集合
         productCla01sifyList(request);
+        request.setAttribute("week", week);
         return "supplierPackage/addSupplierPackage";
     }
 
@@ -116,21 +118,26 @@ public class SupplierProductPackageController {
      **/
     @RequestMapping("addSupplierProductPackage")
     @ResponseBody
-    public DataTransferObject<Void> addSupplierProductPackage(HttpServletRequest request, SupplierPackageEntity packageEntity) {
+    public DataTransferObject<Void> addSupplierProductPackage(HttpServletRequest request, SupplierPackageEntity packageEntity,Double packagePriceDou) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(packageEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
-
+        if (Check.NuNObj(packagePriceDou)){
+            dto.setErrorMsg("异常价格");
+            return dto;
+        }
+        Double last = BigDecimalUtil.mul(packagePriceDou,100);
+        packageEntity.setPackagePrice(last.intValue());
         try {
             //商家code
             HttpSession session = request.getSession();
             EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
             //根据userId 得到 商家code
             EmployeeSupplierEntity employeeSupplierEntity = employeeSupplierService.getByUserId(employeeEntity.getUserId());
-            packageEntity.setSupplierCode(employeeSupplierEntity.getUserId());
+            packageEntity.setSupplierCode(employeeSupplierEntity.getSupplierCode());
             dto = supplierPackageService.saveSupplierPackage(packageEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
@@ -184,6 +191,9 @@ public class SupplierProductPackageController {
             packageEntity.setPackagePic(pathConstant.PIC_URL+packageEntity.getPackagePic());
         }
         request.setAttribute("packageEntity", packageEntity);
+        if (!Check.NuNObj(packageEntity)){
+            request.setAttribute("packagePriceDou", BigDecimalUtil.div(packageEntity.getPackagePrice(),100));
+        }
         return "supplierPackage/editSupplierPackage";
     }
 
@@ -194,13 +204,20 @@ public class SupplierProductPackageController {
      **/
     @RequestMapping("updateSupplierProductPackage")
     @ResponseBody
-    public DataTransferObject<Void> updateSupplierProductPackage(HttpServletRequest request, SupplierPackageEntity packageEntity) {
+    public DataTransferObject<Void> updateSupplierProductPackage(HttpServletRequest request, SupplierPackageEntity packageEntity,Double packagePriceDou) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(packageEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
+
+        if (Check.NuNObj(packagePriceDou)){
+            dto.setErrorMsg("异常价格");
+            return dto;
+        }
+        Double last = BigDecimalUtil.mul(packagePriceDou,100);
+        packageEntity.setPackagePrice(last.intValue());
 
         try {
             dto = supplierPackageService.updateSupplierPackage(packageEntity);

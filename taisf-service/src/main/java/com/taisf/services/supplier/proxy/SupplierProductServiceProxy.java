@@ -391,18 +391,18 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     /**
      * 获取当前周的上架情况
-     * @param userId
+     * @param supplierCode
      * @param week
      * @return
      */
     @Override
-    public DataTransferObject<List<SupplierProductEntity>> getSupplierProductByUserIdAndWeek(String userId,Integer week){
+    public DataTransferObject<List<SupplierProductEntity>> getSupplierProductByCodeAndWeek(String supplierCode,Integer week){
         DataTransferObject<List<SupplierProductEntity>> dto = new DataTransferObject();
         try {
-            List<SupplierProductEntity> entityList = supplierProductDao.getSupplierProductByUserIdAndWeek(userId,week);
+            List<SupplierProductEntity> entityList = supplierProductDao.getSupplierProductByCodeAndWeek(supplierCode,week);
             dto.setData(entityList);
         } catch (Exception e) {
-            LogUtil.error(LOGGER, "【获取商品列表】par:{},error:{}", JsonEntityTransform.Object2Json(userId), e);
+            LogUtil.error(LOGGER, "【获取商品列表】par:{},error:{}", JsonEntityTransform.Object2Json(supplierCode), e);
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("获取商品列表失败");
             return dto;
@@ -417,17 +417,17 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @description:撤回菜品
      **/
     @Override
-    public DataTransferObject<Void> deleteByUserIdAndProudctIdAndWeek(String userId, Integer productId,Integer week){
+    public DataTransferObject<Void> deleteByUserIdAndProudctIdAndWeek(String supplierCode, Integer productId,Integer week){
         DataTransferObject<Void> dto = new DataTransferObject();
         try {
-            int num = supplierProductDao.deleteByUserIdAndProudctIdAndWeek(userId, productId,week);
+            int num = supplierProductDao.deleteByUserIdAndProudctIdAndWeek(supplierCode, productId,week);
             if (num != 1) {
                 dto.setErrCode(DataTransferObject.ERROR);
                 dto.setErrorMsg("撤回菜品失败");
                 return dto;
             }
         } catch (Exception e) {
-            LogUtil.error(LOGGER, "【撤回菜品失败】par:{},error:{}", userId + productId, e);
+            LogUtil.error(LOGGER, "【撤回菜品失败】par:{},error:{}", supplierCode + productId, e);
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("撤回菜品失败");
             return dto;
@@ -440,17 +440,17 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @description:撤回菜品
      **/
     @Override
-    public DataTransferObject<Void> deleteByUserIdAndProudctId(String userId, Integer productId) {
+    public DataTransferObject<Void> deleteBySupplierCodeAndProudctId(String supplierCode, Integer productId) {
         DataTransferObject<Void> dto = new DataTransferObject();
         try {
-            int num = supplierProductDao.deleteByUserIdAndProudctId(userId, productId);
+            int num = supplierProductDao.deleteBySupplierCodeAndProudctId(supplierCode, productId);
             if (num != 1) {
                 dto.setErrCode(DataTransferObject.ERROR);
                 dto.setErrorMsg("撤回菜品失败");
                 return dto;
             }
         } catch (Exception e) {
-            LogUtil.error(LOGGER, "【撤回菜品失败】par:{},error:{}", userId + productId, e);
+            LogUtil.error(LOGGER, "【撤回菜品失败】par:{},error:{}", supplierCode + productId, e);
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("撤回菜品失败");
             return dto;

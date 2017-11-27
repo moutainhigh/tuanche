@@ -64,14 +64,14 @@ public interface SupplierProductService {
      * @param week
      * @return
      */
-    DataTransferObject<List<SupplierProductEntity>> getSupplierProductByUserIdAndWeek(String userId,Integer week);
+    DataTransferObject<List<SupplierProductEntity>> getSupplierProductByCodeAndWeek(String userId,Integer week);
 
     /**
      * @author:zhangzhengguang
      * @date:2017/10/12
      * @description:撤回菜品
      **/
-    DataTransferObject<Void> deleteByUserIdAndProudctId(String userId, Integer productId);
+    DataTransferObject<Void> deleteBySupplierCodeAndProudctId(String supplierCode, Integer productId);
 
     /**
      * @author:zhangzhengguang

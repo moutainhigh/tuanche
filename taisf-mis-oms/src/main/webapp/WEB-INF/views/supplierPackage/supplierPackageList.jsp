@@ -114,6 +114,12 @@
                             <option value="3">--员工餐--</option>
                         </select>
                     </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-primary" type="button" onclick="query();">
+                            <i class="fa fa-search"></i>&nbsp;搜索
+                        </button>
+
+                    </div>
                 </div>
             </div>
             <div class="row" style="margin-top: 10px;">
@@ -127,25 +133,60 @@
                             <option value="3">--清真--</option>
                         </select>
                     </div>
-                    <div class="col-sm-1">
-                        <button class="btn btn-primary" type="button" onclick="query();">
-                            <i class="fa fa-search"></i>&nbsp;搜索
+                    <div class="col-sm-3">
+
+
+                        <button id="addMenuButton" type="button" class="btn btn-primary"
+                                onclick="addSupplierPackage();">
+                            <i class="fa fa-plus"></i>&nbsp;新增
                         </button>
                     </div>
+
+
+
                 </div>
             </div>
         </div>
     </div>
     <!-- Panel Other -->
     <div class="float-e-margins">
+
+        <div class="float-e-margins">
+            <div class="ibox-content">
+                <div class="panel-heading">
+
+                    <div class="panel-options">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" onclick="change(2)">周一</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(3)">周二</a>
+
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(4)">周三</a>
+
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(5)">周四</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(6)">周五</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(7)">周六</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(1)">周日</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="ibox-content">
             <div class="row row-lg">
                 <!-- Example Pagination -->
                 <div class="col-sm-12">
-                    <button id="addMenuButton" type="button" class="btn btn-primary"
-                            onclick="addSupplierPackage();">
-                        <i class="fa fa-plus"></i>&nbsp;新增
-                    </button>
+
                     <table id="listTable" class="table table-bordered" data-click-to-select="true"
                            data-toggle="table" data-side-pagination="server"
                            data-pagination="true" data-page-list="[5,10,20,50]"
@@ -191,6 +232,33 @@
     </div>
 </div>
 <script>
+
+    var week = 2;
+    function change(current) {
+        week = current;
+        query();
+    }
+
+    function getWeekName() {
+        var name = "";
+        if (week == 1){
+            name = "周日"
+        }else if (week == 2){
+            name = "周一"
+        }else if (week == 3){
+            name = "周二"
+        }else if (week == 4){
+            name = "周三"
+        }else if (week == 5){
+            name = "周四"
+        }else if (week == 6){
+            name = "周五"
+        }else if (week == 7){
+            name = "周六"
+        }
+        return name;
+    }
+
     function paginationParam(params) {
         return {
             limit: params.limit,
@@ -199,6 +267,7 @@
             productClassify: $("#productClassifyS").val(),
             productType: $("#productTypeS").val(),
             productSource: $("#productSourceS").val(),
+            week:week
         };
     }
     // 操作列
@@ -222,15 +291,15 @@
 
     //跳转添加组合套餐页面
     function addSupplierPackage() {
-        debugger
         var $table = $('#listTable');
         var len = $table.bootstrapTable('getData').length;
         if (len >= 5) {
             layer.alert("最多添加五个套餐", {icon: 5, time: 2000, title: '提示'});
             return false;
         }
-        var url = "supplierProductPackage/toAdd";
-        $.openNewTab(new Date().getTime(), url, "添加组合套餐");
+        var url = "supplierProductPackage/toAdd?week="+week+"&weekName="+getWeekName();
+
+        $.openNewTab(new Date().getTime(), url, "添加组合套餐["+getWeekName()+"]");
     }
 
     //跳转编辑组合套餐页面
@@ -244,6 +313,7 @@
         $.ajax({
             data: {
                 'id': id,
+                'week':week
             },
             type: "post",
             dataType: "json",
