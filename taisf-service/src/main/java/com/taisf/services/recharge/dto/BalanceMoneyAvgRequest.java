@@ -39,13 +39,13 @@ public class BalanceMoneyAvgRequest extends BaseEntity{
     /**
      * 老板金额
      */
-    private Integer bossMoneyYuan = 0;
+    private Double bossMoneyYuan = 0.0;
 
 
     /**
      * 员工金额
      */
-    private Integer empMoneyYuan = 0;
+    private Double empMoneyYuan = 0.0;
 
 
     public Integer getBossNum() {
@@ -64,19 +64,19 @@ public class BalanceMoneyAvgRequest extends BaseEntity{
         this.empNum = empNum;
     }
 
-    public Integer getBossMoneyYuan() {
+    public Double getBossMoneyYuan() {
         return bossMoneyYuan;
     }
 
-    public void setBossMoneyYuan(Integer bossMoneyYuan) {
+    public void setBossMoneyYuan(Double bossMoneyYuan) {
         this.bossMoneyYuan = bossMoneyYuan;
     }
 
-    public Integer getEmpMoneyYuan() {
+    public Double getEmpMoneyYuan() {
         return empMoneyYuan;
     }
 
-    public void setEmpMoneyYuan(Integer empMoneyYuan) {
+    public void setEmpMoneyYuan(Double empMoneyYuan) {
         this.empMoneyYuan = empMoneyYuan;
     }
 

@@ -40,7 +40,7 @@ public class RechargeServiceProxyTest extends BaseTest {
         BalanceMoneyOneRequest request = new BalanceMoneyOneRequest();
         request.setEnterpriseCode("code");
         request.setUserPhone("15120096722");
-        request.setMoneyYuan(11);
+        request.setMoneyYuan(11.11);
         DataTransferObject<Void> chargeMoney = rechargeService.balanceMoneyOne(request);
         System.out.println(JsonEntityTransform.Object2Json(chargeMoney));
 
@@ -53,7 +53,7 @@ public class RechargeServiceProxyTest extends BaseTest {
         BalanceMoneyAvgRequest request = new BalanceMoneyAvgRequest();
         request.setEnterpriseCode("code");
         request.setEmpNum(2);
-        request.setEmpMoneyYuan(10);
+        request.setEmpMoneyYuan(10.0);
 
         DataTransferObject<Void> chargeMoney = rechargeService.balanceMoneyAvg(request);
         System.out.println(JsonEntityTransform.Object2Json(chargeMoney));
@@ -77,7 +77,7 @@ public class RechargeServiceProxyTest extends BaseTest {
 
         ChargeRequest request = new ChargeRequest();
         request.setEnterpriseCode("code");
-        request.setMoneyYuan(100);
+        request.setMoneyYuan(100.0);
         request.setOpId("id");
         request.setOpName("name");
         DataTransferObject<Void> chargeMoney = rechargeService.chargeMoney(request);
