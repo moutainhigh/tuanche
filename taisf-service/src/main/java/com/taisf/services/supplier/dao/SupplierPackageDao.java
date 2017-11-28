@@ -64,7 +64,7 @@ public class SupplierPackageDao extends BaseDao {
         Map<String,Object> par = new HashMap<>();
         par.put("supplierCode",supplierCode);
         par.put("week",week);
-        return mybatisDaoContext.findAll(SQLID+"getSupplierPackageByCodeAndWeek", SupplierPackageEntity.class, supplierCode);
+        return mybatisDaoContext.findAll(SQLID+"getSupplierPackageByCodeAndWeek", SupplierPackageEntity.class, par);
     }
 
     /**
