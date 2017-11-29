@@ -286,7 +286,7 @@
                 url: 'everydayTask/distribution',
                 success: function (result) {
                     if (result.code === 0) {
-                        layer.alert("配送成功", {icon: 6, time: 2000, title: '提示'});
+                        layer.alert("开始配送", {icon: 6, time: 2000, title: '提示'});
                         $('#listTable').bootstrapTable('refresh');
                     } else {
                         layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});

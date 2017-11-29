@@ -224,7 +224,7 @@
         } else if (value == 50) {
             return "已支付";
         } else if (value == 60) {
-            return "已配送";
+            return "配送中";
         } else if (value == 70) {
             return "已签收";
         }

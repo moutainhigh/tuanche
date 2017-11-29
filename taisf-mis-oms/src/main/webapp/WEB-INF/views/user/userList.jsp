@@ -354,7 +354,7 @@
         if(row.userStatus == 1 || row.userStatus == 2){
             result = result + "<a title='离职' onclick='updateUserStatus(\""+row.userUid+"\",\"3\")'  >离职</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         }else{
-            result = result + "<a title='正常' onclick='updateUserStatus(\""+row.userUid+"\",\"2\")' >激活</a>";
+            result = result + "<a title='正常' onclick='updateUserStatus(\""+row.userUid+"\",\"2\")' >可用</a>";
         }
         return result;
     }
