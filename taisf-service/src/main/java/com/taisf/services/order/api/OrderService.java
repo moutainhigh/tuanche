@@ -28,6 +28,14 @@ public interface OrderService {
 
 
     /**
+     * 获取当前用户的带完成的订单
+     * @author afi
+     * @param userPhone
+     * @return
+     */
+    DataTransferObject<List<OrderInfoVO>> getOrderInfoWaitingListByPhone(String userPhone);
+
+    /**
      * 获取当前的统计情况
      * @param request
      * @return
