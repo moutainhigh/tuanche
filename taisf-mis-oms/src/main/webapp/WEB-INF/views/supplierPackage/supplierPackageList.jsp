@@ -196,6 +196,7 @@
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
                            data-single-select="true"
+                           data-cache="false"
                            data-url="supplierProductPackage/pageList">
                         <thead>
                         <tr>
@@ -286,6 +287,24 @@
         return result;
     }
     function query() {
+        $("#listTable").bootstrapTable('destroy');
+
+        $("#listTable").bootstrapTable({
+            dataType: "json",
+            method: 'post',
+            contentType: "application/x-www-form-urlencoded",
+            cache: false,
+            url:"supplierProductPackage/pageList",
+            queryParams: paginationParam,
+            columns:[],
+            pagination:true,
+            sidePagination:'server',
+            pageNumber:1,
+            pageSize:10,
+            pageList:[5,10,20,50]
+        })
+
+
         $("#listTable").bootstrapTable("selectPage", 1);
     }
 

@@ -61,6 +61,29 @@ public class SupplierProductPackageController {
         return "supplierPackage/supplierPackageList";
     }
 
+
+    /**
+     * 根据商品id获取商品信息
+     * @param proCode
+     * @return
+     */
+    private String getProNameById(Integer proCode){
+        String name = null;
+        if (Check.NuNObj(proCode)){
+            return  name;
+        }
+
+        DataTransferObject<ProductEntity> has = productService.getProductById(proCode);
+        if (!has.checkSuccess()){
+            return name;
+        }
+        ProductEntity hasPro = has.getData();
+        if (Check.NuNObj(hasPro)){
+            return name;
+        }
+        return  hasPro.getProductName();
+    }
+
     /**
      * @author:zhangzhengguang
      * @date:2017/10/11
@@ -77,13 +100,13 @@ public class SupplierProductPackageController {
                 dto.getData().getList().parallelStream().forEach((x) -> {
                     SupplierPackageVO vo = new SupplierPackageVO();
                     BeanUtils.copyProperties(x, vo);
-                    vo.setBigName(productService.getProductById(x.getBigCode()).getData().getProductName());
-                    vo.setSmallName(productService.getProductById(x.getSmallCode()).getData().getProductName());
-                    vo.setSuName(productService.getProductById(x.getSuCode()).getData().getProductName());
-                    vo.setTangName(productService.getProductById(x.getTangCode()).getData().getProductName());
-                    vo.setDrinkName(productService.getProductById(x.getDrinkCode()).getData().getProductName());
-                    vo.setFoodName(productService.getProductById(x.getFoodCode()).getData().getProductName());
-                    vo.setFruitName(productService.getProductById(x.getFruitCode()).getData().getProductName());
+                    vo.setBigName(getProNameById(x.getBigCode()));
+                    vo.setSmallName(getProNameById(x.getSmallCode()));
+                    vo.setSuName(getProNameById(x.getSuCode()));
+                    vo.setTangName(getProNameById(x.getTangCode()));
+                    vo.setDrinkName(getProNameById(x.getDrinkCode()));
+                    vo.setFoodName(getProNameById(x.getFoodCode()));
+                    vo.setFruitName(getProNameById(x.getFruitCode()));
                     vo.setPackagePic(pathConstant.PIC_URL+x.getPackagePic());
                     listVo.add(vo);
                 });
