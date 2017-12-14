@@ -91,25 +91,68 @@ public class KnightController extends AbstractController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDto list(HttpServletRequest request, HttpServletResponse response,String userUid) {
+    public ResponseDto list(HttpServletRequest request, HttpServletResponse response,String userUid,String userPhone) {
         Header header = getHeader(request);
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
         }
-        if (Check.NuNStr(userUid)) {
-            return new ResponseDto("参数异常");
+        if (!Check.NuNStr(userUid)) {
+            return getOrderInfoWaitingListByUid(userUid).trans2Res();
+        }else {
+            return getOrderInfoWaitingListByPhone(userPhone).trans2Res();
         }
+    }
 
-        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(userUid));
+
+    /**
+     * 获取当前的待签收列表
+     * @auth afi
+     * @param userPhone
+     * @return
+     */
+    private DataTransferObject<List<OrderInfoVO>> getOrderInfoWaitingListByPhone(String userPhone){
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(userPhone));
+        DataTransferObject dto = new DataTransferObject<>();
+        if (Check.NuNStr(userPhone)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
         try {
+            DataTransferObject<List<OrderInfoVO>> dtoRpc =ordersService.getOrderInfoWaitingListByPhone(userPhone);
+            return dtoRpc;
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【待签收列表】错误,par:{}, e={}",JsonEntityTransform.Object2Json(userPhone), e);
 
-            DataTransferObject<List<OrderInfoVO>> dto =ordersService.getOrderInfoWaitingList(userUid);
-            return dto.trans2Res();
+            dto.setErrorMsg("调用失败");
+            return dto;
+        }
+    }
+
+
+
+
+    /**
+     * 获取当前的待签收列表
+     * @auth afi
+     * @param userUid
+     * @return
+     */
+    private DataTransferObject<List<OrderInfoVO>> getOrderInfoWaitingListByUid(String userUid){
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(userUid));
+        DataTransferObject dto = new DataTransferObject<>();
+        if (Check.NuNStr(userUid)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            DataTransferObject<List<OrderInfoVO>> dtoRpc =ordersService.getOrderInfoWaitingList(userUid);
+            return dtoRpc;
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【待签收列表】错误,par:{}, e={}",JsonEntityTransform.Object2Json(userUid), e);
-            return new ResponseDto("未知错误");
-        }
 
+            dto.setErrorMsg("调用失败");
+            return dto;
+        }
     }
 
 

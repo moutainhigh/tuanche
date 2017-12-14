@@ -64,6 +64,8 @@ public class SupplierDao extends BaseDao {
         return mybatisDaoContext.findOne(SQLID+"getSupplierByCode", SupplierEntity.class, supplierCode);
     }
 
+
+
     /**
      * 增加供应商基本信息
      * @author afi

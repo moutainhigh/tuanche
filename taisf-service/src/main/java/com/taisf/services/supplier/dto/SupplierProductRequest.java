@@ -19,6 +19,11 @@ public class SupplierProductRequest extends PageRequest {
 
 
     /**
+     * 周
+     */
+    private Integer week;
+
+    /**
      * 供应商的code
      */
     private String supplierCode;
@@ -42,5 +47,13 @@ public class SupplierProductRequest extends PageRequest {
 
     public void setProductClassify(Integer productClassify) {
         this.productClassify = productClassify;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 }

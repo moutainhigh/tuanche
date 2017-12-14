@@ -59,11 +59,26 @@ public interface SupplierProductService {
     DataTransferObject<List<SupplierProductEntity>> getSupplierProductByUserId(String userId);
 
     /**
+     * 获取当前周的上架情况
+     * @param userId
+     * @param week
+     * @return
+     */
+    DataTransferObject<List<SupplierProductEntity>> getSupplierProductByCodeAndWeek(String userId,Integer week);
+
+    /**
      * @author:zhangzhengguang
      * @date:2017/10/12
      * @description:撤回菜品
      **/
-    DataTransferObject<Void> deleteByUserIdAndProudctId(String userId, Integer productId);
+    DataTransferObject<Void> deleteBySupplierCodeAndProudctId(String supplierCode, Integer productId);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/12
+     * @description:撤回菜品
+     **/
+    DataTransferObject<Void> deleteByUserIdAndProudctIdAndWeek(String userId, Integer productId,Integer week);
 
     /**
      * @author:zhangzhengguang

@@ -26,6 +26,11 @@ public class SupplierPackageEntity extends BaseEntity {
     private static final long serialVersionUID = 7380668097871543955L;
     private Integer id;
 
+    /**
+     * 周几
+     */
+    private Integer week;
+
     private String supplierCode;
 
     private String title;
@@ -166,5 +171,13 @@ public class SupplierPackageEntity extends BaseEntity {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 }

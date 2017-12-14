@@ -97,6 +97,39 @@
     </div>
     <!-- Panel Other -->
     <div class="float-e-margins">
+
+
+        <div class="float-e-margins">
+            <div class="ibox-content">
+                <div class="panel-heading">
+
+                    <div class="panel-options">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" onclick="change(2)">周一</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(3)">周二</a>
+
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(4)">周三</a>
+
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(5)">周四</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(6)">周五</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(7)">周六</a>
+                            </li>
+                            <li class=""><a data-toggle="tab" onclick="change(1)">周日</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="ibox-content">
             <div class="row row-lg">
                 <!-- Example Pagination -->
@@ -132,6 +165,13 @@
     </div>
 </div>
 <script>
+
+    var week = 2;
+    function change(current) {
+        week = current;
+        query();
+    }
+
     function paginationParam(params) {
         var openTime = $("#openTime").val();
         var tillTime = $("#tillTime").val();
@@ -155,6 +195,7 @@
             productClassify: $("#productClassifyS").val(),
             productType: $("#productTypeS").val(),
             productSource: $("#productSourceS").val(),
+            week:week
         };
     }
 
@@ -202,47 +243,8 @@
             return "水果";
         }
     }
-    function formatStatus(value, row, index) {
-        if (value == 1) {
-            return "已添加";
-        } else {
-            return "未添加";
-        }
-    }
-    // 操作列
-    function formatOperate(value, row, index) {
-        var result = "";
-        if (row.isDel == 1) {
-            result = result + "<a title='撤回' onclick='revocation(" + row.id + ")')>撤回</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        } else {
-            result = result + "<a title='添加' onclick='addSupplierProduct(" + row.id + ")')>添加</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        }
-        return result;
-    }
-    //撤回
-    function revocation(id) {
-        $.ajax({
-            data: {
-                'id': id,
-            },
-            type: "post",
-            dataType: "json",
-            url: 'supplierProduct/revocation',
-            success: function (result) {
-                if (result.code === 0) {
-                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
-                    $('#listTable').bootstrapTable('refresh');
-                } else {
-                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
-                    $("#saveBtn").removeAttr("disabled");
-                }
-            },
-            error: function (result) {
-                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
-                $("#saveBtn").removeAttr("disabled");
-            }
-        });
-    }
+
+
     function formatPrice(value, row, index) {
         if (value != null) {
             return (value/100).toFixed(2);
@@ -251,30 +253,7 @@
         }
     }
 
-    //添加
-    function addSupplierProduct(id) {
-        $.ajax({
-            data: {
-                'id': id,
-            },
-            type: "post",
-            dataType: "json",
-            url: 'supplierProduct/addSupplierProduct',
-            success: function (result) {
-                if (result.code === 0) {
-                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
-                    $('#listTable').bootstrapTable('refresh');
-                } else {
-                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
-                    $("#saveBtn").removeAttr("disabled");
-                }
-            },
-            error: function (result) {
-                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
-                $("#saveBtn").removeAttr("disabled");
-            }
-        });
-    }
+
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);
     }

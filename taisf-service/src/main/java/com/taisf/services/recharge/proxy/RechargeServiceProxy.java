@@ -2,10 +2,7 @@ package com.taisf.services.recharge.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.SnUtil;
-import com.jk.framework.base.utils.UUIDGenerator;
-import com.jk.framework.base.utils.ValueUtil;
+import com.jk.framework.base.utils.*;
 import com.taisf.services.common.valenum.UserRoleEnum;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
@@ -215,7 +212,11 @@ public class RechargeServiceProxy implements RechargeService {
             dto.setErrorMsg("请填写用户手机号");
             return dto;
         }
-        if (ValueUtil.getintValue(request.getMoneyYuan()) <= 0){
+        if (Check.NuNObj(request.getMoneyYuan())){
+            dto.setErrorMsg("异常的金额");
+            return dto;
+        }
+        if (request.getMoneyYuan() <= 0){
             dto.setErrorMsg("异常的金额");
             return dto;
         }
@@ -248,12 +249,13 @@ public class RechargeServiceProxy implements RechargeService {
             dto.setErrorMsg("当前用户不属于当前企业");
             return dto;
         }
-        if (request.getMoneyYuan()* 100 > ValueUtil.getintValue(userAccountEntity.getDrawBalance())){
+        Double moneyPen = BigDecimalUtil.mul(request.getMoneyYuan(),100);
+        if (moneyPen.intValue() > ValueUtil.getintValue(userAccountEntity.getDrawBalance())){
             dto.setErrorMsg("当前余额不足,请确定余额信息");
             return dto;
         }
 
-        rechargeManager.fillUserAccountOneByEnterprise(request.getEnterpriseCode(),has.getUserUid(),request.getMoneyYuan()* 100);
+        rechargeManager.fillUserAccountOneByEnterprise(request.getEnterpriseCode(),has.getUserUid(),moneyPen.intValue());
         return dto;
     }
 
@@ -338,20 +340,23 @@ public class RechargeServiceProxy implements RechargeService {
             return dto;
         }
         int total = 0;
-        total += ValueUtil.getintValue(request.getBossNum()) * ValueUtil.getintValue(request.getBossMoneyYuan()) * 100;
-        total += ValueUtil.getintValue(request.getEmpNum()) * ValueUtil.getintValue(request.getEmpMoneyYuan()) * 100;
+        Double bossMoneyPen = BigDecimalUtil.mul(request.getBossMoneyYuan(),100);
+        Double empMoneyPen = BigDecimalUtil.mul(request.getEmpMoneyYuan(),100);
+
+        total += ValueUtil.getintValue(request.getBossNum()) * bossMoneyPen.intValue();
+        total += ValueUtil.getintValue(request.getEmpNum()) * empMoneyPen.intValue();
         if (total > number.getDrawBalance()){
             dto.setErrorMsg("当前余额不足,请确定余额信息");
             return dto;
         }
         List<UserAccounFillRequest> list = new ArrayList<>();
         //老板充值金额
-        if ( ValueUtil.getintValue(request.getBossNum()) * ValueUtil.getintValue(request.getBossMoneyYuan()) > 0){
-            list.addAll(this.transUserFill(dto,bossList,ValueUtil.getintValue(request.getBossMoneyYuan()) * 100));
+        if ( (ValueUtil.getintValue(request.getBossNum()) * bossMoneyPen) > 0){
+            list.addAll(this.transUserFill(dto,bossList,bossMoneyPen.intValue()));
         }
         //员工充值金额
-        if ( ValueUtil.getintValue(request.getEmpNum()) * ValueUtil.getintValue(request.getEmpMoneyYuan()) > 0){
-            list.addAll(this.transUserFill(dto,empList,ValueUtil.getintValue(request.getEmpMoneyYuan())* 100));
+        if (( ValueUtil.getintValue(request.getEmpNum()) * empMoneyPen) > 0){
+            list.addAll(this.transUserFill(dto,empList,empMoneyPen.intValue()));
         }
         if (dto.checkSuccess()){
             rechargeManager.fillUserAccountListByEnterprise(list,request.getEnterpriseCode());
@@ -407,8 +412,8 @@ public class RechargeServiceProxy implements RechargeService {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-
-        int total = ValueUtil.getintValue(chargeRequest.getMoneyYuan() * 100);
+        Double moneyYuan =BigDecimalUtil.mul(chargeRequest.getMoneyYuan(),100);
+        int total = moneyYuan.intValue();
         if (total <= 0){
             dto.setErrorMsg("异常的充值金额");
             return dto;

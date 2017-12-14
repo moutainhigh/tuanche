@@ -36,6 +36,8 @@
     where supplier_code = #{supplierCode,jdbcType=VARCHAR}
   </select>
 
+
+
   <select id="supplierPageList" parameterType="com.taisf.services.supplier.dto.SupplierRequest" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

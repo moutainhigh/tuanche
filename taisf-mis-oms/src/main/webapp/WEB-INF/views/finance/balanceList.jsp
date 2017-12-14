@@ -451,9 +451,9 @@
     
     function formateUserStatus(value, row, index) {
         if (value == 1) {
-            return "可用";
+            return "未激活";
         } else if (value == 2) {
-            return "激活";
+            return "可用";
         }else if (value == 3) {
             return "注销";
         }else if (value == 4) {

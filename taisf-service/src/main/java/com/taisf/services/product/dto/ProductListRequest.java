@@ -23,6 +23,11 @@ public class ProductListRequest extends PageRequest {
     private Integer productType;
 
     /**
+     * 周几
+     */
+    private Integer week;
+
+    /**
      * 商品属性
      */
     private Integer productSource;
@@ -57,5 +62,13 @@ public class ProductListRequest extends PageRequest {
 
     public void setProductSource(Integer productSource) {
         this.productSource = productSource;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 }

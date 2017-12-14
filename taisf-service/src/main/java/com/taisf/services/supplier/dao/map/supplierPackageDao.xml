@@ -5,6 +5,7 @@
 
   <resultMap id="BaseResultMap" type="com.taisf.services.supplier.entity.SupplierPackageEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="week" jdbcType="INTEGER" property="week" />
     <result column="supplier_code" jdbcType="VARCHAR" property="supplierCode" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="package_pic" jdbcType="VARCHAR" property="packagePic" />
@@ -21,7 +22,7 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, supplier_code, title, package_pic, package_status,package_price, big_code, small_code, su_code,
+    id, week,supplier_code, title, package_pic, package_status,package_price, big_code, small_code, su_code,
     tang_code, drink_code, food_code, fruit_code, create_time
   </sql>
 
@@ -30,6 +31,16 @@
     <include refid="Base_Column_List" />
     from t_supplier_product_package
     where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+
+  <select id="getSupplierPackageByCodeAndWeek" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_supplier_product_package
+    where supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    AND week = #{week,jdbcType=INTEGER}
   </select>
 
   <select id="getSupplierPackageByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -43,6 +54,15 @@
     select
     <include refid="Base_Column_List" />
     from t_supplier_product_package
+    where 1=1
+    <if test="supplierCode != null">
+      and supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    </if>
+    <if test="week != null">
+      and week = #{week,jdbcType=INTEGER}
+    </if>
+
+
   </select>
 
 
@@ -67,7 +87,9 @@
   <insert id="saveSupplierPackage" parameterType="com.taisf.services.supplier.entity.SupplierPackageEntity">
     insert into t_supplier_product_package
     <trim prefix="(" suffix=")" suffixOverrides=",">
-
+      <if test="week != null">
+        week,
+      </if>
       <if test="supplierCode != null">
         supplier_code,
       </if>
@@ -112,6 +134,10 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="week != null">
+        #{week,jdbcType=INTEGER},
+      </if>
 
       <if test="supplierCode != null">
         #{supplierCode,jdbcType=VARCHAR},

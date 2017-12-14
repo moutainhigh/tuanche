@@ -95,16 +95,40 @@ public class SupplierProductDao extends BaseDao {
         return mybatisDaoContext.findAll(SQLID+"getSupplierProductByUserId", SupplierProductEntity.class, userId);
     }
 
+
+    public List<SupplierProductEntity> getSupplierProductByCodeAndWeek(String supplierCode,Integer week){
+        Map<String,Object> par = new HashMap<>();
+        par.put("supplierCode",supplierCode);
+        par.put("week",week);
+
+        return mybatisDaoContext.findAll(SQLID+"getSupplierProductByCodeAndWeek", SupplierProductEntity.class, par);
+    }
+
+
+
     /**
      * @author:zhangzhengguang
      * @date:2017/10/12
      * @description:撤回菜品
      **/
-    public int deleteByUserIdAndProudctId(String userId,Integer productId){
+    public int deleteByUserIdAndProudctIdAndWeek(String supplierCode,Integer productId,Integer week){
         Map<String,Object> map = new HashMap<>();
         map.put("productId",productId);
-        map.put("userId",userId);
-        return mybatisDaoContext.delete(SQLID + "deleteByUserIdAndProudctId", map);
+        map.put("supplierCode",supplierCode);
+        map.put("week",week);
+        return mybatisDaoContext.delete(SQLID + "deleteByUserIdAndProudctIdAndWeek", map);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2017/10/12
+     * @description:撤回菜品
+     **/
+    public int deleteBySupplierCodeAndProudctId(String supplierCode,Integer productId){
+        Map<String,Object> map = new HashMap<>();
+        map.put("productId",productId);
+        map.put("supplierCode",supplierCode);
+        return mybatisDaoContext.delete(SQLID + "deleteBySupplierCodeAndProudctId", map);
     }
 
     /**

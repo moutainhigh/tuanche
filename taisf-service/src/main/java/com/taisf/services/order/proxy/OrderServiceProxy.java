@@ -176,6 +176,30 @@ public class OrderServiceProxy implements OrderService {
         return dto;
     }
 
+    /**
+     * 获取当前用户的带完成的订单
+     * @author afi
+     * @param userPhone
+     * @return
+     */
+    @Override
+    public DataTransferObject<List<OrderInfoVO>> getOrderInfoWaitingListByPhone(String userPhone){
+        DataTransferObject<List<OrderInfoVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userPhone)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
+        UserEntity userEntity = userManager.getByUserPhone(userPhone);
+        if (Check.NuNObj(userEntity)){
+            dto.setErrorMsg("当前用户不存在");
+            return dto;
+        }
+        return getOrderInfoWaitingList(userEntity.getUserUid());
+    }
+
+
+
 
     /**
      * 处理订单状态

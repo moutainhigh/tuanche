@@ -265,7 +265,6 @@
 		}
 		
 		function changeStatus(id, status) {
-			debugger;
 			var message;
 			var iconNum; //显示icon层设置 6：笑脸  5：沮丧
 			if(status == 1) {

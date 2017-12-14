@@ -18,8 +18,8 @@ import com.jk.framework.base.utils.Check;
 public enum UserStatusEnum {
 
 
-    AVAILABLE(1,"可用"),
-    ACTIVITY(2,"激活"),
+    AVAILABLE(1,"未激活"),
+    ACTIVITY(2,"可用"),
     FORBIDDEN(3,"注销"){
         @Override
         public boolean checkOk() {

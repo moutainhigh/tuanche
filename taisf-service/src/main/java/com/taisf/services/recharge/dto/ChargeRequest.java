@@ -27,7 +27,7 @@ public class ChargeRequest extends BaseEntity {
     /**
      * 金额 元
      */
-    private Integer moneyYuan;
+    private Double moneyYuan;
 
     /**
      * 操作人名称
@@ -60,11 +60,11 @@ public class ChargeRequest extends BaseEntity {
         this.enterpriseCode = enterpriseCode;
     }
 
-    public Integer getMoneyYuan() {
+    public Double getMoneyYuan() {
         return moneyYuan;
     }
 
-    public void setMoneyYuan(Integer moneyYuan) {
+    public void setMoneyYuan(Double moneyYuan) {
         this.moneyYuan = moneyYuan;
     }
 

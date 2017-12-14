@@ -299,6 +299,19 @@ public class UserManagerImpl {
 
 
     /**
+     * 根据用户userid查询用户
+     * @param userId
+     * @return
+     */
+    public UserEntity getUserByUid4Supply(String userId){
+        if (Check.NuNStr(userId)){
+            return null;
+        }
+        return userDao.getUserByUidAndType(userId,UserTypeEnum.SONGCAN.getCode());
+    }
+
+
+    /**
      * 根据用户电话查询用户
      * @param userPhone
      * @return

@@ -31,7 +31,7 @@ public class BalanceMoneyOneRequest  extends BaseEntity {
     /**
      * 金额
      */
-    private Integer moneyYuan = 0;
+    private Double moneyYuan = 0.0;
 
 
     public String getEnterpriseCode() {
@@ -50,11 +50,11 @@ public class BalanceMoneyOneRequest  extends BaseEntity {
         this.userPhone = userPhone;
     }
 
-    public Integer getMoneyYuan() {
+    public Double getMoneyYuan() {
         return moneyYuan;
     }
 
-    public void setMoneyYuan(Integer moneyYuan) {
+    public void setMoneyYuan(Double moneyYuan) {
         this.moneyYuan = moneyYuan;
     }
 }

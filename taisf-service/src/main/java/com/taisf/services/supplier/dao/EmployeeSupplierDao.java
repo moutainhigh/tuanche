@@ -1,4 +1,4 @@
-package com.taisf.services.base.dao;
+package com.taisf.services.supplier.dao;
 
 import com.taisf.services.base.entity.EmployeeSupplierEntity;
 import com.taisf.services.common.dao.BaseDao;
@@ -15,19 +15,19 @@ import org.springframework.stereotype.Repository;
  * <BR>	修改日期			修改人			修改内容
  * </PRE>
  *
- * @author afi on on 2017/3/27.
+ * @author afi on on 2017/11/27.
  * @version 1.0
  * @since 1.0
  */
-@Repository("basedata.employeeSupplierDao")
-public class employeeSupplierDao extends BaseDao {
+@Repository("supplier.employeeSupplierDao")
+public class EmployeeSupplierDao extends BaseDao {
 
     /**
      * 日志对象
      */
-    private static Logger logger = LoggerFactory.getLogger(employeeSupplierDao.class);
+    private static Logger logger = LoggerFactory.getLogger(EmployeeSupplierDao.class);
 
-    private String SQLID = "basedata.employeeSupplierDao.";
+    private String SQLID = "supplier.employeeSupplierDao.";
 
     /**
      * @author:zhangzhengguang

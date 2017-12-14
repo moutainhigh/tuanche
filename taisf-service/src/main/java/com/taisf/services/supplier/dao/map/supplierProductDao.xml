@@ -48,6 +48,9 @@
         <if test="productClassify != null">
             and t.product_classify = #{productClassify,jdbcType=VARCHAR}
         </if>
+        <if test="week != null">
+            and p.week = #{week,jdbcType=INTEGER}
+        </if>
     </select>
 
     <select id="getSupplierProductByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -55,6 +58,17 @@
         <include refid="Base_Column_List"/>
         from t_supplier_product
         where supplier_code = #{t_supplierCode,jdbcType=VARCHAR}
+    </select>
+
+
+
+    <select id="getSupplierProductByCodeAndWeek" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM t_supplier_product sp
+        WHERE
+        sp.week = #{week,jdbcType=INTEGER} AND
+        sp.supplier_code = #{supplierCode,jdbcType=VARCHAR}
     </select>
 
     <select id="getSupplierProductByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -65,10 +79,18 @@
         (SELECT es.supplier_code FROM t_employee_supplier es WHERE es.user_id = #{userId,jdbcType=VARCHAR})
     </select>
 
-    <delete id="deleteByUserIdAndProudctId" parameterType="map">
+
+    <delete id="deleteByUserIdAndProudctIdAndWeek" parameterType="map">
+        delete from t_supplier_product
+        where product_code = #{productId,jdbcType=INTEGER}
+        AND week =  #{week,jdbcType=INTEGER}
+        AND supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteBySupplierCodeAndProudctId" parameterType="map">
     delete from t_supplier_product
     where product_code = #{productId,jdbcType=INTEGER}
-    AND supplier_code = (SELECT es.supplier_code FROM t_employee_supplier es WHERE es.user_id = #{userId,jdbcType=VARCHAR})
+    AND supplier_code = #{supplierCode,jdbcType=VARCHAR}
   </delete>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -78,6 +100,10 @@
     <insert id="saveSupplierProduct" parameterType="com.taisf.services.supplier.entity.SupplierProductEntity">
         insert into t_supplier_product
         <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="week != null">
+                week,
+            </if>
 
             <if test="supplierCode != null">
                 supplier_code,
@@ -99,6 +125,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="week != null">
+                #{week,jdbcType=INTEGER},
+            </if>
             <if test="supplierCode != null">
                 #{supplierCode,jdbcType=VARCHAR},
             </if>
@@ -172,6 +201,9 @@
         </if>
         <if test="productSource != null and productSource != ''">
             AND t_product.product_source = #{productSource}
+        </if>
+        <if test="week != null ">
+            AND t_supplier_product.week = #{week}
         </if>
     </select>
 </mapper>

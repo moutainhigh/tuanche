@@ -390,7 +390,7 @@
         } else if (value == 50) {
             name = "已支付";
         } else if (value == 60) {
-            name = "已配送";
+            name = "配送中";
         } else if (value == 70) {
             clor = 'red">';
             name = "已签收";
