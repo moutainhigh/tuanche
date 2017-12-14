@@ -307,7 +307,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @return
      * @author afi
      */
-    private Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode) {
+    public Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode) {
         Map<String, List<SupplierProductVO>> rst = new HashMap<>();
 
         Map<String, List<ProductEntity>> map = new HashMap<>();
