@@ -109,4 +109,8 @@ public class ProductDao extends BaseDao {
         map.put("productClassify",productClassify);
         return mybatisDaoContext.findAll(SQLID+"getListByClassify", ProductEntity.class, map);
     }
+
+    public List<ProductEntity> findAll(ProductListRequest request){
+        return mybatisDaoContext.findAll(SQLID+"pageListProduct",ProductEntity.class,request);
+    }
 }
