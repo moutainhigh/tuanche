@@ -210,14 +210,14 @@
     from t_refund r
     LEFT JOIN  t_user u ON  u.user_uid = r.refund_uid
     where 1=1
-    <if test="userName != null" >
-      u.user_name = #{userName}
+    <if test="userName != null and userName != ''" >
+      AND u.user_name = #{userName}
     </if>
-    <if test="userPhone != null" >
-      u.user_phone = #{userPhone}
+    <if test="userPhone != null and userPhone != ''" >
+      AND  u.user_phone = #{userPhone}
     </if>
     <if test="refundStatus != null" >
-      r.refund_status = #{refundStatus}
+      AND  r.refund_status = #{refundStatus}
     </if>
   </select>
 </mapper>

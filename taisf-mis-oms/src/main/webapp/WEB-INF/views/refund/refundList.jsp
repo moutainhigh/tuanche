@@ -135,11 +135,15 @@
                     </div>
                     <label class="col-xs-1 col-sm-1 control-label mtop">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</label>
                     <div class="col-xs-2 col-sm-2">
-                        <select class="form-control" name="userStatusS" id="userStatusS">
+                        <select class="form-control" name="refundStatusS" id="refundStatusS">
                             <option value="">--请选择--</option>
-                            <option value="1">--退款中--</option>
-                            <option value="2">--已退款--</option>
-                            <option value="3">--退款中--</option>
+                            <option value="1">--待审核--</option>
+                            <option value="2">--审核失败--</option>
+                            <option value="3">--审核成功--</option>
+                            <option value="4">--打款成功 --</option>
+                            <option value="5">--打款失败--</option>
+                            <option value="6">--打款中--</option>
+                            <option value="7">--调用支付平台失败--</option>
                         </select>
                     </div>
                     <div class="col-sm-1">
@@ -381,7 +385,7 @@
             tillTime: tillTime,
             userName: $("#userNameS").val(),
             userPhone: $("#userPhoneS").val(),
-            userStatus: $("#userStatusS").val(),
+            refundStatus: $("#refundStatusS").val(),
         };
     }
 
