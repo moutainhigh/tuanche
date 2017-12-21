@@ -16,7 +16,9 @@ import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.api.SupplierPackageService;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
+import com.taisf.services.supplier.proxy.SupplierProductServiceProxy;
 import com.taisf.services.supplier.vo.SupplierPackageVO;
+import com.taisf.services.supplier.vo.SupplierProductVO;
 import com.taisf.web.oms.common.constant.LoginConstant;
 import com.taisf.web.oms.common.page.PageResult;
 import com.taisf.web.oms.supplierProductController.SupplierProductController;
@@ -28,10 +30,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("supplierProductPackage/")
@@ -44,6 +48,9 @@ public class SupplierProductPackageController {
 
     @Autowired
     private ProductService productService;
+
+    @Resource(name = "supplier.supplierProductServiceProxy")
+    private SupplierProductServiceProxy supplierProductServiceProxy;
 
     @Autowired
     private EmployeeSupplierService employeeSupplierService;
@@ -59,6 +66,29 @@ public class SupplierProductPackageController {
     @RequestMapping("list")
     public String list(HttpServletRequest request) {
         return "supplierPackage/supplierPackageList";
+    }
+
+
+    /**
+     * 根据商品id获取商品信息
+     * @param proCode
+     * @return
+     */
+    private String getProNameById(Integer proCode){
+        String name = null;
+        if (Check.NuNObj(proCode)){
+            return  name;
+        }
+
+        DataTransferObject<ProductEntity> has = productService.getProductById(proCode);
+        if (!has.checkSuccess()){
+            return name;
+        }
+        ProductEntity hasPro = has.getData();
+        if (Check.NuNObj(hasPro)){
+            return name;
+        }
+        return  hasPro.getProductName();
     }
 
     /**
@@ -77,13 +107,13 @@ public class SupplierProductPackageController {
                 dto.getData().getList().parallelStream().forEach((x) -> {
                     SupplierPackageVO vo = new SupplierPackageVO();
                     BeanUtils.copyProperties(x, vo);
-                    vo.setBigName(productService.getProductById(x.getBigCode()).getData().getProductName());
-                    vo.setSmallName(productService.getProductById(x.getSmallCode()).getData().getProductName());
-                    vo.setSuName(productService.getProductById(x.getSuCode()).getData().getProductName());
-                    vo.setTangName(productService.getProductById(x.getTangCode()).getData().getProductName());
-                    vo.setDrinkName(productService.getProductById(x.getDrinkCode()).getData().getProductName());
-                    vo.setFoodName(productService.getProductById(x.getFoodCode()).getData().getProductName());
-                    vo.setFruitName(productService.getProductById(x.getFruitCode()).getData().getProductName());
+                    vo.setBigName(getProNameById(x.getBigCode()));
+                    vo.setSmallName(getProNameById(x.getSmallCode()));
+                    vo.setSuName(getProNameById(x.getSuCode()));
+                    vo.setTangName(getProNameById(x.getTangCode()));
+                    vo.setDrinkName(getProNameById(x.getDrinkCode()));
+                    vo.setFoodName(getProNameById(x.getFoodCode()));
+                    vo.setFruitName(getProNameById(x.getFruitCode()));
                     vo.setPackagePic(pathConstant.PIC_URL+x.getPackagePic());
                     listVo.add(vo);
                 });
@@ -232,14 +262,23 @@ public class SupplierProductPackageController {
     }
 
     public void productCla01sifyList(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
+        EmployeeSupplierEntity employeeSupplierEntity = employeeSupplierService.getByUserId(employeeEntity.getUserId());
+        if (Check.NuNObj(employeeSupplierEntity)){
+            return;
+        }
+        Map<String, List<SupplierProductVO>> map = supplierProductServiceProxy.getSupplierProductMap(employeeSupplierEntity.getSupplierCode());
+
         //不同分类集合
-        List<ProductEntity> dahunList = productService.getListByClassify(ProductClassifyEnum.DAHUN.getCode()).getData();
-        List<ProductEntity> xiaohunList = productService.getListByClassify(ProductClassifyEnum.XIAOHUN.getCode()).getData();
-        List<ProductEntity> suList = productService.getListByClassify(ProductClassifyEnum.SU.getCode()).getData();
-        List<ProductEntity> tangList = productService.getListByClassify(ProductClassifyEnum.TANG.getCode()).getData();
-        List<ProductEntity> yinpinList = productService.getListByClassify(ProductClassifyEnum.YINPIN.getCode()).getData();
-        List<ProductEntity> zhushiList = productService.getListByClassify(ProductClassifyEnum.ZHUSHI.getCode()).getData();
-        List<ProductEntity> shuiguoList = productService.getListByClassify(ProductClassifyEnum.SHUIGUO.getCode()).getData();
+        List<SupplierProductVO> dahunList = map.get(ProductClassifyEnum.DAHUN.getCode()+"");
+        List<SupplierProductVO> xiaohunList = map.get(ProductClassifyEnum.XIAOHUN.getCode()+"");
+        List<SupplierProductVO> suList = map.get(ProductClassifyEnum.SU.getCode()+"");
+        List<SupplierProductVO> tangList = map.get(ProductClassifyEnum.TANG.getCode()+"");
+        List<SupplierProductVO> yinpinList = map.get(ProductClassifyEnum.YINPIN.getCode()+"");
+        List<SupplierProductVO> zhushiList = map.get(ProductClassifyEnum.ZHUSHI.getCode()+"");
+        List<SupplierProductVO> shuiguoList = map.get(ProductClassifyEnum.SHUIGUO.getCode()+"");
         request.setAttribute("dahunList", dahunList);
         request.setAttribute("xiaohunList", xiaohunList);
         request.setAttribute("suList", suList);
