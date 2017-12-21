@@ -224,6 +224,7 @@
                             </div>
 
                             <input type="hidden" class="form-control" id="ID_E" name="id" value=""/>
+                            <input type="hidden" class="form-control" id="refundFee_H" name="id" value=""/>
                             <!-- 用于 将表单缓存清空 -->
                             <input id="editReset" type="reset" style="display:none;"/>
                         </form>
@@ -454,6 +455,7 @@
                 if (result.code === 0) {
                     $('#ID_E').val(result.data.id);
                     $('#refundFee_E').val(result.data.refundFee);
+                    $('#refundFee_H').val(result.data.refundFee);
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -627,6 +629,12 @@
             layer.alert("请输入退款金额", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
+        }else{
+            if($("#refundFee_E").val() > $("#refundFee_H").val()){
+                layer.alert("退款金额不能大于支付金额", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtnE").removeAttr("disabled");
+                return false;
+            }
         }
 
         $.ajax({
