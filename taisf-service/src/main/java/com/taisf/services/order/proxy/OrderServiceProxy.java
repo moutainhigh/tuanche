@@ -540,31 +540,20 @@ public class OrderServiceProxy implements OrderService {
 
         if (drawBalance >= cost){
             //全部用余额支付
-
             money.setPayBalance(cost);
-
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
             money.setNeedPay(0);
-        }else if (drawBalance <= 0){
-            //余额为空
+        }else{
+            //余额不足
             money.setPayBalance(0);
-
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
             money.setNeedPay(cost);
-        }else {
-            //部分余额支付
-            money.setPayBalance(drawBalance);
-
-            orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.PART_PAY.getCode());
-            money.setNeedPay(cost-drawBalance);
         }
-
-
         if (!createFlag){
             //非创建订单,直接返回
             return;
         }
-        if (drawBalance <= 0){
+        if (ValueUtil.getintValue(money.getPayBalance()) <= 0){
             //不需要余额支付,就不需要密码
             return;
         }
