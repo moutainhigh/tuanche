@@ -23,8 +23,9 @@ public enum OrdersStatusEnum {
     NO_PAY("待支付", 10,OrdersStatusShowEnum.NOPAYED),
     PART_PAY("部分支付", 11,OrdersStatusShowEnum.NOPAYED),
     CANCEL("取消", 30,OrdersStatusShowEnum.CANCLED),
-
-    REFUND("退款", 40,OrdersStatusShowEnum.REFUND),
+    REFUND("退款中", 40,OrdersStatusShowEnum.REFUND),
+    REFUND_YES("退款成功", 41,OrdersStatusShowEnum.REFUND_YES),
+    REFUND_NO("退款失败", 42,OrdersStatusShowEnum.REFUND_NO),
     HAS_PAY("已支付", 50,OrdersStatusShowEnum.HAS_PAYED),
     SEND("配送", 60,OrdersStatusShowEnum.HAS_SEND),
 

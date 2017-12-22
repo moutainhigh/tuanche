@@ -6,7 +6,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.refund.api.RefundService;
-import com.taisf.services.refund.dto.RefundRequest;
+import com.taisf.services.refund.dto.RefundQueryRequest;
 import com.taisf.services.refund.entity.RefundEntity;
 import com.taisf.services.refund.vo.RefundVo;
 import com.taisf.web.oms.common.page.PageResult;
@@ -51,10 +51,10 @@ public class RefundController {
      **/
     @RequestMapping("pageList")
     @ResponseBody
-    public PageResult pageList(HttpServletRequest request, RefundRequest refundRequest) {
+    public PageResult pageList(HttpServletRequest request, RefundQueryRequest refundQueryRequest) {
         PageResult pageResult = new PageResult();
         try {
-            DataTransferObject<PagingResult<RefundVo>> dto = refundService.refundPageList(refundRequest);
+            DataTransferObject<PagingResult<RefundVo>> dto = refundService.refundPageList(refundQueryRequest);
             if (!Check.NuNObj(dto.getData())) {
                 pageResult.setRows(dto.getData().getList());
                 pageResult.setTotal(dto.getData().getTotal());

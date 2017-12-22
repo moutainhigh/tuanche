@@ -25,6 +25,16 @@
     refund_name, refund_uid, record_id, retry_times, pay_fee, refund_fee, refund_time, 
     create_time, update_time
   </sql>
+
+
+  <select id="findRefundByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_refund
+    where refund_sn = #{refundSn,jdbcType=VARCHAR}
+  </select>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -202,7 +212,7 @@
   <resultMap id="refundPageListMap" type="com.taisf.services.refund.vo.RefundVo" extends="BaseResultMap">
     <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
   </resultMap>
-  <select id="refundPageList" resultMap="refundPageListMap" parameterType="com.taisf.services.refund.dto.RefundRequest" >
+  <select id="refundPageList" resultMap="refundPageListMap" parameterType="com.taisf.services.refund.dto.RefundQueryRequest" >
     select
     r.id, r.refund_sn, r.order_sn, r.refund_type, r.source_type, r.refund_status, r.card_type, r.card_no,
     r.refund_name, r.refund_uid, r.record_id, r.retry_times, r.pay_fee, r.refund_fee, r.refund_time,
@@ -220,4 +230,19 @@
       AND  r.refund_status = #{refundStatus}
     </if>
   </select>
+
+
+  <!-- 修改退款状态和失败重试次数的叠加 -->
+  <update id="updateRefundStatusAndRetryTimes" parameterType="java.util.Map">
+    UPDATE t_refund
+    set refund_status =  #{toStatus,jdbcType=INTEGER}, retry_times = #{retryTimes, jdbcType=INTEGER},
+    update_time = now()
+    <if test="toStatus == 4">
+      , refund_time = now()
+    </if>
+    where refund_sn = #{refundSn,jdbcType=VARCHAR}
+    AND  refund_status = #{oldStatus,jdbcType=INTEGER}
+  </update>
+
+
 </mapper>

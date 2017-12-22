@@ -27,9 +27,9 @@ public enum OrdersStatusShowEnum {
     CANCLED("已取消", 3),
 
     /**
-     * 已退款
+     * 退款
      */
-    REFUND("已退款", 4),
+    REFUND("退款", 4),
 
 
     /**
@@ -48,9 +48,23 @@ public enum OrdersStatusShowEnum {
     FINISH("完成", 7),
 
     /**
+     * 退款成功
+     */
+    REFUND_YES("退款成功", 8),
+
+    /**
+     * 退款失败
+     */
+    REFUND_NO("退款失败", 9),
+
+
+    /**
      * 未知
      */
     UNKNOWN("未知", 0);
+
+
+
 
     // 成员变量
     private String name;
