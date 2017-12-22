@@ -8,6 +8,8 @@
         <module>taisf-service</module>
         <module>taisf-mis-oms</module>
         <module>taisf-api</module>
+        <module>payment-api</module>
+        <module>payment-service</module>
     </modules>
 
 
