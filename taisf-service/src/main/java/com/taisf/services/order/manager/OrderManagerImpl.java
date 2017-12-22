@@ -262,6 +262,20 @@ public class OrderManagerImpl {
 	}
 
 	/**
+	 * 获取当前的订单金额信息
+	 * @author afi
+	 * @param orderSn
+	 * @return
+	 */
+	public OrderMoneyEntity getOrderMoneyByOrderSn(String orderSn){
+		if (Check.NuNStr(orderSn)){
+			return null;
+		}
+		return orderMoneyDao.getOrderMoneyByOrderSn(orderSn);
+	}
+
+
+	/**
 	 * 获取当前的订单基本信息
 	 * @author afi
 	 * @param orderSn
