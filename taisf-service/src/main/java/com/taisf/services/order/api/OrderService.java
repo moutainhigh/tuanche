@@ -100,6 +100,14 @@ public interface OrderService {
      */
     DataTransferObject<OrderDetailVO>  getOrderDetailBySn(String orderSn);
 
+
+    /**
+     * 获取订单详情
+     * @param orderSn
+     * @return
+     */
+    DataTransferObject<OrderInfoVO>  getOrderInfoByOrderSn(String orderSn);
+
     /**
      * 获取当前订单的信息
      * @author afi

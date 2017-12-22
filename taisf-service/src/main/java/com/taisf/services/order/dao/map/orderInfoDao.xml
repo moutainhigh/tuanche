@@ -51,7 +51,16 @@
 
     </sql>
 
-
+    <!-- 获取订单详情 -->
+    <select id="getOrderInfoByOrderSn" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        <include refid="Base_Column_List" />,p.enterprise_name
+        FROM t_order t
+        INNER join t_order_money m on  t.order_sn = m.order_sn
+        LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
+        WHERE t.order_sn = #{orderSn,jdbcType=VARCHAR}
+        limit 1
+    </select>
 
     <!-- 获取订单列表的信息 -->
     <select id="getOrderInfoWaitingList" resultMap="BaseResultMap" parameterType="java.lang.String" >

@@ -75,6 +75,18 @@ public class OrderInfoDao extends BaseDao{
 		return mybatisDaoContext.findAll(SQLID + "getOrderInfoWaitingList", OrderInfoVO.class, userUid);
 	}
 
+
+	/**
+	 * 获取订单详情
+	 * @param orderSn
+	 * @return
+	 */
+	public OrderInfoVO getOrderInfoByOrderSn(String orderSn){
+		return mybatisDaoContext.findOne(SQLID + "getOrderInfoByOrderSn", OrderInfoVO.class, orderSn);
+	}
+
+
+
     /**
      * @author:zhangzhengguang
      * @date:2017/10/16

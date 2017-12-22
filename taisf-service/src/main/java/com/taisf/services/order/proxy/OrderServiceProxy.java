@@ -254,6 +254,30 @@ public class OrderServiceProxy implements OrderService {
      * @return
      */
     @Override
+    public DataTransferObject<OrderInfoVO>  getOrderInfoByOrderSn(String orderSn){
+        DataTransferObject<OrderInfoVO> dto = new DataTransferObject<>();
+
+        if (Check.NuNStr(orderSn)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //获取当前的购物车
+        OrderInfoVO orderDetail = orderManager.getOrderInfoByOrderSn(orderSn);
+        if (Check.NuNObj(orderDetail)){
+            return dto;
+        }
+        dto.setData(orderDetail);
+        return dto;
+    }
+
+
+
+    /**
+     * 获取订单的详细
+     * @param orderSn
+     * @return
+     */
+    @Override
     public DataTransferObject<OrderDetailVO>  getOrderDetailBySn(String orderSn){
         DataTransferObject<OrderDetailVO> dto = new DataTransferObject<>();
 

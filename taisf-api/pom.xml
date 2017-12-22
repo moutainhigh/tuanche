@@ -62,32 +62,6 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>com.jk</groupId>
-            <artifactId>jk-service-common</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.jk</groupId>
-            <artifactId>jk-service-pay-consumer</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>com.jk</groupId>-->
-            <!--<artifactId>jk-dependency-api</artifactId>-->
-            <!--<version>0.0.1</version>-->
-        <!--</dependency>-->
-
-        <dependency>
-            <groupId>com.jk</groupId>
-            <artifactId>jk-service-common</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-
-
         <!-- web相关jar包 -->
         <dependency>
             <groupId>javax.servlet</groupId>

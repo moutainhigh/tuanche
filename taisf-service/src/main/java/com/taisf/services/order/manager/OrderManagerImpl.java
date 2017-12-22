@@ -287,6 +287,23 @@ public class OrderManagerImpl {
 		}
 		return orderBaseDao.getOrderBaseByOrderSn(orderSn);
 	}
+
+
+
+	/**
+	 * 获取当前的订单信息
+	 * @author afi
+	 * @param orderSn
+	 * @return
+	 */
+	public OrderInfoVO getOrderInfoByOrderSn(String orderSn){
+		if (Check.NuNStr(orderSn)){
+			return null;
+		}
+		return orderInfoDao.getOrderInfoByOrderSn(orderSn);
+	}
+
+
 	/**
 	 * 获取当前的订单信息
 	 * @author afi
