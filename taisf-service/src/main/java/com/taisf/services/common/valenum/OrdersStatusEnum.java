@@ -26,8 +26,18 @@ public enum OrdersStatusEnum {
     REFUND("退款中", 40,OrdersStatusShowEnum.REFUND),
     REFUND_YES("退款成功", 41,OrdersStatusShowEnum.REFUND_YES),
     REFUND_NO("退款失败", 42,OrdersStatusShowEnum.REFUND_NO),
-    HAS_PAY("已支付", 50,OrdersStatusShowEnum.HAS_PAYED),
-    SEND("配送", 60,OrdersStatusShowEnum.HAS_SEND),
+    HAS_PAY("已支付", 50,OrdersStatusShowEnum.HAS_PAYED){
+        @Override
+        public boolean checkRefund() {
+            return true;
+        }
+    },
+    SEND("配送", 60,OrdersStatusShowEnum.HAS_SEND){
+        @Override
+        public boolean checkRefund() {
+            return true;
+        }
+    },
 
     RECEIVE("签收", 70,OrdersStatusShowEnum.FINISH);
     // 成员变量
@@ -67,6 +77,14 @@ public enum OrdersStatusEnum {
      */
     public boolean checkCancel(){
         return true;
+    }
+
+    /**
+     * 校验是否可以取消
+     * @return
+     */
+    public boolean checkRefund(){
+        return false;
     }
 
 }

@@ -29,7 +29,6 @@
     <include refid="Base_Column_List" />
     from t_pay_record
     where  order_sn = #{orderSn,jdbcType=VARCHAR}
-    AND record_type = #{recordType,jdbcType=INTEGER}
   </select>
 
 

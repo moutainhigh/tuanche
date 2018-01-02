@@ -1,17 +1,25 @@
 package com.taisf.services.order.manager;
 
+import com.jk.framework.base.constant.YesNoEnum;
+import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.SnUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.AccountTypeEnum;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
+import com.taisf.services.common.valenum.RecordPayTypeEnum;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.dao.*;
 import com.taisf.services.order.dto.*;
 import com.taisf.services.order.entity.*;
 import com.taisf.services.order.vo.*;
+import com.taisf.services.pay.dao.PayRecordDao;
+import com.taisf.services.pay.entity.PayRecordEntity;
+import com.taisf.services.refund.dao.RefundDao;
+import com.taisf.services.refund.entity.RefundEntity;
 import com.taisf.services.user.dao.AccountLogDao;
 import com.taisf.services.user.dao.UserAccountDao;
 import com.taisf.services.user.entity.AccountLogEntity;
@@ -41,6 +49,11 @@ public class OrderManagerImpl {
 	@Resource(name = "order.orderBaseDao")
 	private OrderBaseDao orderBaseDao;
 
+
+	@Resource(name = "refund.refundDao")
+	private RefundDao refundDao;
+
+
 	@Resource(name = "order.orderLogDao")
 	private OrderLogDao orderLogDao;
 
@@ -65,6 +78,10 @@ public class OrderManagerImpl {
 	@Resource(name = "order.orderInfoDao")
 	private OrderInfoDao orderInfoDao;
 
+	@Resource(name = "pay.payRecordDao")
+	private PayRecordDao payRecordDao;
+
+
 
 	/**
 	 * 获取企业订单的统计信息
@@ -76,6 +93,35 @@ public class OrderManagerImpl {
 
 		return orderInfoDao.getEnterpriseOrderStats(request);
 	}
+
+
+	/**
+	 * 申请退款
+	 * @param order
+	 * @param payRecord
+	 */
+	public  String refundOrder(OrderEntity order,PayRecordEntity payRecord){
+		int count = orderBaseDao.finishOrder(order.getOrderSn(),order.getOrderStatus(),order.getUserUid());
+		if (count == 1){
+			//生成退款
+			RefundEntity entity = new RefundEntity();
+			entity.setSourceType(order.getOrderSource());
+			entity.setOrderSn(order.getOrderSn());
+			entity.setCardNo(payRecord.getTradeNo());
+			entity.setCardType(payRecord.getPayType());
+			entity.setRecordId(payRecord.getId());
+			entity.setRefundFee(payRecord.getTotalFee());
+			entity.setPayFee(payRecord.getTotalFee());
+			entity.setRefundName(order.getUserName());
+			entity.setRefundSn(SnUtil.getRefundSn());
+			entity.setRefundUid(order.getUserUid());
+			int row =  refundDao.saveRefund(entity);
+			return entity.getRefundSn();
+		}
+		return null;
+	}
+
+
 
 	/**
 	 * 结束当前订单
@@ -216,7 +262,6 @@ public class OrderManagerImpl {
 		if (Check.NuNObj(saveVO)){
 			throw new BusinessException("保存订单参数为空");
 		}
-
 		// 保存订单基本信息
 		OrderEntity orderBase = saveVO.getOrderBase();
 		int num = orderBaseDao.saveOrderBase(orderBase);
@@ -237,6 +282,19 @@ public class OrderManagerImpl {
 		if (balanceCost > 0){
 			//如果消费余额大于0,直接消费余额
 			this.costUserBalanceByOrderSn(saveVO.getUser().getUserUid(),saveVO.getOrderSn(),balanceCost);
+
+			//保存支付记录
+			PayRecordEntity record = new PayRecordEntity();
+			record.setRecordUid(saveVO.getUser().getUserUid());
+			record.setNeedMoney(balanceCost);
+			record.setOrderSn(saveVO.getOrderSn());
+			record.setPayTime(new Date());
+			record.setPayType(RecordPayTypeEnum.YUE.getCode());
+			record.setTotalFee(balanceCost);
+			record.setTradeNo(saveVO.getOrderSn());
+			record.setPayCode(DataTransferObject.SUCCESS +"");
+			payRecordDao.savePayRecord(record);
+
 		}
 	}
 
@@ -337,6 +395,8 @@ public class OrderManagerImpl {
 		//返回订单信息
 		return orderDetailVO;
 	}
+
+
 
 
 }

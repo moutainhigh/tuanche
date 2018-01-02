@@ -1,7 +1,9 @@
 package com.taisf.services.common.valenum;
 
+import com.jk.framework.base.utils.Check;
+
 /**
- * <p>订单类型</p>
+ * <p>支付类型</p>
  * <p/>
  * <PRE>
  * <BR>	修改记录
@@ -13,27 +15,18 @@ package com.taisf.services.common.valenum;
  * @version 1.0
  * @since 1.0
  */
-public enum OrderTypeEnum {
+public enum RecordPayTypeEnum {
 
-    LUNCH_COMMON(20,"午餐正常"),
-    LUNCH_EXT(21,"午餐补餐"){
-        @Override
-        public boolean isExt() {
-            return true;
-        }
-    },
-    DINNER_COMMON(30,"晚餐正常"),
-    DINNER_EXT(31,"晚餐补单"){
-        @Override
-        public boolean isExt() {
-            return true;
-        }
-    },
+    //支付类型 1.微信 2.支付宝支付 3.余额支付
+
+    WEIXIN(1,"微信"),
+    ZHIFUBAO(2,"支付宝支付"),
+    YUE(3,"余额支付")
     ;
     private int code;
     private String name;
 
-    private OrderTypeEnum(int code, String name) {
+    private RecordPayTypeEnum(int code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -53,22 +46,17 @@ public enum OrderTypeEnum {
         this.name = name;
     }
 
-    public static OrderTypeEnum getTypeByCode(int code) {
-        OrderTypeEnum[] enums = OrderTypeEnum.values();
-        for(OrderTypeEnum enumtype:enums) {
+    public static RecordPayTypeEnum getTypeByCode(Integer code) {
+        if(Check.NuNObj(code)){
+            return null;
+        }
+        RecordPayTypeEnum[] enums = RecordPayTypeEnum.values();
+        for(RecordPayTypeEnum enumtype:enums) {
             if(enumtype.getCode() == code) {
                 return enumtype;
             }
         }
         return null;
-    }
-
-    /**
-     * 默认不是补单
-     * @return
-     */
-    public boolean isExt(){
-        return false;
     }
 
 }

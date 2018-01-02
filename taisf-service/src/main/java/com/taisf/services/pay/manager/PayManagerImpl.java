@@ -21,13 +21,13 @@ public class PayManagerImpl {
 	private OrderBaseDao orderBaseDao;
 
 	/**
-	 * 获取当前的配置信息
+	 * 获取当前的支付记录信息
 	 * @author afi
-	 * @param bizSn
+	 * @param orderSn
 	 * @return
 	 */
-	public PayRecordEntity getPayRecordBySn(String bizSn){
-		return payRecordDao.getPayRecordBySn(bizSn);
+	public PayRecordEntity getPayRecordByOrderSn(String orderSn){
+		return payRecordDao.getPayRecordByOrderSn(orderSn);
 	}
 
 

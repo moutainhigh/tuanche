@@ -1,6 +1,7 @@
 package com.taisf.services.refund.dao;
 
 import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.refund.dto.RefundQueryRequest;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +29,21 @@ public class RefundDao extends BaseDao {
      * 日志对象
      */
     private static Logger logger = LoggerFactory.getLogger(RefundDao.class);
+
+
+
+    /**
+     * 保存退款信息
+     * @author afi
+     * @param refundEntity
+     * @return
+     */
+    public int saveRefund(RefundEntity  refundEntity){
+        if (Check.NuNObj(refundEntity.getCreateTime())){
+            refundEntity.setCreateTime(new Date());
+        }
+        return mybatisDaoContext.save(SQLID + "saveRefund",refundEntity);
+    }
 
 
     /**

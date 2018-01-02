@@ -8,6 +8,7 @@ import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.dto.RefundOrderRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
@@ -65,7 +66,7 @@ public class OrderServiceProxyTest extends BaseTest {
     public void initOrderTest() {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         createOrderRequest.setUserUid("baozi");
-        createOrderRequest.setBusinessUid("123");
+        createOrderRequest.setBusinessUid("jipin");
         createOrderRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
         createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(1);
@@ -79,11 +80,11 @@ public class OrderServiceProxyTest extends BaseTest {
     public void createOrderTest() {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         createOrderRequest.setUserUid("baozi");
-        createOrderRequest.setBusinessUid("123");
-        createOrderRequest.setOrderType(OrderTypeEnum.LUNCH_COMMON.getCode());
+        createOrderRequest.setBusinessUid("jipin");
+        createOrderRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
         createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(1);
-        createOrderRequest.setAddressFid("567890#otherAddress");
+        createOrderRequest.setAddressFid("0001#mainAddress");
         DataTransferObject<String> classify = orderService.createOrder(createOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
@@ -137,6 +138,16 @@ public class OrderServiceProxyTest extends BaseTest {
         System.out.println(JsonEntityTransform.Object2Json(classify));
     }
 
+
+
+    @Test
+    public void refundOrderTest() {
+        RefundOrderRequest refundOrderRequest = new RefundOrderRequest();
+        refundOrderRequest.setOpId("baozi");
+        refundOrderRequest.setOrderSn("TA18010293ZTU14B170156");
+        DataTransferObject<String> classify = orderService.refundOrder(refundOrderRequest);
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+    }
 
 
 }

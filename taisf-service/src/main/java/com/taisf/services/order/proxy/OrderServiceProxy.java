@@ -18,6 +18,8 @@ import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.*;
+import com.taisf.services.pay.entity.PayRecordEntity;
+import com.taisf.services.pay.manager.PayManagerImpl;
 import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
@@ -57,6 +59,13 @@ public class OrderServiceProxy implements OrderService {
 
     @Resource(name = "order.orderManagerImpl")
     private OrderManagerImpl orderManager;
+
+    @Resource(name = "pay.payManagerImpl")
+    private PayManagerImpl payManager;
+
+
+
+
 
     @Resource(name = "supplier.supplierPackageManagerImpl")
     private SupplierPackageManagerImpl supplierPackageManager;
@@ -110,6 +119,63 @@ public class OrderServiceProxy implements OrderService {
         dto.setData(list);
         return dto;
     }
+
+    /**
+     * 申请退款
+     * @author afi
+     * @param refundOrderRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<String>  refundOrder(RefundOrderRequest refundOrderRequest){
+
+        DataTransferObject<String> dto = new DataTransferObject<>();
+        if (Check.NuNObj(refundOrderRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(refundOrderRequest.getOrderSn())){
+            dto.setErrorMsg("异常的订单号");
+            return dto;
+        }
+
+        if (Check.NuNStr(refundOrderRequest.getOpId())){
+            dto.setErrorMsg("异常的操作人");
+            return dto;
+        }
+        //获取订单信息
+        OrderEntity base = orderManager.getOrderBaseBySn(refundOrderRequest.getOrderSn());
+        if (Check.NuNObj(base)){
+            dto.setErrorMsg("当前订单不存在");
+            return dto;
+        }
+        if (!ValueUtil.getStrValue(base.getUserUid()).equals(refundOrderRequest.getOpId())){
+            dto.setErrorMsg("权限不足");
+            return dto;
+        }
+        OrdersStatusEnum ordersStatusEnum = OrdersStatusEnum.getByCode(base.getOrderStatus());
+        if (Check.NuNObj(ordersStatusEnum)){
+            dto.setErrorMsg("异常的订单状态");
+            return dto;
+        }
+        if (!ordersStatusEnum.checkRefund()){
+            dto.setErrorMsg("当前订单状态不能申请退款");
+            return dto;
+        }
+        // 获取当前订单的支付信息
+        PayRecordEntity payRecord = payManager.getPayRecordByOrderSn(base.getOrderSn());
+        if (Check.NuNObj(payRecord)){
+            dto.setErrorMsg("异常的支付信息");
+            return dto;
+        }
+        //结束订单
+        String refundSn = orderManager.refundOrder(base, payRecord);
+        dto.setData(refundSn);
+        return dto;
+
+    }
+
+
 
     /**
      * 结束订单

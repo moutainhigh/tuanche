@@ -26,6 +26,14 @@ import java.util.List;
  */
 public interface OrderService {
 
+    /**
+     * 申请退款
+     * @author afi
+     * @param refundOrderRequest
+     * @return
+     */
+    DataTransferObject<String>  refundOrder(RefundOrderRequest refundOrderRequest);
+
 
     /**
      * 获取当前用户的带完成的订单

@@ -38,12 +38,12 @@ public class PayRecordDao extends BaseDao {
     /**
      * 获取当前的配置信息
      * @author afi
-     * @param bizSn
+     * @param orderSn
      * @return
      */
-    public PayRecordEntity getPayRecordBySn(String bizSn){
+    public PayRecordEntity getPayRecordByOrderSn(String orderSn){
         Map<String,Object> par = new HashMap<>();
-        par.put("bizSn",bizSn);
+        par.put("orderSn",orderSn);
         return mybatisDaoContext.findOne(SQLID + "getPayRecordBySn",PayRecordEntity.class,par);
     }
 
