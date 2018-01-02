@@ -1,11 +1,14 @@
 package com.taisf.services.refund.dao;
 
+import com.jk.framework.base.page.PageRequest;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.refund.dto.RefundJobRequest;
 import com.taisf.services.refund.dto.RefundQueryRequest;
 import com.taisf.services.refund.entity.RefundEntity;
+import com.taisf.services.refund.entity.RefundLogEntity;
 import com.taisf.services.refund.vo.RefundVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +57,20 @@ public class RefundDao extends BaseDao {
     public RefundEntity findRefundByCode(String refundSn){
         return mybatisDaoContext.findOne(SQLID+"findRefundByCode", RefundEntity.class, refundSn);
     }
-    
+
+
+    /**
+     * 查询审核通过的退款列表 分页
+     * @param request
+     * @return
+     */
+    public PagingResult<RefundEntity> getRefundPass(RefundJobRequest request) {
+        PageBounds pageBound = new PageBounds();
+        pageBound.setLimit(request.getLimit());
+        pageBound.setPage(request.getPage());
+        return mybatisDaoContext.findForPage(SQLID+"getRefundPass", RefundEntity.class, request, pageBound);
+    }
+
     /**
      * @author:zhangzhengguang
      * @date:2017/12/21

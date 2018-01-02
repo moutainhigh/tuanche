@@ -22,6 +22,7 @@ public enum AccountTypeEnum {
     WITHDRAW(3,"提现"),
     FILL(4,"充值"),
     CHANGE(5,"转账"),
+    REFUND(6,"退款"),
     ;
     private int code;
     private String name;

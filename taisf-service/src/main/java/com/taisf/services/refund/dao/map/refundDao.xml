@@ -35,6 +35,20 @@
   </select>
 
 
+  <select id="getRefundPass" resultMap="BaseResultMap" parameterType="com.taisf.services.refund.dto.RefundJobRequest" >
+    select
+    <include refid="Base_Column_List" />
+    from t_refund
+
+    where refund_status = #{refundStatus,jdbcType=INTEGER}
+    <if test="refundSn != null and refundSn != ''" >
+      AND refund_sn = #{refundSn,jdbcType=VARCHAR}
+    </if>
+
+  </select>
+
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -209,6 +223,8 @@
   <resultMap id="refundPageListMap" type="com.taisf.services.refund.vo.RefundVo" extends="BaseResultMap">
     <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
   </resultMap>
+
+
   <select id="refundPageList" resultMap="refundPageListMap" parameterType="com.taisf.services.refund.dto.RefundQueryRequest" >
     select
     r.id, r.refund_sn, r.order_sn, r.refund_type, r.source_type, r.refund_status, r.card_type, r.card_no,

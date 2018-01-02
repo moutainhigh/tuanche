@@ -1,12 +1,14 @@
 package com.taisf.services.refund.manager;
 
 import com.jk.framework.base.exception.BusinessException;
+import com.jk.framework.base.page.PageRequest;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.refund.dao.RefundDao;
 import com.taisf.services.refund.dao.RefundLogDao;
+import com.taisf.services.refund.dto.RefundJobRequest;
 import com.taisf.services.refund.dto.RefundQueryRequest;
 import com.taisf.services.refund.dto.RefundRequest;
 import com.taisf.services.refund.entity.RefundEntity;
@@ -40,6 +42,15 @@ public class RefundManagerImpl {
     @Resource(name="refund.refundLogDao")
     private RefundLogDao refundLogDao;
 
+
+    /**
+     * 查询审核通过的退款列表 分页
+     * @param request
+     * @return
+     */
+    public PagingResult<RefundEntity> getRefundPass(RefundJobRequest request) {
+        return refundDao.getRefundPass(request);
+    }
 
     /**
      * 根据id查询

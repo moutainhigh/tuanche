@@ -157,7 +157,7 @@ public class RechargeManagerImpl {
 
 
     /**
-     * 充值
+     * 减小
      * @param enterpriseCode
      * @param money
      * @param bizSn
@@ -177,7 +177,7 @@ public class RechargeManagerImpl {
 
 
     /**
-     * 充值
+     * 回滚
      * @param enterpriseCode
      * @param money
      * @param bizSn
@@ -199,7 +199,7 @@ public class RechargeManagerImpl {
 
 
     /**
-     * 充值
+     * 冻结账号
      * @param userUid
      * @param money
      * @param bizSn
@@ -236,5 +236,37 @@ public class RechargeManagerImpl {
         log.setTitle("企业充值");
         accountLogDao.saveAccountLog(log);
     }
+
+
+    /**
+     * 获取当前是否存在
+     * @author afi
+     * @param bizSn
+     * @return
+     */
+    public AccountLogEntity getAccountLogByBizSn(String bizSn){
+        return accountLogDao.getAccountLogByBizSn(bizSn);
+    }
+
+    /**
+     * 充值
+     * @param userUid
+     * @param money
+     * @param bizSn
+     */
+    private void refundByOrder(String userUid,int money,String bizSn){
+        //消费当前的余额信息
+        userAccountDao.changeUserBalance(userUid,money);
+        //记录当前的消费记录
+        AccountLogEntity log = new AccountLogEntity();
+        log.setAccountType(AccountTypeEnum.REFUND.getCode());
+        log.setBizMoney(money);
+        log.setBizSn(bizSn);
+        log.setUserId(userUid);
+        log.setTitle("订单退款");
+        accountLogDao.saveAccountLog(log);
+    }
+
+
 
 }

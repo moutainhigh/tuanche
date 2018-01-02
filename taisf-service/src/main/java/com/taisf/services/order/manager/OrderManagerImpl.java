@@ -101,7 +101,7 @@ public class OrderManagerImpl {
 	 * @param payRecord
 	 */
 	public  String refundOrder(OrderEntity order,PayRecordEntity payRecord){
-		int count = orderBaseDao.finishOrder(order.getOrderSn(),order.getOrderStatus(),order.getUserUid());
+		int count = orderBaseDao.refundOrder(order.getOrderSn(),order.getOrderStatus());
 		if (count == 1){
 			//生成退款
 			RefundEntity entity = new RefundEntity();

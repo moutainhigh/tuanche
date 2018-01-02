@@ -23,4 +23,6 @@ public class RefundLogDao extends BaseDao {
 		return mybatisDaoContext.save(SQLID+"saveRefundLog", entity);
 	}
 
+
+
 }

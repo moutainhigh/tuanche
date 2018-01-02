@@ -192,7 +192,6 @@ public class UserManagerImpl {
     }
 
 
-
     /**
      * 幂等获取企业用户信息
      * @author afi

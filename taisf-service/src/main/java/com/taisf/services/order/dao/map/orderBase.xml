@@ -226,6 +226,19 @@
     </update>
 
 
+
+
+
+    <update id="refundOrder" parameterType="com.taisf.services.order.entity.OrderEntity">
+        <!-- 更新订单金额 -->
+        UPDATE t_order
+        set
+        order_status = 40
+        WHERE order_sn = #{orderSn,jdbcType=VARCHAR}
+        AND order_status =  #{oldStatus,jdbcType=TINYINT}
+    </update>
+
+
     <update id="finishOrder" parameterType="com.taisf.services.order.entity.OrderEntity">
         <!-- 更新订单金额 -->
         UPDATE t_order
