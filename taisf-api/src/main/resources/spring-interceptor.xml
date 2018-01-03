@@ -33,6 +33,8 @@
         <bean class="com.taisf.api.common.collector.ParamCollector" />
         <mvc:interceptor>
             <mvc:mapping path="/order/*" />
+            <mvc:mapping path="/create/*" />
+
             <mvc:mapping path="/refund/*" />
             <mvc:mapping path="/user/*" />
             <mvc:mapping path="/supplier/*" />

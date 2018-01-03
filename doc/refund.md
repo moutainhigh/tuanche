@@ -1,12 +1,12 @@
-支付相关文档
+退款相关文档
 -----------------------------------  
 
-## 1. 微信支付
+## 1. 退款
 
 
 ###  地址
 
-    create/orderPay
+    refund/create
 
 
 ###  提交方式
@@ -19,8 +19,7 @@ Content-Type|application/json
 字段|是否必填|类型|描述
 ---|---|---|---
 orderSn|是|String|订单编号
-payType|是|Integer|支付类型 1:微信支付
-productCode|是|Integer| 101
+    
 
 
 返回信息:成功
@@ -31,11 +30,12 @@ productCode|是|Integer| 101
            "code": 0,
            "success": true
        },
-       "data": {}
+       "data": "TK180102Q4L28OA5172527"
    }
 
 
 返回信息解析
+1710118HV517A9234345 //退款单编号
 
 返回信息:失败
 
@@ -49,3 +49,17 @@ productCode|是|Integer| 101
     }
 
 
+demo:
+
+
+````
+    curl -X POST \
+    http://localhost:8080/refund/create \
+    -H 'cache-control: no-cache' \
+    -H 'content-type: application/json' \
+    -H 'postman-token: 0c56a128-9d68-88da-c4c8-d4cfd04a7921' \
+    -H 'token: token' \
+    -H 'traceinfo: applicationCode=user;deviceUuid=deviceUuid;versionCode=versionCode;source=1;' \
+    -d '{"orderSn":"123"}'
+
+````
