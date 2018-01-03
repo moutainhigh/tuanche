@@ -58,6 +58,20 @@ public class UserDao extends BaseDao {
         return mybatisDaoContext.update(SQLID + "updateUser", userEntity);
     }
 
+    /**
+     * 更新用户
+     * @param userId
+     * @param isAdmin
+     * @return
+     */
+    public int updateUserAdmin(String userId,Integer isAdmin){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userId",userId);
+        par.put("isAdmin",isAdmin);
+        return mybatisDaoContext.update(SQLID + "updateUserAdmin", par);
+
+    }
+
 
     public int updateUserQrCode(String uid,String qrCode) {
         Map<String,Object> par = new HashMap<>();

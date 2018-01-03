@@ -360,6 +360,17 @@ public class UserManagerImpl {
 
 
     /**
+     * 更新用户
+     * @param userId
+     * @param isAdmin
+     * @return
+     */
+    public int updateUserAdmin(String userId,Integer isAdmin){
+        return userDao.updateUserAdmin(userId,isAdmin);
+    }
+
+
+    /**
      * 修改当前的支付密码
      * @author afi
      * @param userId

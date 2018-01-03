@@ -487,6 +487,40 @@ public class UserController {
         return dto;
     }
 
+
+
+
+    /**
+     * @author:afi
+     * @date:2017/10/16
+     * @description:编辑保存企业员工
+     **/
+    @RequestMapping("updateAdminUser")
+    @ResponseBody
+    public DataTransferObject<Void> updateAdminUser(HttpServletRequest request,String userUid,Integer isAdmin) {
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userUid)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNObj(isAdmin)) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            userService.updateUserAdmin(userUid,isAdmin);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "error:{}", e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("系统错误");
+            return dto;
+        }
+        return dto;
+    }
+
+
     /**
      * @author:zhangzhengguang
      * @date:2017/10/16

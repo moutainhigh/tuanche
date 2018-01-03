@@ -804,6 +804,18 @@ public class UserServiceProxy implements UserService {
     }
 
     /**
+     * @author:afi
+     * @date:2017/10/14
+     * @description:修改管理员
+     **/
+    @Override
+    public  DataTransferObject<Void> updateUserAdmin(String userId,Integer isAdmin){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        userManager.updateUserAdmin(userId,isAdmin);
+        return dto;
+    }
+
+    /**
      * @author:zhangzhengguang
      * @date:2017/10/14
      * @description:修改员工信息

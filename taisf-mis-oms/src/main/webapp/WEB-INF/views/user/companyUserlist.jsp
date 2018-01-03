@@ -437,6 +437,11 @@
         }else if(row.userStatus ==3 || row.userStatus == 4){
             result = result + "<a title='激活' onclick='updateUserStatus(\""+row.userUid+"\",\"2\")' >激活</a>";
         }
+        if(row.isAdmin == 1){
+            result = result + "<a title='激活' onclick='updateAdminStatus(\""+row.userUid+"\",\"0\")' >取消管理员</a>";
+        }else {
+            result = result + "<a title='激活' onclick='updateAdminStatus(\""+row.userUid+"\",\"1\")' >设置管理员</a>";
+        }
         return result;
     }
     //编辑员工
@@ -472,6 +477,35 @@
             }
         });
     }
+
+
+
+    function updateAdminStatus(id,status) {
+        $.ajax({
+            data: {
+                'userUid': id,
+                'isAdmin': status,
+            },
+            type: "post",
+            dataType: "json",
+            url: 'user/updateAdminUser',
+            success: function (result) {
+                if (result.code === 0) {
+                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                    $('#listTable').bootstrapTable('refresh');
+                } else {
+                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                    $("#saveBtn").removeAttr("disabled");
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtn").removeAttr("disabled");
+            }
+        });
+    }
+
+
     function updateUserStatus(id,status) {
         $.ajax({
             data: {

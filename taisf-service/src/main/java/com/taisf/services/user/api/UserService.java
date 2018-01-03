@@ -148,6 +148,13 @@ public interface UserService {
     DataTransferObject<Void> updateUser(UserEntity userEntity);
 
     /**
+     * @author:afi
+     * @date:2017/10/14
+     * @description:修改管理员
+     **/
+    DataTransferObject<Void> updateUserAdmin(String userId,Integer isAdmin);
+
+    /**
      * @author:zhangzhengguang
      * @date:2017/10/14
      * @description:修改员工信息

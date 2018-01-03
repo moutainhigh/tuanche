@@ -70,6 +70,10 @@ public class UserEntity extends BaseEntity {
 	 */
 	private Integer productSource;
 
+	/**
+	 * 是否管理员
+	 */
+	private Integer isAdmin;
 
 
 	/**
@@ -240,4 +244,11 @@ public class UserEntity extends BaseEntity {
 	}
 
 
+	public Integer getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Integer isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 }
