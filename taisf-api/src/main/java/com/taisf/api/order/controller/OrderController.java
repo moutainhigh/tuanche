@@ -281,6 +281,8 @@ public class OrderController extends AbstractController {
                 if(userEntity.getIsAdmin().equals(0)){
                     return new ResponseDto("当前用户不是管理员");
                 }
+            }else {
+                return new ResponseDto("userId参数错误");
             }
             paramRequest.setEnterpriseCode(userEntity.getEnterpriseCode());
             //分页查询
