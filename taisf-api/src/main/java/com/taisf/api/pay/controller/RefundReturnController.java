@@ -8,6 +8,9 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.api.common.abs.AbstractController;
 import com.taisf.api.pay.vo.BackInfo;
+import com.taisf.services.refund.api.RefundService;
+import com.taisf.services.refund.constants.RefundStatusEnum;
+import com.taisf.services.refund.dto.RefundRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +108,7 @@ public class RefundReturnController extends AbstractController {
 	 * @param returnInfo
 	 * @return
 	 */
-	private RefundRequest transBackInfo2refund(BackInfo returnInfo,String status){
+	private RefundRequest transBackInfo2refund(BackInfo returnInfo, String status){
 		int refundStaus = RefundStatusEnum.SUCCESS.getCode();
 		if(!success_code.equals(returnInfo.getStatus())){
 			refundStaus = RefundStatusEnum.FAIL.getCode();
