@@ -20,7 +20,6 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
-
   <resultMap id="BaseResultMapExt" type="com.taisf.services.user.vo.UserAccountVO" extends="BaseResultMap" >
     <result column="account_status" property="accountStatus" jdbcType="INTEGER" />
     <result column="draw_balance" property="drawBalance" jdbcType="INTEGER" />

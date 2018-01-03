@@ -1,5 +1,6 @@
 package com.taisf.api.order.controller;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
 import com.jk.framework.base.page.PagingResult;
@@ -256,9 +257,10 @@ public class OrderController extends AbstractController {
      * @date:2018/1/3
      * @description:数据统计,根据企业code分页查询订单
      **/
-    @RequestMapping(value = "/orderListPageByEnterpriseCode", method = RequestMethod.POST)
+    @RequestMapping(value = "/getEnterpriseOrderStats", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDto orderListPageByEnterpriseCode(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseDto getEnterpriseOrderStats(HttpServletRequest request, HttpServletResponse response) {
+        DataTransferObject<PagingResult<OrderInfoVO>> dto = new DataTransferObject<>();
         Header header = getHeader(request);
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
@@ -277,17 +279,19 @@ public class OrderController extends AbstractController {
         try {
             //校验当前用户是否是管理员
             UserEntity userEntity = userService.getUserByUid(userId).getData();
-            if(!Check.NuNObj(userEntity)){
-                if(userEntity.getIsAdmin().equals(0)){
-                    return new ResponseDto("当前用户不是管理员");
-                }
-            }else {
-                return new ResponseDto("userId参数错误");
+            if (Check.NuNObj(userEntity)){
+                return new ResponseDto("异常的账户信息");
+            }
+            if(userEntity.getIsAdmin().equals(YesNoEnum.NO.getCode())){
+                //不是管理员 返回空
+                return dto.trans2Res();
             }
             paramRequest.setEnterpriseCode(userEntity.getEnterpriseCode());
-            //分页查询
-            DataTransferObject<PagingResult<OrderInfoVO>> dto = ordersService.getOrderListPageByEnterprisCode(paramRequest);
-            return dto.trans2Res();
+            if (Check.NuNStr(paramRequest.getEnterpriseCode())){
+                dto.setErrorMsg("异常的企业信息");
+                return dto.trans2Res();
+            }
+            return ordersService.getOrderListPageByEnterprisCode(paramRequest).trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "数据统计,根据企业code分页查询订单异常:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
             return new ResponseDto("未知错误");
