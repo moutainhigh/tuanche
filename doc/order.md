@@ -660,8 +660,6 @@ demo:
 
 ###  提交方式
 提交方式|get
-Content-Type|application/json
-参数|放在body流中,依照json格式
 
 ### 参数
 
