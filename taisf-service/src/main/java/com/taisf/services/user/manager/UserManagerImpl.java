@@ -143,6 +143,18 @@ public class UserManagerImpl {
         }
         return userDao.getOkUserByEntrpriseCode(entrpriseCode);
     }
+
+    /**
+     * 获取当前的账户的操作记录
+     * @author afi
+     * @param accountLogRequest
+     * @return
+     */
+    public PagingResult<AccountLogEntity> getIncomeLogByPage(AccountLogRequest accountLogRequest){
+        return accountLogDao.getIncomeLogByPage(accountLogRequest);
+    }
+
+
     /**
      * 获取当前的账户的操作记录
      * @author afi

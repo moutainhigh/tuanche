@@ -93,6 +93,15 @@ public interface UserService {
 
 
     /**
+     * 入账记录
+     * @author afi
+     * @param accountLogRequest
+     * @return
+     */
+    DataTransferObject<PagingResult<AccountLogEntity>> inconmeLog(AccountLogRequest accountLogRequest);
+
+
+    /**
      * 修改支付密码
      * @param userId
      * @param accountPassword

@@ -171,7 +171,7 @@ public class MyController extends AbstractController {
         paramRequest.setUserId(getUserId(request));
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
-            DataTransferObject<PagingResult<AccountLogEntity>> dto =userService.rechargeLog(paramRequest);
+            DataTransferObject<PagingResult<AccountLogEntity>> dto =userService.inconmeLog(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【充值历史记录】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);

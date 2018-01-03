@@ -1,17 +1,11 @@
 package com.taisf.api.index.controller;
 
 import com.jk.framework.base.entity.DataTransferObject;
-import com.jk.framework.base.head.Header;
 import com.jk.framework.base.rst.ResponseDto;
 import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.cache.redis.api.RedisOperations;
-import com.jk.framework.log.utils.LogUtil;
-import com.jk.service.constant.WeChatConstant;
 import com.taisf.api.common.abs.AbstractController;
-import com.taisf.services.user.api.IndexService;
-import com.taisf.services.user.vo.IndexVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -633,6 +633,32 @@ public class UserServiceProxy implements UserService {
     }
 
 
+    /**
+     * 入账记录
+     * @author afi
+     * @param accountLogRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<PagingResult<AccountLogEntity>> inconmeLog(AccountLogRequest accountLogRequest){
+        DataTransferObject<PagingResult<AccountLogEntity>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(accountLogRequest)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(accountLogRequest.getUserId())){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
+        //获取当前的信息
+        PagingResult<AccountLogEntity> page = userManager.getIncomeLogByPage(accountLogRequest);
+        if (page == null){
+            page = new PagingResult();
+        }
+        dto.setData(page);
+        return dto;
+    }
 
 
 

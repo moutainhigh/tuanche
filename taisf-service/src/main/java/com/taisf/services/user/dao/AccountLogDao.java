@@ -50,6 +50,20 @@ public class AccountLogDao extends BaseDao {
         return mybatisDaoContext.findForPage(SQLID + "getAccountLogByPage",AccountLogEntity.class,accountLogRequest,pageBounds);
     }
 
+    /**
+     * 获取当前的账户的操作记录
+     * @author afi
+     * @param accountLogRequest
+     * @return
+     */
+    public PagingResult<AccountLogEntity> getIncomeLogByPage(AccountLogRequest accountLogRequest){
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setLimit(accountLogRequest.getLimit());
+        pageBounds.setPage(accountLogRequest.getPage());
+        return mybatisDaoContext.findForPage(SQLID + "getIncomeLogByPage",AccountLogEntity.class,accountLogRequest,pageBounds);
+
+    }
+
 
 
 
