@@ -650,5 +650,96 @@ demo:
 ````
 
 
+## 7.企业订单统计
+
+
+###  地址
+
+    order/getEnterpriseOrderStats
+
+
+###  提交方式
+提交方式|get
+Content-Type|application/json
+参数|放在body流中,依照json格式
+
+### 参数
+
+字段|是否必填|类型|描述
+---|---|---|---
+limit|否|Integer|默认一页50
+page|否|Integer|页码 从1开始
+
+
+返回信息:成功
+
+   {
+       "msg": {
+           "info": "",
+           "code": 0,
+           "success": true
+       },
+       "data": {
+           "total": 2,
+           "list": [
+               {
+                   "id": 2,
+                   "orderSn": "1710118HV517A9234345",
+                   "title": "补单由供餐商随即分配菜品",
+                   "provinceCode": "pcode",
+                   "cityCode": "name",
+                   "areaCode": "mail",
+                   "address": "add",
+                   "orderSource": 1,
+                   "orderStatus": 10,
+                   "evaStatus": 200,
+                   "accountsStatus": 0,
+                   "payStatus": 0,
+                   "orderType": 31,
+                   "businessUid": "123",
+                   "userUid": "afi",
+                   "userTel": "123",
+                   "userName": "name",
+                   "payTime": null,
+                   "sendTime": null,
+                   "createTime": 1507736627000,
+                   "lastModifyDate": 1507736627000,
+                   "mark": null,
+                   "sumMoney": 2,
+                   "couponMoney": 0,
+                   "discountMoney": 0,
+                   "redMoney": 0,
+                   "needPay": 2,
+                   "payMoney": null,
+                   "payBalance": 0,
+                   "carryMoney": 0,
+                   "list": [
+                       {
+                           "id": 3,
+                           "orderSn": "1710118HV517A9234345",
+                           "productName": "name1",
+                           "productType": 1,
+                           "productCode": 1,
+                           "productNum": 2,
+                           "productPrice": 1
+                       }
+                   ]
+               }
+           ]
+       }
+   }
+返回信息:失败
+
+    {
+    msg: {
+        info: "参数异常",
+        code: 1,
+        success: false
+    },
+    data: null
+    }
+
+
+
 
 
