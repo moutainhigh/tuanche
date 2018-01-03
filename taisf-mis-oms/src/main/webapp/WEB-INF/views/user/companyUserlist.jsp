@@ -437,6 +437,7 @@
         }else if(row.userStatus ==3 || row.userStatus == 4){
             result = result + "<a title='激活' onclick='updateUserStatus(\""+row.userUid+"\",\"2\")' >激活</a>";
         }
+        result = result + "&nbsp;&nbsp;&nbsp;&nbsp;";
         if(row.isAdmin == 1){
             result = result + "<a title='激活' onclick='updateAdminStatus(\""+row.userUid+"\",\"0\")' >取消管理员</a>";
         }else {

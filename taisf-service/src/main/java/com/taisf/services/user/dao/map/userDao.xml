@@ -353,10 +353,9 @@
     where user_uid = #{userUid,jdbcType=VARCHAR}
   </update>
 
-
   <select id="pageListCompanyUser" resultMap="BaseResultMap" parameterType="com.taisf.services.user.dto.UserRequest" >
-    SELECT id, user_uid,user_name, enterprise_code ,enterprise_name ,user_phone, user_password, user_status, user_type, user_role, product_source ,user_business_status, create_time,user_code,
-    update_time
+    SELECT
+    <include refid="Base_Column_List" />
     FROM t_user
     where user_type = 1
     <if test="enterpriseName != null and enterpriseName != '' ">
