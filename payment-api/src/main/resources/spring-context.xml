@@ -32,7 +32,4 @@
     <import resource="spring-mvc.xml"/>
 
 
-    <import resource="META-INF/spring/applicationContext-job.xml"/>
-
-
 </beans>
