@@ -145,4 +145,11 @@ public class OrderInfoDao extends BaseDao{
     	pageBounds.setLimit(enterpriseListRequest.getLimit());
         return mybatisDaoContext.findForPage(SQLID+"findPageLsit",OrderListVo.class,enterpriseListRequest,pageBounds);
     }
+
+	public PagingResult<OrderInfoVO> getOrderListPageByEnterprisCode(OrderInfoRequest orderInfoRequest){
+		PageBounds pageBounds=new PageBounds();
+		pageBounds.setLimit(orderInfoRequest.getLimit());
+		pageBounds.setPage(orderInfoRequest.getPage());
+		return mybatisDaoContext.findForPage(SQLID + "getOrderListPageByEnterprisCode", OrderInfoVO.class, orderInfoRequest,pageBounds);
+	}
 }

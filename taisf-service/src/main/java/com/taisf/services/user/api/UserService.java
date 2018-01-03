@@ -189,4 +189,11 @@ public interface UserService {
      **/
     DataTransferObject<String> getQRcode(String uid);
 
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/3
+     * @description:根据用户userid查询用户
+     **/
+    DataTransferObject<UserEntity> getUserByUid(String userId);
+
 }

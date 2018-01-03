@@ -277,10 +277,16 @@
             ) ll
         LEFT JOIN t_enterprise p ON ll.enterpriseCode = p.enterprise_code
     </select>
-
-
-
-
-
-
+    <select id="getOrderListPageByEnterprisCode" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest" >
+        SELECT
+        <include refid="Base_Column_List" />,p.enterprise_name
+        FROM t_order t
+        INNER join t_order_money m on  t.order_sn = m.order_sn
+        LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
+        WHERE 1= 1
+        <if test="enterpriseCode != null and enterpriseCode != '' ">
+            and t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+        </if>
+        ORDER  BY t.id DESC
+    </select>
 </mapper>

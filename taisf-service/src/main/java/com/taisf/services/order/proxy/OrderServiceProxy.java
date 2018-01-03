@@ -334,6 +334,20 @@ public class OrderServiceProxy implements OrderService {
         dto.setData(page);
         return dto;
     }
+    @Override
+    public DataTransferObject<PagingResult<OrderInfoVO>> getOrderListPageByEnterprisCode(OrderInfoRequest orderInfoRequest){
+        DataTransferObject<PagingResult<OrderInfoVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(orderInfoRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //分页获取订单列表
+        PagingResult<OrderInfoVO> page = orderManager.getOrderListPageByEnterprisCode(orderInfoRequest);
+        this.dealOrderStatus(page.getList());
+        dto.setData(page);
+        return dto;
+    }
+
 
 
     /**

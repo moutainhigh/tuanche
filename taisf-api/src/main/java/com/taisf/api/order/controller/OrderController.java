@@ -14,7 +14,8 @@ import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
-import com.taisf.services.order.vo.OrderSaveVO;
+import com.taisf.services.user.api.UserService;
+import com.taisf.services.user.entity.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,9 @@ public class OrderController extends AbstractController {
 
     @Autowired
     private OrderService ordersService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 初始化下单
@@ -243,6 +247,46 @@ public class OrderController extends AbstractController {
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【订单详情】错误,par:{}, e={}",JsonEntityTransform.Object2Json(orderSn), e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/3
+     * @description:数据统计,根据企业code分页查询订单
+     **/
+    @RequestMapping(value = "/orderListPageByEnterpriseCode", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto orderListPageByEnterpriseCode(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        String userId = getUserId(request);
+        OrderInfoRequest paramRequest = getEntity(request, OrderInfoRequest.class);
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        if (Check.NuNObjs(paramRequest.getEnterpriseCode(),userId)) {
+            return new ResponseDto("参数异常");
+        }
+        paramRequest.setUserUid(userId);
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+            //校验当前用户是否是管理员
+            UserEntity userEntity = userService.getUserByUid(userId).getData();
+            if(!Check.NuNObj(userEntity)){
+                if(userEntity.getIsAdmin().equals(0)){
+                    return new ResponseDto("当前用户不是管理员");
+                }
+            }
+            //分页查询
+            DataTransferObject<PagingResult<OrderInfoVO>> dto = ordersService.getOrderListPageByEnterprisCode(paramRequest);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "数据统计,根据企业code分页查询订单异常:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
             return new ResponseDto("未知错误");
         }
     }

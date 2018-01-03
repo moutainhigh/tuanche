@@ -133,4 +133,7 @@ public interface OrderService {
      */
     DataTransferObject<List<OrderInfoVO>> getOrderInfoWaitingList(String userUid);
 
+
+    DataTransferObject<PagingResult<OrderInfoVO>> getOrderListPageByEnterprisCode(OrderInfoRequest orderInfoRequest);
+
 }

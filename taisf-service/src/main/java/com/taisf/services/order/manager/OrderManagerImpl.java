@@ -1,6 +1,5 @@
 package com.taisf.services.order.manager;
 
-import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
@@ -176,6 +175,21 @@ public class OrderManagerImpl {
 			return pagingResult;
 		}
 
+		for (OrderInfoVO infoVO : pagingResult.getList()) {
+			infoVO.setList(orderProductDao.getOrderProductByOrderSn(infoVO.getOrderSn()));
+		}
+		return pagingResult;
+	}
+
+	public PagingResult<OrderInfoVO> getOrderListPageByEnterprisCode(OrderInfoRequest orderInfoRequest){
+		//分页获取信息
+		PagingResult<OrderInfoVO> pagingResult = orderInfoDao.getOrderListPageByEnterprisCode(orderInfoRequest);
+		if (Check.NuNObj(pagingResult)){
+			pagingResult = new PagingResult<>();
+		}
+		if (Check.NuNCollection(pagingResult.getList())){
+			return pagingResult;
+		}
 		for (OrderInfoVO infoVO : pagingResult.getList()) {
 			infoVO.setList(orderProductDao.getOrderProductByOrderSn(infoVO.getOrderSn()));
 		}

@@ -6,6 +6,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.*;
 import com.jk.framework.cache.redis.api.RedisOperations;
 import com.jk.framework.cache.redis.constant.RedisConstant;
+import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.constant.PathConstant;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
@@ -76,7 +77,7 @@ public class UserServiceProxy implements UserService {
     private RedisOperations redisOperations;
 
 
-    @Resource(name="ups.employeeDao")
+    @Resource(name = "ups.employeeDao")
     private EmployeeDao employeeDao;
 
     @Autowired
@@ -85,16 +86,17 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 获取当前的账户信息
+     *
      * @param userAccountRequest
      * @return
      */
     @Override
-    public DataTransferObject<PagingResult<UserAccountVO>> getUserAccountPage(UserAccountRequest userAccountRequest){
+    public DataTransferObject<PagingResult<UserAccountVO>> getUserAccountPage(UserAccountRequest userAccountRequest) {
         DataTransferObject<PagingResult<UserAccountVO>> dto = new DataTransferObject<>();
-        if (Check.NuNObj(userAccountRequest)){
+        if (Check.NuNObj(userAccountRequest)) {
             userAccountRequest = new UserAccountRequest();
         }
-        PagingResult<UserAccountVO> page =userManager.getUserAccountPage(userAccountRequest);
+        PagingResult<UserAccountVO> page = userManager.getUserAccountPage(userAccountRequest);
         dto.setData(page);
         return dto;
 
@@ -103,20 +105,21 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 校验电话是否注册
+     *
      * @param phone
      * @return
      */
     @Override
-    public DataTransferObject<Void> checkRegist(String phone){
+    public DataTransferObject<Void> checkRegist(String phone) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if (Check.NuNStr(phone)){
+        if (Check.NuNStr(phone)) {
             dto.setErrorMsg("请输入正确的手机号");
             return dto;
         }
 
         //1. 验证手机号信息
         UserEntity userEntity = userManager.getUserByUserPhone(phone);
-        if (Check.NuNObj(userEntity)){
+        if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号不存在");
             return dto;
         }
@@ -126,29 +129,30 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 校验用户状态
+     *
      * @param dto
      * @param userEntity
      * @return
      */
     private void checkUserStats(DataTransferObject dto, UserEntity userEntity) {
-        if (!dto.checkSuccess()){
+        if (!dto.checkSuccess()) {
             return;
         }
         //2. 判断用户状态
         UserStatusEnum userStatusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());
-        if (Check.NuNObj(userStatusEnum)){
+        if (Check.NuNObj(userStatusEnum)) {
             dto.setErrorMsg("异常的用户状态");
-            return ;
+            return;
         }
-        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()) {
             dto.setErrorMsg("该帐户已注销");
-            return ;
-        }else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()){
+            return;
+        } else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()) {
             dto.setErrorMsg("该帐户已冻结");
-            return ;
-        }else if (userStatusEnum.getCode() == UserStatusEnum.ACTIVITY.getCode()){
+            return;
+        } else if (userStatusEnum.getCode() == UserStatusEnum.ACTIVITY.getCode()) {
             dto.setErrorMsg("该手机号已注册");
-            return ;
+            return;
         }
 
     }
@@ -156,95 +160,95 @@ public class UserServiceProxy implements UserService {
     @Override
     public DataTransferObject<RegistInfoVO> regist(UserRegistRequest userRegistRequest) {
         DataTransferObject<RegistInfoVO> dto = new DataTransferObject<>();
-        if (Check.NuNObj(userRegistRequest)){
+        if (Check.NuNObj(userRegistRequest)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if (Check.NuNStr(userRegistRequest.getUserPhone())){
+        if (Check.NuNStr(userRegistRequest.getUserPhone())) {
             dto.setErrorMsg("请输入正确的手机号");
             return dto;
         }
 
-        if (Check.NuNStr(userRegistRequest.getPwd())){
+        if (Check.NuNStr(userRegistRequest.getPwd())) {
             dto.setErrorMsg("请输入密码");
             return dto;
         }
         //校验头信息
-        this.checkHeaderMust(dto,userRegistRequest.getHeader());
-        if (!dto.checkSuccess()){
+        this.checkHeaderMust(dto, userRegistRequest.getHeader());
+        if (!dto.checkSuccess()) {
             return dto;
         }
 
         ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(userRegistRequest.getHeader().getApplicationCode());
-        if (Check.NuNObj(applicationCodeEnum)){
+        if (Check.NuNObj(applicationCodeEnum)) {
             dto.setErrorMsg("异常的应用名称");
             return dto;
         }
         //1. 验证手机号信息
         UserEntity userEntity = userManager.getUserByUserPhone(userRegistRequest.getUserPhone());
-        if (Check.NuNObj(userEntity)){
+        if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号不存在");
             return dto;
         }
         //2. 判断用户状态
         UserStatusEnum userStatusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());
-        if (Check.NuNObj(userStatusEnum)){
+        if (Check.NuNObj(userStatusEnum)) {
             dto.setErrorMsg("异常的用户状态");
             return dto;
         }
-        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()) {
             dto.setErrorMsg("该帐户已注销");
             return dto;
-        }else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()){
+        } else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()) {
             dto.setErrorMsg("该帐户已冻结");
             return dto;
-        }else if (userStatusEnum.getCode() == UserStatusEnum.ACTIVITY.getCode()){
+        } else if (userStatusEnum.getCode() == UserStatusEnum.ACTIVITY.getCode()) {
             dto.setErrorMsg("该手机号已注册");
             return dto;
         }
 
         //2. 获取企业信息
         EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
-        if (Check.NuNObj(infoVO)){
+        if (Check.NuNObj(infoVO)) {
             dto.setErrorMsg("异常的企业信息");
             return dto;
         }
 
         //3. 获取合作企业状态
         EnterpriseStatusEnum statusEnum = EnterpriseStatusEnum.getTypeByCode(infoVO.getEnterpriseStatus());
-        if (Check.NuNObj(statusEnum)){
+        if (Check.NuNObj(statusEnum)) {
             dto.setErrorMsg("异常的企业状态信息");
             return dto;
         }
-        if (!statusEnum.checkOk()){
+        if (!statusEnum.checkOk()) {
             dto.setErrorMsg(statusEnum.getDes());
             return dto;
         }
-        if (Check.NuNObj(infoVO.getTillTime())){
+        if (Check.NuNObj(infoVO.getTillTime())) {
             dto.setErrorMsg("异常的企业合作信息,请联系管理员");
             return dto;
         }
-        if (infoVO.getTillTime().before(new Date())){
+        if (infoVO.getTillTime().before(new Date())) {
             dto.setErrorMsg("该企业合作已过期");
             return dto;
         }
 
         //4. 修改用户状态
-        userManager.updateUser2Activity(userEntity.getUserUid(),userRegistRequest.getPwd());
+        userManager.updateUser2Activity(userEntity.getUserUid(), userRegistRequest.getPwd());
 
         //5. 获取企业的信息并封装企业返回信息
-        this.fillEnterpriseInfo(dto,userEntity.getEnterpriseCode(),userEntity);
+        this.fillEnterpriseInfo(dto, userEntity.getEnterpriseCode(), userEntity);
 
         //6. 登录 获取token
-        if (dto.checkSuccess()){
+        if (dto.checkSuccess()) {
 
             UserLoginCodeRequest userLoginCodeRequest = new UserLoginCodeRequest();
             userLoginCodeRequest.setHeader(userRegistRequest.getHeader());
             userLoginCodeRequest.setUserPhone(userRegistRequest.getUserPhone());
-            DataTransferObject<String> loginDto =loginByCode(userLoginCodeRequest);
-            if (loginDto.checkSuccess()){
+            DataTransferObject<String> loginDto = loginByCode(userLoginCodeRequest);
+            if (loginDto.checkSuccess()) {
                 dto.getData().setUserToken(loginDto.getData());
-            }else {
+            } else {
                 dto.setErrorMsg("注册成功,单登录失败,请重新登录");
             }
         }
@@ -254,39 +258,40 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 拼装当前用户的激活信息
+     *
      * @param dto
      * @param enterpriseCode
      * @param userEntity
      */
-    private void fillEnterpriseInfo(DataTransferObject<RegistInfoVO> dto,String enterpriseCode,UserEntity userEntity){
-        if (Check.NuNObj(dto)){
+    private void fillEnterpriseInfo(DataTransferObject<RegistInfoVO> dto, String enterpriseCode, UserEntity userEntity) {
+        if (Check.NuNObj(dto)) {
             return;
         }
-        if (Check.NuNObj(userEntity)){
+        if (Check.NuNObj(userEntity)) {
             return;
         }
 
-        if (!dto.checkSuccess()){
+        if (!dto.checkSuccess()) {
             return;
         }
         RegistInfoVO vo = new RegistInfoVO();
-        BeanUtils.copyProperties(userEntity,vo);
+        BeanUtils.copyProperties(userEntity, vo);
 
         UserRoleEnum userRoleEnum = UserRoleEnum.getTypeByCode(userEntity.getUserRole());
-        if (Check.NuNObj(userRoleEnum)){
+        if (Check.NuNObj(userRoleEnum)) {
             dto.setErrorMsg("异常的用户套餐信息");
             return;
         }
         vo.setUserRoleName(userRoleEnum.getName());
         List<EnterpriseAddressEntity> list = enterpriseManager.getEnterpriseAddressByCode(enterpriseCode);
-        if(!Check.NuNCollection(list)){
+        if (!Check.NuNCollection(list)) {
             for (EnterpriseAddressEntity enterpriseAddressEntity : list) {
                 vo.getAddrList().add(enterpriseAddressEntity.getAddress());
             }
         }
 
         UserAccountEntity accountEntity = userManager.fillAndGetAccountUser(userEntity.getUserUid());
-        if(Check.NuNObj(accountEntity)){
+        if (Check.NuNObj(accountEntity)) {
             dto.setErrorMsg("异常的账户信息");
             return;
         }
@@ -296,84 +301,83 @@ public class UserServiceProxy implements UserService {
     }
 
 
-
     @Override
     public DataTransferObject<String> login(UserLoginRequest userLoginRequest) {
         DataTransferObject<String> dto = new DataTransferObject<>();
-        if (Check.NuNObj(userLoginRequest)){
+        if (Check.NuNObj(userLoginRequest)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if (Check.NuNStr(userLoginRequest.getUserPhone())){
+        if (Check.NuNStr(userLoginRequest.getUserPhone())) {
             dto.setErrorMsg("请输入正确的手机号");
             return dto;
         }
 
-        if (Check.NuNStr(userLoginRequest.getPwd())){
+        if (Check.NuNStr(userLoginRequest.getPwd())) {
             dto.setErrorMsg("请输入密码");
             return dto;
         }
 
         //校验头信息
-        this.checkHeaderMust(dto,userLoginRequest.getHeader());
-        if (!dto.checkSuccess()){
+        this.checkHeaderMust(dto, userLoginRequest.getHeader());
+        if (!dto.checkSuccess()) {
             return dto;
         }
 
         ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(userLoginRequest.getHeader().getApplicationCode());
-        if (Check.NuNObj(applicationCodeEnum)){
+        if (Check.NuNObj(applicationCodeEnum)) {
             dto.setErrorMsg("异常的应用名称");
             return dto;
         }
         //1. 验证手机号信息
         UserEntity userEntity = userManager.getUserByUserPhone(userLoginRequest.getUserPhone());
-        if (Check.NuNObj(userEntity)){
+        if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号不存在");
             return dto;
         }
-        if (!userEntity.getUserPassword().equals(userLoginRequest.getPwd())){
+        if (!userEntity.getUserPassword().equals(userLoginRequest.getPwd())) {
             dto.setErrorMsg("请输入正确的密码");
             return dto;
         }
         //2. 判断用户状态
         UserStatusEnum userStatusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());
-        if (Check.NuNObj(userStatusEnum)){
+        if (Check.NuNObj(userStatusEnum)) {
             dto.setErrorMsg("异常的用户状态");
             return dto;
         }
-        if (userStatusEnum.getCode() == UserStatusEnum.AVAILABLE.getCode()){
+        if (userStatusEnum.getCode() == UserStatusEnum.AVAILABLE.getCode()) {
             dto.setErrorMsg("请先注册");
             return dto;
-        }else if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+        } else if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()) {
             dto.setErrorMsg("该帐户已注销");
             return dto;
-        }else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()){
+        } else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()) {
             dto.setErrorMsg("该帐户已冻结");
             return dto;
         }
 
         //2. 获取企业信息
         EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
-        if (Check.NuNObj(infoVO)){
+        if (Check.NuNObj(infoVO)) {
             dto.setErrorMsg("异常的企业信息");
             return dto;
         }
 
         //获取合作企业状态
         EnterpriseStatusEnum statusEnum = EnterpriseStatusEnum.getTypeByCode(infoVO.getEnterpriseStatus());
-        if (Check.NuNObj(statusEnum)){
+        if (Check.NuNObj(statusEnum)) {
             dto.setErrorMsg("异常的企业状态信息");
             return dto;
         }
-        if (!statusEnum.checkOk()){
+        if (!statusEnum.checkOk()) {
             dto.setErrorMsg(statusEnum.getDes());
             return dto;
         }
-        if (Check.NuNObj(infoVO.getTillTime())){
+        if (Check.NuNObj(infoVO.getTillTime())) {
             dto.setErrorMsg("异常的企业合作信息,请联系管理员");
             return dto;
         }
-        if (infoVO.getTillTime().before(new Date())){
+        if (infoVO.getTillTime().before(new Date())) {
             dto.setErrorMsg("该企业合作已过期");
             return dto;
         }
@@ -385,15 +389,16 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 转化token信息
+     *
      * @param header
      * @param loginTokenEntity
      * @return
      */
-    private LoginTokenEntity transHeader2Token(Header header,LoginTokenEntity loginTokenEntity){
+    private LoginTokenEntity transHeader2Token(Header header, LoginTokenEntity loginTokenEntity) {
         Date now = new Date();
         loginTokenEntity.setDeviceUuid(header.getDeviceUuid());
         loginTokenEntity.setCreateTime(now);
-        loginTokenEntity.setExpireTime(DateUtil.jumpDate(now,365));
+        loginTokenEntity.setExpireTime(DateUtil.jumpDate(now, 365));
         loginTokenEntity.setUserToken(UUIDGenerator.hexUUID());
         loginTokenEntity.setVersionCode(header.getVersionCode());
         ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(header.getApplicationCode());
@@ -404,18 +409,19 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 校验当前的head必填信息
+     *
      * @param dto
      * @param header
      */
-    private void checkHeaderMust(DataTransferObject dto, Header header){
-        if (Check.NuNObj(dto)){
+    private void checkHeaderMust(DataTransferObject dto, Header header) {
+        if (Check.NuNObj(dto)) {
             return;
         }
-        if (!dto.checkSuccess()){
+        if (!dto.checkSuccess()) {
             return;
         }
 
-        if (Check.NuNObj(header)){
+        if (Check.NuNObj(header)) {
             dto.setErrorMsg("异常的头信息");
             return;
         }
@@ -423,13 +429,13 @@ public class UserServiceProxy implements UserService {
         if (Check.NuNStr(header.getDeviceUuid())
                 || Check.NuNStr(header.getApplicationCode())
                 || Check.NuNStr(header.getVersionCode())
-                || Check.NuNObj(header.getSource())){
+                || Check.NuNObj(header.getSource())) {
             dto.setErrorMsg("异常的头信息");
-            return ;
+            return;
         }
 
         ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(header.getApplicationCode());
-        if (Check.NuNObj(applicationCodeEnum)){
+        if (Check.NuNObj(applicationCodeEnum)) {
             dto.setErrorMsg("异常的应用名称");
             return;
         }
@@ -437,6 +443,7 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 用户登录 [验证码登录]
+     *
      * @param userLoginRequest
      * @return
      */
@@ -444,72 +451,72 @@ public class UserServiceProxy implements UserService {
     public DataTransferObject<String> loginByCode(UserLoginCodeRequest userLoginRequest) {
 
         DataTransferObject<String> dto = new DataTransferObject<>();
-        if (Check.NuNObj(userLoginRequest)){
+        if (Check.NuNObj(userLoginRequest)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if (Check.NuNStr(userLoginRequest.getUserPhone())){
+        if (Check.NuNStr(userLoginRequest.getUserPhone())) {
             dto.setErrorMsg("请输入正确的手机号");
             return dto;
         }
 
         //校验头信息
-        this.checkHeaderMust(dto,userLoginRequest.getHeader());
-        if (!dto.checkSuccess()){
+        this.checkHeaderMust(dto, userLoginRequest.getHeader());
+        if (!dto.checkSuccess()) {
             return dto;
         }
 
         ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(userLoginRequest.getHeader().getApplicationCode());
-        if (Check.NuNObj(applicationCodeEnum)){
+        if (Check.NuNObj(applicationCodeEnum)) {
             dto.setErrorMsg("异常的应用名称");
             return dto;
         }
         //1. 验证手机号信息
         UserEntity userEntity = userManager.getUserByUserPhone(userLoginRequest.getUserPhone());
-        if (Check.NuNObj(userEntity)){
+        if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号不存在");
             return dto;
         }
 
         //2. 判断用户状态
         UserStatusEnum userStatusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());
-        if (Check.NuNObj(userStatusEnum)){
+        if (Check.NuNObj(userStatusEnum)) {
             dto.setErrorMsg("异常的用户状态");
             return dto;
         }
-        if (userStatusEnum.getCode() == UserStatusEnum.AVAILABLE.getCode()){
+        if (userStatusEnum.getCode() == UserStatusEnum.AVAILABLE.getCode()) {
             dto.setErrorMsg("请先注册");
             return dto;
-        }else if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+        } else if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()) {
             dto.setErrorMsg("该帐户已注销");
             return dto;
-        }else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()){
+        } else if (userStatusEnum.getCode() == UserStatusEnum.FREEZE.getCode()) {
             dto.setErrorMsg("该帐户已冻结");
             return dto;
         }
 
         //2. 获取企业信息
         EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
-        if (Check.NuNObj(infoVO)){
+        if (Check.NuNObj(infoVO)) {
             dto.setErrorMsg("异常的企业信息");
             return dto;
         }
 
         //获取合作企业状态
         EnterpriseStatusEnum statusEnum = EnterpriseStatusEnum.getTypeByCode(infoVO.getEnterpriseStatus());
-        if (Check.NuNObj(statusEnum)){
+        if (Check.NuNObj(statusEnum)) {
             dto.setErrorMsg("异常的企业状态信息");
             return dto;
         }
-        if (!statusEnum.checkOk()){
+        if (!statusEnum.checkOk()) {
             dto.setErrorMsg(statusEnum.getDes());
             return dto;
         }
-        if (Check.NuNObj(infoVO.getTillTime())){
+        if (Check.NuNObj(infoVO.getTillTime())) {
             dto.setErrorMsg("异常的企业合作信息,请联系管理员");
             return dto;
         }
-        if (infoVO.getTillTime().before(new Date())){
+        if (infoVO.getTillTime().before(new Date())) {
             dto.setErrorMsg("该企业合作已过期");
             return dto;
         }
@@ -522,28 +529,29 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 处理用户的登录信息
+     *
      * @param userLoginRequest
      * @param dto
      * @param applicationCodeEnum
      * @param userEntity
      */
     private void dealToken(UserLoginCodeRequest userLoginRequest, DataTransferObject<String> dto, ApplicationCodeEnum applicationCodeEnum, UserEntity userEntity) {
-        if (!dto.checkSuccess()){
+        if (!dto.checkSuccess()) {
             return;
         }
         //2. 获取token信息
         LoginTokenEntity token = userManager.getToken(userEntity.getUserUid(), userLoginRequest.getHeader().getDeviceUuid(), applicationCodeEnum.getCode());
-        if (!Check.NuNObj(token)){
+        if (!Check.NuNObj(token)) {
             dto.setData(token.getUserToken());
-        }else {
+        } else {
 
             token = new LoginTokenEntity();
             token.setUserId(userEntity.getUserUid());
-            token = transHeader2Token(userLoginRequest.getHeader(),token);
+            token = transHeader2Token(userLoginRequest.getHeader(), token);
             userManager.saveLoginToken(token);
             dto.setData(token.getUserToken());
         }
-        if (Check.NuNObj(token)){
+        if (Check.NuNObj(token)) {
             dto.setErrorMsg("获取token异常");
             return;
 
@@ -555,48 +563,49 @@ public class UserServiceProxy implements UserService {
         userModel.setDeviceUuid(token.getDeviceUuid());
         userModel.setUserToken(token.getUserToken());
         userModel.setUserId(token.getUserId());
-        BeanUtils.copyProperties(userEntity,userModel);
+        BeanUtils.copyProperties(userEntity, userModel);
         //设置缓存信息
-        redisOperations.setex(loginKey,360*24*60*60, JsonEntityTransform.Object2Json(userModel));
+        redisOperations.setex(loginKey, 360 * 24 * 60 * 60, JsonEntityTransform.Object2Json(userModel));
     }
 
 
     /**
      * 登出
+     *
      * @param userLogoutRequest
      * @return
      */
     @Override
     public DataTransferObject<Void> logout(UserLogoutRequest userLogoutRequest) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if (Check.NuNObj(userLogoutRequest)){
+        if (Check.NuNObj(userLogoutRequest)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if (Check.NuNStr(userLogoutRequest.getToken())){
+        if (Check.NuNStr(userLogoutRequest.getToken())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
 
         //校验头信息
-        this.checkHeaderMust(dto,userLogoutRequest.getHeader());
-        if (!dto.checkSuccess()){
+        this.checkHeaderMust(dto, userLogoutRequest.getHeader());
+        if (!dto.checkSuccess()) {
             return dto;
         }
         ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(userLogoutRequest.getHeader().getApplicationCode());
-        if (Check.NuNObj(applicationCodeEnum)){
+        if (Check.NuNObj(applicationCodeEnum)) {
             dto.setErrorMsg("异常的应用名称");
             return dto;
         }
         //2. 获取token信息
         LoginTokenEntity token = userManager.getTokenByToken(userLogoutRequest.getToken());
-        if (Check.NuNObj(token)){
+        if (Check.NuNObj(token)) {
             //幂等返回
             return dto;
         }
         //3. 校验匹配
-        this.checkHead2Token(dto,userLogoutRequest.getHeader(),token,applicationCodeEnum);
-        if (dto.checkSuccess()){
+        this.checkHead2Token(dto, userLogoutRequest.getHeader(), token, applicationCodeEnum);
+        if (dto.checkSuccess()) {
             userManager.deleteById(token.getId());
         }
 
@@ -610,50 +619,52 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 校验参数异常
+     *
      * @param dto
      * @param header
      * @param token
      */
-    private void checkHead2Token(DataTransferObject dto, Header header,LoginTokenEntity token,ApplicationCodeEnum applicationCodeEnum){
-        if (Check.NuNObj(dto)){
-            return ;
+    private void checkHead2Token(DataTransferObject dto, Header header, LoginTokenEntity token, ApplicationCodeEnum applicationCodeEnum) {
+        if (Check.NuNObj(dto)) {
+            return;
         }
-        if (Check.NuNObjs(header,token,applicationCodeEnum)){
+        if (Check.NuNObjs(header, token, applicationCodeEnum)) {
             dto.setErrorMsg("参数异常");
-            return ;
+            return;
         }
-        if (!header.getDeviceUuid().equals(token.getDeviceUuid())){
+        if (!header.getDeviceUuid().equals(token.getDeviceUuid())) {
             dto.setErrorMsg("退出失败,参数错误");
-            return ;
+            return;
         }
-        if (applicationCodeEnum.getCode() != token.getLoginSource()){
+        if (applicationCodeEnum.getCode() != token.getLoginSource()) {
             dto.setErrorMsg("退出失败,参数错误");
-            return ;
+            return;
         }
     }
 
 
     /**
      * 入账记录
-     * @author afi
+     *
      * @param accountLogRequest
      * @return
+     * @author afi
      */
     @Override
-    public DataTransferObject<PagingResult<AccountLogEntity>> inconmeLog(AccountLogRequest accountLogRequest){
+    public DataTransferObject<PagingResult<AccountLogEntity>> inconmeLog(AccountLogRequest accountLogRequest) {
         DataTransferObject<PagingResult<AccountLogEntity>> dto = new DataTransferObject<>();
-        if (Check.NuNObj(accountLogRequest)){
+        if (Check.NuNObj(accountLogRequest)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if (Check.NuNStr(accountLogRequest.getUserId())){
+        if (Check.NuNStr(accountLogRequest.getUserId())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
 
         //获取当前的信息
         PagingResult<AccountLogEntity> page = userManager.getIncomeLogByPage(accountLogRequest);
-        if (page == null){
+        if (page == null) {
             page = new PagingResult();
         }
         dto.setData(page);
@@ -661,29 +672,29 @@ public class UserServiceProxy implements UserService {
     }
 
 
-
     /**
      * 充值记录
-     * @author afi
+     *
      * @param accountLogRequest
      * @return
+     * @author afi
      */
     @Override
-    public DataTransferObject<PagingResult<AccountLogEntity>> rechargeLog(AccountLogRequest accountLogRequest){
+    public DataTransferObject<PagingResult<AccountLogEntity>> rechargeLog(AccountLogRequest accountLogRequest) {
 
         DataTransferObject<PagingResult<AccountLogEntity>> dto = new DataTransferObject<>();
-        if (Check.NuNObj(accountLogRequest)){
+        if (Check.NuNObj(accountLogRequest)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if (Check.NuNStr(accountLogRequest.getUserId())){
+        if (Check.NuNStr(accountLogRequest.getUserId())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
         accountLogRequest.setAccountType(AccountTypeEnum.FILL.getCode());
         //获取当前的信息
         PagingResult<AccountLogEntity> page = userManager.getAccountLogByPage(accountLogRequest);
-        if (page == null){
+        if (page == null) {
             page = new PagingResult();
         }
         dto.setData(page);
@@ -693,57 +704,60 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 修改支付密码
+     *
      * @param userId
      * @param accountPassword
      * @return
      */
     @Override
-    public DataTransferObject<Void> updateAccountPassword(String userId,String accountPassword){
+    public DataTransferObject<Void> updateAccountPassword(String userId, String accountPassword) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(userId)
-                || Check.NuNObj(accountPassword)){
+                || Check.NuNObj(accountPassword)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        userManager.updateAccountPassword(userId,accountPassword);
+        userManager.updateAccountPassword(userId, accountPassword);
         return dto;
     }
 
 
     /**
      * 修改登录密码
+     *
      * @param userId
      * @param userPassword
      * @return
      */
     @Override
-    public DataTransferObject<Void> updateUserPwd(String userId,String userPassword,String oldUserPassword){
+    public DataTransferObject<Void> updateUserPwd(String userId, String userPassword, String oldUserPassword) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(userId)
-                || Check.NuNStr(userPassword)){
+                || Check.NuNStr(userPassword)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
         UserEntity has = userManager.getUserByUid(userId);
-        if (Check.NuNObj(has)){
+        if (Check.NuNObj(has)) {
             dto.setErrorMsg("当前用户不存在");
             return dto;
         }
-        if (!ValueUtil.getStrValue(has.getUserPassword()).equals(ValueUtil.getStrValue(oldUserPassword))){
+        if (!ValueUtil.getStrValue(has.getUserPassword()).equals(ValueUtil.getStrValue(oldUserPassword))) {
             dto.setErrorMsg("原始密码错误");
             return dto;
         }
-        userManager.updateUserPwd( userId, userPassword);
+        userManager.updateUserPwd(userId, userPassword);
         return dto;
     }
 
     /**
      * 销售列表
+     *
      * @param request
      * @return
      */
     @Override
-    public  DataTransferObject<PagingResult<UserEntity>> pageKnightListUser(UserRequest request){
+    public DataTransferObject<PagingResult<UserEntity>> pageKnightListUser(UserRequest request) {
         DataTransferObject<PagingResult<UserEntity>> dto = new DataTransferObject<>();
         PagingResult<UserEntity> userEntityPagingResult = userDao.pageKnightListUser(request);
         dto.setData(userEntityPagingResult);
@@ -757,7 +771,7 @@ public class UserServiceProxy implements UserService {
      * @description:销售管理列表
      **/
     @Override
-    public DataTransferObject<PagingResult<UserEntity>> pageListUser(UserRequest request){
+    public DataTransferObject<PagingResult<UserEntity>> pageListUser(UserRequest request) {
         DataTransferObject<PagingResult<UserEntity>> dto = new DataTransferObject<>();
         PagingResult<UserEntity> userEntityPagingResult = userDao.pageListUser(request);
         dto.setData(userEntityPagingResult);
@@ -770,7 +784,7 @@ public class UserServiceProxy implements UserService {
      * @description:企业员工管理列表
      **/
     @Override
-    public DataTransferObject<PagingResult<UserEntity>> pageListCompanyUser(UserRequest request){
+    public DataTransferObject<PagingResult<UserEntity>> pageListCompanyUser(UserRequest request) {
         DataTransferObject<PagingResult<UserEntity>> dto = new DataTransferObject<>();
         PagingResult<UserEntity> userEntityPagingResult = userDao.pageListCompanyUser(request);
         dto.setData(userEntityPagingResult);
@@ -783,7 +797,7 @@ public class UserServiceProxy implements UserService {
      * @description:销售管理列表
      **/
     @Override
-    public DataTransferObject<UserEntity> getUserById(Integer id){
+    public DataTransferObject<UserEntity> getUserById(Integer id) {
         DataTransferObject<UserEntity> dto = new DataTransferObject<>();
         UserEntity userEntity = userDao.getUserById(id);
         dto.setData(userEntity);
@@ -797,7 +811,7 @@ public class UserServiceProxy implements UserService {
      * @description:修改员工信息
      **/
     @Override
-    public DataTransferObject<Void> updateUser(UserEntity userEntity){
+    public DataTransferObject<Void> updateUser(UserEntity userEntity) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         userManager.updateUser(userEntity);
         return dto;
@@ -809,9 +823,9 @@ public class UserServiceProxy implements UserService {
      * @description:修改管理员
      **/
     @Override
-    public  DataTransferObject<Void> updateUserAdmin(String userId,Integer isAdmin){
+    public DataTransferObject<Void> updateUserAdmin(String userId, Integer isAdmin) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        userManager.updateUserAdmin(userId,isAdmin);
+        userManager.updateUserAdmin(userId, isAdmin);
         return dto;
     }
 
@@ -821,7 +835,7 @@ public class UserServiceProxy implements UserService {
      * @description:修改员工信息
      **/
     @Override
-    public DataTransferObject<List<UserEntity>> getUserByType(Integer type){
+    public DataTransferObject<List<UserEntity>> getUserByType(Integer type) {
         DataTransferObject<List<UserEntity>> dto = new DataTransferObject<>();
         List<UserEntity> userEntityList = userDao.getUserByType(type);
         dto.setData(userEntityList);
@@ -835,7 +849,7 @@ public class UserServiceProxy implements UserService {
      * @description:修改员工信息
      **/
     @Override
-    public void saveUser(UserEntity userEntity){
+    public void saveUser(UserEntity userEntity) {
         userEntity.setUserPassword(MD5Util.MD5Encode("123456"));
         userDao.add(userEntity);
         EmployeeEntity employeeEntity = new EmployeeEntity();
@@ -853,36 +867,37 @@ public class UserServiceProxy implements UserService {
 
     /**
      * 禁用员工
+     *
      * @param userUid
      * @return
      */
     @Override
-    public DataTransferObject<Void> forbiddenUser(String userUid){
+    public DataTransferObject<Void> forbiddenUser(String userUid) {
         DataTransferObject dto = new DataTransferObject();
-        if (Check.NuNStr(userUid)){
+        if (Check.NuNStr(userUid)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
 
         //1. 验证手机号信息
         UserEntity userEntity = userManager.getUserByUid(userUid);
-        if (Check.NuNObj(userEntity)){
+        if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("当前用户不存在");
             return dto;
         }
 
         //2. 判断用户状态
         UserStatusEnum userStatusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());
-        if (Check.NuNObj(userStatusEnum)){
+        if (Check.NuNObj(userStatusEnum)) {
             dto.setErrorMsg("异常的用户状态");
             return dto;
         }
-        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()){
+        if (userStatusEnum.getCode() == UserStatusEnum.FORBIDDEN.getCode()) {
             return dto;
         }
 
-        UserAccountEntity has =userManager.fillAndGetAccountUser(userUid);
-        if (Check.NuNObj(has)){
+        UserAccountEntity has = userManager.fillAndGetAccountUser(userUid);
+        if (Check.NuNObj(has)) {
             dto.setErrorMsg("创建用户账号失败");
             return dto;
         }
@@ -890,17 +905,17 @@ public class UserServiceProxy implements UserService {
 
         //2. 获取企业信息
         EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
-        if (Check.NuNObj(infoVO)){
+        if (Check.NuNObj(infoVO)) {
             dto.setErrorMsg("异常的企业信息");
             return dto;
         }
 
-        UserAccountEntity userAccountEntity =userManager.fillAndGetAccountUser(infoVO.getEnterpriseCode());
-        if (Check.NuNObj(userAccountEntity)){
+        UserAccountEntity userAccountEntity = userManager.fillAndGetAccountUser(infoVO.getEnterpriseCode());
+        if (Check.NuNObj(userAccountEntity)) {
             dto.setErrorMsg("创建企业账号信息");
             return dto;
         }
-        rechargeManager.forbiddenUserAccountOneByEnterprise(infoVO.getEnterpriseCode(),userUid,has.getDrawBalance());
+        rechargeManager.forbiddenUserAccountOneByEnterprise(infoVO.getEnterpriseCode(), userUid, has.getDrawBalance());
         return dto;
     }
 
@@ -911,7 +926,7 @@ public class UserServiceProxy implements UserService {
      * @description:修改账户信息
      **/
     @Override
-    public void updateAccountUser(UserAccountEntity  accountUserEntity){
+    public void updateAccountUser(UserAccountEntity accountUserEntity) {
         userAccountDao.updateAccountUser(accountUserEntity);
     }
 
@@ -921,9 +936,9 @@ public class UserServiceProxy implements UserService {
      * @description:生成二维码
      **/
     @Override
-    public DataTransferObject<String> getQRcode(String uid){
+    public DataTransferObject<String> getQRcode(String uid) {
         DataTransferObject<String> dto = new DataTransferObject<>();
-        if (Check.NuNStr(uid)){
+        if (Check.NuNStr(uid)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
@@ -931,24 +946,24 @@ public class UserServiceProxy implements UserService {
         try {
             //1.根据uid查询user表
             UserEntity userEntity = userDao.getUserByUid(uid);
-            if (Check.NuNObj(userEntity)){
+            if (Check.NuNObj(userEntity)) {
                 dto.setErrorMsg("当前用户不存在");
                 return dto;
             }
             //2.判断二维码是否为空
             if (Check.NuNObjs(userEntity, userEntity.getQrCode())) {
-                dbPath =  File.separator + "card" + File.separator;
-                File dest = new File(pathConstant.FILE_PATH+dbPath);
-                if (!dest.exists()){
+                dbPath = File.separator + "card" + File.separator;
+                File dest = new File(pathConstant.FILE_PATH + dbPath);
+                if (!dest.exists()) {
                     dest.mkdirs();
                 }
                 //1.生成二维码 并上传
-                dbPath +=  uid+".jpg";
-                String fullPath = pathConstant.FILE_PATH+ dbPath;
+                dbPath += uid + ".jpg";
+                String fullPath = pathConstant.FILE_PATH + dbPath;
                 BufferedImage image = QRCodeUtils.createImage(uid, false);
                 ImageIO.write(image, "jpg", new File(fullPath));
                 //2.修改user二维码路径
-                userDao.updateUserQrCode(uid,dbPath);
+                userDao.updateUserQrCode(uid, dbPath);
             } else {
                 //4.不为空,返回路径
                 dbPath = userEntity.getQrCode();
@@ -956,8 +971,26 @@ public class UserServiceProxy implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        dbPath = pathConstant.PIC_URL+ dbPath;
+        dbPath = pathConstant.PIC_URL + dbPath;
         dto.setData(dbPath);
+        return dto;
+    }
+
+    @Override
+    public DataTransferObject<UserEntity> getUserByUid(String userId) {
+        if (Check.NuNStr(userId)) {
+            return null;
+        }
+        DataTransferObject<UserEntity> dto = new DataTransferObject<>();
+        try {
+            UserEntity userEntity = userDao.getUserByUid(userId);
+            dto.setData(userEntity);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【根据用户userid查询用户异常】error:{}, param{}", e,userId);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("根据用户userid查询用户异常");
+            return dto;
+        }
         return dto;
     }
 
