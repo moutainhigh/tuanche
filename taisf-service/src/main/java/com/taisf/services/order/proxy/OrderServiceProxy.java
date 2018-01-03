@@ -336,8 +336,13 @@ public class OrderServiceProxy implements OrderService {
     }
     @Override
     public DataTransferObject<PagingResult<OrderInfoVO>> getOrderListPageByEnterprisCode(OrderInfoRequest orderInfoRequest){
+
         DataTransferObject<PagingResult<OrderInfoVO>> dto = new DataTransferObject<>();
         if (Check.NuNObj(orderInfoRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if(Check.NuNObj(orderInfoRequest.getEnterpriseCode())){
             dto.setErrorMsg("参数异常");
             return dto;
         }

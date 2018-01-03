@@ -269,7 +269,7 @@ public class OrderController extends AbstractController {
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
-        if (Check.NuNObjs(paramRequest.getEnterpriseCode(),userId)) {
+        if (Check.NuNObjs(userId)) {
             return new ResponseDto("参数异常");
         }
         paramRequest.setUserUid(userId);
@@ -282,6 +282,7 @@ public class OrderController extends AbstractController {
                     return new ResponseDto("当前用户不是管理员");
                 }
             }
+            paramRequest.setEnterpriseCode(userEntity.getEnterpriseCode());
             //分页查询
             DataTransferObject<PagingResult<OrderInfoVO>> dto = ordersService.getOrderListPageByEnterprisCode(paramRequest);
             return dto.trans2Res();
