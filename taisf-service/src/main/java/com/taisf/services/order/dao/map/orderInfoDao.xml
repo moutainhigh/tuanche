@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="order.orderInfoDao" >
+<mapper namespace="order.orderInfoDao">
 
     <resultMap id="BaseResultMap" type="com.taisf.services.order.vo.OrderInfoVO">
         <!-- map -->
-        <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
-        <result column="title" jdbcType="VARCHAR" property="title" />
-        <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
-        <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-        <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
-        <result column="address" jdbcType="VARCHAR" property="address" />
-        <result column="order_source" jdbcType="TINYINT" property="orderSource" />
-        <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
-        <result column="accounts_status" jdbcType="TINYINT" property="accountsStatus" />
-        <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
-        <result column="eva_status" jdbcType="TINYINT" property="evaStatus" />
-        <result column="order_type" jdbcType="TINYINT" property="orderType" />
-        <result column="business_uid" jdbcType="VARCHAR" property="businessUid" />
-        <result column="user_uid" jdbcType="VARCHAR" property="userUid" />
-        <result column="user_tel" jdbcType="VARCHAR" property="userTel" />
-        <result column="user_name" jdbcType="VARCHAR" property="userName" />
-        <result column="user_code" jdbcType="VARCHAR" property="userCode" />
-        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
-        <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="last_modify_date" jdbcType="TIMESTAMP" property="lastModifyDate" />
-        <result column="mark" jdbcType="VARCHAR" property="mark" />
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="province_code" jdbcType="VARCHAR" property="provinceCode"/>
+        <result column="area_code" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="city_code" jdbcType="VARCHAR" property="cityCode"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="order_source" jdbcType="TINYINT" property="orderSource"/>
+        <result column="order_status" jdbcType="TINYINT" property="orderStatus"/>
+        <result column="accounts_status" jdbcType="TINYINT" property="accountsStatus"/>
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus"/>
+        <result column="eva_status" jdbcType="TINYINT" property="evaStatus"/>
+        <result column="order_type" jdbcType="TINYINT" property="orderType"/>
+        <result column="business_uid" jdbcType="VARCHAR" property="businessUid"/>
+        <result column="user_uid" jdbcType="VARCHAR" property="userUid"/>
+        <result column="user_tel" jdbcType="VARCHAR" property="userTel"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_code" jdbcType="VARCHAR" property="userCode"/>
+        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
+        <result column="send_time" jdbcType="TIMESTAMP" property="sendTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_modify_date" jdbcType="TIMESTAMP" property="lastModifyDate"/>
+        <result column="mark" jdbcType="VARCHAR" property="mark"/>
 
-        <result column="sum_money" property="sumMoney" jdbcType="INTEGER" />
-        <result column="coupon_money" property="couponMoney" jdbcType="INTEGER" />
-        <result column="discount_money" property="discountMoney" jdbcType="INTEGER" />
-        <result column="red_money" property="redMoney" jdbcType="INTEGER" />
-        <result column="need_pay" property="needPay" jdbcType="INTEGER" />
-        <result column="pay_balance" property="payBalance" jdbcType="INTEGER" />
-        <result column="carry_money" property="carryMoney" jdbcType="INTEGER" />
-        <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
-        <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR" />
-        <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR" />
+        <result column="sum_money" property="sumMoney" jdbcType="INTEGER"/>
+        <result column="coupon_money" property="couponMoney" jdbcType="INTEGER"/>
+        <result column="discount_money" property="discountMoney" jdbcType="INTEGER"/>
+        <result column="red_money" property="redMoney" jdbcType="INTEGER"/>
+        <result column="need_pay" property="needPay" jdbcType="INTEGER"/>
+        <result column="pay_balance" property="payBalance" jdbcType="INTEGER"/>
+        <result column="carry_money" property="carryMoney" jdbcType="INTEGER"/>
+        <result column="supplier_name" property="supplierName" jdbcType="VARCHAR"/>
+        <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR"/>
+        <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR"/>
 
     </resultMap>
 
 
     <sql id="Base_Column_List">
         <!--  -->
-        t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status, t.order_status, t.accounts_status,
+        t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status,
+        t.order_status, t.accounts_status,
         t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,t.user_code,
         t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark,
         m.sum_money, m.coupon_money, m.discount_money,m.red_money, m.need_pay, m.pay_money, m.pay_balance, m.carry_money
@@ -52,36 +53,36 @@
     </sql>
 
     <!-- 获取订单详情 -->
-    <select id="getOrderInfoByOrderSn" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="getOrderInfoByOrderSn" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
-        <include refid="Base_Column_List" />,p.enterprise_name
+        <include refid="Base_Column_List"/>,p.enterprise_name
         FROM t_order t
-        INNER join t_order_money m on  t.order_sn = m.order_sn
-        LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
+        INNER join t_order_money m on t.order_sn = m.order_sn
+        LEFT JOIN t_enterprise p on p.enterprise_code = t.enterprise_code
         WHERE t.order_sn = #{orderSn,jdbcType=VARCHAR}
         limit 1
     </select>
 
     <!-- 获取订单列表的信息 -->
-    <select id="getOrderInfoWaitingList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="getOrderInfoWaitingList" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
-        <include refid="Base_Column_List" />,p.enterprise_name
+        <include refid="Base_Column_List"/>,p.enterprise_name
         FROM t_order t
-        INNER join t_order_money m on  t.order_sn = m.order_sn
-        LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
+        INNER join t_order_money m on t.order_sn = m.order_sn
+        LEFT JOIN t_enterprise p on p.enterprise_code = t.enterprise_code
         WHERE t.user_uid = #{userUid,jdbcType=VARCHAR}
         AND t.order_status in (60,40)
-        ORDER  BY t.id DESC
+        ORDER BY t.id DESC
     </select>
 
 
     <!-- 获取订单列表的信息 -->
-    <select id="getOrderInfo" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest" >
+    <select id="getOrderInfo" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest">
         SELECT
-        <include refid="Base_Column_List" />,p.enterprise_name
+        <include refid="Base_Column_List"/>,p.enterprise_name
         FROM t_order t
-          INNER join t_order_money m on  t.order_sn = m.order_sn
-          LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
+        INNER join t_order_money m on t.order_sn = m.order_sn
+        LEFT JOIN t_enterprise p on p.enterprise_code = t.enterprise_code
         WHERE 1= 1
 
         <if test="userUid != null and userUid != '' ">
@@ -91,19 +92,22 @@
         <if test="knightUid != null and knightUid != '' ">
             and t.knight_uid = #{knightUid,jdbcType=VARCHAR}
         </if>
+        <if test="enterpriseCode != null and enterpriseCode != '' ">
+            and t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+        </if>
 
-        ORDER  BY t.id DESC
+        ORDER BY t.id DESC
 
     </select>
 
-    <select id="pageListOrder" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest" >
+    <select id="pageListOrder" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         ,supplier_name
         FROM t_order t
-        INNER join t_order_money m on  t.order_sn = m.order_sn
-        LEFT  JOIN  t_supplier s ON  s.supplier_code = t.business_uid
-        WHERE  1=1
+        INNER join t_order_money m on t.order_sn = m.order_sn
+        LEFT JOIN t_supplier s ON s.supplier_code = t.business_uid
+        WHERE 1=1
         <if test="userUid != null and userUid != '' ">
             and t.user_uid = #{userUid,jdbcType=VARCHAR}
         </if>
@@ -117,24 +121,30 @@
 				and create_time <= #{tillTime}
 			]]>
         </if>
-        ORDER  BY t.id DESC
+        ORDER BY t.id DESC
     </select>
 
     <resultMap id="ResultListMap" type="com.taisf.services.order.vo.OrderListVo" extends="BaseResultMap">
-        <result column="lunchCommon" property="lunchCommon" jdbcType="INTEGER" />
-        <result column="lunchExt" property="lunchExt" jdbcType="INTEGER" />
-        <result column="dinnerCommon" property="dinnerCommon" jdbcType="INTEGER" />
-        <result column="dinnerExt" property="dinnerExt" jdbcType="INTEGER" />
-        <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR" />
+        <result column="lunchCommon" property="lunchCommon" jdbcType="INTEGER"/>
+        <result column="lunchExt" property="lunchExt" jdbcType="INTEGER"/>
+        <result column="dinnerCommon" property="dinnerCommon" jdbcType="INTEGER"/>
+        <result column="dinnerExt" property="dinnerExt" jdbcType="INTEGER"/>
+        <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="enterpriseOrderDistributionList" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest" resultMap="ResultListMap">
-        SELECT  o.enterprise_code,e.enterprise_name,w.num AS 'lunchCommon',wb.num AS 'lunchExt',wc.num AS 'dinnerCommon',wcb.num AS 'dinnerExt',o.user_name,o.user_tel
-        FROM t_order  o LEFT JOIN t_enterprise e ON o.enterprise_code = e.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '20' GROUP BY enterprise_code) w ON w.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21' GROUP BY enterprise_code) wb ON wb.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30' GROUP BY enterprise_code) wc ON wc.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31' GROUP BY enterprise_code) wcb ON wcb.enterprise_code = o.enterprise_code
+    <select id="enterpriseOrderDistributionList" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest"
+            resultMap="ResultListMap">
+        SELECT o.enterprise_code,e.enterprise_name,w.num AS 'lunchCommon',wb.num AS 'lunchExt',wc.num AS
+        'dinnerCommon',wcb.num AS 'dinnerExt',o.user_name,o.user_tel
+        FROM t_order o LEFT JOIN t_enterprise e ON o.enterprise_code = e.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '20' GROUP BY
+        enterprise_code) w ON w.enterprise_code = o.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21' GROUP BY
+        enterprise_code) wb ON wb.enterprise_code = o.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30' GROUP BY
+        enterprise_code) wc ON wc.enterprise_code = o.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31' GROUP BY
+        enterprise_code) wcb ON wcb.enterprise_code = o.enterprise_code
         WHERE o.order_status = 50 AND o.enterprise_code != ""
         <if test="enterpriseName != null and enterpriseName != '' ">
             AND e.enterprise_name = #{enterpriseName,jdbcType=VARCHAR}
@@ -150,15 +160,17 @@
     </update>
 
 
-    <select id="findListByEnterpriseCode" parameterType="com.taisf.services.order.dto.OrderInfoRequest" resultMap="BaseResultMap">
+    <select id="findListByEnterpriseCode" parameterType="com.taisf.services.order.dto.OrderInfoRequest"
+            resultMap="BaseResultMap">
         SELECT
-        t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status, t.order_status, t.accounts_status,
+        t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status,
+        t.order_status, t.accounts_status,
         t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,t.user_code,
         t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark
         FROM t_order t
         WHERE t.enterprise_code = #{enterpriseCode}
         <if test="orderStatus != null">
-				AND t.order_status = #{orderStatus}
+            AND t.order_status = #{orderStatus}
         </if>
         <if test="orderStatus == null">
             AND t.order_status in (60,70)
@@ -175,35 +187,37 @@
         </if>
 
         <if test="orderStatus != null">
-            ORDER  BY t.address DESC
+            ORDER BY t.address DESC
         </if>
 
         <if test="orderStatus == null">
-            ORDER  BY t.send_time DESC
+            ORDER BY t.send_time DESC
         </if>
 
 
     </select>
     <resultMap id="ListMap" type="com.taisf.services.order.vo.OrderListVo">
-        <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR" />
-        <result column="enterprise_name" jdbcType="VARCHAR" property="enterpriseName" />
-        <result column="orderType" jdbcType="INTEGER" property="orderType" />
-        <result column="countNum" jdbcType="INTEGER" property="countNum" />
-        <result column="successNum" jdbcType="INTEGER" property="successNum" />
-        <result column="user_name" jdbcType="VARCHAR" property="userName" />
-        <result column="user_tel" jdbcType="VARCHAR" property="userTel" />
+        <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR"/>
+        <result column="enterprise_name" jdbcType="VARCHAR" property="enterpriseName"/>
+        <result column="orderType" jdbcType="INTEGER" property="orderType"/>
+        <result column="countNum" jdbcType="INTEGER" property="countNum"/>
+        <result column="successNum" jdbcType="INTEGER" property="successNum"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_tel" jdbcType="VARCHAR" property="userTel"/>
     </resultMap>
     <!-- 配送记录 -->
-    <select id="findPageLsit" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest" resultMap="ListMap">
-        SELECT e.enterprise_code, e.enterprise_name,orderType,COUNT(1) AS countNum,SUM(orderStatus) successNum,user_name,user_tel
+    <select id="findPageLsit" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest"
+            resultMap="ListMap">
+        SELECT e.enterprise_code, e.enterprise_name,orderType,COUNT(1) AS countNum,SUM(orderStatus)
+        successNum,user_name,user_tel
         FROM(
-                SELECT * ,
-                CASE WHEN t.order_type = 20 OR t.order_type = 21 THEN 1
-                        WHEN t.order_type = 30 OR t.order_type = 31 THEN 2
-                         ELSE 0  END AS orderType,
-                CASE WHEN t.order_status = 70 THEN 1
-                         ELSE 0  END AS orderStatus
-                FROM t_order t) od LEFT JOIN t_enterprise e ON od.enterprise_code = e.enterprise_code
+        SELECT * ,
+        CASE WHEN t.order_type = 20 OR t.order_type = 21 THEN 1
+        WHEN t.order_type = 30 OR t.order_type = 31 THEN 2
+        ELSE 0 END AS orderType,
+        CASE WHEN t.order_status = 70 THEN 1
+        ELSE 0 END AS orderStatus
+        FROM t_order t) od LEFT JOIN t_enterprise e ON od.enterprise_code = e.enterprise_code
         WHERE orderType !=0
         <if test="openTime != null and openTime != '' ">
             <![CDATA[
@@ -222,71 +236,91 @@
     <select id="getEnterpriseOrderStats" parameterType="com.taisf.services.order.dto.EnterpriseStatsRequest"
             resultType="com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO">
         SELECT
-            p.enterprise_name as enterpriseName,
-            ll.enterpriseCode,
-            ll.extNum,
-            ll.noExtNum,
-            ll.allNum,
-            ll.payMoney,
-            ll.payBalance
+        p.enterprise_name as enterpriseName,
+        ll.enterpriseCode,
+        ll.extNum,
+        ll.noExtNum,
+        ll.allNum,
+        ll.payMoney,
+        ll.payBalance
         FROM
-            (
-            SELECT
-                tmp.enterprise_code AS enterpriseCode,
-                SUM( extNum ) AS extNum,
-                SUM( noExtNum ) AS noExtNum,
-                SUM( allNum ) AS allNum,
-                SUM( payMoney ) AS payMoney,
-                SUM( payBalance ) AS payBalance
-            FROM
-                (
-            SELECT
-                t.enterprise_code,
-            CASE
+        (
+        SELECT
+        tmp.enterprise_code AS enterpriseCode,
+        SUM( extNum ) AS extNum,
+        SUM( noExtNum ) AS noExtNum,
+        SUM( allNum ) AS allNum,
+        SUM( payMoney ) AS payMoney,
+        SUM( payBalance ) AS payBalance
+        FROM
+        (
+        SELECT
+        t.enterprise_code,
+        CASE
 
-                WHEN t.order_type IN ( 21, 31 ) THEN
-                1 ELSE 0
-                END AS extNum,
-            CASE
+        WHEN t.order_type IN ( 21, 31 ) THEN
+        1 ELSE 0
+        END AS extNum,
+        CASE
 
-                    WHEN t.order_type IN ( 20, 30 ) THEN
-                    1 ELSE 0
-                END AS noExtNum,
-                1 AS allNum,
-                m.pay_money AS payMoney,
-                m.pay_balance AS payBalance
-            FROM
-                t_order t
-                INNER JOIN t_order_money m ON t.order_sn = m.order_sn
-            WHERE
-                t.enterprise_code IS NOT NULL
+        WHEN t.order_type IN ( 20, 30 ) THEN
+        1 ELSE 0
+        END AS noExtNum,
+        1 AS allNum,
+        m.pay_money AS payMoney,
+        m.pay_balance AS payBalance
+        FROM
+        t_order t
+        INNER JOIN t_order_money m ON t.order_sn = m.order_sn
+        WHERE
+        t.enterprise_code IS NOT NULL
 
-                <if test="enterpriseCode != null and enterpriseCode != '' ">
-                    and t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
-                </if>
+        <if test="enterpriseCode != null and enterpriseCode != '' ">
+            and t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+        </if>
 
-                <if test="startStr != null and startStr != '' ">
-                    and t.create_time <![CDATA[  >= ]]>#{startStr,jdbcType=VARCHAR}
-                </if>
-                <if test="endStr != null and endStr != '' ">
-                    and t.create_time <![CDATA[  <= ]]> #{endStr,jdbcType=VARCHAR}
-                </if>
-                ) tmp
-            GROUP BY
-            tmp.enterprise_code
-            ) ll
+        <if test="startStr != null and startStr != '' ">
+            and t.create_time <![CDATA[  >= ]]>#{startStr,jdbcType=VARCHAR}
+        </if>
+        <if test="endStr != null and endStr != '' ">
+            and t.create_time <![CDATA[  <= ]]> #{endStr,jdbcType=VARCHAR}
+        </if>
+        ) tmp
+        GROUP BY
+        tmp.enterprise_code
+        ) ll
         LEFT JOIN t_enterprise p ON ll.enterpriseCode = p.enterprise_code
     </select>
-    <select id="getOrderListPageByEnterprisCode" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest" >
+    <select id="getOrderListPageByEnterprisCode" resultMap="BaseResultMap"
+            parameterType="com.taisf.services.order.dto.OrderInfoRequest">
         SELECT
-        <include refid="Base_Column_List" />,p.enterprise_name
+        <include refid="Base_Column_List"/>,p.enterprise_name
         FROM t_order t
-        INNER join t_order_money m on  t.order_sn = m.order_sn
-        LEFT  JOIN t_enterprise  p on p.enterprise_code = t.enterprise_code
+        INNER join t_order_money m on t.order_sn = m.order_sn
+        LEFT JOIN t_enterprise p on p.enterprise_code = t.enterprise_code
         WHERE 1= 1
         <if test="enterpriseCode != null and enterpriseCode != '' ">
             and t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
         </if>
-        ORDER  BY t.id DESC
+        <if test="orderStatus != null">
+            and t.order_status = #{orderStatus}
+        </if>
+        <if test="userName != null and userName != '' ">
+            and t.user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="userTel != null and userTel != '' ">
+            and t.user_tel = #{userTel,jdbcType=VARCHAR}
+        </if>
+        <if test="openTime != null and openTime != '' ">
+            <![CDATA[
+				and t.create_time >= #{openTime}
+			]]>
+        </if>
+        <if test="tillTime != null and tillTime != '' ">
+            <![CDATA[
+				and t.create_time <= #{tillTime}
+			]]>
+        </if>
+        ORDER BY t.id DESC
     </select>
 </mapper>

@@ -30,6 +30,25 @@ public class OrderInfoRequest extends PageRequest {
     private String knightUid;
 
 
+
+
+    private String enterpriseCode;
+
+
+    /**
+     * 订单状态
+     */
+    private Integer orderStatus;
+
+    /**
+     * 用户姓名
+     */
+    private String userName;
+    /**
+     * 预订人电话
+     */
+    private String userTel;
+
     /**
      * 开始时间
      */
@@ -39,9 +58,22 @@ public class OrderInfoRequest extends PageRequest {
      */
     private String tillTime;
 
-    private String enterpriseCode;
 
-    private Integer orderStatus;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserTel() {
+        return userTel;
+    }
+
+    public void setUserTel(String userTel) {
+        this.userTel = userTel;
+    }
 
     public Integer getOrderStatus() {
         return orderStatus;
