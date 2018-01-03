@@ -58,6 +58,19 @@ public class OrderInfoVO  extends OrderEntity{
      */
     private String enterpriseName;
 
+    /**
+     * 是否可退款
+     */
+    private Integer canRefund= 0;
+
+
+    public Integer getCanRefund() {
+        return canRefund;
+    }
+
+    public void setCanRefund(Integer canRefund) {
+        this.canRefund = canRefund;
+    }
 
     public String getSupplierName() {
         return supplierName;

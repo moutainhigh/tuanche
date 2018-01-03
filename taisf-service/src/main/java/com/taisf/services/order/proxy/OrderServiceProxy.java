@@ -1,15 +1,18 @@
 package com.taisf.services.order.proxy;
 
-import com.jk.framework.base.entity.BaseEntity;
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
-import com.jk.framework.base.utils.*;
+import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.DateUtil;
+import com.jk.framework.base.utils.MD5Util;
+import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.*;
-import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
+import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.*;
@@ -20,7 +23,6 @@ import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.*;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.pay.manager.PayManagerImpl;
-import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
@@ -237,6 +239,7 @@ public class OrderServiceProxy implements OrderService {
         }
         //分页获取订单列表
         List<OrderInfoVO> list = orderManager.getOrderInfoWaitingList(userUid);
+
         this.dealOrderStatus(list);
         dto.setData(list);
         return dto;
@@ -266,6 +269,19 @@ public class OrderServiceProxy implements OrderService {
 
 
 
+    /**
+     * 处理订单状态
+     * @param list
+     */
+    private void dealOrderRefundStatus(List<OrderInfoVO> list){
+        if (!Check.NuNCollection(list)){
+            for (OrderEntity vo : list) {
+                dealOrderStatus(vo);
+            }
+        }
+    }
+
+
 
     /**
      * 处理订单状态
@@ -279,19 +295,25 @@ public class OrderServiceProxy implements OrderService {
         }
     }
 
-
     /**
      * 处理订单状态
      * @param vo
      */
     private void dealOrderStatus(OrderEntity vo){
         OrdersStatusEnum ordersStatusEnum = OrdersStatusEnum.getByCode(vo.getOrderStatus());
+        OrdersStatusShowEnum showEnum = null;
         if (Check.NuNObj(ordersStatusEnum)){
-            vo.setOrderStatus(OrdersStatusShowEnum.UNKNOWN.getCode());
+            showEnum = OrdersStatusShowEnum.UNKNOWN;
         }else {
-            vo.setOrderStatus(ordersStatusEnum.getForeignType().getCode());
+            if (vo instanceof OrderInfoVO){
+                if (ordersStatusEnum.checkRefund()){
+                    ((OrderInfoVO) vo).setCanRefund(YesNoEnum.YES.getCode());
+                }
+            }
+            showEnum = ordersStatusEnum.getForeignType();
         }
-
+        //设置状态
+        vo.setOrderStatus(showEnum.getCode());
     }
     /**
      * 获取当前订单的信息
