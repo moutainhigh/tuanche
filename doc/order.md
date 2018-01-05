@@ -665,6 +665,11 @@ demo:
 
 字段|是否必填|类型|描述
 ---|---|---|---
+userName|否|String|用户姓名
+userTel|否|String|手机号
+orderStatus|否|Integer|状态
+openTime|否|String|下单开始时间
+tillTime|否|String|下单结束时间
 limit|否|Integer|默认一页50
 page|否|Integer|页码 从1开始
 
