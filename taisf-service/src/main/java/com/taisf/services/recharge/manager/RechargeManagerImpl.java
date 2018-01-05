@@ -254,7 +254,7 @@ public class RechargeManagerImpl {
      * @param money
      * @param bizSn
      */
-    private void refundByOrder(String userUid,int money,String bizSn){
+    public void refundByOrder(String userUid,int money,String bizSn){
         //消费当前的余额信息
         userAccountDao.changeUserBalance(userUid,money);
         //记录当前的消费记录
