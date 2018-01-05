@@ -4,6 +4,7 @@ import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.refund.job.CreateRefundJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import javax.annotation.Resource;
  * @since 1.0
  */
 @Service
+@EnableScheduling
 public class RefundJob {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RefundJob.class);

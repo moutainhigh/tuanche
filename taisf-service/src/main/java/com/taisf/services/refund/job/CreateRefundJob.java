@@ -97,10 +97,11 @@ public class CreateRefundJob {
                         return dto;
                     }
                     if (recordPayTypeEnum.getCode() == RecordPayTypeEnum.YUE.getCode() ){
-                        this.dealRefund4Open(refundEntity);
+                        this.dealRefund4Yue(refundEntity);
+
                     }else {
                         //直接调用退款逻辑
-                        this.dealRefund4Yue(refundEntity);
+                        this.dealRefund4Open(refundEntity);
                     }
                 }
             }

@@ -144,7 +144,7 @@ public class OrderServiceProxyTest extends BaseTest {
     public void refundOrderTest() {
         RefundOrderRequest refundOrderRequest = new RefundOrderRequest();
         refundOrderRequest.setOpId("baozi");
-        refundOrderRequest.setOrderSn("TA18010293ZTU14B170156");
+        refundOrderRequest.setOrderSn("TA1801052K3HADXU143515");
         DataTransferObject<String> classify = orderService.refundOrder(refundOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
     }
