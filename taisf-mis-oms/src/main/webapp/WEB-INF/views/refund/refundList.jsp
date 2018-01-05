@@ -178,7 +178,7 @@
                             <th data-field="refundSn" data-width="10%"
                                 data-align="center"><span class="tdfont">退款编号</span></th>
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
-                                data-align="center"><span class="tdfont">时间</span></th>
+                                data-align="center"><span class="tdfont">申请时间</span></th>
                             <th data-field="refundName" data-width="15%"
                                 data-align="center"><span class="tdfont">姓名</span></th>
                             <th data-field="userPhone" data-width="15%"
