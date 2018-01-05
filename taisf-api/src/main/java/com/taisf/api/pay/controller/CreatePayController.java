@@ -80,7 +80,7 @@ public class CreatePayController extends AbstractController {
             if (Check.NuNStr(recordReques.getOrderSn())){
                 return new ResponseDto("异常的订单编号");
             }
-            recordReques.setUid(header.getUserId());
+            recordReques.setUid(getUserId(request));
             if (Check.NuNStr(recordReques.getUid())){
                 return new ResponseDto("请登录");
             }
