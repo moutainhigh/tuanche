@@ -12,7 +12,6 @@ import com.taisf.services.order.dto.RefundOrderRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
-import com.taisf.services.order.vo.OrderSaveVO;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
@@ -147,6 +146,17 @@ public class OrderServiceProxyTest extends BaseTest {
         refundOrderRequest.setOrderSn("TA1801052K3HADXU143515");
         DataTransferObject<String> classify = orderService.refundOrder(refundOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
+    }
+
+    @Test
+    public void getOrderListPageByEnterprisCodeTest() {
+        OrderInfoRequest orderInfoRequest = new OrderInfoRequest();
+        orderInfoRequest.setEnterpriseCode("0001");
+        //orderInfoRequest.setUserName("周明敬");
+        orderInfoRequest.setUserTel("18610407470");
+        orderInfoRequest.setOrderStatus(50);
+        DataTransferObject<PagingResult<OrderInfoVO>> dto = orderService.getOrderListPageByEnterprisCode(orderInfoRequest);
+        System.out.println(JsonEntityTransform.Object2Json(dto));
     }
 
 

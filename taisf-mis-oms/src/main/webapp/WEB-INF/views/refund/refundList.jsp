@@ -175,16 +175,20 @@
                         <tr>
                             <th data-field="id" data-width="10%"
                                 data-align="center"><span class="tdfont">ID</span></th>
+                            <th data-field="orderSn" data-width="10%"
+                                data-align="center"><span class="tdfont">订单编号</span></th>
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
                                 data-align="center"><span class="tdfont">时间</span></th>
                             <th data-field="refundName" data-width="15%"
                                 data-align="center"><span class="tdfont">姓名</span></th>
                             <th data-field="userPhone" data-width="15%"
                                 data-align="center"><span class="tdfont">手机号</span></th>
-                            <th data-field="payFee" data-width="15%"
-                                data-align="center"><span class="tdfont">订单金额</span></th>
-                            <th data-field="refundFee" data-width="10%"
+                            <th data-field="payFee" data-width="15%" data-formatter="formatNum"
+                                data-align="center"><span class="tdfont">支付金额</span></th>
+                            <th data-field="refundFee" data-width="10%"  data-formatter="formatNum"
                                 data-align="center"><span class="tdfont">退款金额</span></th>
+                            <th data-field="cardType" data-width="10%" data-formatter="formatCardType"
+                                data-align="center"><span class="tdfont">支付类型</span></th>
                             <th data-field="refundType" data-width="10%" data-formatter="formatRefundType"
                                 data-align="center"><span class="tdfont">退款类型</span></th>
                             <th data-field="refundStatus" data-width="10%" data-formatter="formatRefundStatus"
@@ -317,13 +321,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">收款id</label>
-                                <div class="col-sm-8">
-                                    <input readonly id="recordId" name="recordId" type="text"
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-sm-3 control-label">退款失败重试次数</label>
                                 <div class="col-sm-8">
                                     <input readonly id="retryTimes" name="retryTimes" type="text"
@@ -394,7 +391,7 @@
     function formatDate(value, row, index) {
         if (value != null) {
             var _date = new Date(value);
-            return _date.format("yyyy-MM-dd");
+            return _date.format("yyyy-MM-dd HH:mm:ss");
         } else {
             return "-";
         }
@@ -415,6 +412,19 @@
             return "余额";
         }
     }
+    //1.微信 2.支付宝 3.余额',
+    function formatCardType(value, row, index) {
+        if (value == 1) {
+            return "微信";
+        } else if (value == 2) {
+            return "支付宝";
+        } else if (value == 3) {
+            return "余额";
+        }
+    }
+    function formatNum(value, row, index) {
+        return value.toFixed(2);
+    }
     //1.待审核 2.审核失败 3.审核成功 4.打款成功 5.打款失败 6.打款中 7.调用支付平台失败 ',
     function formatRefundStatus(value, row, index) {
         if (value == 1) {
@@ -423,13 +433,13 @@
             return "审核失败";
         } else if (value == 3) {
             return "审核成功";
-        }else if (value == 3) {
+        }else if (value == 4) {
             return "打款成功";
-        }else if (value == 3) {
+        }else if (value == 5) {
             return "打款失败";
-        }else if (value == 3) {
+        }else if (value == 6) {
             return "打款中";
-        }else if (value == 3) {
+        }else if (value == 7) {
             return "调用支付平台失败";
         }
     }
@@ -438,8 +448,10 @@
     function formatOperate(value, row, index) {
         var result = "";
         result = result + "<a title='详情' onclick='detail(" + row.id + ")'  data-toggle='modal' data-target='#detailModal')>详情</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='确认退款' onclick='toedit(" + row.id + ")'  data-toggle='modal' data-target='#editModal')>确认退款</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='驳回' onclick='reject(" + row.id + ")'  >驳回</a>";
+        if(row.refundStatus == 1){
+            result = result + "<a title='确认退款' onclick='toedit(" + row.id + ")'  data-toggle='modal' data-target='#editModal')>确认退款</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result = result + "<a title='驳回' onclick='reject(" + row.id + ")'  >驳回</a>";
+        }
         return result;
     }
     //编辑菜品
@@ -527,9 +539,12 @@
                     $('#refundUid').val(result.data.refundUid);
                     $('#recordId').val(result.data.recordId);
                     $('#retryTimes').val(result.data.retryTimes);
-                    $('#payFee').val(result.data.payFee);
-                    $('#refundFee').val(result.data.refundFee);
-                    $('#refundTime').val(result.data.refundTime);
+                    $('#payFee').val((result.data.payFee).toFixed(2));
+                    $('#refundFee').val((result.data.refundFee).toFixed(2));
+
+                    var _date = new Date(result.data.refundTime);
+
+                    $('#refundTime').val(_date.format("yyyy-MM-dd HH:mm:ss"));
 
 
 
