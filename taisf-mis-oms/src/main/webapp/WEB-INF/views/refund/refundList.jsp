@@ -173,10 +173,10 @@
                            data-url="refund/pageList">
                         <thead>
                         <tr>
-                            <th data-field="id" data-width="10%"
-                                data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="orderSn" data-width="10%"
                                 data-align="center"><span class="tdfont">订单编号</span></th>
+                            <th data-field="refundSn" data-width="10%"
+                                data-align="center"><span class="tdfont">退款编号</span></th>
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
                                 data-align="center"><span class="tdfont">时间</span></th>
                             <th data-field="refundName" data-width="15%"
@@ -189,8 +189,6 @@
                                 data-align="center"><span class="tdfont">退款金额</span></th>
                             <th data-field="cardType" data-width="10%" data-formatter="formatCardType"
                                 data-align="center"><span class="tdfont">支付类型</span></th>
-                            <th data-field="refundType" data-width="10%" data-formatter="formatRefundType"
-                                data-align="center"><span class="tdfont">退款类型</span></th>
                             <th data-field="refundStatus" data-width="10%" data-formatter="formatRefundStatus"
                                 data-align="center"><span class="tdfont">状态</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
@@ -423,7 +421,7 @@
         }
     }
     function formatNum(value, row, index) {
-        return value.toFixed(2);
+        return (value/100).toFixed(2);
     }
     //1.待审核 2.审核失败 3.审核成功 4.打款成功 5.打款失败 6.打款中 7.调用支付平台失败 ',
     function formatRefundStatus(value, row, index) {
@@ -539,8 +537,8 @@
                     $('#refundUid').val(result.data.refundUid);
                     $('#recordId').val(result.data.recordId);
                     $('#retryTimes').val(result.data.retryTimes);
-                    $('#payFee').val((result.data.payFee).toFixed(2));
-                    $('#refundFee').val((result.data.refundFee).toFixed(2));
+                    $('#payFee').val(((result.data.payFee)/100).toFixed(2));
+                    $('#refundFee').val(((result.data.refundFee)/100).toFixed(2));
 
                     var _date = new Date(result.data.refundTime);
 
