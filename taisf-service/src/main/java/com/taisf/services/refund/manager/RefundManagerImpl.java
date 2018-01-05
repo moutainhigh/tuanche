@@ -6,6 +6,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.recharge.manager.RechargeManagerImpl;
 import com.taisf.services.refund.dao.RefundDao;
 import com.taisf.services.refund.dao.RefundLogDao;
 import com.taisf.services.refund.dto.RefundJobRequest;
@@ -42,6 +43,8 @@ public class RefundManagerImpl {
     @Resource(name="refund.refundLogDao")
     private RefundLogDao refundLogDao;
 
+    @Resource(name="recharge.rechargeManagerImpl")
+    private RechargeManagerImpl rechargeManager;
 
     /**
      * 查询审核通过的退款列表 分页
@@ -121,5 +124,8 @@ public class RefundManagerImpl {
         entity.setRemark(refundRequest.getRemark());
         entity.setCreateTime(new Date());
         refundLogDao.saveRefundLog(entity);
+
+        //处理当前的余额信息
+        rechargeManager.refundByOrder(refund.getRefundUid(),refund.getRefundFee(),refund.getRefundSn());
     }
 }

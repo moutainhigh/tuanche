@@ -667,6 +667,7 @@ public class UserServiceProxy implements UserService {
         if (page == null) {
             page = new PagingResult();
         }
+
         dto.setData(page);
         return dto;
     }
