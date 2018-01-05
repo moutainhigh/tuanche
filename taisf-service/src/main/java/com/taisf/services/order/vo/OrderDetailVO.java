@@ -43,7 +43,10 @@ public class OrderDetailVO extends BaseEntity{
     private OrderPayEntity orderPayEntity;
 
 
-
+    /**
+     * 支付类型
+     */
+    private String payInfo = "";
 
     /**
      * 订单商品信息
@@ -51,6 +54,13 @@ public class OrderDetailVO extends BaseEntity{
     private List<OrderProductEntity> list;
 
 
+    public String getPayInfo() {
+        return payInfo;
+    }
+
+    public void setPayInfo(String payInfo) {
+        this.payInfo = payInfo;
+    }
 
     public OrderEntity getOrderEntity() {
         return orderEntity;

@@ -19,7 +19,7 @@ public enum RecordPayTypeEnum {
 
     //支付类型 1.微信 2.支付宝支付 3.余额支付
 
-    WEIXIN(1,"微信"),
+    WEIXIN(1,"微信支付"),
     ZHIFUBAO(2,"支付宝支付"),
     YUE(3,"余额支付")
     ;

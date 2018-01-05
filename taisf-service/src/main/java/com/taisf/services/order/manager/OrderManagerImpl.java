@@ -406,6 +406,15 @@ public class OrderManagerImpl {
 		List<OrderProductEntity> list = orderProductDao.getOrderProductByOrderSn(orderSn);
 		orderDetailVO.setList(list);
 
+		//支付信息
+		PayRecordEntity record = payRecordDao.getPayRecordByOrderSn(orderSn);
+		if (!Check.NuNObj(record)){
+			RecordPayTypeEnum payTypeEnum = RecordPayTypeEnum.getTypeByCode(record.getPayType());
+			if (!Check.NuNObj(payTypeEnum)){
+				orderDetailVO.setPayInfo(payTypeEnum.getName());
+			}
+		}
+
 		//返回订单信息
 		return orderDetailVO;
 	}

@@ -53,6 +53,11 @@ public class IndexUserVO  extends BaseEntity {
 
 
     /**
+     * 是否管理员
+     */
+    private Integer isAdmin;
+
+    /**
      * 用户类型
      */
     private Integer userType;
@@ -140,5 +145,13 @@ public class IndexUserVO  extends BaseEntity {
 
     public void setUserCard(String userCard) {
         this.userCard = userCard;
+    }
+
+    public Integer getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Integer isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }
