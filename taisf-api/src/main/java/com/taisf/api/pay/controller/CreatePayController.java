@@ -103,6 +103,11 @@ public class CreatePayController extends AbstractController {
             if(Check.NuNObj(statusEnum)){
                 return new ResponseDto("异常的订单状态");
             }
+            //重复支付的code
+            if(data.getOrderStatus() == OrdersStatusEnum.HAS_PAY.getCode()){
+                return new ResponseDto("已经支付",222);
+            }
+
             if(data.getOrderStatus() != OrdersStatusEnum.NO_PAY.getCode()){
                 return new ResponseDto("此状态下不可支付");
             }
