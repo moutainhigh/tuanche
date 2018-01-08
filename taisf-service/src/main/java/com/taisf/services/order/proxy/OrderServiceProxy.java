@@ -346,6 +346,13 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if(!Check.NuNObj(orderInfoRequest.getOrderStatus())){
+            if(EnterpriseOrderStatsStatusShowEnum.REFUND.getCode() == orderInfoRequest.getOrderStatus()){
+                orderInfoRequest.setOrderStatus(OrdersStatusEnum.REFUND.getCode());
+            }else if(EnterpriseOrderStatsStatusShowEnum.SEND.getCode() == orderInfoRequest.getOrderStatus()){
+                orderInfoRequest.setOrderStatus(OrdersStatusEnum.SEND.getCode());
+            }
+        }
         //分页获取订单列表
         PagingResult<OrderInfoVO> page = orderManager.getOrderListPageByEnterprisCode(orderInfoRequest);
         this.dealOrderStatus(page.getList());

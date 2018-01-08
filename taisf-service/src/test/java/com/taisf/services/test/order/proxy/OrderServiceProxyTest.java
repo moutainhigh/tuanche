@@ -153,8 +153,8 @@ public class OrderServiceProxyTest extends BaseTest {
         OrderInfoRequest orderInfoRequest = new OrderInfoRequest();
         orderInfoRequest.setEnterpriseCode("0001");
         //orderInfoRequest.setUserName("周明敬");
-        orderInfoRequest.setUserTel("18610407470");
-        orderInfoRequest.setOrderStatus(50);
+        //orderInfoRequest.setUserTel("18610407470");
+        orderInfoRequest.setOrderStatus(1);
         DataTransferObject<PagingResult<OrderInfoVO>> dto = orderService.getOrderListPageByEnterprisCode(orderInfoRequest);
         System.out.println(JsonEntityTransform.Object2Json(dto));
     }

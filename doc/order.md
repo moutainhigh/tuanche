@@ -667,7 +667,7 @@ demo:
 ---|---|---|---
 userName|否|String|用户姓名
 userTel|否|String|手机号
-orderStatus|否|Integer|状态
+orderStatus|否|Integer|状态 1 退款中 2 配送中
 openTime|否|String|下单开始时间
 tillTime|否|String|下单结束时间
 limit|否|Integer|默认一页50
