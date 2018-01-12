@@ -30,7 +30,7 @@ import java.util.Map;
 @Repository("enterprise.enterpriseDayDao")
 public class EnterpriseDayDao extends BaseDao {
 
-    private String SQLID = "enterprise.enterpriseDayDao.";
+    private String SQLID = "oms.enterpriseDayDao.";
 
     /**
      * 日志对象

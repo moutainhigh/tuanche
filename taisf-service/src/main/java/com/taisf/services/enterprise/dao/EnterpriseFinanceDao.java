@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
 @Repository("enterprise.enterpriseFinanceDao")
 public class EnterpriseFinanceDao extends BaseDao {
 
-    private String SQLID = "enterprise.enterpriseFinanceDao.";
+    private String SQLID = "oms.enterpriseFinanceDao.";
 
     /**
      * 日志对象
