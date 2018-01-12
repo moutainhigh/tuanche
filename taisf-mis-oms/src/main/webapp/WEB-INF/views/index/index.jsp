@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="com.taisf.services.permission.entity.EmployeeEntity"%>
+<%@ page import="com.taisf.services.ups.entity.EmployeeEntity" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="customtag" uri="http://minsu.ziroom.com"%>
