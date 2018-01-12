@@ -31,7 +31,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<bean class="com.taisf.web.oms.common.interceptor.InitGlobalParamsInterceptor">
+			<bean class="com.taisf.web.enterprise.common.interceptor.InitGlobalParamsInterceptor">
 				<property name="staticResourceUrl" value="${static.resource.url}" />
 				<property name="staticIconUrl" value="${static.icon.url}" />
 				<property name="jsVersion" value="${js.version}" />
@@ -59,7 +59,7 @@
 			<mvc:exclude-mapping path="/noAuthority/**" />
 
 
-			<bean class="com.taisf.web.oms.common.interceptor.LogingInterceptot">
+			<bean class="com.taisf.web.enterprise.common.interceptor.LogingInterceptot">
 			</bean>
 		</mvc:interceptor>
 

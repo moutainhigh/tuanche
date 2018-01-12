@@ -17,7 +17,7 @@ var localhostPaht=curWwwPath.substring(0,pos);
 var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1); 
 // var SERVER_CONTEXT = localhostPaht+"/";
 
-var SERVER_CONTEXT = "http://localhost:8080/jk-mis-oms/";
+var SERVER_CONTEXT = "http://localhost:8080/jk-mis-enterprise/";
 if(localhostPaht.indexOf("localhost")>0){
 	SERVER_CONTEXT = localhostPaht+projectName+"/";
 }

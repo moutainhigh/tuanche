@@ -242,9 +242,9 @@
 		function formatOperate(value, row, index) {
 			var result = "";
 			result = result + "<a title='编辑' href=javascript:editEnterprise('"
-					+ "base/oms/operatePage?id=" + row.id + "&operate=2')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+					+ "base/enterprise/operatePage?id=" + row.id + "&operate=2')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			result = result + "<a title='查看' href=javascript:viewEnterprise('"
-					+ "base/oms/operatePage?id=" + row.id + "&operate=1')>查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+					+ "base/enterprise/operatePage?id=" + row.id + "&operate=1')>查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			
 			if(row.enterpriseStatus == 0) {
 				result = result + "<a title='提交' href='javascript:changeStatus(" + row.id + ", 1)'>提交</a>";
@@ -278,7 +278,7 @@
 	   		layer.confirm(message, {icon: iconNum, title:'提示'},function(index){
 	   			$.ajax({
 	   				type: "POST",
-	   				url: "base/oms/changeStatus",
+	   				url: "base/enterprise/changeStatus",
 		           	dataType:"json",
 		           	traditional: true,
 		           	data: {'id':id, 'enterpriseStatus':status},
@@ -300,7 +300,7 @@
 
 		//跳转添加企业页
 		function addEnterprise() {
-			var url = "base/oms/operatePage?operate=3";
+			var url = "base/enterprise/operatePage?operate=3";
 			$.openNewTab(new Date().getTime(), url, "添加企业");
 		}
 

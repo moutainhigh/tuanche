@@ -687,7 +687,7 @@
         $.ajax({
             type : "post",
             dataType : "json",
-            url : 'base/oms/findAll',
+            url : 'base/enterprise/findAll',
             success : function(result) {
                 if(result.code === 0){
                     $("#addSaveReset").trigger("click");

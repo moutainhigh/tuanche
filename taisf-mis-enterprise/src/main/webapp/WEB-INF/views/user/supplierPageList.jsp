@@ -130,7 +130,7 @@
 		function formatOperate(value, row, index) {
 			var result = "";
 			result = result + "<a title='转让' href=javascript:editEnterprise('"
-					+ "base/oms/operate?id=" + row.id + "&operate=2"
+					+ "base/enterprise/operate?id=" + row.id + "&operate=2"
 					+ "')>转让</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			return result;
 		}
@@ -145,7 +145,7 @@
 
 		//跳转添加企业页
 		function addEnterprise() {
-			var url = "base/oms/operate?operate=3";
+			var url = "base/enterprise/operate?operate=3";
 			$.openNewTab(new Date().getTime(), url, "添加企业");
 		}
 

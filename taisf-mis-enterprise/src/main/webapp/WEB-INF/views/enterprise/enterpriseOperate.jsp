@@ -372,7 +372,7 @@
         parent.refreshData("listTable");
     }
 	function toList() {
-	    $.callBackParent("base/oms/list",true,callBack);
+	    $.callBackParent("base/enterprise/list",true,callBack);
 	}
 	
 	//添加企业
@@ -401,7 +401,7 @@
 			tillTime = tillTime.replace(/-/g,"/");
 			tillTime += " 23:59:59";
 		
-        CommonUtils.ajaxPostSubmit("base/oms/operate", {
+        CommonUtils.ajaxPostSubmit("base/enterprise/operate", {
                 "operateType" : operateType,
                 "enterpriseStatus" : status,
                 "id" :  $("#id").val(),
