@@ -7,7 +7,7 @@ import com.jk.framework.base.utils.MD5Util;
 import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
-import com.taisf.services.permission.dao.EmployeeDao;
+import com.taisf.services.ups.dao.EmployeeDao;
 import com.taisf.services.user.dao.*;
 import com.taisf.services.user.dto.AccountLogRequest;
 import com.taisf.services.user.dto.UserAccountRequest;

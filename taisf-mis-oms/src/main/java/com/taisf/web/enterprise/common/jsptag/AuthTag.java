@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.taisf.services.permission.api.ResourceService;
-import com.taisf.services.permission.entity.EmployeeEntity;
-import com.taisf.services.permission.entity.ResourceEntity;
+import com.taisf.services.ups.api.ResourceService;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.services.ups.entity.ResourceEntity;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 
 /**

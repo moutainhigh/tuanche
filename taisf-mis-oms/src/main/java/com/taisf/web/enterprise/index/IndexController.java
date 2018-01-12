@@ -12,9 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.taisf.services.permission.api.ResourceService;
-import com.taisf.services.permission.entity.EmployeeEntity;
-import com.taisf.services.permission.vo.TreeNodeVo;
+import com.taisf.services.ups.api.ResourceService;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.services.ups.vo.TreeNodeVo;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 
 /**

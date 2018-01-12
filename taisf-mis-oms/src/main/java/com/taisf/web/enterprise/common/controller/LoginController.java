@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.MD5Util;
-import com.taisf.services.permission.entity.EmployeeEntity;
-import com.taisf.services.permission.service.EmployeeServiceImpl;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.services.ups.service.EmployeeServiceImpl;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 
 /**

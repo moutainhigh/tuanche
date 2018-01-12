@@ -10,7 +10,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.log.utils.LogUtil;
-import com.taisf.services.permission.entity.EmployeeEntity;
+import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 
 
