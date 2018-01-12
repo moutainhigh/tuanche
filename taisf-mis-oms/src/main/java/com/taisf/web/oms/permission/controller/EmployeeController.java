@@ -16,12 +16,12 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.UUIDGenerator;
 import com.jk.framework.log.utils.LogUtil;
-import com.taisf.services.permission.api.EmployeeService;
-import com.taisf.services.permission.dto.EmployeeAddRequest;
-import com.taisf.services.permission.dto.EmployeeRequest;
-import com.taisf.services.permission.entity.EmployeeEntity;
-import com.taisf.services.permission.service.EmployeeServiceImpl;
-import com.taisf.services.permission.vo.EmployeeVo;
+import com.taisf.services.ups.api.EmployeeService;
+import com.taisf.services.ups.dto.EmployeeAddRequest;
+import com.taisf.services.ups.dto.EmployeeRequest;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.services.ups.service.EmployeeServiceImpl;
+import com.taisf.services.ups.vo.EmployeeVo;
 import com.taisf.web.oms.common.page.PageResult;
 
 /**
