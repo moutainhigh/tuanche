@@ -335,6 +335,7 @@ public class UserManagerImpl {
     }
 
 
+
     /**
      * 激活用户信息
      * @param userId
@@ -342,6 +343,17 @@ public class UserManagerImpl {
      */
     public int updateUser2Activity(String userId,String pwd){
         return userDao.updateUser2Activity(userId,pwd);
+    }
+
+
+
+    /**
+     * 新增加用户
+     * @param userEntity
+     * @return
+     */
+    public int addUser(UserEntity userEntity){
+        return userDao.add(userEntity);
     }
 
 

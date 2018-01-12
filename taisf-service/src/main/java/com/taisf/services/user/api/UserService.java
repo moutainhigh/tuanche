@@ -57,6 +57,16 @@ public interface UserService {
     DataTransferObject<RegistInfoVO> regist(UserRegistRequest userRegistRequest);
 
 
+
+    /**
+     * 用户注册
+     * @param userOpenRegistRequest
+     * @return
+     */
+    DataTransferObject<RegistInfoVO> openRegist(UserOpenRegistRequest userOpenRegistRequest);
+
+
+
     /**
      * 用户登录
      * @param userLoginRequest

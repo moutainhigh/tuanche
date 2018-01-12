@@ -14,10 +14,7 @@ import com.taisf.api.util.HeaderUtil;
 import com.taisf.services.common.valenum.SmsTypeEnum;
 import com.taisf.services.user.api.IndexService;
 import com.taisf.services.user.api.UserService;
-import com.taisf.services.user.dto.UserLoginCodeRequest;
-import com.taisf.services.user.dto.UserLoginRequest;
-import com.taisf.services.user.dto.UserLogoutRequest;
-import com.taisf.services.user.dto.UserRegistRequest;
+import com.taisf.services.user.dto.*;
 import com.taisf.services.user.vo.IndexVO;
 import com.taisf.services.user.vo.RegistInfoVO;
 import org.slf4j.Logger;
@@ -86,6 +83,49 @@ public class UserController extends AbstractController {
         }
 
     }
+
+
+    /**
+     * 注册
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/openRegist", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto openRegist(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        UserOpenRegistRequest paramRequest = getEntity(request, UserOpenRegistRequest.class);
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        if (Check.NuNObjs(paramRequest.getEnterpriseCode(),paramRequest.getUserName(),paramRequest.getUserPhone(),paramRequest.getPwd())){
+            return new ResponseDto("参数异常");
+        }
+
+        String  key = HeaderUtil.getCodeStr(header, SmsTypeEnum.USER_REGIST.getCode());
+        String value= redisOperation.get(key);
+        if (!ValueUtil.getStrValue(value).equals(ValueUtil.getStrValue(paramRequest.getMsgCode()))){
+            return new ResponseDto("验证码错误");
+        }
+        paramRequest.setHeader(header);
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+
+            DataTransferObject<RegistInfoVO> dto =userService.regist(paramRequest);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【开放注册】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            return new ResponseDto("未知错误");
+        }
+
+    }
+
 
 
 

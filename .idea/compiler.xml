@@ -12,6 +12,7 @@
         <module name="taisf-api" />
         <module name="taisf-mis-oms" />
         <module name="taisf-service" />
+        <module name="ups-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -22,6 +23,7 @@
       <module name="taisf-api" target="1.8" />
       <module name="taisf-mis-oms" target="1.8" />
       <module name="taisf-service" target="1.8" />
+      <module name="ups-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

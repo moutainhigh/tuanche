@@ -82,6 +82,11 @@ public class EnterpriseEntity extends BaseEntity {
     
     private String contactTencent;
 
+    /**
+     * 是否开放
+     */
+    private Integer isOpen;
+
     private Date createTime;
 
     private Date lastModifyDate;
@@ -278,4 +283,12 @@ public class EnterpriseEntity extends BaseEntity {
 		this.contactTencent = contactTencent;
 	}
 
+
+    public Integer getIsOpen() {
+        return isOpen;
+    }
+
+    public void setIsOpen(Integer isOpen) {
+        this.isOpen = isOpen;
+    }
 }

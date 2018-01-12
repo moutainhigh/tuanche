@@ -7,10 +7,7 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.test.common.BaseTest;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dao.UserAccountDao;
-import com.taisf.services.user.dto.AccountLogRequest;
-import com.taisf.services.user.dto.UserLoginRequest;
-import com.taisf.services.user.dto.UserLogoutRequest;
-import com.taisf.services.user.dto.UserRegistRequest;
+import com.taisf.services.user.dto.*;
 import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.vo.RegistInfoVO;
@@ -49,6 +46,28 @@ public class UserServiceProxyTest extends BaseTest {
         System.out.println(JsonEntityTransform.Object2Json(dto));
     }
 
+
+    @Test
+    public void openRegistTest() {
+
+        UserOpenRegistRequest userRegistRequest = new UserOpenRegistRequest();
+
+        Header header = new Header();
+        header.setApplicationCode("open");
+        header.setDeviceUuid("uid");
+        header.setVersionCode("versionCode");
+//        header.setSource(3);
+        userRegistRequest.setHeader(header);
+        userRegistRequest.setUserPhone("123");
+        userRegistRequest.setPwd("123");
+
+        userRegistRequest.setUserName("name");
+        userRegistRequest.setEnterpriseCode("123");
+
+        DataTransferObject<RegistInfoVO>  dto = userService.openRegist(userRegistRequest);
+
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
 
 
     @Test

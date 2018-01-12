@@ -19,6 +19,7 @@ public enum ApplicationCodeEnum {
 
 
     USER(1,"user","用户"),
+    H5(3,"open","open"),
     KNIGHT(2,"knight","骑士")
     ;
     private int code;

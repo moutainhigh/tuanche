@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/taisf-api/taisf-api.iml" filepath="$PROJECT_DIR$/taisf-api/taisf-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/taisf-mis-oms/taisf-mis-oms.iml" filepath="$PROJECT_DIR$/taisf-mis-oms/taisf-mis-oms.iml" />
       <module fileurl="file://$PROJECT_DIR$/taisf-service/taisf-service.iml" filepath="$PROJECT_DIR$/taisf-service/taisf-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ups-service/ups-service.iml" filepath="$PROJECT_DIR$/ups-service/ups-service.iml" />
     </modules>
   </component>
 </project>

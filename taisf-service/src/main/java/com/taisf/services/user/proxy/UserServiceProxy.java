@@ -1,5 +1,6 @@
 package com.taisf.services.user.proxy;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
 import com.jk.framework.base.page.PagingResult;
@@ -157,6 +158,109 @@ public class UserServiceProxy implements UserService {
 
     }
 
+
+
+
+    /**
+     * 开放用户注册
+     * @param userRegistRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<RegistInfoVO> openRegist(UserOpenRegistRequest userRegistRequest){
+        DataTransferObject<RegistInfoVO> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userRegistRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(userRegistRequest.getUserPhone())) {
+            dto.setErrorMsg("请输入正确的手机号");
+            return dto;
+        }
+        if (Check.NuNStr(userRegistRequest.getUserName())) {
+            dto.setErrorMsg("请输入姓名");
+            return dto;
+        }
+
+        if (Check.NuNStr(userRegistRequest.getEnterpriseCode())) {
+            dto.setErrorMsg("请输入企业信息");
+            return dto;
+        }
+
+        if (Check.NuNStr(userRegistRequest.getPwd())) {
+            dto.setErrorMsg("请输入密码");
+            return dto;
+        }
+        //校验头信息
+        this.checkHeaderMust(dto, userRegistRequest.getHeader());
+        if (!dto.checkSuccess()) {
+            return dto;
+        }
+
+        ApplicationCodeEnum applicationCodeEnum = ApplicationCodeEnum.getTypeByApplicationCode(userRegistRequest.getHeader().getApplicationCode());
+        if (Check.NuNObj(applicationCodeEnum)) {
+            dto.setErrorMsg("异常的应用名称");
+            return dto;
+        }
+        if (applicationCodeEnum.getCode() != ApplicationCodeEnum.H5.getCode()){
+            dto.setErrorMsg("异常的注册渠道");
+            return dto;
+        }
+        //1. 验证手机号信息
+        UserEntity userEntity = userManager.getUserByUserPhone(userRegistRequest.getUserPhone());
+        if (!Check.NuNObj(userEntity)) {
+            dto.setErrorMsg("改手机号已经注册过");
+            return dto;
+        }
+
+        //2. 获取企业信息
+        EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
+        if (Check.NuNObj(infoVO)) {
+            dto.setErrorMsg("异常的企业信息");
+            return dto;
+        }
+        if (infoVO.getIsOpen() == YesNoEnum.NO.getCode()){
+            dto.setErrorMsg("当前企业未开发注册");
+            return dto;
+        }
+
+        //3. 获取合作企业状态
+        EnterpriseStatusEnum statusEnum = EnterpriseStatusEnum.getTypeByCode(infoVO.getEnterpriseStatus());
+        if (Check.NuNObj(statusEnum)) {
+            dto.setErrorMsg("异常的企业状态信息");
+            return dto;
+        }
+        if (!statusEnum.checkOk()) {
+            dto.setErrorMsg(statusEnum.getDes());
+            return dto;
+        }
+        if (Check.NuNObj(infoVO.getTillTime())) {
+            dto.setErrorMsg("异常的企业合作信息,请联系管理员");
+            return dto;
+        }
+        if (infoVO.getTillTime().before(new Date())) {
+            dto.setErrorMsg("该企业合作已过期");
+            return dto;
+        }
+
+        //4. 新增用户
+        userEntity =new UserEntity();
+        userEntity.setUserUid(UUIDGenerator.hexUUID());
+        userEntity.setUserName(userRegistRequest.getUserName());
+        userEntity.setUserPhone(userRegistRequest.getUserPhone());
+        userEntity.setEnterpriseCode(infoVO.getEnterpriseCode());
+        userEntity.setEnterpriseName(infoVO.getEnterpriseName());
+        userEntity.setUserPassword(userRegistRequest.getPwd());
+        userEntity.setUserStatus(UserStatusEnum.ACTIVITY.getCode());
+
+        userManager.addUser(userEntity);
+
+        //5. 获取企业的信息并封装企业返回信息
+        this.fillEnterpriseInfo(dto, userEntity.getEnterpriseCode(), userEntity);
+
+        return dto;
+    }
+
     @Override
     public DataTransferObject<RegistInfoVO> regist(UserRegistRequest userRegistRequest) {
         DataTransferObject<RegistInfoVO> dto = new DataTransferObject<>();
@@ -241,7 +345,6 @@ public class UserServiceProxy implements UserService {
 
         //6. 登录 获取token
         if (dto.checkSuccess()) {
-
             UserLoginCodeRequest userLoginCodeRequest = new UserLoginCodeRequest();
             userLoginCodeRequest.setHeader(userRegistRequest.getHeader());
             userLoginCodeRequest.setUserPhone(userRegistRequest.getUserPhone());
