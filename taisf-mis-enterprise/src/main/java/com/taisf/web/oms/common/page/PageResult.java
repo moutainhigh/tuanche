@@ -27,7 +27,7 @@ public class PageResult {
 	/**
 	 * 总记录数
 	 */
-	private Long total=0l;
+	private Long total=0L;
 
 	/**
 	 * @return the total

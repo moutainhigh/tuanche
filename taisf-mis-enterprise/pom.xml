@@ -385,7 +385,7 @@
     <!-- druid-datasourse end -->
     <dependency>
       <groupId>com.taisf</groupId>
-      <artifactId>taisf-service</artifactId>
+      <artifactId>ups-service</artifactId>
       <version>0.0.1</version>
     </dependency>
   </dependencies>

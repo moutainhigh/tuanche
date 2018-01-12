@@ -1,15 +1,13 @@
 package com.taisf.web.oms.common.interceptor;
 
+import com.taisf.web.oms.common.constant.MisConstant;
+import com.taisf.web.oms.common.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.taisf.web.oms.common.constant.MisConstant;
-import com.taisf.web.oms.common.util.PropertiesUtil;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 
 /**

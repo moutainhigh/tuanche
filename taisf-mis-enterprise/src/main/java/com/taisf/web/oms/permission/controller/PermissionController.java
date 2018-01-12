@@ -23,18 +23,18 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.UUIDGenerator;
 import com.jk.framework.log.utils.LogUtil;
-import com.taisf.services.permission.api.PermissionOperateService;
-import com.taisf.services.permission.api.ResourceService;
-import com.taisf.services.permission.dto.CurrentuserRequest;
-import com.taisf.services.permission.dto.EmployeeRequest;
-import com.taisf.services.permission.dto.ResourceRequest;
-import com.taisf.services.permission.dto.RoleRequest;
-import com.taisf.services.permission.entity.EmployeeEntity;
-import com.taisf.services.permission.entity.ResourceEntity;
-import com.taisf.services.permission.entity.RoleEntity;
-import com.taisf.services.permission.vo.CurrentuserVo;
-import com.taisf.services.permission.vo.RoleVo;
-import com.taisf.services.permission.vo.TreeNodeVo;
+import com.taisf.services.ups.api.PermissionOperateService;
+import com.taisf.services.ups.api.ResourceService;
+import com.taisf.services.ups.dto.CurrentuserRequest;
+import com.taisf.services.ups.dto.EmployeeRequest;
+import com.taisf.services.ups.dto.ResourceRequest;
+import com.taisf.services.ups.dto.RoleRequest;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.services.ups.entity.ResourceEntity;
+import com.taisf.services.ups.entity.RoleEntity;
+import com.taisf.services.ups.vo.CurrentuserVo;
+import com.taisf.services.ups.vo.RoleVo;
+import com.taisf.services.ups.vo.TreeNodeVo;
 import com.taisf.web.oms.common.constant.LoginConstant;
 import com.taisf.web.oms.common.page.PageResult;
 
@@ -55,13 +55,13 @@ import com.taisf.web.oms.common.page.PageResult;
  * @version 1.0
  */
 @Controller
-@RequestMapping("system/permission")
+@RequestMapping("system/ups")
 public class PermissionController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PermissionController.class);
 
-	@Resource(name = "ups.permissionOperateServiceProxy")
-	private PermissionOperateService permissionOperateService;
+	@Resource(name = "ups.upsOperateServiceProxy")
+	private PermissionOperateService upsOperateService;
 
 	@Resource(name = "ups.resourceServiceProxy")
 	private ResourceService resourceService;
@@ -121,7 +121,7 @@ public class PermissionController {
 	@ResponseBody
 	public PageResult showRoles(RoleRequest roleRequest) {
 		try {
-			DataTransferObject<PagingResult<RoleVo>> resultDto = permissionOperateService.searchRoles(JsonEntityTransform.Object2Json(roleRequest));
+			DataTransferObject<PagingResult<RoleVo>> resultDto = upsOperateService.searchRoles(JsonEntityTransform.Object2Json(roleRequest));
 			 
 			List<RoleVo> roleList = resultDto.getData().getList();
 			PageResult pageResult = new PageResult();
@@ -148,7 +148,7 @@ public class PermissionController {
 	@ResponseBody
 	public DataTransferObject<List<TreeNodeVo>> listRoleResource(String roleFid) {
 		try {
-			String resultJson = permissionOperateService.searchRoleResources(roleFid);
+			String resultJson = upsOperateService.searchRoleResources(roleFid);
 			// jstree子节点集合属性名称
 			resultJson = resultJson.replaceAll("nodes", "children");
 			return JsonEntityTransform.json2DataTransferObject(resultJson);
@@ -199,7 +199,7 @@ public class PermissionController {
 	@ResponseBody
 	public DataTransferObject<RoleEntity> editRoleStatus(String roleFid) {
 		try {
-			DataTransferObject<RoleEntity> dto = permissionOperateService.searchRoleByFid(roleFid);
+			DataTransferObject<RoleEntity> dto = upsOperateService.searchRoleByFid(roleFid);
 //			DataTransferObject<RoleEntity> dto = JsonEntityTransform.json2DataTransferObject(resultJson);
 
 			if (dto.getCode() == DataTransferObject.ERROR) {
@@ -207,7 +207,7 @@ public class PermissionController {
 				return dto;
 			}
 
-			String returnJson = permissionOperateService.editRoleStatus(JsonEntityTransform.Object2Json(dto.getData()));
+			String returnJson = upsOperateService.editRoleStatus(JsonEntityTransform.Object2Json(dto.getData()));
 			return JsonEntityTransform.json2DataTransferObject(returnJson);
 			
 		} catch (Exception e) {
@@ -255,7 +255,7 @@ public class PermissionController {
 			param.put("roleType", roleType);
 			dto.setData(param);
 
-			String resultJson = permissionOperateService.addRoleResources(JsonEntityTransform.entity2Json(dto));
+			String resultJson = upsOperateService.addRoleResources(JsonEntityTransform.entity2Json(dto));
 			return JsonEntityTransform.json2DataTransferObject(resultJson);
 		} catch (Exception e) {
 			LogUtil.error(LOGGER, "error:{}", e);
@@ -279,7 +279,7 @@ public class PermissionController {
 	 */
 	@RequestMapping("editRoleResource")
 	public void toEditRoleResource(HttpServletRequest request,String roleFid) throws SOAParseException {
-		DataTransferObject<RoleEntity> dto = permissionOperateService.searchRoleByFid(roleFid);
+		DataTransferObject<RoleEntity> dto = upsOperateService.searchRoleByFid(roleFid);
 		//RoleEntity roleEntity= SOAResParseUtil.getValueFromDataByKey(resultJson, "role", RoleEntity.class);
 		//DataTransferObject dto = JsonEntityTransform.json2DataTransferObject(resultJson);
 		RoleEntity roleEntity = dto.getData();
@@ -306,7 +306,7 @@ public class PermissionController {
 			param.put("resFids", resFids);
 			param.put("roleType", roleType);
 			dto.setData(param);
-			String resultJson = permissionOperateService.updateRoleResources(JsonEntityTransform.Object2Json(dto));
+			String resultJson = upsOperateService.updateRoleResources(JsonEntityTransform.Object2Json(dto));
 			return JsonEntityTransform.json2DataTransferObject(resultJson);
 		} catch (Exception e) {
 			LogUtil.error(LOGGER, "error:{}", e);
@@ -333,7 +333,7 @@ public class PermissionController {
 	public PageResult ajaxRequest(HttpServletRequest request,
 			@ModelAttribute("paramRequest") CurrentuserRequest paramRequest) {
 		try {
-			String resultJson = permissionOperateService
+			String resultJson = upsOperateService
 					.searchCurrentuserList(JsonEntityTransform.Object2Json(paramRequest));
 			DataTransferObject<PagingResult<CurrentuserVo>> resultDto = JsonEntityTransform.json2DataTransferObject(resultJson);
 
@@ -386,7 +386,7 @@ public class PermissionController {
 	@ResponseBody
 	public PageResult employeeList(@ModelAttribute("paramRequest") EmployeeRequest paramRequest) {
 		try {
-			String resultJson = permissionOperateService.employeePageList(JsonEntityTransform.Object2Json(paramRequest));
+			String resultJson = upsOperateService.employeePageList(JsonEntityTransform.Object2Json(paramRequest));
 			DataTransferObject<PagingResult<EmployeeEntity>> resultDto = JsonEntityTransform.json2DataTransferObject(resultJson);
 			if (resultDto.getCode() == DataTransferObject.ERROR) {
 				LogUtil.error(LOGGER, "调用接口失败,参数:{}", JsonEntityTransform.Object2Json(paramRequest));
@@ -601,13 +601,13 @@ public class PermissionController {
 	public String insertCurrentuser(@ModelAttribute CurrentuserVo paramRequest){
 		String requestJson = JsonEntityTransform.Object2Json(paramRequest);
 
-		String resultJson=permissionOperateService.insertCurrentuser(requestJson);
+		String resultJson=upsOperateService.insertCurrentuser(requestJson);
 		DataTransferObject resultDto=JsonEntityTransform.json2DataTransferObject(resultJson);
 		if(resultDto.getCode() == DataTransferObject.ERROR){
 			LogUtil.error(LOGGER, "调用接口失败,参数:{}",requestJson);
 			return resultDto.getMsg();
 		}
-		return "redirect:/system/permission/currentuserList";
+		return "redirect:/system/ups/currentuserList";
 	}
 	/**
 	 *
@@ -620,7 +620,7 @@ public class PermissionController {
 	 */
 	@RequestMapping("editCurrentuser")
 	public void toEditCurrentuser(HttpServletRequest request,String fid){
-		String userResult=permissionOperateService.initSaveUserInfo(fid);
+		String userResult=upsOperateService.initSaveUserInfo(fid);
 		DataTransferObject<CurrentuserVo> resultDto=JsonEntityTransform.json2DataTransferObject(userResult);
 		if (resultDto.getCode() == DataTransferObject.ERROR) {
 			LogUtil.error(LOGGER, "调用接口失败,fid={}",fid);
@@ -641,12 +641,12 @@ public class PermissionController {
 	 */
 	@RequestMapping("editCurrentuserSucceed")
 	public Object edidCurrentuser(HttpServletRequest request, CurrentuserVo currentuserVo){
-		String resultJson=permissionOperateService.saveUserInfo(JsonEntityTransform.Object2Json(currentuserVo));
+		String resultJson=upsOperateService.saveUserInfo(JsonEntityTransform.Object2Json(currentuserVo));
 		DataTransferObject resultDto=JsonEntityTransform.json2DataTransferObject(resultJson);
 		if(resultDto.getCode()!=0){
 			return resultDto;
 		}
-		return "redirect:/system/permission/currentuserList";
+		return "redirect:/system/ups/currentuserList";
 	}
 
 	public String getExtension(String fName) {
@@ -669,7 +669,7 @@ public class PermissionController {
 	@ResponseBody
 	public DataTransferObject editUserStatus(String uid) {
 		try {
-			String resultJson = permissionOperateService.searchCurrentuserByUid(uid);
+			String resultJson = upsOperateService.searchCurrentuserByUid(uid);
 			DataTransferObject dto = JsonEntityTransform.json2DataTransferObject(resultJson);
 
 			if (dto.getCode() == DataTransferObject.ERROR) {
@@ -677,7 +677,7 @@ public class PermissionController {
 				return dto;
 			}
 
-			String returnJson = permissionOperateService.editUserStatus(JsonEntityTransform.Object2Json(dto.getData()));
+			String returnJson = upsOperateService.editUserStatus(JsonEntityTransform.Object2Json(dto.getData()));
 			return JsonEntityTransform.json2DataTransferObject(returnJson);
 			
 		} catch (Exception e) {

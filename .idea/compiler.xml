@@ -10,6 +10,7 @@
         <module name="payment-api" />
         <module name="payment-service" />
         <module name="taisf-api" />
+        <module name="taisf-mis-enterprise" />
         <module name="taisf-mis-oms" />
         <module name="taisf-service" />
         <module name="ups-service" />
@@ -21,6 +22,7 @@
       <module name="payment-service" target="1.7" />
       <module name="taisf" target="1.7" />
       <module name="taisf-api" target="1.8" />
+      <module name="taisf-mis-enterprise" target="1.8" />
       <module name="taisf-mis-oms" target="1.8" />
       <module name="taisf-service" target="1.8" />
       <module name="ups-service" target="1.8" />
