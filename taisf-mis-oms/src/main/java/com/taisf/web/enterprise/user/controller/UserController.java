@@ -14,7 +14,7 @@ import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
-import com.taisf.services.permission.entity.EmployeeEntity;
+import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dto.SupplierRequest;
 import com.taisf.services.supplier.entity.SupplierEntity;

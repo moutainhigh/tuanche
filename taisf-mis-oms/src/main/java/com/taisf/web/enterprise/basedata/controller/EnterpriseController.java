@@ -25,7 +25,7 @@ import com.taisf.services.enterprise.dto.EnterpriseUpdateRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.entity.EnterpriseModel;
 import com.taisf.services.enterprise.vo.EnterpriseExtVO;
-import com.taisf.services.permission.api.EmployeeService;
+import com.taisf.services.ups.api.EmployeeService;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.user.api.UserService;

@@ -10,7 +10,7 @@ import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
-import com.taisf.services.permission.entity.EmployeeEntity;
+import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.services.recharge.api.RechargeService;
 import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
 import com.taisf.services.recharge.dto.BalanceMoneyOneRequest;
