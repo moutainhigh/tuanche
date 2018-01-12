@@ -30,16 +30,20 @@
 
 <body class="gray-bg">
 	<div class="wrapper wrapper-content  animated fadeInRight">
+
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="float-e-margins">
+					<input id="roleFid" value="${roleFid }" type="hidden">
 					<div class="ibox-content" style="height: 85;">
-						<form class="form-horizontal m-t" id="form">
+						<form class="form-horizontal m-t" id="commentForm">
 							<div class="row">
 								<div class="form-group">
+
 									<label class="col-sm-1 control-label">角色名：</label>
 									<div class="col-sm-2">
-										<input id="roleName" name="roleName" type="text"
+										<input readonly id="roleName" name="roleName"
+											value="${roleEntity.roleName }" type="text"
 											class="form-control">
 									</div>
 									<div class="col-sm-1">
@@ -50,6 +54,7 @@
 							</div>
 						</form>
 					</div>
+
 					<div class="ibox-content">
 						<div id="jstree"></div>
 					</div>
@@ -76,44 +81,39 @@
 	<script src="${staticResourceUrl}/js/common/date.proto.js${VERSION}"></script>
 	<script
 		src="${staticResourceUrl}/js/plugins/layer/layer.min.js${VERSION}"></script>
-
-
 	<script>
         $(function () {
         	showTree();
-        	
-        	var icon = "<i class='fa fa-times-circle'></i> ";
-            $("#form").validate({
-                rules: {
-                	roleName: "required"
-                }
-            });
         });
         
-       	var resources = [], // 权限树中被选中节点
-       	    root = [];//根节点
-        function showTree() {  
+    	var resources = [], // 权限树中被选中节点
+   	    	root = [];//根节点
+        function showTree() {
+       		var roleFid = $("#roleFid").val();
             $.ajax({
             	cache: false, 
                 type : "post",
-                dataType : "json",
-                url : 'system/permission/listAllResource',  
+                data : {
+                	'roleFid' : roleFid
+                },
+                dataType : "json",  
+                url : 'system/ups/listRoleResource',
                 success : function(result) {
                 	var list = result.data;
                     createTree(list);  
                 },  
                 error : function(result) {  
-                    layer.alert("未知错误", {icon: 5,time: 2000, title:'提示'});
+                    layer.alert("未知错误", {icon: 5,time: 2000, title:'提示'});  
                 } 
             });  
-        }
+        }  
   
         function createTree(data) {  
             $('#jstree').jstree({  
                 'plugins' : [ 'themes', 'checkbox' ],  
                 'core' : {  
                     'themes' : {  
-                        'stripes' : true   
+                    	'stripes' : true    
                     },  
                     'data' : data  
                 },
@@ -126,10 +126,10 @@
         			three_state:false,
         			cascade:''
         		}
-            });      
+            });        
         }
         
-      	//绑定监听事件
+        //绑定监听事件
         $('#jstree').bind('changed.jstree', function(e, data) {  
         	resources = data.selected;
         }).bind('load_node.jstree', function(e, data) {
@@ -157,38 +157,31 @@
         	
             $.ajax({
             	beforeSend : function(){
-		        	var valid = $("#form").valid();
-    				if(!valid){
-    					$("#saveBtn").removeAttr("disabled");
-    					return false;
-    				}
-    				
 		        	if(resources.length == 0){
 		        		layer.alert("请选择要授权的菜单", {icon: 6,time: 2000, title:'提示'});
     					$("#saveBtn").removeAttr("disabled");
 		        		return false;
 		        	}
-		        	
     				return true;
             	},
                 data : {
-                	'roleName' : $("#roleName").val(),
+                	'roleFid' : $("#roleFid").val(),
                 	'resFids' : resources.join(",")
                 },  
                 type : "post",  
                 dataType : "json",  
-                url : 'system/permission/saveRoleResource',  
+                url : 'system/ups/updateRoleResource',
                 success : function(result) {
                 	if(result.code === 0){
-		        		layer.alert("操作成功", {icon: 6,time: 2000, title:'提示'});
-		        		$.callBackParent("system/permission/listRoles",true,callBack);
+	                    layer.alert("操作成功", {icon: 6,time: 2000, title:'提示'});  
+	                    $.callBackParent("system/ups/listRoles",true,callBack);
                 	}else{
-		        		layer.alert("操作失败", {icon: 5,time: 2000, title:'提示'});
+	                    layer.alert("操作失败", {icon: 5,time: 2000, title:'提示'});  
     					$("#saveBtn").removeAttr("disabled");
                 	}
                 },  
                 error : function(result) {  
-	        		layer.alert("未知错误", {icon: 5,time: 2000, title:'提示'});
+                    layer.alert("未知错误", {icon: 5,time: 2000, title:'提示'});  
    					$("#saveBtn").removeAttr("disabled");
                 }  
             });  

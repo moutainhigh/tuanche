@@ -164,7 +164,7 @@
 										data-pagination-next-text="下一页" data-pagination-last-text="末页"
 										data-query-params="rolePaginationParam" data-method="get"
 										data-classes="table table-hover table-condensed"
-										data-height="300" data-url="system/permission/showRoles">
+										data-height="300" data-url="system/ups/showRoles">
 										<thead>
 											<tr>
 												<th data-field="id" data-checkbox="true"></th>

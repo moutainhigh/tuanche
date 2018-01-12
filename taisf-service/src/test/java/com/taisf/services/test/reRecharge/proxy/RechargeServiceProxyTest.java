@@ -38,9 +38,9 @@ public class RechargeServiceProxyTest extends BaseTest {
     @Test
     public void balanceMoneyOneTest() {
         BalanceMoneyOneRequest request = new BalanceMoneyOneRequest();
-        request.setEnterpriseCode("code");
+        /*request.setEnterpriseCode("code");
         request.setUserPhone("15120096722");
-        request.setMoneyYuan(11.11);
+        request.setMoneyYuan(11.11);*/
         DataTransferObject<Void> chargeMoney = rechargeService.balanceMoneyOne(request);
         System.out.println(JsonEntityTransform.Object2Json(chargeMoney));
 

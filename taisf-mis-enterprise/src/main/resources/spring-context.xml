@@ -37,9 +37,10 @@
 		</property>
 	</bean> 
 
-	<import resource="META-INF/spring/applicationContext-taisf.xml" />
+	<!--<import resource="META-INF/spring/applicationContext-taisf.xml" />-->
+	<import resource="META-INF/spring/applicationContext-ups.xml" />
 	<import resource="spring-mvc.xml" />
-	<import resource="spring-task.xml" />
+	<!--<import resource="spring-task.xml" />-->
 
 
 

@@ -158,7 +158,7 @@
 										data-pagination-first-text="首页" data-pagination-pre-text="上一页"
 										data-pagination-next-text="下一页" data-pagination-last-text="末页"
 										data-query-params="rolePaginationParam" data-method="get"
-										data-height="300" data-url="system/permission/showRoles">
+										data-height="300" data-url="system/ups/showRoles">
 										<thead>
 											<tr>
 												<th data-field="id" data-checkbox="true"></th>

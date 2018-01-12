@@ -61,7 +61,7 @@
 									data-content-type="application/x-www-form-urlencoded"
 									data-query-params="paginationParam" data-method="post"
 									data-row-style="rowStyle"
-									data-url="system/permission/menuDatalist">
+									data-url="system/ups/menuDatalist">
 									<thead>
 										<tr>
 											<th data-field="resName" data-align="center"
@@ -102,7 +102,7 @@
 				<div class="col-sm-14">
 					<div class="float-e-margins">
 						<div class="ibox-content">
-							<form id="menuEditForm" action="system/permission/addMenuRes"
+							<form id="menuEditForm" action="system/ups/addMenuRes"
 								class="form-horizontal m-t">
 								<input id="selectedMenuId" type="hidden" name="parentFid"
 									value="${treeNode.id}">
@@ -264,9 +264,9 @@
 
 
 	<script type="text/javascript">
-	var refreshTreeUrl = "system/permission/menuDatalist"; //刷新右侧列表路径
-	var saveMenuResourceUrl = "system/permission/addMenuRes";//添加菜单路径
-	var changeStatusResourceUrl = "system/permission/changeStatus";//更改状态路径
+	var refreshTreeUrl = "system/ups/menuDatalist"; //刷新右侧列表路径
+	var saveMenuResourceUrl = "system/ups/addMenuRes";//添加菜单路径
+	var changeStatusResourceUrl = "system/ups/changeStatus";//更改状态路径
 	var parent_id =  "${treeNode.id}";// 作为分页来用，保证分页是所选中菜单的
 	
 	/* 校验值不为空 */

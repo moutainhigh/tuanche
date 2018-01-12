@@ -63,13 +63,13 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="system/permission/listRoles" data-index="0">角色管理</a>
+                            <a class="J_menuItem" href="system/ups/listRoles" data-index="0">角色管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="system/permission/currentuserList">用户管理</a>
+                            <a class="J_menuItem" href="system/ups/currentuserList">用户管理</a>
                         </li>
                         <li>
-                            <a class="J_menuItem" href="system/permission/resourceList">菜单管理</a>
+                            <a class="J_menuItem" href="system/ups/resourceList">菜单管理</a>
                         </li>
 
                     </ul>

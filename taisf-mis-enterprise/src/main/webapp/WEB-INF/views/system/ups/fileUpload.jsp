@@ -141,7 +141,7 @@
 	<script type="text/javascript">
 	var contentPath = "${path}"; //系统路径
 	var BASE_URL = 'js/plugins/webuploader';
-	var SERVER_URL = 'system/permission/upload';
+	var SERVER_URL = 'system/ups/upload';
 	$(document).ready(function () {
 		fileUpload();
 		

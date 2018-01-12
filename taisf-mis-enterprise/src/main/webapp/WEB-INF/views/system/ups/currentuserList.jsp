@@ -90,7 +90,7 @@
 									data-query-params="paginationParam" data-method="post"
 									data-single-select="true"
 									data-classes="table table-hover table-condensed"
-									data-height="498" data-url="system/permission/showAllUser">
+									data-height="498" data-url="system/ups/showAllUser">
 									<thead>
 										<tr>
 											<th data-field="id" data-width="5%" data-radio="true"></th>
@@ -137,7 +137,7 @@
 								<div class="col-sm-14">
 									<div class="float-e-margins">
 										<div class="ibox-content">
-											<form id="menuEditForm" action="system/permission/addMenuRes"
+											<form id="menuEditForm" action="system/ups/addMenuRes"
 												class="form-horizontal m-t">
 												<div class="form-group">
 													<label class="col-sm-3 control-label">员工编号：</label>
@@ -214,7 +214,7 @@
 				title : '提示'
 			}, function(index) {
 				$.ajax({
-					url : "system/permission/editUserStatus",
+					url : "system/ups/editUserStatus",
 					data : {
 						uid : uid
 					},
@@ -245,7 +245,7 @@
 	    
 	    // 新增用户
 		function taddcurrentuser(){
-			$.openNewTab(new Date().getTime(),"system/permission/currentuserAdd", "新增用户");
+			$.openNewTab(new Date().getTime(),"system/ups/currentuserAdd", "新增用户");
 		}
 		
 	    // 编辑用户
@@ -254,7 +254,7 @@
 			if(selectVar.length == 0){
 				alert("请选择一条记录进行操作");
 			}
-			$.openNewTab(new Date().getTime(),"system/permission/editCurrentuser?fid="+selectVar[0].fid, "编辑用户");
+			$.openNewTab(new Date().getTime(),"system/ups/editCurrentuser?fid="+selectVar[0].fid, "编辑用户");
 		}
 		function getuserStatus(value, row, index){
 			if(value==0){
@@ -302,7 +302,7 @@
 	 			return;
 	 		}
 	 		
-	 		$.post("system/permission/syncEhrEmp",{empCode:empCode},function(data){
+	 		$.post("system/ups/syncEhrEmp",{empCode:empCode},function(data){
 	 			if(data.code == 0){
 	 				alert("提交成功");
 	 				$("#myModal").modal("toggle");

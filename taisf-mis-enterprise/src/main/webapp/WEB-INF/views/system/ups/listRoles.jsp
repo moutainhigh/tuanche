@@ -84,7 +84,7 @@
 									data-content-type="application/x-www-form-urlencoded"
 									data-query-params="paginationParam" data-method="post"
 									data-single-select="true"
-									data-url="system/permission/showRoles">
+									data-url="system/ups/showRoles">
 									<thead>
 										<tr>
 											<th data-field="fid" data-visible="false"></th>
@@ -178,7 +178,7 @@
 				title : '提示'
 			}, function(index) {
 				$.ajax({
-					url : "system/permission/editRoleStatus",
+					url : "system/ups/editRoleStatus",
 					data : {
 						roleFid : roleFid
 					},
@@ -208,11 +208,11 @@
 		}
 
 		function toAddRole() {
-	    	$.openNewTab(new Date().getTime(),"system/permission/addRoleResource", "新增角色");
+	    	$.openNewTab(new Date().getTime(),"system/ups/addRoleResource", "新增角色");
 		}
 
 		function editRoleResource(fid,del) {
-	    	$.openNewTab(new Date().getTime(),"system/permission/editRoleResource?roleFid="+fid, "修改角色");
+	    	$.openNewTab(new Date().getTime(),"system/ups/editRoleResource?roleFid="+fid, "修改角色");
 		}
 		
 	</script>

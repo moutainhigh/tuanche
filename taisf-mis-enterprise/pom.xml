@@ -381,6 +381,15 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
     </dependency>
+<dependency>
+      <groupId>com.taisf</groupId>
+      <artifactId>ups-service</artifactId>
+    </dependency>
+<!--    <dependency>
+      <groupId>com.taisf</groupId>
+      <artifactId>taisf-service</artifactId>
+      <version>0.0.1</version>
+    </dependency>-->
 
     <!-- druid-datasourse end -->
     <dependency>
