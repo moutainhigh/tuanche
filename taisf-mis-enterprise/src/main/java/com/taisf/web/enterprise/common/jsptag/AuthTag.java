@@ -27,7 +27,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-@Component("authTag")
+@Component("Tagauth")
 public class AuthTag extends TagSupport {
 
 	/*@Resource(name = "ups.resourceServiceProxy")
