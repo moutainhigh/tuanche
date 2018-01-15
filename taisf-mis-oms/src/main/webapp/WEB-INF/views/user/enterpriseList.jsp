@@ -200,7 +200,7 @@
 		}
 		//跳转添加企业页
 		function addEnterprise() {
-			var url = "base/enterprise/operate?operate=3";
+			var url = "base/oms/operate?operate=3";
 			$.openNewTab(new Date().getTime(), url, "添加企业");
 		}
 

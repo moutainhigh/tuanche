@@ -32,7 +32,7 @@ import java.util.Map;
 @Repository("enterprise.enterpriseAddressDao")
 public class EnterpriseAddressDao extends BaseDao {
 
-	private String SQLID = "enterprise.enterpriseAddressDao.";
+	private String SQLID = "oms.enterpriseAddressDao.";
 
 	/**
 	 * 日志对象

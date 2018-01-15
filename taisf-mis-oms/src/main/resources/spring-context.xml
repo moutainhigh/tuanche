@@ -29,7 +29,7 @@
 
 
 	<!-- 读取配置文件 -->
-	 <bean id="propertyConfigurer" class="com.taisf.web.enterprise.common.util.PropertiesUtil">
+	 <bean id="propertyConfigurer" class="com.taisf.web.oms.common.util.PropertiesUtil">
 		<property name="locations">
 			<list>
 				<value>classpath:mis.properties</value>
