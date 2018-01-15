@@ -14,12 +14,13 @@
 		<result column="emp_valid" property="empValid" jdbcType="TINYINT" />
 		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
 		<result column="depart_name" property="departName" jdbcType="VARCHAR" />
+		<result column="emp_biz" property="empBiz" jdbcType="VARCHAR" />
 
 	</resultMap>
 
 	<sql id="Base_Column_List">
 		id, user_id,user_pwd, emp_code, emp_name, emp_sex, emp_mail, emp_mobile,
-		emp_valid, depart_name, create_date
+		emp_valid, depart_name, create_date,emp_biz
 	</sql>
 
 	<sql id="Base_Column_List_alias">
@@ -175,6 +176,9 @@
 			<if test="userRole != null">
 				user_role,
 			</if>
+			<if test="empBiz != null">
+				emp_biz,
+			</if>
 
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -222,6 +226,9 @@
 			</if>
 			<if test="userRole != null">
 				#{userRole,jdbcType=INTEGER},
+			</if>
+			<if test="empBiz != null">
+				#{empBiz,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>

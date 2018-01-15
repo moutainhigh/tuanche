@@ -47,6 +47,8 @@ public class EmployeeEntity extends BaseEntity {
 
     private Date createDate;
 
+    private String empBiz;
+
 	/**
 	 * 医院ID
 	 */
@@ -63,6 +65,14 @@ public class EmployeeEntity extends BaseEntity {
 	private String hospitalName;
 
 	private int userRole;
+
+	public String getEmpBiz() {
+		return empBiz;
+	}
+
+	public void setEmpBiz(String empBiz) {
+		this.empBiz = empBiz;
+	}
 
 	public int getUserRole() {
 		return userRole;

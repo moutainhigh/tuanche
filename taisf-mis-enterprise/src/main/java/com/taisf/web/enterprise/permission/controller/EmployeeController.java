@@ -1,16 +1,5 @@
 package com.taisf.web.enterprise.permission.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
@@ -22,7 +11,18 @@ import com.taisf.services.ups.dto.EmployeeRequest;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.services.ups.service.EmployeeServiceImpl;
 import com.taisf.services.ups.vo.EmployeeVo;
+import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * <p/>
@@ -96,7 +96,7 @@ public class EmployeeController {
      */
     @RequestMapping("saveUser")
     @ResponseBody
-    public DataTransferObject saveUserData(EmployeeAddRequest request) {
+    public DataTransferObject saveUserData(EmployeeAddRequest request,HttpServletRequest httpServletRequest) {
         DataTransferObject dto = new DataTransferObject();
         if (Check.NuNObj(request.getEmpMail())) {
             dto.setErrorMsg("请输入用户名");
@@ -111,6 +111,9 @@ public class EmployeeController {
         if (Check.NuNStr(request.getUserId())) {
             request.setUserId(UUIDGenerator.hexUUID());
         }
+        HttpSession session = httpServletRequest.getSession();
+        EmployeeEntity emp = (EmployeeEntity)session.getAttribute(LoginConstant.SESSION_KEY);
+        request.setEmpBiz(emp.getEmpBiz());
         employeeService.insertEmployeeSysc(request);
         return dto;
     }
