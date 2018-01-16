@@ -107,7 +107,7 @@
         FROM t_order t
         INNER join t_order_money m on t.order_sn = m.order_sn
         LEFT JOIN t_supplier s ON s.supplier_code = t.business_uid
-        WHERE 1=1
+        WHERE 1=1 AND t.supplier_code = #{bizCode,jdbcType=VARCHAR}
         <if test="userUid != null and userUid != '' ">
             and t.user_uid = #{userUid,jdbcType=VARCHAR}
         </if>
@@ -149,6 +149,7 @@
         <if test="enterpriseName != null and enterpriseName != '' ">
             AND e.enterprise_name = #{enterpriseName,jdbcType=VARCHAR}
         </if>
+        AND o.supplier_code = #{supplierCode,jdbcType=VARCHAR}
         GROUP BY o.enterprise_code
 
     </select>
@@ -218,7 +219,7 @@
         CASE WHEN t.order_status = 70 THEN 1
         ELSE 0 END AS orderStatus
         FROM t_order t) od LEFT JOIN t_enterprise e ON od.enterprise_code = e.enterprise_code
-        WHERE orderType !=0
+        WHERE orderType !=0 and od.supplier_code = #{supplierCode,jdbcType=VARCHAR}
         <if test="openTime != null and openTime != '' ">
             <![CDATA[
 				AND od.create_time >= #{openTime}

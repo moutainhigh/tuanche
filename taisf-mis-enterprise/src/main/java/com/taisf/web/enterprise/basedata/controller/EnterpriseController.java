@@ -17,8 +17,10 @@ import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.ups.api.EmployeeService;
+import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.entity.UserEntity;
+import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,10 +69,12 @@ public class EnterpriseController {
 		LogUtil.debug(LOGGER, "分页查询企业列表请求参数:{}", JsonEntityTransform.Object2Json(enterpriseRequest));
         PageResult result = new PageResult();
         try{
+
             if(Check.NuNObj(enterpriseRequest)){
                 enterpriseRequest = new EnterpriseListRequest();
             }
-            
+			EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+			enterpriseRequest.setSupplierCode(emp.getEmpBiz());
             DataTransferObject<PagingResult<EnterpriseExtVO>> resultDto = enterpriseService.getEnterpriseExtByPage(enterpriseRequest);
             if(resultDto.getCode()==DataTransferObject.ERROR){
                 return result;

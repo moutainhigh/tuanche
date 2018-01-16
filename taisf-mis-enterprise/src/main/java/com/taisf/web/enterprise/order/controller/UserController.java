@@ -90,6 +90,8 @@ public class UserController {
     public PageResult pageKnightList(HttpServletRequest request, UserRequest userRequest) {
         PageResult pageResult = new PageResult();
         try {
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            userRequest.setBizCode(emp.getEmpBiz());
             DataTransferObject<PagingResult<UserEntity>> dto = userService.pageKnightListUser(userRequest);
             if (!Check.NuNObj(dto.getData().getList())) {
                 pageResult.setRows(dto.getData().getList());

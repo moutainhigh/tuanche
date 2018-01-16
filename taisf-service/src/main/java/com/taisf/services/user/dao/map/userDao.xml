@@ -81,7 +81,7 @@
     select
     <include refid="Base_Column_List" />
     from t_user
-    where user_type = 2
+    where user_type = 2 and biz_code = #{bizCode,jdbcType=VARCHAR}
     <if test="userName != null and userName != '' ">
       and user_name like CONCAT('%',#{userName, jdbcType=VARCHAR},'%')
     </if>

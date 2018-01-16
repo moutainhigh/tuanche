@@ -11,6 +11,8 @@ import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.vo.EnterpriseDispatchVO;
 import com.taisf.services.enterprise.vo.EnterpriseListDay;
 import com.taisf.services.order.manager.OrderManagerImpl;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,6 +120,8 @@ public class DispatchController {
     public PageResult orderDispatchPage(HttpServletRequest request, EnterprisePageRequest enterprisePageRequest) {
         PageResult pageResult = new PageResult();
         try {
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            enterprisePageRequest.setSupplierCode(emp.getEmpBiz());
             DataTransferObject<PagingResult<EnterpriseDispatchVO>> dto = enterpriseService.getEnterpriseDispatchByPage(enterprisePageRequest);
             if (dto.checkSuccess()){
                 if (!Check.NuNObj(dto.getData())){

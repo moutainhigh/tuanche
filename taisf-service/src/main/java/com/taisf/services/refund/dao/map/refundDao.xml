@@ -232,7 +232,7 @@
     r.create_time, r.update_time,u.user_phone
     from t_refund r
     LEFT JOIN  t_user u ON  u.user_uid = r.refund_uid
-    where 1=1
+    where 1=1 and r.supplier_code = #{supplierCode}
     <if test="userName != null and userName != ''" >
       AND u.user_name = #{userName}
     </if>
