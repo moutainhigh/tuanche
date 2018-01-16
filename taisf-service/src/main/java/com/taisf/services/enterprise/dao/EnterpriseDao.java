@@ -30,7 +30,7 @@ import java.util.List;
 @Repository("enterprise.enterpriseDao")
 public class EnterpriseDao extends BaseDao {
 
-    private String SQLID = "oms.enterpriseDao.";
+    private String SQLID = "enterprise.enterpriseDao.";
 
     /**
      * 日志对象
