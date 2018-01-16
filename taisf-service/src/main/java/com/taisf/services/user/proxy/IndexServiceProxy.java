@@ -1,41 +1,32 @@
 package com.taisf.services.user.proxy;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
-import com.jk.framework.base.head.Header;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
-import com.jk.framework.base.utils.UUIDGenerator;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
-import com.taisf.services.common.valenum.*;
+import com.taisf.services.common.valenum.AccountStatusEnum;
+import com.taisf.services.common.valenum.OrderTypeEnum;
+import com.taisf.services.common.valenum.UserStatusEnum;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
-import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
-import com.taisf.services.supplier.proxy.SupplierProductServiceProxy;
 import com.taisf.services.user.api.IndexService;
-import com.taisf.services.user.api.UserService;
-import com.taisf.services.user.dto.UserLoginRequest;
-import com.taisf.services.user.dto.UserLogoutRequest;
-import com.taisf.services.user.dto.UserRegistRequest;
-import com.taisf.services.user.entity.LoginTokenEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
 import com.taisf.services.user.vo.IndexBaseVO;
 import com.taisf.services.user.vo.IndexUserVO;
 import com.taisf.services.user.vo.IndexVO;
-import com.taisf.services.user.vo.RegistInfoVO;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -214,8 +205,10 @@ public class IndexServiceProxy implements IndexService {
             return dto;
         }
 
+
         // 3.设置企业信息
         EnterpriseInfoVO infoVO = enterpriseManager.getEnterpriseInfoByCode(userEntity.getEnterpriseCode());
+
         if (Check.NuNObj(infoVO)){
             dto.setErrorMsg("异常的企业信息");
             return dto;
@@ -236,11 +229,17 @@ public class IndexServiceProxy implements IndexService {
             dto.setErrorMsg("异常的企业配置信息");
             return dto;
         }
+        //是否支持补单
+        boolean isExt = false;
+        Integer isOpen = infoVO.getEnterpriseEntity().getIsOpen();
+        if (!Check.NuNObj(isOpen) && isOpen == YesNoEnum.YES.getCode()){
+            isExt = true;
+        }
 
         //获取当前的订餐类型
-        OrderTypeEnum orderTypeEnum = this.dealTime4Lunch(config,now,indexVO);
+        OrderTypeEnum orderTypeEnum = this.dealTime4Lunch(config,now,indexVO,isExt);
         if (Check.NuNObj(orderTypeEnum)){
-            orderTypeEnum = this.dealTime4Dinner(config,now,indexVO);
+            orderTypeEnum = this.dealTime4Dinner(config,now,indexVO,isExt);
         }
         if (Check.NuNObj(orderTypeEnum)){
             indexVO.setTimeMsg("订餐倒计时:");
@@ -258,7 +257,7 @@ public class IndexServiceProxy implements IndexService {
      * 校验当前
      * @return
      */
-    private OrderTypeEnum dealTime4Lunch( EnterpriseConfigEntity config ,Date now,IndexVO indexVO){
+    private OrderTypeEnum dealTime4Lunch( EnterpriseConfigEntity config ,Date now,IndexVO indexVO, boolean isExt){
         OrderTypeEnum orderTypeEnum = null;
         if (Check.NuNObj(config)){
             return orderTypeEnum;
@@ -274,7 +273,7 @@ public class IndexServiceProxy implements IndexService {
                 orderTypeEnum = OrderTypeEnum.LUNCH_COMMON;
                 indexVO.setTimeMsg("午餐订餐倒计时:");
                 indexVO.setTimeLast(end.getTime() - now.getTime());
-            }else if (now.after(end) && now.before(DateUtil.jumpMinute(end,30))){
+            }else if (now.after(end) && now.before(DateUtil.jumpMinute(end,30)) && isExt){
                 indexVO.setTimeMsg("午餐订餐倒计时:");
                 //时间正常
                 orderTypeEnum = OrderTypeEnum.LUNCH_EXT;
@@ -292,7 +291,7 @@ public class IndexServiceProxy implements IndexService {
      * 校验当前
      * @return
      */
-    private OrderTypeEnum dealTime4Dinner(EnterpriseConfigEntity config ,Date now,IndexVO indexVO){
+    private OrderTypeEnum dealTime4Dinner(EnterpriseConfigEntity config ,Date now,IndexVO indexVO, boolean isExt){
         OrderTypeEnum orderTypeEnum = null;
         if (Check.NuNObj(config)){
             return orderTypeEnum;
@@ -308,7 +307,7 @@ public class IndexServiceProxy implements IndexService {
                 indexVO.setTimeMsg("晚餐订餐倒计时:");
                 indexVO.setTimeLast(end.getTime() - now.getTime());
                 orderTypeEnum = OrderTypeEnum.DINNER_COMMON;
-            }else if (now.after(end) && now.before(DateUtil.jumpMinute(end,30))){
+            }else if (now.after(end) && now.before(DateUtil.jumpMinute(end,30)) && isExt){
                 indexVO.setTimeMsg("晚餐订餐倒计时:");
                 //补单
                 orderTypeEnum = OrderTypeEnum.DINNER_EXT;

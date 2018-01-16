@@ -59,7 +59,7 @@ public class UserServiceProxyTest extends BaseTest {
             header.setVersionCode("versionCode");
 //        header.setSource(3);
             userRegistRequest.setHeader(header);
-            userRegistRequest.setUserPhone("123");
+            userRegistRequest.setUserPhone("123456");
             userRegistRequest.setPwd("123");
 
             userRegistRequest.setUserName("name");

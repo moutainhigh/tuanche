@@ -209,7 +209,7 @@ public class UserServiceProxy implements UserService {
         //1. 验证手机号信息
         UserEntity userEntity = userManager.getUserByUserPhone(userRegistRequest.getUserPhone());
         if (!Check.NuNObj(userEntity)) {
-            dto.setErrorMsg("改手机号已经注册过");
+            dto.setErrorMsg("该手机号已经注册过");
             return dto;
         }
 
@@ -254,10 +254,6 @@ public class UserServiceProxy implements UserService {
         userEntity.setUserStatus(UserStatusEnum.ACTIVITY.getCode());
 
         userManager.addUser(userEntity);
-
-        //5. 获取企业的信息并封装企业返回信息
-        this.fillEnterpriseInfo(dto, userEntity.getEnterpriseCode(), userEntity);
-
         return dto;
     }
 
