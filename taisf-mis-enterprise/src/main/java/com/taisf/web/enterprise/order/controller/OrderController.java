@@ -11,6 +11,8 @@ import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderListVo;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +63,8 @@ public class OrderController {
     public PageResult pageList(HttpServletRequest request, OrderInfoRequest orderInfoRequest) {
         PageResult pageResult = new PageResult();
         try {
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            orderInfoRequest.setBizCode(emp.getEmpBiz());
             PagingResult<OrderInfoVO> pagingResult = orderManagerImpl.pageListOrder(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());
@@ -129,6 +133,8 @@ public class OrderController {
     public PageResult distributionRecord(HttpServletRequest request, EnterpriseListRequest enterpriseListRequest) {
         PageResult pageResult = new PageResult();
         try {
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            enterpriseListRequest.setSupplierCode(emp.getEmpBiz());
             PagingResult<OrderListVo> pagingResult = orderManagerImpl.findPageLsit(enterpriseListRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());

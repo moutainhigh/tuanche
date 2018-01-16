@@ -1,14 +1,11 @@
 package com.taisf.services.enterprise.dao;
 
-import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
-import com.taisf.services.order.entity.CartEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +29,7 @@ import java.util.Map;
 @Repository("enterprise.enterpriseAddressDao")
 public class EnterpriseAddressDao extends BaseDao {
 
-	private String SQLID = "oms.enterpriseAddressDao.";
+	private String SQLID = "enterprise.enterpriseAddressDao.";
 
 	/**
 	 * 日志对象

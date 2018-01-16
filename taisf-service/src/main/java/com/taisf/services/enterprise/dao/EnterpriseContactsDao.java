@@ -3,7 +3,6 @@ package com.taisf.services.enterprise.dao;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.UUIDGenerator;
 import com.taisf.services.common.dao.BaseDao;
-import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.entity.EnterpriseContactsEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,7 @@ import java.util.List;
 @Repository("enterprise.enterpriseContactsDao")
 public class EnterpriseContactsDao extends BaseDao {
 
-    private String SQLID = "oms.enterpriseContactsDao.";
+    private String SQLID = "enterprise.enterpriseContactsDao.";
 
     /**
      * 日志对象

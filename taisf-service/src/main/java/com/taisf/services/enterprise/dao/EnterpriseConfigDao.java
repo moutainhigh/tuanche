@@ -23,7 +23,7 @@ import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 @Repository("enterprise.enterpriseConfigDao")
 public class EnterpriseConfigDao extends BaseDao {
 
-    private String SQLID = "oms.enterpriseConfigDao.";
+    private String SQLID = "enterprise.enterpriseConfigDao.";
 
     /**
      * 日志对象

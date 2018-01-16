@@ -58,6 +58,15 @@ public class OrderInfoRequest extends PageRequest {
      */
     private String tillTime;
 
+    private String bizCode;
+
+    public String getBizCode() {
+        return bizCode;
+    }
+
+    public void setBizCode(String bizCode) {
+        this.bizCode = bizCode;
+    }
 
     public String getUserName() {
         return userName;

@@ -9,6 +9,8 @@ import com.taisf.services.refund.api.RefundService;
 import com.taisf.services.refund.dto.RefundQueryRequest;
 import com.taisf.services.refund.entity.RefundEntity;
 import com.taisf.services.refund.vo.RefundVo;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +56,8 @@ public class RefundController {
     public PageResult pageList(HttpServletRequest request, RefundQueryRequest refundQueryRequest) {
         PageResult pageResult = new PageResult();
         try {
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            refundQueryRequest.setSupplierCode(emp.getEmpBiz());
             DataTransferObject<PagingResult<RefundVo>> dto = refundService.refundPageList(refundQueryRequest);
             if (!Check.NuNObj(dto.getData())) {
                 pageResult.setRows(dto.getData().getList());

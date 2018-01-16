@@ -43,6 +43,16 @@ public class UserRequest extends PageRequest{
 
     private String userPhone;
 
+    private String bizCode;
+
+    public String getBizCode() {
+        return bizCode;
+    }
+
+    public void setBizCode(String bizCode) {
+        this.bizCode = bizCode;
+    }
+
     public String getUserPhone() {
         return userPhone;
     }
