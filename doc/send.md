@@ -85,7 +85,7 @@ token|String|上接口返回token
 
 ###  地址
 
-    send/code?code=103&userTel=12313123123131
+    send/code?code=200&userTel=12313123123131
 
 ###  提交方式
 类型|描述
@@ -143,4 +143,63 @@ demo:
       -d '{"userPhone":"15120095720","pwd":"fcea920f7412b5da7be0cf42b8c93759"}'
 
 ````
+
+
+
+
+           
+## 5.公开对外注册
+
+###  地址
+
+    user/openRegist
+
+
+###  提交方式
+类型|描述
+---|---
+提交方式|post
+Content-Type|application/json
+参数|放在body流中,依照json格式
+
+
+### 参数信息
+字段|类型|描述
+---|---|---
+userPhone|String|用户手机号
+pwd|String|密码,一定是MD5之后的,不接受明文密码
+msgCode|String|手机验证码 原来是code,后来调整msgCode 请注意
+enterpriseCode|String|企业编码
+userName|String|姓名
+
+
+
+返回信息:成功
+
+   {
+       "msg": {
+           "info": "",
+           "code": 0,
+           "success": true
+       },
+       "data": null
+   }
+
+    
+返回关键字段解释
+    
+
+           
+返回信息:失败
+
+    {
+        "msg": {
+            "info": "异常的头信息",
+            "code": 1,
+            "success": false
+        },
+        "data": {}
+    }
+
+
 
