@@ -105,6 +105,20 @@ public class OrderEntity extends BaseEntity {
 
     private String enterpriseCode;
 
+    /**
+     * 供应商code
+     */
+    private String supplierCode;
+
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
     public String getEnterpriseCode() {
         return enterpriseCode;
     }

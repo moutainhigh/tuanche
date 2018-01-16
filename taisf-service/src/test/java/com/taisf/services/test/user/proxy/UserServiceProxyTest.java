@@ -50,23 +50,28 @@ public class UserServiceProxyTest extends BaseTest {
     @Test
     public void openRegistTest() {
 
-        UserOpenRegistRequest userRegistRequest = new UserOpenRegistRequest();
+        try{
+            UserOpenRegistRequest userRegistRequest = new UserOpenRegistRequest();
 
-        Header header = new Header();
-        header.setApplicationCode("open");
-        header.setDeviceUuid("uid");
-        header.setVersionCode("versionCode");
+            Header header = new Header();
+            header.setApplicationCode("open");
+            header.setDeviceUuid("uid");
+            header.setVersionCode("versionCode");
 //        header.setSource(3);
-        userRegistRequest.setHeader(header);
-        userRegistRequest.setUserPhone("123");
-        userRegistRequest.setPwd("123");
+            userRegistRequest.setHeader(header);
+            userRegistRequest.setUserPhone("123");
+            userRegistRequest.setPwd("123");
 
-        userRegistRequest.setUserName("name");
-        userRegistRequest.setEnterpriseCode("123");
+            userRegistRequest.setUserName("name");
+            userRegistRequest.setEnterpriseCode("0001");
 
-        DataTransferObject<RegistInfoVO>  dto = userService.openRegist(userRegistRequest);
+            DataTransferObject<RegistInfoVO>  dto = userService.openRegist(userRegistRequest);
 
-        System.out.println(JsonEntityTransform.Object2Json(dto));
+            System.out.println(JsonEntityTransform.Object2Json(dto));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 

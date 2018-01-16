@@ -20,7 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext-taisf.xml"})
+@ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext-taisf.xml","classpath:META-INF/spring/applicationContext-ups.xml"})
 public abstract class BaseTest {
 
 

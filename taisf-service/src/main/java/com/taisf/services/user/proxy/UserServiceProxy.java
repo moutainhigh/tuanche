@@ -214,7 +214,7 @@ public class UserServiceProxy implements UserService {
         }
 
         //2. 获取企业信息
-        EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
+        EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userRegistRequest.getEnterpriseCode());
         if (Check.NuNObj(infoVO)) {
             dto.setErrorMsg("异常的企业信息");
             return dto;

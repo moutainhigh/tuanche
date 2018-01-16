@@ -117,7 +117,7 @@ public class UserController extends AbstractController {
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
-            DataTransferObject<RegistInfoVO> dto =userService.regist(paramRequest);
+            DataTransferObject<RegistInfoVO> dto =userService.openRegist(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【开放注册】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
