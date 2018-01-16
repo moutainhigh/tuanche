@@ -18,6 +18,7 @@ import com.jk.framework.base.utils.Check;
 public enum SmsTypeEnum {
 
 
+    OPEN_REGIST(200,10000,"用户注册"),
     USER_REGIST(100,10000,"用户注册"),
     USER_LOG(101,10000,"用户登录"),
     PWD_USER(102,10000,"修改密码"),

@@ -1,5 +1,6 @@
 package com.taisf.api.user.controller;
 
+import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
 import com.jk.framework.base.rst.ResponseDto;
@@ -18,10 +19,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,12 +55,97 @@ public class CodeController extends AbstractController {
     //短信接口地址
     private static final   String url = "http://112.90.92.102:16655/smsgwhttp/sms/submit";
 
+    /**
+     * 图片TOKEN rediskey
+     */
+    public static final String SMS_IMG_TOKEN = "SMS_IMG_TOKEN_";
+
+    /**
+     * 图片rediskey
+     */
+    public static final String SMS_IMG = "SMS_IMG_";
+
+
+    /**
+     * 图片验证码有效期
+     */
+    public static final Integer SMS_IMG_SECONDS = 2 * 60;
+
+
+    /**
+     * 图片token有效期
+     */
+    public static final Integer SMS_IMG_TOKEN_SECONDS = 60 * 60;
+
+
+
 
     @Autowired
     private UserService userService;
 
     @Autowired
     private RedisOperations redisOperation;
+
+
+    @Autowired
+    private DefaultKaptcha captchaProducer;
+
+
+    /**
+     * 获取token
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getToken", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseDto getToken(HttpServletRequest request, HttpServletResponse response){
+        DataTransferObject<Map<String, String>> dto = new DataTransferObject();
+        String tokenUUID = UUIDGenerator.hexUUID();
+        Map<String, String> token = new HashMap<String, String>();
+        token.put("token", tokenUUID);
+        dto.setData(token);
+        redisOperation.setex(SMS_IMG_TOKEN + tokenUUID, SMS_IMG_TOKEN_SECONDS, "");
+        return dto.trans2Res();
+    }
+
+    /**
+     * 获取图片验证码
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "authCode", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseDto authCode(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        Map<String,Object> param = getMap(request);
+        if (Check.NuNObjs(param)) {
+            return new ResponseDto("参数异常");
+        }
+
+        String token = (String)param.get("token");
+        if(!redisOperation.exists(SMS_IMG_TOKEN + token)){
+            return new ResponseDto("请刷新页面，重新注册");
+        }
+        response.setDateHeader("Expires", 0);
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+        response.setHeader("Pragma", "no-cache");
+        response.setContentType("image/jpeg");
+        String capText = captchaProducer.createText();
+        BufferedImage bi = captchaProducer.createImage(capText);
+        ServletOutputStream out = response.getOutputStream();
+        redisOperation.setex(SMS_IMG + token, SMS_IMG_SECONDS, capText);
+        ImageIO.write(bi, "jpg", out);
+        try {
+            out.flush();
+        } finally {
+            out.close();
+        }
+        return null;
+    }
+
 
 
     /**
@@ -69,7 +159,7 @@ public class CodeController extends AbstractController {
      */
     @RequestMapping(value ="code")
     public @ResponseBody
-    ResponseDto sendSmsCode(HttpServletRequest request, HttpServletResponse response,Integer code,String userTel,String sign,String random) throws Exception{
+    ResponseDto sendSmsCode(HttpServletRequest request, HttpServletResponse response,Integer code,String userTel,String sign,String random,String authCode) throws Exception{
 
         Header header = getHeader(request);
         if (Check.NuNObj(header)) {
@@ -95,6 +185,15 @@ public class CodeController extends AbstractController {
             if (!dtoCheck.checkSuccess()){
                 return dtoCheck.trans2Res();
             }
+        }else if (smsTypeEnum.getCode() == SmsTypeEnum.OPEN_REGIST.getCode()){
+            if (Check.NuNObjs( random, authCode)){
+                return new ResponseDto("参数异常");
+            }
+            String imgCode = redisOperation.get(SMS_IMG + random);
+            if(Check.NuNObj(imgCode) || !authCode.equals(imgCode)){
+                return new ResponseDto("图形验证码不正确");
+            }
+
         }
         Map<String,Object> parSign = new HashMap<>();
         parSign.put("code",code);

@@ -920,7 +920,8 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("当前上架已经下架,请联系平台");
             return;
         }
-
+        //设置当前的供应商code
+        orderSaveVO.getOrderBase().setSupplierCode(supplier.getSupplierCode());
         //设置商家信息
         orderSaveVO.getOrderBase().setBusinessUid(supplier.getSupplierCode());
         
