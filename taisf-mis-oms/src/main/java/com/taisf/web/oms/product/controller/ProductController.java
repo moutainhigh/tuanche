@@ -91,8 +91,8 @@ public class ProductController {
             dto.setErrorMsg("异常的金额");
             return dto;
         }
-        Double priceMarked = BigDecimalUtil.mul(priceOrg,100);
-        productEntity.setPriceMarked(priceMarked.intValue());
+        Double priceMarket = BigDecimalUtil.mul(priceOrg,100);
+        productEntity.setPriceMarket(priceMarket.intValue());
         try {
             dto = productService.saveProduct(productEntity);
         } catch (Exception e) {
@@ -161,8 +161,8 @@ public class ProductController {
             dto.setErrorMsg("异常的金额");
             return dto;
         }
-        Double priceMarked = BigDecimalUtil.mul(priceOrg,100);
-        productEntity.setPriceMarked(priceMarked.intValue());
+        Double priceMarket = BigDecimalUtil.mul(priceOrg,100);
+        productEntity.setPriceMarket(priceMarket.intValue());
         try {
                 dto = productService.updateProduct(productEntity);
         } catch (Exception e) {

@@ -60,7 +60,7 @@ public class ProductEntity extends BaseEntity {
     /**
      * 市场价
      */
-    private Integer priceMarked;
+    private Integer priceMarket;
 
 
     /**
@@ -79,12 +79,12 @@ public class ProductEntity extends BaseEntity {
     private Integer isDel;
 
 
-    public Integer getPriceMarked() {
-        return priceMarked;
+    public Integer getPriceMarket() {
+        return priceMarket;
     }
 
-    public void setPriceMarked(Integer priceMarked) {
-        this.priceMarked = priceMarked;
+    public void setPriceMarket(Integer priceMarket) {
+        this.priceMarket = priceMarket;
     }
 
     private static final long serialVersionUID = 1L;

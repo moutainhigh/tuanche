@@ -71,6 +71,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @param supplierCode
      * @return
      */
+    @Override
     public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode) {
 
         DataTransferObject dto = new DataTransferObject();

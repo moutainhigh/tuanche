@@ -22,6 +22,7 @@
         <result column="product_des" jdbcType="VARCHAR" property="productDes"/>
         <result column="product_pic" jdbcType="VARCHAR" property="productPic"/>
         <result column="price_sale" jdbcType="INTEGER" property="priceSale"/>
+        <result column="price_market" jdbcType="INTEGER" property="priceMarket"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_del" jdbcType="INTEGER" property="isDel"/>
@@ -30,7 +31,7 @@
 
     <sql id="Base_Column_List_Supplier">
     t.id, t.product_name, t.product_classify, t.product_type, t.product_source, t.product_des, t.product_pic,
-    t.price_sale  as price_sale, t.create_time, t.update_time, is_del
+    t.price_sale  as price_sale,   t.price_market  as price_market, t.create_time, t.update_time, is_del
   </sql>
 
 

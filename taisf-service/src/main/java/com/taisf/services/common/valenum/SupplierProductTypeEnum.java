@@ -1,5 +1,7 @@
 package com.taisf.services.common.valenum;
 
+import com.jk.framework.base.utils.Check;
+
 /**
  * <p>TODO</p>
  * <p/>
@@ -22,14 +24,14 @@ public enum SupplierProductTypeEnum {
 
     // 成员变量
     private String name;
-    private Integer code;
+    private int code;
 
 
     public String getName() {
         return name;
     }
 
-    public Integer getCode() {
+    public int getCode() {
         return code;
     }
 
@@ -43,8 +45,11 @@ public enum SupplierProductTypeEnum {
 
     // 普通方法
     public static SupplierProductTypeEnum getByCode(Integer code) {
+        if (Check.NuNObj(code)){
+            return null;
+        }
         for (SupplierProductTypeEnum c : SupplierProductTypeEnum.values()) {
-            if (c.code.equals(code)) {
+            if (c.code == code) {
                 return c;
             }
         }
