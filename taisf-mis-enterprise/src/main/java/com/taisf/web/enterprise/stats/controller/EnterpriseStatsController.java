@@ -11,6 +11,8 @@ import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.recharge.api.RechargeService;
+import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +77,13 @@ public class EnterpriseStatsController {
         PageResult pageResult = new PageResult();
         try {
 
+            HttpSession session = request.getSession();
+            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
+            if (Check.NuNStr(employeeEntity.getEmpBiz())){
+                return pageResult;
+            }
+            enterpriseStatsRequest.setSupplierCode(employeeEntity.getEmpBiz());
+
             this.dealTime(enterpriseStatsRequest);
             String time = enterpriseStatsRequest.getStartStr()  + " 至 "+ enterpriseStatsRequest.getEndStr();
             DataTransferObject<List<EnterpriseOrderStatsVO>> dto = orderService.getEnterpriseOrderStats(enterpriseStatsRequest);
@@ -120,7 +130,15 @@ public class EnterpriseStatsController {
     public PageResult rechargeStatsListPage(HttpServletRequest request, EnterpriseStatsRequest enterpriseStatsRequest) {
         PageResult pageResult = new PageResult();
         try {
+
+            HttpSession session = request.getSession();
+            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
+            if (Check.NuNStr(employeeEntity.getEmpBiz())){
+                return pageResult;
+            }
+            enterpriseStatsRequest.setSupplierCode(employeeEntity.getEmpBiz());
             dealTime(enterpriseStatsRequest);
+
             String time = enterpriseStatsRequest.getStartStr()  + " 至 "+ enterpriseStatsRequest.getEndStr();
             DataTransferObject<List<EnterpriseRechargeStatsVO>> dto = rechargeService.getEnterpriseRechargeStats(enterpriseStatsRequest);
             List<EnterpriseRechargeStatsVO> list = dto.getData();

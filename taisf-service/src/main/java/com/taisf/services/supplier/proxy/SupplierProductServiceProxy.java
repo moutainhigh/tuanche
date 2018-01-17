@@ -79,7 +79,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode);
+        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode,null);
         List<ProductClassifyVO> list = new ArrayList<>();
         try {
             //便利当前的枚举信息
@@ -308,13 +308,16 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @return
      * @author afi
      */
-    public Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode) {
+    public Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode,Integer week) {
         Map<String, List<SupplierProductVO>> rst = new HashMap<>();
 
         Map<String, List<ProductEntity>> map = new HashMap<>();
         SupplierProductRequest request = new SupplierProductRequest();
         request.setSupplierCode(supplierCode);
-        request.setWeek(getWeek());
+        if (Check.NuNObj(week)){
+            week = getWeek();
+        }
+        request.setWeek(week);
         List<ProductEntity> list = supplierManager.getProductListBySupplierAndType(request);
         if (Check.NuNCollection(list)) {
             return rst;

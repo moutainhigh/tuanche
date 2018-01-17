@@ -323,7 +323,7 @@
 
     //跳转编辑组合套餐页面
     function toeditSupplierPackage(id) {
-        var url = "supplierProductPackage/toedit?id="+id;
+        var url = "supplierProductPackage/toedit?id="+id+"&week=" +week;
         $.openNewTab(new Date().getTime(), url, "编辑组合套餐");
     }
 

@@ -276,6 +276,11 @@
         WHERE
         t.enterprise_code IS NOT NULL
 
+        <if test="supplierCode != null and supplierCode != '' ">
+            and t.supplier_code = #{supplierCode,jdbcType=VARCHAR}
+        </if>
+
+
         <if test="enterpriseCode != null and enterpriseCode != '' ">
             and t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
         </if>
