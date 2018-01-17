@@ -58,6 +58,12 @@ public class ProductEntity extends BaseEntity {
     private Integer priceSale;
 
     /**
+     * 市场价
+     */
+    private Integer priceMarked;
+
+
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -72,6 +78,14 @@ public class ProductEntity extends BaseEntity {
      */
     private Integer isDel;
 
+
+    public Integer getPriceMarked() {
+        return priceMarked;
+    }
+
+    public void setPriceMarked(Integer priceMarked) {
+        this.priceMarked = priceMarked;
+    }
 
     private static final long serialVersionUID = 1L;
 

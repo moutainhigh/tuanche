@@ -72,7 +72,7 @@ public class ProductController {
      **/
     @RequestMapping("addProduct")
     @ResponseBody
-    public DataTransferObject<Void> addProduct(HttpServletRequest request, ProductEntity productEntity,Double price) {
+    public DataTransferObject<Void> addProduct(HttpServletRequest request, ProductEntity productEntity,Double price,Double priceOrg) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(productEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
@@ -86,6 +86,13 @@ public class ProductController {
         }
         Double priceSale = BigDecimalUtil.mul(price,100);
         productEntity.setPriceSale(priceSale.intValue());
+
+        if (Check.NuNObj(priceOrg)){
+            dto.setErrorMsg("异常的金额");
+            return dto;
+        }
+        Double priceMarked = BigDecimalUtil.mul(priceOrg,100);
+        productEntity.setPriceMarked(priceMarked.intValue());
         try {
             dto = productService.saveProduct(productEntity);
         } catch (Exception e) {
@@ -132,7 +139,7 @@ public class ProductController {
      **/
     @RequestMapping("updateProduct")
     @ResponseBody
-    public DataTransferObject<Void> updateProduct(HttpServletRequest request, ProductEntity productEntity,Double price) {
+    public DataTransferObject<Void> updateProduct(HttpServletRequest request, ProductEntity productEntity,Double price,Double priceOrg) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(productEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
@@ -149,6 +156,13 @@ public class ProductController {
         Double priceSale = BigDecimalUtil.mul(price,100);
         productEntity.setPriceSale(priceSale.intValue());
 
+
+        if (Check.NuNObj(priceOrg)){
+            dto.setErrorMsg("异常的金额");
+            return dto;
+        }
+        Double priceMarked = BigDecimalUtil.mul(priceOrg,100);
+        productEntity.setPriceMarked(priceMarked.intValue());
         try {
                 dto = productService.updateProduct(productEntity);
         } catch (Exception e) {

@@ -205,6 +205,8 @@
                                 data-align="center"><span class="tdfont">菜品属性</span></th>
                             <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                 data-align="center"><span class="tdfont">分类</span></th>
+                            <th data-field="priceMarked" data-width="10%" data-formatter="formatPrice"
+                                data-align="center"><span class="tdfont">市场价</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">单价</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
@@ -271,6 +273,13 @@
                                     <input type="radio" value="2" name="productSource"> 西餐
                                     <input type="radio" value="3" name="productSource"> 清真(单选)
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">市场价(元):</label>
+                                <div class="col-sm-8">
+                                    <input id="priceMarked" name="priceMarked" type="text"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -373,6 +382,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">市场价(元):</label>
+                                <div class="col-sm-8">
+                                    <input id="priceMarkedE" name="priceMarked" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">单价(元):</label>
                                 <div class="col-sm-8">
                                     <input id="priceSaleE" name="priceSale" type="text"
@@ -472,6 +488,14 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">市场价(元):</label>
+                                <div class="col-sm-8">
+                                    <input readonly id="priceMarketD" name="priceMarket" type="text"
+                                           class="form-control">
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">单价(元):</label>
                                 <div class="col-sm-8">
@@ -613,6 +637,8 @@
                     $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
                     var price = (result.data.priceSale/100).toFixed(2);
                     $('#priceSaleE').val(price);
+                    var priceMarked = (result.data.priceMarked/100).toFixed(2);
+                    $('#priceMarkedE').val(priceMarked);
                     $('#productDesE').val(result.data.productDes);
 
                     $('#showImg-2').attr('href', result.data.productPic);
@@ -647,6 +673,9 @@
                     $(":radio[name='productSourceD'][value='" + result.data.productSource + "']").prop("checked", "checked");
                     var price = (result.data.priceSale/100).toFixed(2);
                     $('#priceSaleD').val(price);
+
+                    var priceMarket = (result.data.priceMarket/100).toFixed(2);
+                    $('#priceMarketD').val(priceMarket);
 
                     $('#productDesD').val(result.data.productDes);
 
@@ -699,6 +728,14 @@
             return false;
         }
         ;
+
+        if ($("#priceMarked").val() == null || $("#priceMarked").val() == "") {
+            layer.alert("市场价不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtn").removeAttr("disabled");
+            return false;
+        }
+        ;
+
         if ($("#priceSale").val() == null || $("#priceSale").val() == "") {
             layer.alert("单价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
@@ -719,6 +756,7 @@
                 'productType': productType,
                 'productSource': $('input[name="productSource"]:checked').val(),
                 'price': $("#priceSale").val(),
+                'priceOrg': $("#priceMarked").val(),
                 'productDes': $("#productDes").val(),
                 'productPic': $("#imgUrl-1").val(),
             },
@@ -782,6 +820,15 @@
             return false;
         }
         ;
+
+        if ($("#priceMarkedE").val() == null || $("#priceMarkedE").val() == "") {
+            layer.alert("原价不能为空", {icon: 5, time: 2000, title: '提示'});
+            $("#saveBtnE").removeAttr("disabled");
+            return false;
+        }
+        ;
+
+
         if ($("#productDesE").val() == null || $("#productDesE").val() == "") {
             layer.alert("描述不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
@@ -796,6 +843,7 @@
                 'productType': productType,
                 'productSource': $('input[name="productSourceE"]:checked').val(),
                 'price': $("#priceSaleE").val(),
+                'priceOrg': $("#priceMarkedE").val(),
                 'productDes': $("#productDesE").val(),
                 'id': $("#productIdE").val(),
                 'productPic': $("#imgUrl-2").val(),
