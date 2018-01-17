@@ -80,6 +80,11 @@ public class IndexServiceProxy implements IndexService {
         List<EnterpriseAddressEntity> list = enterpriseManager.getEnterpriseAddressByCode(userEntity.getEnterpriseCode());
         if (!Check.NuNCollection(list)){
             for (EnterpriseAddressEntity entity : list) {
+                if (!Check.NuNObj(entity.getIsSelf())
+                        && entity.getIsSelf() == YesNoEnum.YES.getCode()){
+                    continue;
+                    //如果是自取点,直接返回不做处理
+                }
                 entity.setConTel(userEntity.getUserPhone());
                 entity.setConName(userEntity.getUserName() + "["+userEntity.getUserCode()+"]");
             }

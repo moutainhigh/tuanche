@@ -32,6 +32,16 @@ public class ProductListRequest extends PageRequest {
      */
     private Integer productSource;
 
+    private String supplierCode;
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
     public String getProductName() {
         return productName;
     }

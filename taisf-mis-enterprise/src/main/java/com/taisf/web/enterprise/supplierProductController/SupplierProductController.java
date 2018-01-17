@@ -66,15 +66,12 @@ public class SupplierProductController {
             //查询出当前供餐商下所有菜品信息
             HttpSession session = request.getSession();
             EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
-
-            //根据userId 得到 商家code
-            EmployeeSupplierEntity employeeSupplierEntity = employeeSupplierService.getByUserId(employeeEntity.getUserId());
-            if (Check.NuNObj(employeeSupplierEntity)){
+            if (Check.NuNStr(employeeEntity.getEmpBiz())){
                 return pageResult;
             }
 
             if (!Check.NuNObj(dto.getData())) {
-                List<SupplierProductEntity> entityList = supplierProductService.getSupplierProductByCodeAndWeek(employeeSupplierEntity.getSupplierCode(),productListRequest.getWeek()).getData();
+                List<SupplierProductEntity> entityList = supplierProductService.getSupplierProductByCodeAndWeek(employeeEntity.getEmpBiz(),productListRequest.getWeek()).getData();
                 if (!Check.NuNCollection(entityList)) {
                     dto.getData().getList().stream().forEach((x) -> {
                         entityList.stream().forEach((y) -> {
@@ -116,17 +113,14 @@ public class SupplierProductController {
         }
         try {
             HttpSession session = request.getSession();
-            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
 
-            //根据userId 得到 商家code
-            EmployeeSupplierEntity employeeSupplierEntity = employeeSupplierService.getByUserId(employeeEntity.getUserId());
-            if (Check.NuNObj(employeeSupplierEntity)){
-                dto.setErrCode(DataTransferObject.ERROR);
-                dto.setErrorMsg("当前用户不是供应商");
+            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
+            if (Check.NuNStr(employeeEntity.getEmpBiz())){
+                dto.setErrorMsg("一查的供应商账户");
                 return dto;
             }
 
-            dto = supplierProductService.deleteByUserIdAndProudctIdAndWeek(employeeSupplierEntity.getSupplierCode(), id,week);
+            dto = supplierProductService.deleteByUserIdAndProudctIdAndWeek(employeeEntity.getEmpBiz(), id,week);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);
@@ -158,18 +152,17 @@ public class SupplierProductController {
 
         try {
             HttpSession session = request.getSession();
-            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
             ProductEntity productEntity = productService.getProductById(id).getData();
             SupplierProductEntity supplierProductEntity = new SupplierProductEntity();
-            //根据userId 得到 商家code
-            EmployeeSupplierEntity employeeSupplierEntity = employeeSupplierService.getByUserId(employeeEntity.getUserId());
-            if (Check.NuNObj(employeeSupplierEntity)){
-                dto.setErrCode(DataTransferObject.ERROR);
-                dto.setErrorMsg("当前用户不是供应商,不能添加");
+
+            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
+            if (Check.NuNStr(employeeEntity.getEmpBiz())){
+                dto.setErrorMsg("一查的供应商账户");
                 return dto;
             }
+
             //1商家code
-            supplierProductEntity.setSupplierCode(employeeSupplierEntity.getSupplierCode());
+            supplierProductEntity.setSupplierCode(employeeEntity.getEmpBiz());
             //2商品code
             supplierProductEntity.setProductCode(productEntity.getId());
             //3商品价格
@@ -211,6 +204,12 @@ public class SupplierProductController {
     public PageResult findPageList(HttpServletRequest request, ProductListRequest productListRequest) {
         PageResult pageResult = new PageResult();
         try {
+            HttpSession session = request.getSession();
+            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
+            if (Check.NuNStr(employeeEntity.getEmpBiz())){
+                return pageResult;
+            }
+            productListRequest.setSupplierCode(employeeEntity.getEmpBiz());
             DataTransferObject<PagingResult<ProductEntity>> dto = supplierProductService.pageListProduct(productListRequest);
             //查询出当前供餐商下所有菜品信息
             if (!Check.NuNObj(dto.getData())) {

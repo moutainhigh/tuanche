@@ -34,6 +34,7 @@
     <include refid="Base_Column_List" />
     from t_enterprise_address
     where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+    order  by is_self DESC
   </select>
 
   <select id="findPageEnterpriseAddressByCode" parameterType="com.taisf.services.enterprise.dto.EnterpriseAddressRequest" resultMap="BaseResultMap">

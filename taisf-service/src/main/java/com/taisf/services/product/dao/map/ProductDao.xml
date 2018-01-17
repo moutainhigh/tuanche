@@ -11,7 +11,7 @@
         <result column="product_des" jdbcType="VARCHAR" property="productDes"/>
         <result column="product_pic" jdbcType="VARCHAR" property="productPic"/>
         <result column="price_sale" jdbcType="INTEGER" property="priceSale"/>
-        <result column="price_marked" jdbcType="INTEGER" property="priceMarked"/>
+        <result column="price_market" jdbcType="INTEGER" property="priceMarket"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_del" jdbcType="INTEGER" property="isDel"/>
@@ -20,7 +20,7 @@
 
     <sql id="Base_Column_List">
         id, product_name, product_classify, product_type, product_source, product_des, product_pic,
-        price_sale,price_marked, create_time, update_time, is_del
+        price_sale,price_market, create_time, update_time, is_del
     </sql>
 
 
@@ -100,8 +100,8 @@
             <if test="priceSale != null">
                 price_sale,
             </if>
-            <if test="priceMarked != null">
-                price_marked,
+            <if test="priceMarket != null">
+                price_market,
             </if>
 
             <if test="createTime != null">
@@ -136,8 +136,8 @@
             <if test="priceSale != null">
                 #{priceSale,jdbcType=INTEGER},
             </if>
-            <if test="priceMarked != null">
-                #{priceMarked,jdbcType=INTEGER},
+            <if test="priceMarket != null">
+                #{priceMarket,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -176,6 +176,11 @@
             <if test="priceSale != null">
                 price_sale = #{priceSale,jdbcType=INTEGER},
             </if>
+
+            <if test="priceMarket != null">
+                price_market = #{priceMarket,jdbcType=INTEGER},
+            </if>
+
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>

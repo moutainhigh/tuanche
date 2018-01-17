@@ -205,7 +205,7 @@
                                 data-align="center"><span class="tdfont">菜品属性</span></th>
                             <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                 data-align="center"><span class="tdfont">分类</span></th>
-                            <th data-field="priceMarked" data-width="10%" data-formatter="formatPrice"
+                            <th data-field="priceMarket" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">市场价</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">单价</span></th>
@@ -278,7 +278,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">市场价(元):</label>
                                 <div class="col-sm-8">
-                                    <input id="priceMarked" name="priceMarked" type="text"
+                                    <input id="priceMarket" name="priceMarket" type="text"
                                            class="form-control">
                                 </div>
                             </div>
@@ -384,7 +384,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">市场价(元):</label>
                                 <div class="col-sm-8">
-                                    <input id="priceMarkedE" name="priceMarked" type="text"
+                                    <input id="priceMarketE" name="priceMarket" type="text"
                                            class="form-control">
                                 </div>
                             </div>
@@ -637,8 +637,8 @@
                     $(":radio[name='productSourceE'][value='" + result.data.productSource + "']").prop("checked", "checked");
                     var price = (result.data.priceSale/100).toFixed(2);
                     $('#priceSaleE').val(price);
-                    var priceMarked = (result.data.priceMarked/100).toFixed(2);
-                    $('#priceMarkedE').val(priceMarked);
+                    var priceMarket = (result.data.priceMarket/100).toFixed(2);
+                    $('#priceMarketE').val(priceMarket);
                     $('#productDesE').val(result.data.productDes);
 
                     $('#showImg-2').attr('href', result.data.productPic);
@@ -729,7 +729,7 @@
         }
         ;
 
-        if ($("#priceMarked").val() == null || $("#priceMarked").val() == "") {
+        if ($("#priceMarket").val() == null || $("#priceMarket").val() == "") {
             layer.alert("市场价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
@@ -756,7 +756,7 @@
                 'productType': productType,
                 'productSource': $('input[name="productSource"]:checked').val(),
                 'price': $("#priceSale").val(),
-                'priceOrg': $("#priceMarked").val(),
+                'priceOrg': $("#priceMarket").val(),
                 'productDes': $("#productDes").val(),
                 'productPic': $("#imgUrl-1").val(),
             },
@@ -821,7 +821,7 @@
         }
         ;
 
-        if ($("#priceMarkedE").val() == null || $("#priceMarkedE").val() == "") {
+        if ($("#priceMarketE").val() == null || $("#priceMarketE").val() == "") {
             layer.alert("原价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
@@ -843,7 +843,7 @@
                 'productType': productType,
                 'productSource': $('input[name="productSourceE"]:checked').val(),
                 'price': $("#priceSaleE").val(),
-                'priceOrg': $("#priceMarkedE").val(),
+                'priceOrg': $("#priceMarketE").val(),
                 'productDes': $("#productDesE").val(),
                 'id': $("#productIdE").val(),
                 'productPic': $("#imgUrl-2").val(),

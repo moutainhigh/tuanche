@@ -890,6 +890,7 @@ public class OrderServiceProxy implements OrderService {
         OrderEntity order =orderSaveVO.getOrderBase();
         //收货地址
         order.setAddress(addressEntity.getAddress());
+        order.setIsSelf(addressEntity.getIsSelf());
     }
 
 
