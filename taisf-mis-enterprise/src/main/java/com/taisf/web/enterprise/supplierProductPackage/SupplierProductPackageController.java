@@ -165,9 +165,7 @@ public class SupplierProductPackageController {
             //商家code
             HttpSession session = request.getSession();
             EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
-            //根据userId 得到 商家code
-            EmployeeSupplierEntity employeeSupplierEntity = employeeSupplierService.getByUserId(employeeEntity.getUserId());
-            packageEntity.setSupplierCode(employeeSupplierEntity.getSupplierCode());
+            packageEntity.setSupplierCode(employeeEntity.getEmpBiz());
             dto = supplierPackageService.saveSupplierPackage(packageEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
