@@ -101,6 +101,16 @@ public class SupplierProductPackageController {
     public PageResult pageList(HttpServletRequest request, SupplierProductRequest supplierProductRequest) {
         PageResult pageResult = new PageResult();
         try {
+
+            //查询出当前供餐商下所有菜品信息
+            HttpSession session = request.getSession();
+            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
+            if (Check.NuNStr(employeeEntity.getEmpBiz())){
+                return pageResult;
+            }
+
+            supplierProductRequest.setSupplierCode(employeeEntity.getEmpBiz());
+            //
             DataTransferObject<PagingResult<SupplierPackageEntity>> dto = supplierPackageService.pageListSupplierProduct(supplierProductRequest);
             if (!Check.NuNObj(dto.getData())) {
                 List<SupplierPackageVO> listVo = new ArrayList<>();
@@ -136,7 +146,7 @@ public class SupplierProductPackageController {
     @RequestMapping("toAdd")
     public String toAdd(HttpServletRequest request,Integer week) {
         //不同分类集合
-        productCla01sifyList(request);
+        productCla01sifyList(request,week);
         request.setAttribute("week", week);
         return "supplierPackage/addSupplierPackage";
     }
@@ -210,9 +220,9 @@ public class SupplierProductPackageController {
      * @description:去编辑组合套餐页面
      **/
     @RequestMapping("toedit")
-    public String toedit(HttpServletRequest request, Integer id) {
+    public String toedit(HttpServletRequest request, Integer id,Integer week) {
         //不同分类集合
-        productCla01sifyList(request);
+        productCla01sifyList(request,week);
         //当前编辑的组合套餐
         SupplierPackageEntity packageEntity = supplierPackageService.getSupplierPackageById(id).getData();
         if(!Check.NuNObjs(packageEntity.getPackagePic())){
@@ -259,15 +269,14 @@ public class SupplierProductPackageController {
         return dto;
     }
 
-    public void productCla01sifyList(HttpServletRequest request) {
+    public void productCla01sifyList(HttpServletRequest request,Integer week) {
 
         HttpSession session = request.getSession();
         EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
-        EmployeeSupplierEntity employeeSupplierEntity = employeeSupplierService.getByUserId(employeeEntity.getUserId());
-        if (Check.NuNObj(employeeSupplierEntity)){
+        if (Check.NuNStr(employeeEntity.getEmpBiz())){
             return;
         }
-        Map<String, List<SupplierProductVO>> map = supplierProductServiceProxy.getSupplierProductMap(employeeSupplierEntity.getSupplierCode());
+        Map<String, List<SupplierProductVO>> map = supplierProductServiceProxy.getSupplierProductMap(employeeEntity.getEmpBiz(),week);
 
         //不同分类集合
         List<SupplierProductVO> dahunList = map.get(ProductClassifyEnum.DAHUN.getCode()+"");
