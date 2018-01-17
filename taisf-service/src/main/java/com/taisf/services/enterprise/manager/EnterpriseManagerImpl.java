@@ -1,35 +1,22 @@
 package com.taisf.services.enterprise.manager;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.taisf.services.common.valenum.DayTypeEnum;
-import com.taisf.services.enterprise.dao.EnterpriseAddressDao;
-import com.taisf.services.enterprise.dao.EnterpriseConfigDao;
-import com.taisf.services.enterprise.dao.EnterpriseDao;
-import com.taisf.services.enterprise.dao.EnterpriseDayDao;
-import com.taisf.services.enterprise.dao.EnterpriseFinanceDao;
+import com.taisf.services.enterprise.dao.*;
+import com.taisf.services.enterprise.dto.EnterpriseAddressRequest;
 import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
-import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
-import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
-import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
-import com.taisf.services.enterprise.entity.EnterpriseEntity;
-import com.taisf.services.enterprise.entity.EnterpriseModel;
+import com.taisf.services.enterprise.entity.*;
 import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.*;
 
 
 /**
@@ -370,6 +357,21 @@ public class EnterpriseManagerImpl {
 				enterpriseAddressDao.deleteByFid(record.getFid());
 			}
 		}
+	}
+	public PagingResult<EnterpriseAddressEntity> findPageEnterpriseAddressByCode(EnterpriseAddressRequest enterpriseAddressRequest) {
+		return enterpriseAddressDao.findPageEnterpriseAddressByCode(enterpriseAddressRequest);
+	}
+
+	public int saveEnterpriseAddress(EnterpriseAddressEntity record) {
+		return enterpriseAddressDao.saveEnterpriseAddress(record);
+	}
+
+	public int updateEnterpriseAddress(EnterpriseAddressEntity record) {
+		return enterpriseAddressDao.updateEnterpriseAddress(record);
+	}
+
+	public int deleteByFid(String fid) {
+		return enterpriseAddressDao.deleteByFid(fid);
 	}
 
 }

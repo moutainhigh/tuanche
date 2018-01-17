@@ -37,6 +37,16 @@ public class EnterpriseAddressEntity extends BaseEntity {
 
     private String conName;
 
+    private Integer isSelf;
+
+    public Integer getIsSelf() {
+        return isSelf;
+    }
+
+    public void setIsSelf(Integer isSelf) {
+        this.isSelf = isSelf;
+    }
+
     public Integer getId() {
         return id;
     }

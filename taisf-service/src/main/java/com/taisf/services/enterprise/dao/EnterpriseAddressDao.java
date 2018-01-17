@@ -1,6 +1,9 @@
 package com.taisf.services.enterprise.dao;
 
+import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.enterprise.dto.EnterpriseAddressRequest;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +60,13 @@ public class EnterpriseAddressDao extends BaseDao {
 	public List<EnterpriseAddressEntity> getEnterpriseAddressByCode(String enterpriseCode) {
 		return mybatisDaoContext.findAll(SQLID + "getEnterpriseAddressByCode", EnterpriseAddressEntity.class,
 				enterpriseCode);
+	}
+	public PagingResult<EnterpriseAddressEntity> findPageEnterpriseAddressByCode(EnterpriseAddressRequest enterpriseAddressRequest) {
+		PageBounds pageBounds = new PageBounds();
+		pageBounds.setLimit(enterpriseAddressRequest.getLimit());
+		pageBounds.setPage(enterpriseAddressRequest.getPage());
+		return mybatisDaoContext.findForPage(SQLID + "findPageEnterpriseAddressByCode", EnterpriseAddressEntity.class,
+				enterpriseAddressRequest,pageBounds);
 	}
 
 	/**

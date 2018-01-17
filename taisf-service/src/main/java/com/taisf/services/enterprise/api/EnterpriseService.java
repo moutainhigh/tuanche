@@ -2,10 +2,8 @@ package com.taisf.services.enterprise.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
-import com.taisf.services.enterprise.dto.EnterpriseDayRequest;
-import com.taisf.services.enterprise.dto.EnterpriseListRequest;
-import com.taisf.services.enterprise.dto.EnterprisePageRequest;
-import com.taisf.services.enterprise.dto.EnterpriseUpdateRequest;
+import com.taisf.services.enterprise.dto.*;
+import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.entity.EnterpriseModel;
@@ -124,4 +122,39 @@ public interface EnterpriseService {
      * @description:查询所有企业列表
      **/
     DataTransferObject<List<EnterpriseEntity>> findAllEnterprise();
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/17
+     * @description:分页查询企业地址
+     **/
+    DataTransferObject<PagingResult<EnterpriseAddressEntity>> findPageEnterpriseAddressByCode(EnterpriseAddressRequest enterpriseAddressRequest);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/17
+     * @description:新增企业地址
+     **/
+    DataTransferObject<Void> saveEnterpriseAddress(EnterpriseAddressEntity record);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/17
+     * @description:修改企业地址
+     **/
+    DataTransferObject<Void> updateEnterpriseAddress(EnterpriseAddressEntity record);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/17
+     * @description:删除企业地址
+     **/
+    DataTransferObject<Void> deleteByFid(String fid);
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/17
+     * @description:获取企业地址根据fid
+     **/
+    DataTransferObject<EnterpriseAddressEntity> getEnterpriseAddressByFid(String fid);
 }

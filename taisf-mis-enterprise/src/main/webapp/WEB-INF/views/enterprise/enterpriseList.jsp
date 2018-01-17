@@ -241,6 +241,8 @@
 		// 操作列
 		function formatOperate(value, row, index) {
 			var result = "";
+			result = result + "<a title='地址' href=javascript:editEnterpriseAddress('"
+					+ "base/enterpriseAddress/enterpriseAddressList?enterpriseCode=" + row.enterpriseCode + "')>地址</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			result = result + "<a title='编辑' href=javascript:editEnterprise('"
 					+ "base/enterprise/operatePage?id=" + row.id + "&operate=2')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
 			result = result + "<a title='查看' href=javascript:viewEnterprise('"
@@ -256,6 +258,9 @@
 			return result;
 		}
 
+		function editEnterpriseAddress(url) {
+			$.openNewTab(new Date().getTime(), url, "企业地址");
+		}
 		function editEnterprise(url) {
 			$.openNewTab(new Date().getTime(), url, "编辑企业");
 		}
