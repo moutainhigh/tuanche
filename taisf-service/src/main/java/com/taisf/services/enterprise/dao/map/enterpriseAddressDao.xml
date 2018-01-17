@@ -8,13 +8,14 @@
     <result column="enterprise_code" jdbcType="VARCHAR" property="enterpriseCode" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="send_num" jdbcType="INTEGER" property="sendNum" />
+    <result column="is_self" jdbcType="INTEGER" property="isSelf" />
     <result column="con_tel" jdbcType="VARCHAR" property="conTel" />
     <result column="con_name" jdbcType="VARCHAR" property="conName" />
   </resultMap>
 
 
   <sql id="Base_Column_List">
-    id,fid, enterprise_code, address, send_num, con_tel, con_name
+    id,fid, enterprise_code, address, send_num, is_self,con_tel, con_name
   </sql>
 
 
@@ -33,6 +34,7 @@
     <include refid="Base_Column_List" />
     from t_enterprise_address
     where enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+    order  by is_self DESC
   </select>
 
 

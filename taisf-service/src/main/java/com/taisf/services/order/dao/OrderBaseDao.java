@@ -111,7 +111,6 @@ public class OrderBaseDao extends BaseDao{
         return mybatisDaoContext.save(SQLID + "saveOrderBase", orderEntity);
     }
 
-
     /**
      * 更新订单的信息
      * @author afi

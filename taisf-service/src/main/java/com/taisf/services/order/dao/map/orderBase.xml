@@ -78,6 +78,11 @@
                 address,
             </if>
 
+            <if test="isSelf != null">
+                is_self,
+            </if>
+
+
 
             <if test="orderSource != null">
                 order_source,
@@ -160,7 +165,9 @@
             <if test="address != null">
                 #{address,jdbcType=VARCHAR},
             </if>
-
+            <if test="isSelf != null">
+                #{isSelf,jdbcType=TINYINT},
+            </if>
             <if test="orderSource != null">
                 #{orderSource,jdbcType=TINYINT},
             </if>

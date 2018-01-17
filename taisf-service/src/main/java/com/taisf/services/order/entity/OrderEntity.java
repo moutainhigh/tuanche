@@ -43,6 +43,12 @@ public class OrderEntity extends BaseEntity {
     private String  address;
 
 
+
+
+    /** 是否自提 */
+    private Integer isSelf;
+
+
     /** 订单来源 */
     private Integer orderSource;
 
@@ -110,6 +116,14 @@ public class OrderEntity extends BaseEntity {
      */
     private String supplierCode;
 
+
+    public Integer getIsSelf() {
+        return isSelf;
+    }
+
+    public void setIsSelf(Integer isSelf) {
+        this.isSelf = isSelf;
+    }
 
     public String getSupplierCode() {
         return supplierCode;
