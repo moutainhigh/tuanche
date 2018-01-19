@@ -108,9 +108,10 @@ public class UserController extends AbstractController {
             return new ResponseDto("参数异常");
         }
 
-        String  key = HeaderUtil.getCodeStr(header, SmsTypeEnum.USER_REGIST.getCode());
+        String  key = HeaderUtil.getCodeStr(header, SmsTypeEnum.OPEN_REGIST.getCode());
         String value= redisOperation.get(key);
         if (!ValueUtil.getStrValue(value).equals(ValueUtil.getStrValue(paramRequest.getMsgCode()))){
+            LogUtil.info(LOGGER, "当前验证码为:{},参数验证码:{},传入参数:{}", value,paramRequest.getMsgCode(),JsonEntityTransform.Object2Json(paramRequest));
             return new ResponseDto("验证码错误");
         }
         paramRequest.setHeader(header);
