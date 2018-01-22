@@ -90,6 +90,20 @@ public class RefundEntity  extends BaseEntity{
      */
     private Date updateTime;
 
+
+    /**
+     * 供应商code
+     */
+    private String supplierCode;
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
     public Integer getId() {
         return id;
     }

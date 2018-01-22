@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="refund_sn" property="refundSn" jdbcType="VARCHAR" />
     <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="supplier_code" property="supplierCode" jdbcType="VARCHAR" />
     <result column="refund_type" property="refundType" jdbcType="INTEGER" />
     <result column="source_type" property="sourceType" jdbcType="INTEGER" />
     <result column="refund_status" property="refundStatus" jdbcType="INTEGER" />
@@ -21,7 +22,7 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, refund_sn, order_sn, refund_type, source_type, refund_status, card_type, card_no, 
+    id, refund_sn, order_sn,supplier_code, refund_type, source_type, refund_status, card_type, card_no,
     refund_name, refund_uid, record_id, retry_times, pay_fee, refund_fee, refund_time, 
     create_time, update_time
   </sql>
@@ -67,6 +68,13 @@
       <if test="refundSn != null" >
         refund_sn,
       </if>
+
+      <if test="supplierCode != null" >
+        supplier_code,
+      </if>
+
+
+
       <if test="orderSn != null" >
         order_sn,
       </if>
@@ -118,6 +126,11 @@
       <if test="refundSn != null" >
         #{refundSn,jdbcType=VARCHAR},
       </if>
+
+      <if test="supplierCode != null" >
+        #{supplierCode,jdbcType=VARCHAR},
+      </if>
+
       <if test="orderSn != null" >
         #{orderSn,jdbcType=VARCHAR},
       </if>

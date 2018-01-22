@@ -17,6 +17,7 @@ import com.taisf.services.order.entity.*;
 import com.taisf.services.order.vo.*;
 import com.taisf.services.pay.dao.PayRecordDao;
 import com.taisf.services.pay.entity.PayRecordEntity;
+import com.taisf.services.refund.constants.RefundStatusEnum;
 import com.taisf.services.refund.dao.RefundDao;
 import com.taisf.services.refund.entity.RefundEntity;
 import com.taisf.services.user.dao.AccountLogDao;
@@ -114,6 +115,7 @@ public class OrderManagerImpl {
 			entity.setRefundName(order.getUserName());
 			entity.setRefundSn(SnUtil.getRefundSn());
 			entity.setRefundUid(order.getUserUid());
+			entity.setRefundStatus(RefundStatusEnum.WAIT.getCode());
 			int row =  refundDao.saveRefund(entity);
 			return entity.getRefundSn();
 		}
