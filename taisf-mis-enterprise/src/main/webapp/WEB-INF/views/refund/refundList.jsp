@@ -464,8 +464,9 @@
             success: function (result) {
                 if (result.code === 0) {
                     $('#ID_E').val(result.data.id);
-                    $('#refundFee_E').val(result.data.refundFee);
-                    $('#refundFee_H').val(result.data.refundFee);
+
+                    $('#refundFee_E').val(((result.data.refundFee)/100).toFixed(2));
+                    $('#refundFee_H').val(((result.data.refundFee)/100).toFixed(2));
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
