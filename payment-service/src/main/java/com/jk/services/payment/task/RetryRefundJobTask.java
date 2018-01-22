@@ -1,6 +1,5 @@
 package com.jk.services.payment.task;
 
-import com.jk.services.payment.handle.alipay.AliRefundHandle;
 import com.jk.services.payment.handle.tenpay.TenpayRefundHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +28,8 @@ public class RetryRefundJobTask extends TaskJob{
 	TenpayRefundHandle tenpayRefundHandle;
 
 
-	@Autowired
-	AliRefundHandle aliRefundHandle;
+	//@Autowired
+	//AliRefundHandle aliRefundHandle;
 
 
 	@Override
@@ -39,6 +38,6 @@ public class RetryRefundJobTask extends TaskJob{
 		tenpayRefundHandle.doTask();
 
 		//支付宝的退款
-		aliRefundHandle.doTask();
+		//aliRefundHandle.doTask();
 	}
 }

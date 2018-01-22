@@ -3,7 +3,6 @@ package com.taisf.services.supplier.manager;
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.base.entity.EmployeeSupplierEntity;
 import com.taisf.services.product.entity.ProductEntity;
-import com.taisf.services.supplier.dao.EmployeeSupplierDao;
 import com.taisf.services.supplier.dao.SupplierDao;
 import com.taisf.services.supplier.dao.SupplierPackageDao;
 import com.taisf.services.supplier.dao.SupplierProductDao;
@@ -40,9 +39,6 @@ public class SupplierManagerImpl {
 	private SupplierDao supplierDao;
 
 
-	@Resource(name = "supplier.employeeSupplierDao")
-	private EmployeeSupplierDao employeeSupplierDao;
-
 	@Resource(name = "supplier.supplierProductDao")
 	private SupplierProductDao supplierProductDao;
 
@@ -76,13 +72,8 @@ public class SupplierManagerImpl {
 	 * @param employeeUid
 	 * @return
 	 */
-	public SupplierEntity getSupplierByEmp(String employeeUid){
-		//获取关系
-		EmployeeSupplierEntity entity = employeeSupplierDao.getByUserId(employeeUid);
-		if (Check.NuNObj(entity)){
-			return null;
-		}
-		return supplierDao.getSupplierByCode(entity.getSupplierCode());
+	public SupplierEntity getSupplierByEmp(String bizCode){
+		return supplierDao.getSupplierByCode(bizCode);
 	}
 
 

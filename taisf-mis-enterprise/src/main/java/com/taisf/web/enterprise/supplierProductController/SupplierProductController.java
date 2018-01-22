@@ -5,8 +5,6 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
-import com.taisf.services.base.entity.EmployeeSupplierEntity;
-import com.taisf.services.base.service.EmployeeSupplierService;
 import com.taisf.services.product.api.ProductService;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
@@ -38,9 +36,6 @@ public class SupplierProductController {
 
     @Autowired
     private SupplierProductService supplierProductService;
-
-    @Autowired
-    private EmployeeSupplierService employeeSupplierService;
 
     /**
      * @author:zhangzhengguang
