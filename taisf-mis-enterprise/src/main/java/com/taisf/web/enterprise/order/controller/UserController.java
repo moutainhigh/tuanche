@@ -7,8 +7,6 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.UUIDGenerator;
 import com.jk.framework.log.utils.LogUtil;
-import com.taisf.services.base.entity.EmployeeSupplierEntity;
-import com.taisf.services.base.service.EmployeeSupplierService;
 import com.taisf.services.common.valenum.UserStatusEnum;
 import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
@@ -62,8 +60,6 @@ public class UserController {
     private SupplierManagerImpl supplierManagerImpl;
 
 
-    @Autowired
-    private EmployeeSupplierService employeeSupplierService;
 
 
 
@@ -163,7 +159,7 @@ public class UserController {
         }
 
         //根据UserID查询 supplier 表 得到code
-        SupplierEntity supplier = supplierManagerImpl.getSupplierByEmp(employeeEntity.getUserId());
+        SupplierEntity supplier = supplierManagerImpl.getSupplierByEmp(employeeEntity.getEmpBiz());
         if (Check.NuNObj(supplier)){
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("当前登录用户不是供应商,不能创建员工");
@@ -180,12 +176,6 @@ public class UserController {
             userEntity.setEnterpriseCode(has.getEnterpriseCode());
             userEntity.setEnterpriseName(has.getEnterpriseName());
             userService.saveUser(userEntity);
-            //写映射表
-
-            EmployeeSupplierEntity employeeSupplierEntity = new EmployeeSupplierEntity();
-            employeeSupplierEntity.setUserId(uuid);
-            employeeSupplierEntity.setSupplierCode(supplier.getSupplierCode());
-            employeeSupplierService.saveEmployeeSupplier(employeeSupplierEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);

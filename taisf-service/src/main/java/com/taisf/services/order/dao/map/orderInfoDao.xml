@@ -218,7 +218,7 @@
         ELSE 0 END AS orderType,
         CASE WHEN t.order_status = 70 THEN 1
         ELSE 0 END AS orderStatus
-        FROM t_order t) od LEFT JOIN t_enterprise e ON od.enterprise_code = e.enterprise_code
+        FROM t_order t) od LEFT JOIN t_enterprise e ON od.enterprise_co  de ''= e.enterprise_code
         WHERE orderType !=0 and od.supplier_code = #{supplierCode,jdbcType=VARCHAR}
         <if test="openTime != null and openTime != '' ">
             <![CDATA[

@@ -6,8 +6,6 @@ import com.jk.framework.base.utils.BigDecimalUtil;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
-import com.taisf.services.base.entity.EmployeeSupplierEntity;
-import com.taisf.services.base.service.EmployeeSupplierService;
 import com.taisf.services.common.constant.PathConstant;
 import com.taisf.services.common.valenum.ProductClassifyEnum;
 import com.taisf.services.product.api.ProductService;
@@ -51,9 +49,6 @@ public class SupplierProductPackageController {
 
     @Resource(name = "supplier.supplierProductServiceProxy")
     private SupplierProductServiceProxy supplierProductServiceProxy;
-
-    @Autowired
-    private EmployeeSupplierService employeeSupplierService;
 
     @Autowired
     private PathConstant pathConstant;
