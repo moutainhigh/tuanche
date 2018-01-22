@@ -116,6 +116,7 @@ public class OrderManagerImpl {
 			entity.setRefundSn(SnUtil.getRefundSn());
 			entity.setRefundUid(order.getUserUid());
 			entity.setRefundStatus(RefundStatusEnum.WAIT.getCode());
+			entity.setSupplierCode(order.getSupplierCode());
 			int row =  refundDao.saveRefund(entity);
 			return entity.getRefundSn();
 		}
