@@ -10,6 +10,7 @@
         <result column="total_price" jdbcType="INTEGER" property="totalPrice" />
         <result column="pay_money" jdbcType="INTEGER" property="payMoney" />
         <result column="enterprise_code" jdbcType="VARCHAR" property="enterpriseCode" />
+        <result column="supplier_code" jdbcType="VARCHAR" property="supplierCode" />
         <result column="enterprise_name" jdbcType="VARCHAR" property="enterpriseName" />
         <result column="recharge_tel" jdbcType="VARCHAR" property="rechargeTel" />
         <result column="boss_num" jdbcType="INTEGER" property="bossNum" />
@@ -22,7 +23,7 @@
 
 
     <sql id="Base_Column_List">
-        id, recharge_sn, recharge_status, recharge_type, total_price, pay_money, enterprise_code,
+        id, recharge_sn, recharge_status, recharge_type, total_price, pay_money, enterprise_code,supplier_code,
         enterprise_name, recharge_tel, boss_num, common_num, create_id, create_name, create_time,
         update_time
     </sql>
@@ -35,6 +36,10 @@
         where 1 = 1
         <if test="rechargeType != null">
             and recharge_type = #{rechargeType,jdbcType=INTEGER}
+        </if>
+
+        <if test="supplierCode != null and supplierCode != '' ">
+            and supplier_code = #{supplierCode,jdbcType=VARCHAR}
         </if>
 
         <if test="rechargeSn != null and rechargeSn!='' ">
@@ -100,6 +105,12 @@
             <if test="enterpriseCode != null">
                 enterprise_code,
             </if>
+
+            <if test="supplierCode != null">
+                supplier_code,
+            </if>
+
+
             <if test="enterpriseName != null">
                 enterprise_name,
             </if>
@@ -145,6 +156,10 @@
             <if test="enterpriseCode != null">
                 #{enterpriseCode,jdbcType=VARCHAR},
             </if>
+            <if test="supplierCode != null">
+                #{supplierCode,jdbcType=VARCHAR},
+            </if>
+
             <if test="enterpriseName != null">
                 #{enterpriseName,jdbcType=VARCHAR},
             </if>

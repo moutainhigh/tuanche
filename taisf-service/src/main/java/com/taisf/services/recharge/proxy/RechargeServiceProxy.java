@@ -117,6 +117,7 @@ public class RechargeServiceProxy implements RechargeService {
      * @param chargeHisRequest
      * @return
      */
+    @Override
     public DataTransferObject<PagingResult<RechargeEntity>> getRechargeByPage(ChargeHisRequest chargeHisRequest){
         DataTransferObject<PagingResult<RechargeEntity>> dto = new DataTransferObject<>();
         if (Check.NuNObj(chargeHisRequest)){
@@ -134,6 +135,7 @@ public class RechargeServiceProxy implements RechargeService {
      * @param enterpriseCode
      * @return
      */
+    @Override
     public DataTransferObject<EnterpriseStatsNumber>  getEnterpriseStatsNumber(String enterpriseCode){
 
         DataTransferObject<EnterpriseStatsNumber> dto = new DataTransferObject<>();

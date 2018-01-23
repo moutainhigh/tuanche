@@ -39,6 +39,8 @@ public class RechargeEntity extends BaseEntity {
 
     private String enterpriseCode;
 
+    private String supplierCode;
+
     private String enterpriseName;
 
     private String rechargeTel;
@@ -54,6 +56,15 @@ public class RechargeEntity extends BaseEntity {
     private Date createTime;
 
     private Date updateTime;
+
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
 
     public Integer getId() {
         return id;
