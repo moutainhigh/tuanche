@@ -1,12 +1,14 @@
 package com.taisf.services.refund.manager;
 
 import com.jk.framework.base.exception.BusinessException;
-import com.jk.framework.base.page.PageRequest;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.OrdersStatusEnum;
+import com.taisf.services.order.dao.OrderBaseDao;
+import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.common.valenum.RecordPayTypeEnum;
 import com.taisf.services.order.dao.OrderBaseDao;
 import com.taisf.services.recharge.manager.RechargeManagerImpl;
@@ -44,16 +46,14 @@ public class RefundManagerImpl {
     private RefundDao refundDao;
 
 
-    @Resource(name = "order.orderBaseDao")
-    private OrderBaseDao orderBaseDao;
-
-
     @Resource(name="refund.refundLogDao")
     private RefundLogDao refundLogDao;
 
     @Resource(name="recharge.rechargeManagerImpl")
     private RechargeManagerImpl rechargeManager;
 
+    @Resource(name = "order.orderBaseDao")
+    private OrderBaseDao orderBaseDao;
     /**
      * 查询审核通过的退款列表 分页
      * @param request
@@ -95,7 +95,12 @@ public class RefundManagerImpl {
      * @date:2017/12/21
      * @description:根据id修改
      **/
-    public int updateRefund(RefundEntity refundEntity) {
+    public int updateRefund(RefundEntity refundEntity,OrderEntity base) {
+        //如果驳回 修改订单的状态 REFUND_NO
+        if(refundEntity.getRefundStatus() == RefundStatusEnum.NO_PASS.getCode()){
+            base.setOrderStatus(OrdersStatusEnum.REFUND_NO.getCode());
+            orderBaseDao.updateOrderBaseByOrderSn(base);
+        }
         return refundDao.updateRefund(refundEntity);
     }
 

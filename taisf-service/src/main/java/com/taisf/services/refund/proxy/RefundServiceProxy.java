@@ -146,12 +146,7 @@ public class RefundServiceProxy implements RefundService {
                 return dto;
             }
             //5. 修改退款单
-            int num = refundManagerImpl.updateRefund(refundEntity);
-            //6. 如果驳回 修改订单的状态 REFUND_NO
-            if(refundEntity.getRefundStatus() == RefundStatusEnum.NO_PASS.getCode()){
-                base.setOrderStatus(OrdersStatusEnum.REFUND_NO.getCode());
-                orderManager.updateOrderBaseByOrderSn(base);
-            }
+            int num = refundManagerImpl.updateRefund(refundEntity,base);
             if (num != 1) {
                 dto.setErrCode(DataTransferObject.ERROR);
                 dto.setErrorMsg("修改退款信息失败");
