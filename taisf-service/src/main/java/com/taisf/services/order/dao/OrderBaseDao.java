@@ -65,8 +65,21 @@ public class OrderBaseDao extends BaseDao{
     }
 
 
+
+
     /**
-     * 结束订单
+     * 退款成功
+     * @param orderSn
+     * @return
+     */
+    public int refundOrderSuccess(String orderSn){
+        Map<String,Object> par = new HashMap<>();
+        par.put("orderSn",orderSn);
+        return mybatisDaoContext.update(SQLID + "refundOrderSuccess", par);
+    }
+
+    /**
+     * 申请退款
      * @param orderSn
      * @param oldStatus
      * @return

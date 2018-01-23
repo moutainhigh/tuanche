@@ -241,7 +241,13 @@
     </update>
 
 
-
+    <update id="refundOrderSuccess" parameterType="com.taisf.services.order.entity.OrderEntity">
+        <!-- 退款成功 -->
+        UPDATE t_order
+        set
+        order_status = 41
+        WHERE order_sn = #{orderSn,jdbcType=VARCHAR}
+    </update>
 
 
     <update id="refundOrder" parameterType="com.taisf.services.order.entity.OrderEntity">

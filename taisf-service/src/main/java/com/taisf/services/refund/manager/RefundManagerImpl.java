@@ -5,7 +5,10 @@ import com.jk.framework.base.page.PageRequest;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.RecordPayTypeEnum;
+import com.taisf.services.order.dao.OrderBaseDao;
 import com.taisf.services.recharge.manager.RechargeManagerImpl;
 import com.taisf.services.refund.constants.RefundStatusEnum;
 import com.taisf.services.refund.dao.RefundDao;
@@ -39,6 +42,10 @@ public class RefundManagerImpl {
 
     @Resource(name = "refund.refundDao")
     private RefundDao refundDao;
+
+
+    @Resource(name = "order.orderBaseDao")
+    private OrderBaseDao orderBaseDao;
 
 
     @Resource(name="refund.refundLogDao")
@@ -112,12 +119,23 @@ public class RefundManagerImpl {
         LogUtil.info(logger,"[退款] 退款失败重试次数记录: DB:retryTimes:{}; retryTime的值:{}",
                 refundEntity.getRetryTimes(), refundRequest.getRetryTime());
 
+        if (ValueUtil.getintValue(refundEntity.getRefundStatus()) == refundRequest.getRefundStatus()){
+            //重复调用,幂等返回
+            return;
+        }
+
         //修改状态
         int num = refundDao.updateRefundStatusAndRetryTimes(refund.getRefundSn(),refundRequest.getRefundStatus(),refund.getRefundStatus(), retryTimes);
         if (num != 1){
             LogUtil.error(logger,"异常的更新条数:par:{}",JsonEntityTransform.Object2Json(refundRequest));
             throw new BusinessException("异常的更新条数");
         }
+
+        if (refundRequest.getRefundStatus() == RefundStatusEnum.SUCCESS.getCode()){
+            //打款成功变更订单为打款成功
+            orderBaseDao.refundOrderSuccess(refundEntity.getOrderSn());
+        }
+
         RefundLogEntity entity = new RefundLogEntity();
         entity.setRefundSn(refund.getRefundSn());
         entity.setStatusFrom(refund.getRefundStatus());
@@ -128,7 +146,17 @@ public class RefundManagerImpl {
         entity.setCreateTime(new Date());
         refundLogDao.saveRefundLog(entity);
 
-        //处理当前的余额信息
-        rechargeManager.refundByOrder(refund.getRefundUid(),refund.getRefundFee(),refund.getRefundSn());
+
+        RecordPayTypeEnum recordPayTypeEnum = RecordPayTypeEnum.getTypeByCode(refundEntity.getCardType());
+        if (Check.NuNObj(recordPayTypeEnum)){
+            LogUtil.info(logger,"异常的支付类型:par:{}", JsonEntityTransform.Object2Json(refundEntity));
+            return ;
+        }
+        if (recordPayTypeEnum.getCode() == RecordPayTypeEnum.YUE.getCode()
+                && refundRequest.getRefundStatus() == RefundStatusEnum.SUCCESS.getCode()
+                ){
+            //处理当前的余额信息
+            rechargeManager.refundByOrder(refund.getRefundUid(),refund.getRefundFee(),refund.getRefundSn());
+        }
     }
 }
