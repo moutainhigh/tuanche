@@ -146,8 +146,8 @@
                             <th data-field="fid" data-width="10%"
                                 data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="isSelf" data-width="10%"  data-formatter="formatSelf"
-                                data-align="center"><span class="tdfont">是否自提</span></th>
-                            <th data-field="address" data-width="15%"
+                                data-align="center"><span class="tdfont">配送方式</span></th>
+                            送餐地址:       <th data-field="address" data-width="15%"
                                 data-align="center"><span class="tdfont">地址</span></th>
                             <th data-field="conTel" data-width="10%"
                                 data-align="center"><span class="tdfont">电话</span></th>
@@ -180,10 +180,10 @@
                         <form id="editForm1" class="form-horizontal m-t">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">是否自提:</label>
+                                <label class="col-sm-3 control-label">配送方式:</label>
                                 <div class="col-sm-8">
-                                    <input checked type="radio" value="0" name="isSelf"> 否
-                                    <input type="radio" value="1" name="isSelf"> 是
+                                    <input checked type="radio" value="0" name="isSelf"> 送餐上门
+                                    <input type="radio" value="1" name="isSelf"> 到店自取
                                     </select>
                                 </div>
                             </div>
@@ -239,10 +239,10 @@
                         <form id="editForm2" class="form-horizontal m-t">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">是否自提:</label>
+                                <label class="col-sm-3 control-label">配送方式:</label>
                                 <div class="col-sm-8">
-                                    <input checked type="radio" value="0" name="isSelfE"> 否
-                                    <input type="radio" value="1" name="isSelfE"> 是
+                                    <input checked type="radio" value="0" name="isSelfE"> 送餐上门
+                                    <input type="radio" value="1" name="isSelfE"> 到店自取
                                     </select>
                                 </div>
                             </div>

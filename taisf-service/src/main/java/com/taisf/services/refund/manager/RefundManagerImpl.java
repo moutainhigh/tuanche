@@ -7,6 +7,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.recharge.manager.RechargeManagerImpl;
+import com.taisf.services.refund.constants.RefundStatusEnum;
 import com.taisf.services.refund.dao.RefundDao;
 import com.taisf.services.refund.dao.RefundLogDao;
 import com.taisf.services.refund.dto.RefundJobRequest;
@@ -90,6 +91,8 @@ public class RefundManagerImpl {
     public int updateRefund(RefundEntity refundEntity) {
         return refundDao.updateRefund(refundEntity);
     }
+
+
 
 
     /**

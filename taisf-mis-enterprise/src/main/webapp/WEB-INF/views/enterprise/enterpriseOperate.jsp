@@ -248,15 +248,7 @@
 									<c:if test="${operate==1}">readonly="true"</c:if> 
 									value="${fn:substring(model.configEntity.dinnerEnd, 0, fn:length(model.configEntity.dinnerEnd)-3)}"></td>
 							</tr>
-							<tr><td colspan="6"><hr class="hr-line-dashed"/></td></tr>
-							<tr>
-								<td align="right" class="td-title"><font color="red">*&nbsp;</font>送餐地址:</td>
-								<td align="center"><input type="text" id="mainAddress" name="mainAddress" class="form-control"
-			                        value="${model.addressEntityList[0].address}" <c:if test="${operate==1}">readonly="true"</c:if>></td>
-								<td align="right" class="td-title">其他地址:</td>
-								<td align="center"><input type="text" id="otherAddress" name="otherAddress" class="form-control"
-									value="${model.addressEntityList[1].address}" <c:if test="${operate==1}">readonly="true"</c:if>></td>
-							</tr>
+
 							
 							<tr><td colspan="6" style="font-size:13px;color:#1bb394;font-weight:bold;">财务信息</td></tr>
 							<tr>
@@ -430,7 +422,6 @@
                 "forDinner" : $("#forDinner").val(),
                 "dinnerStart" : handleTime($("#dinnerStart").val()),
                 "dinnerEnd" : handleTime($("#dinnerEnd").val()),
-                "mainAddress" : $("#mainAddress").val(),
                 "otherAddress" : $("#otherAddress").val(),
                 "invoiceTitle" : $("#invoiceTitle").val(),
                 "enterpriseAccount" : $("#enterpriseAccount").val(),
@@ -531,10 +522,7 @@
         if(!isNumber($("#feeDay").val())) {
         	return "账期只能是正整数";
         }
-        
-        if(isNullOrBlank($("#mainAddress").val())){
-            return "送餐地址为必填项"
-        }
+
         
 	}
   	

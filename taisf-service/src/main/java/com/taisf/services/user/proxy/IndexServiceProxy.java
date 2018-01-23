@@ -237,7 +237,7 @@ public class IndexServiceProxy implements IndexService {
         //是否支持补单
         boolean isExt = false;
         Integer isOpen = infoVO.getEnterpriseEntity().getIsOpen();
-        if (!Check.NuNObj(isOpen) && isOpen == YesNoEnum.YES.getCode()){
+        if (!Check.NuNObj(isOpen) && isOpen == YesNoEnum.NO.getCode()){
             isExt = true;
         }
 

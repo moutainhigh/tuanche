@@ -103,6 +103,21 @@ public class RefundServiceProxy implements RefundService {
             return dto;
         }
         try {
+
+            //1.校验退款单
+
+            //2.退款单状态
+
+            //3. 退款单金额 还有订单的金额的比对
+
+            //4. 订单状态校验
+
+            //5. 修改退款单
+
+            //6. 如果驳回 修改订单的状态 REFUND_NO
+
+            //7. 如果正常 不用修改
+
             int num = refundManagerImpl.updateRefund(refundEntity);
             if (num != 1) {
                 dto.setErrCode(DataTransferObject.ERROR);
