@@ -541,12 +541,10 @@
                     $('#payFee').val(((result.data.payFee)/100).toFixed(2));
                     $('#refundFee').val(((result.data.refundFee)/100).toFixed(2));
 
-                    var _date = new Date(result.data.refundTime);
-
-                    $('#refundTime').val(_date.format("yyyy-MM-dd HH:mm:ss"));
-
-
-
+                    if(result.data.refundTime != null){
+                        var _date = new Date(result.data.refundTime);
+                        $('#refundTime').val(_date.format("yyyy-MM-dd HH:mm:ss"));
+                    }
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
                     $("#saveBtn").removeAttr("disabled");
@@ -653,7 +651,7 @@
 
         $.ajax({
             data: {
-                'refundFee': $("#refundFee_E").val(),
+                'fee': $("#refundFee_E").val(),
                 'id': $("#ID_E").val(),
                 'refundStatus': 3,
             },

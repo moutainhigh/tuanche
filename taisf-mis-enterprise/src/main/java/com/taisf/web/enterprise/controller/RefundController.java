@@ -104,12 +104,15 @@ public class RefundController {
      **/
     @RequestMapping("updateRefund")
     @ResponseBody
-    public DataTransferObject<Void> updateRefund(HttpServletRequest request, RefundEntity refundEntity) {
+    public DataTransferObject<Void> updateRefund(HttpServletRequest request, RefundEntity refundEntity,double fee) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(refundEntity)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
+        }
+        if(!Check.NuNObj(fee)){
+            refundEntity.setRefundFee(((int)fee*100));
         }
         try {
             dto = refundService.updateRefund(refundEntity);
