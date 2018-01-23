@@ -423,6 +423,16 @@ public class OrderManagerImpl {
 	}
 
 
+	/**
+	 * 更新订单的信息
+	 * @author afi
+	 * @param orderEntity
+	 * @return
+	 */
+	public int updateOrderBaseByOrderSn(OrderEntity orderEntity){
+		return orderBaseDao.updateOrderBaseByOrderSn(orderEntity);
+	}
+
 
 
 }
