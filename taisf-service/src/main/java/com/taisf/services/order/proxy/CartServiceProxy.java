@@ -114,12 +114,12 @@ public class CartServiceProxy implements CartService{
                 dto.setErrorMsg("异常的商品类型");
                 return dto;
             }
-            if(supplierProductTypeEnum.getCode() == supplierProductTypeEnum.PACKAGE.getCode() ){
+            if(supplierProductTypeEnum.getCode() == SupplierProductTypeEnum.PACKAGE.getCode() ){
                 CartEleVO ele = new CartEleVO();
                 ele.setProductCode(cartEntity.getProductCode());
                 ele.setProductNum(cartEntity.getProductNum());
                 packageList.add(ele);
-            }else if(supplierProductTypeEnum.getCode() == supplierProductTypeEnum.PRODUCT.getCode() ){
+            }else if(supplierProductTypeEnum.getCode()== SupplierProductTypeEnum.PRODUCT.getCode() ){
                 CartEleVO ele = new CartEleVO();
                 ele.setProductCode(cartEntity.getProductCode());
                 ele.setProductNum(cartEntity.getProductNum());
