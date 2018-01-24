@@ -58,11 +58,11 @@
             and p.week = #{week,jdbcType=INTEGER}
         </if>
 
-        <if test="orderType != null and orderType == 20 ">
+        <if test="orderType != null and orderType == '20' ">
             and p.for_lunch = 1
         </if>
 
-        <if test="orderType != null and orderType == 30 ">
+        <if test="orderType != null and orderType == '30' ">
             and p.for_dinner = 1
         </if>
         <if test="productIds != null ">
