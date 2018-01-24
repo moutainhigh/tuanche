@@ -60,6 +60,32 @@ public class SupplierPackageEntity extends BaseEntity {
 
     private Date createTime;
 
+    /**
+     * 是否午餐
+     */
+    private Integer forLunch;
+
+    /**
+     * 是否晚餐
+     */
+    private Integer forDinner;
+
+    public Integer getForLunch() {
+        return forLunch;
+    }
+
+    public void setForLunch(Integer forLunch) {
+        this.forLunch = forLunch;
+    }
+
+    public Integer getForDinner() {
+        return forDinner;
+    }
+
+    public void setForDinner(Integer forDinner) {
+        this.forDinner = forDinner;
+    }
+
 
     public Integer getPackagePrice() {
         return packagePrice;
