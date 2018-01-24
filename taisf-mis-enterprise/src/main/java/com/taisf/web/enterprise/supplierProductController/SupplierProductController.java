@@ -72,6 +72,7 @@ public class SupplierProductController {
                         entityList.stream().forEach((y) -> {
                             if (x.getId().equals(y.getProductCode())) {
                                 x.setIsDel(1);
+                                x.setForDinner(y.getForDinner());
                             }
                         });
                     });
@@ -132,13 +133,14 @@ public class SupplierProductController {
      **/
     @RequestMapping("addSupplierProduct")
     @ResponseBody
-    public DataTransferObject<Void> addSupplierProduct(HttpServletRequest request, Integer id,Integer week) {
+    public DataTransferObject<Void> addSupplierProduct(HttpServletRequest request, Integer id,Integer week,Integer forLunch,Integer forDinner) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(id)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
+
         if (Check.NuNObj(week)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
@@ -168,6 +170,9 @@ public class SupplierProductController {
             supplierProductEntity.setCreateTime(new Date());
             //周几
             supplierProductEntity.setWeek(week);
+
+            supplierProductEntity.setForLunch(forLunch);
+            supplierProductEntity.setForDinner(forDinner);
             //6.执行保存
             dto = supplierProductService.saveSupplierProduct(supplierProductEntity);
         } catch (Exception e) {

@@ -164,6 +164,10 @@
                                 data-align="center"><span class="tdfont">菜品属性</span></th>
                             <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                 data-align="center"><span class="tdfont">分类</span></th>
+                            <th data-field="forLunch" data-width="10%" data-formatter="formatForLunch"
+                                data-align="center"><span class="tdfont">是否午餐</span></th>
+                            <th data-field="forDinner" data-width="10%" data-formatter="formatForLunch"
+                                data-align="center"><span class="tdfont">是否晚餐</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">单价</span></th>
                             <th data-field="isDel" data-width="10%" data-formatter="formatStatus"
@@ -177,7 +181,48 @@
             </div>
         </div>
 
+        <div class="modal inmodal" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
 
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">关闭</span>
+                        </button>
+                        <h4 class="modal-title">更新菜品</h4>
+                    </div>
+                    <div class="col-sm-14">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <form id="editForm2" class="form-horizontal m-t">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">午餐:</label>
+                                        <div class="col-sm-8">
+                                            <input  style="margin-top: 15;" id="forLunch" name="lunch" type="checkbox" value="1" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">晚餐:</label>
+                                        <div class="col-sm-8">
+                                            <input  style="margin-top: 15;" id="forDinner" name="dinner" type="checkbox" value="1" />
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" class="form-control" id="IDE" name="id" value=""/>
+                                    <!-- 用于 将表单缓存清空 -->
+                                    <input id="editReset" type="reset" style="display:none;"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="saveBtnE" type="button" onclick="saveProduct();">保存</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -275,13 +320,20 @@
             return "未添加";
         }
     }
+    function formatForLunch(value, row, index) {
+        if (value == 1) {
+            return "是";
+        } else {
+            return "否";
+        }
+    }
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
         if (row.isDel == 1) {
-            result = result + "<a title='撤回' onclick='revocation(" + row.id + ")')>撤回</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result = result + "<a title='撤回' onclick='revocation(" + row.id + ")') >撤回</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         } else {
-            result = result + "<a title='添加' onclick='addSupplierProduct(" + row.id + ")')>添加</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result = result + "<a title='添加' onclick='addSupplierProduct(" + row.id + ")') data-toggle='modal' data-target='#editModal')>添加</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         }
         return result;
     }
@@ -313,10 +365,24 @@
 
     //添加
     function addSupplierProduct(id) {
+            $("#IDE").val(id);
+    }
+    function saveProduct(){
+        var forLunch = 0;
+        if($('#forLunch').is(':checked')) {
+            forLunch = 1;
+        }
+        var forDinner = 0;
+        if($('#forDinner').is(':checked')) {
+            forDinner = 1;
+        }
         $.ajax({
             data: {
-                'id': id,
-                'week': week
+                'id': $("#IDE").val(),
+                'week': week,
+                'forLunch': forLunch,
+                'forDinner': forDinner
+
             },
             type: "post",
             dataType: "json",
@@ -324,6 +390,7 @@
             success: function (result) {
                 if (result.code === 0) {
                     layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                    $('#editModal').modal('hide');
                     $('#listTable').bootstrapTable('refresh');
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
@@ -336,7 +403,6 @@
             }
         });
     }
-
 
 
     function query() {
