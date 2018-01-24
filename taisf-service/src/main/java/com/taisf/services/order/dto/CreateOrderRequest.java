@@ -50,6 +50,20 @@ public class CreateOrderRequest extends BaseEntity{
      */
     private Integer source;
 
+    /**
+     * 企业编码
+     */
+    private String enterpriseCode;
+
+
+    public String getEnterpriseCode() {
+        return enterpriseCode;
+    }
+
+    public void setEnterpriseCode(String enterpriseCode) {
+        this.enterpriseCode = enterpriseCode;
+    }
+
     public String getBusinessUid() {
         return businessUid;
     }

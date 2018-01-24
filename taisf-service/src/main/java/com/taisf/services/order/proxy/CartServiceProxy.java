@@ -1,9 +1,11 @@
 package com.taisf.services.order.proxy;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.util.MoneyDealUtil;
+import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.dto.CartAddRequest;
@@ -18,6 +20,7 @@ import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.product.manager.ProductManagerImpl;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
+import com.taisf.services.user.proxy.IndexServiceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -58,6 +61,10 @@ public class CartServiceProxy implements CartService{
     private SupplierManagerImpl supplierProductManager;
 
 
+    @Resource(name = "user.indexServiceProxy")
+    private IndexServiceProxy indexServiceProxy;
+
+
     /**
      * 获取购物车列表信息
      * @param cartCleanRequest
@@ -86,7 +93,7 @@ public class CartServiceProxy implements CartService{
      * @return
      */
     @Override
-    public DataTransferObject<CartInfoVO> cartInfo(String userUid, String businessUid){
+    public DataTransferObject<CartInfoVO> cartInfo(String userUid, String businessUid,String enterpriseCode){
         DataTransferObject<CartInfoVO> dto = new DataTransferObject<>();
 
         if (Check.NuNStr(businessUid)
@@ -94,10 +101,16 @@ public class CartServiceProxy implements CartService{
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        //获取当前的订单类型
+        DataTransferObject<OrderTypeEnum> orderTypeDto = indexServiceProxy.getOrderType(enterpriseCode);
+        if (!orderTypeDto.checkSuccess()){
+            dto.setErrorMsg(orderTypeDto.getMsg());
+            return dto;
+        }
+        OrderTypeEnum orderTypeEnum = orderTypeDto.getData();
         CartInfoVO vo = new CartInfoVO();
         vo.setBusinessUid(businessUid);
         vo.setUserUid(userUid);
-
         List<CartEntity> list = cartManager.getCartByUserId(userUid,businessUid);
         if (list == null){
             list = new ArrayList<>();
@@ -128,11 +141,11 @@ public class CartServiceProxy implements CartService{
         }
         if (!Check.NuNCollection(packageList)){
             //处理礼包
-            dealCartPackage(dto,packageList);
+            dealCartPackage(dto,packageList,orderTypeEnum);
         }
         if (!Check.NuNCollection(proList)){
             //处理商品
-            dealCartProduct(dto,proList);
+            dealCartProduct(dto,proList,orderTypeEnum);
         }
         dto.setData(vo);
         return dto;
@@ -143,11 +156,14 @@ public class CartServiceProxy implements CartService{
      * @param dto
      * @param packageList
      */
-    private void dealCartPackage(DataTransferObject<CartInfoVO> dto,List<CartEleVO> packageList){
+    private void dealCartPackage(DataTransferObject<CartInfoVO> dto,List<CartEleVO> packageList,OrderTypeEnum orderTypeEnum){
         if (!dto.checkSuccess()){
             return;
         }
         if (Check.NuNCollection(packageList)){
+            return;
+        }
+        if (Check.NuNObj(orderTypeEnum)){
             return;
         }
         Map<String,Integer> numMap = new HashMap<>();
@@ -171,6 +187,11 @@ public class CartServiceProxy implements CartService{
             cartVO.setProductPrice(productEntity.getPackagePrice());
             cartVO.setProductNum(num);
             cartVO.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
+            //获取当前的匹配情况
+            if (!orderTypeEnum.checkSuit(ValueUtil.getintValue(productEntity.getForLunch()),ValueUtil.getintValue(productEntity.getForDinner()))){
+                cartVO.setOutDes("不可预定");
+                cartVO.setOutFlag(YesNoEnum.YES.getCode());
+            }
             vo.getList().add(cartVO);
             vo.setPrice(MoneyDealUtil.overlayMoney(vo.getPrice(),productEntity.getPackagePrice(),num));
         }
@@ -183,11 +204,14 @@ public class CartServiceProxy implements CartService{
      * @param dto
      * @param proList
      */
-    private void dealCartProduct(DataTransferObject<CartInfoVO> dto,List<CartEleVO> proList){
+    private void dealCartProduct(DataTransferObject<CartInfoVO> dto,List<CartEleVO> proList,OrderTypeEnum orderTypeEnum){
         if (!dto.checkSuccess()){
             return;
         }
         if (Check.NuNCollection(proList)){
+            return;
+        }
+        if (Check.NuNObj(orderTypeEnum)){
             return;
         }
         Map<String,Integer> numMap = new HashMap<>();
@@ -210,8 +234,14 @@ public class CartServiceProxy implements CartService{
             cartVO.setProductCode(productEntity.getId());
             cartVO.setProductPrice(productEntity.getPriceSale());
             cartVO.setSupplierProductType(SupplierProductTypeEnum.PRODUCT.getCode());
-
             cartVO.setProductNum(num);
+
+            //获取当前的匹配情况
+            if (!orderTypeEnum.checkSuit(ValueUtil.getintValue(productEntity.getForLunch()),ValueUtil.getintValue(productEntity.getForDinner()))){
+                cartVO.setOutDes("不可预定");
+                cartVO.setOutFlag(YesNoEnum.YES.getCode());
+            }
+
             vo.getList().add(cartVO);
             vo.setPrice(MoneyDealUtil.overlayMoney(vo.getPrice(), productEntity.getPriceSale(), num));
         }
@@ -253,7 +283,7 @@ public class CartServiceProxy implements CartService{
             has.setProductNum(has.getProductNum() + cartAddRequest.getProductNum());
             cartManager.updateCart(has);
         }
-        return cartInfo(cartAddRequest.getUserUid(),cartAddRequest.getBusinessUid());
+        return cartInfo(cartAddRequest.getUserUid(),cartAddRequest.getBusinessUid(),cartAddRequest.getEnterpriseCode());
     }
 
     /**
@@ -291,7 +321,7 @@ public class CartServiceProxy implements CartService{
             }
 
         }
-        return cartInfo(cartBaseRequest.getUserUid(),cartBaseRequest.getBusinessUid());
+        return cartInfo(cartBaseRequest.getUserUid(),cartBaseRequest.getBusinessUid(),cartBaseRequest.getEnterpriseCode());
     }
 
     /**

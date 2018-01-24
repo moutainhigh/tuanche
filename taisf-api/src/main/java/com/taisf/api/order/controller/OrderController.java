@@ -17,6 +17,7 @@ import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.entity.UserEntity;
+import com.taisf.services.user.vo.UserModelVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,18 @@ public class OrderController extends AbstractController {
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
         }
+
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
+
         //获取当前参数
         CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
         paramRequest.setSource(header.getSource());
@@ -75,6 +88,7 @@ public class OrderController extends AbstractController {
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
+        paramRequest.setEnterpriseCode(user.getEnterpriseCode());
 
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
@@ -102,6 +116,17 @@ public class OrderController extends AbstractController {
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
         }
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
+
         //获取当前参数
         CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
         paramRequest.setSource(header.getSource());
@@ -109,6 +134,8 @@ public class OrderController extends AbstractController {
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
+
+        paramRequest.setEnterpriseCode(user.getEnterpriseCode());
 
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
@@ -137,6 +164,17 @@ public class OrderController extends AbstractController {
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
         }
+
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
         //获取当前参数
         CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
         paramRequest.setSource(header.getSource());
@@ -145,6 +183,7 @@ public class OrderController extends AbstractController {
             return new ResponseDto("参数异常");
         }
 
+        paramRequest.setEnterpriseCode(user.getEnterpriseCode());
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
@@ -173,6 +212,16 @@ public class OrderController extends AbstractController {
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
         }
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
         //获取当前参数
         CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
         paramRequest.setSource(header.getSource());
@@ -181,6 +230,7 @@ public class OrderController extends AbstractController {
             return new ResponseDto("参数异常");
         }
 
+        paramRequest.setEnterpriseCode(user.getEnterpriseCode());
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 

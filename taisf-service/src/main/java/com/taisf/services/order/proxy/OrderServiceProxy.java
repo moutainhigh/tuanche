@@ -456,7 +456,7 @@ public class OrderServiceProxy implements OrderService {
             return dto;
         }
         //获取当前的购物车
-        DataTransferObject<CartInfoVO> cartDto=cartService.cartInfo(createOrderRequest.getUserUid(), createOrderRequest.getBusinessUid());
+        DataTransferObject<CartInfoVO> cartDto=cartService.cartInfo(createOrderRequest.getUserUid(), createOrderRequest.getBusinessUid(),createOrderRequest.getEnterpriseCode());
         if (!cartDto.checkSuccess()){
             dto.setErrorMsg(cartDto.getMsg());
             return dto;
@@ -527,7 +527,7 @@ public class OrderServiceProxy implements OrderService {
             return dto;
         }
         //获取当前的购物车
-        DataTransferObject<CartInfoVO> cartDto=cartService.cartInfo(createOrderRequest.getUserUid(), createOrderRequest.getBusinessUid());
+        DataTransferObject<CartInfoVO> cartDto=cartService.cartInfo(createOrderRequest.getUserUid(), createOrderRequest.getBusinessUid(),createOrderRequest.getEnterpriseCode());
         if (!cartDto.checkSuccess()){
             dto.setErrorMsg(cartDto.getMsg());
             return dto;
