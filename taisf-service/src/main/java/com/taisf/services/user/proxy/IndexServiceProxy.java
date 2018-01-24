@@ -259,6 +259,55 @@ public class IndexServiceProxy implements IndexService {
     }
 
     /**
+     * 获取当前企业的当前的订单类型
+     * @param enterpriseCode
+     * @return
+     */
+    @Override
+    public DataTransferObject<OrderTypeEnum> getOrderType(String enterpriseCode){
+        DataTransferObject<OrderTypeEnum> dto = new DataTransferObject<>();
+        if (Check.NuNStr(enterpriseCode)){
+            dto.setErrorMsg("参数异常");
+        }
+        //获取当前的企业信息
+        EnterpriseInfoVO infoVO = enterpriseManager.getEnterpriseInfoByCode(enterpriseCode);
+        if (Check.NuNObj(infoVO)){
+            dto.setErrorMsg("异常的企业信息");
+            return dto;
+        }
+        if (Check.NuNObj(infoVO.getEnterpriseEntity().getTillTime())){
+            dto.setErrorMsg("异常的企业截止时间");
+            return dto;
+        }
+
+        //当前时间
+        Date now = new Date();
+        if (infoVO.getEnterpriseEntity().getTillTime().before(now)){
+            dto.setErrorMsg("加盟时间已经失效,请联系企业管理人员");
+            return dto;
+        }
+        EnterpriseConfigEntity config =infoVO.getEnterpriseConfigEntity();
+        if(Check.NuNObj(config)){
+            dto.setErrorMsg("异常的企业配置信息");
+            return dto;
+        }
+
+        IndexVO indexVO = new IndexVO();
+        //获取当前的订餐类型
+        OrderTypeEnum orderTypeEnum = this.dealTime4Lunch(config,now,indexVO,false);
+        if (Check.NuNObj(orderTypeEnum)){
+            orderTypeEnum = this.dealTime4Dinner(config,now,indexVO,false);
+        }
+        if (Check.NuNObj(orderTypeEnum)){
+            dto.setErrorMsg("当前时间点暂时不能订饭");
+        }else {
+            dto.setData(orderTypeEnum);
+        }
+        return dto;
+    }
+
+
+    /**
      * 校验当前
      * @return
      */

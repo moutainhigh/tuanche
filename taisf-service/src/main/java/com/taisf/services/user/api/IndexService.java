@@ -1,6 +1,7 @@
 package com.taisf.services.user.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.user.vo.IndexBaseVO;
 import com.taisf.services.user.vo.IndexVO;
@@ -44,4 +45,12 @@ public interface IndexService {
      * @return
      */
     DataTransferObject<IndexVO> getIndex(String userUid);
+
+
+    /**
+     * 根据当前的企业获取当前的订单信息
+     * @param enterpriseCode
+     * @return
+     */
+    DataTransferObject<OrderTypeEnum> getOrderType(String enterpriseCode);
 }

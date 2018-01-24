@@ -7,6 +7,7 @@ import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.constant.PathConstant;
+import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.ProductClassifyEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.product.dto.ProductListRequest;
@@ -21,6 +22,8 @@ import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
+import com.taisf.services.user.api.IndexService;
+import com.taisf.services.user.proxy.IndexServiceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -60,6 +63,9 @@ public class SupplierProductServiceProxy implements SupplierProductService {
     private SupplierPackageManagerImpl supplierPackageManager;
 
 
+    @Resource(name = "user.indexServiceProxy")
+    private IndexServiceProxy indexServiceProxy;
+
 
     @Autowired
     private PathConstant pathConstant;
@@ -72,14 +78,21 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @return
      */
     @Override
-    public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode) {
+    public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode,String enterpriseCode) {
 
         DataTransferObject dto = new DataTransferObject();
         if (Check.NuNStr(supplierCode)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode,null);
+        //获取当前的订单类型
+        DataTransferObject<OrderTypeEnum> orderTypeDto = indexServiceProxy.getOrderType(enterpriseCode);
+        if (!orderTypeDto.checkSuccess()){
+            dto.setErrorMsg(orderTypeDto.getMsg());
+            return dto;
+        }
+        OrderTypeEnum orderTypeEnum = orderTypeDto.getData();
+        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode,null,orderTypeEnum.getCode());
         List<ProductClassifyVO> list = new ArrayList<>();
         try {
             //便利当前的枚举信息
@@ -308,9 +321,13 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @return
      * @author afi
      */
-    public Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode,Integer week) {
+    public Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode,Integer week,Integer orderType) {
         Map<String, List<SupplierProductVO>> rst = new HashMap<>();
 
+        //异常的类型 不错处理
+        if (Check.NuNObj(orderType)){
+            return rst;
+        }
         Map<String, List<ProductEntity>> map = new HashMap<>();
         SupplierProductRequest request = new SupplierProductRequest();
         request.setSupplierCode(supplierCode);
@@ -318,6 +335,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             week = getWeek();
         }
         request.setWeek(week);
+        request.setOrderType(orderType);
         List<ProductEntity> list = supplierManager.getProductListBySupplierAndType(request);
         if (Check.NuNCollection(list)) {
             return rst;

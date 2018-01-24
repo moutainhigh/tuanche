@@ -33,6 +33,20 @@ public class SupplierProductRequest extends PageRequest {
      */
     private Integer productClassify;
 
+
+    /**
+     * 订单类型
+     */
+    private Integer orderType;
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
+
     public String getSupplierCode() {
         return supplierCode;
     }

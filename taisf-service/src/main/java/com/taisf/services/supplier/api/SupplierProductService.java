@@ -40,7 +40,7 @@ public interface SupplierProductService {
      * @param supplierCode
      * @return
      */
-    DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode);
+    DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode,String enterpriseCode);
 
 
     /**
