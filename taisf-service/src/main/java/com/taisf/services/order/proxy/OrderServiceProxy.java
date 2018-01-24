@@ -803,6 +803,9 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
 
+        //当前不能购买的商品
+        List<OrderProductEntity> listOut = new ArrayList<>();
+
         Map<String,OrderProductVO> titleMap = new HashMap<>();
 
         //购物车中的商品
@@ -814,8 +817,6 @@ public class OrderServiceProxy implements OrderService {
             product.setProductType(vo.getSupplierProductType());
             product.setProductPrice(vo.getProductPrice());
             product.setProductNum(vo.getProductNum());
-
-
             String name =vo.getProductName();
             if (vo.getSupplierProductType().equals(SupplierProductTypeEnum.PACKAGE.getCode())){
                 //处理礼包
@@ -837,6 +838,11 @@ public class OrderServiceProxy implements OrderService {
             product.setProductName(name);
             //添加商品信息
             orderSaveVO.getList().add(product);
+
+            if (vo.getOutFlag() == YesNoEnum.YES.getCode()){
+                //当前的限制列表
+                listOut.add(product);
+            }
         }
         StringBuffer title = new StringBuffer();
         List<OrderProductVO> list = new ArrayList(titleMap.values());
@@ -858,7 +864,9 @@ public class OrderServiceProxy implements OrderService {
             titleStr = titleStr.substring(0,252) +"等";
         }
         orderSaveVO.getOrderBase().setTitle(titleStr);
-
+        if (!Check.NuNCollection(listOut)){
+            dto.setErrorMsg("购物车中存在过期菜品");
+        }
     }
 
 

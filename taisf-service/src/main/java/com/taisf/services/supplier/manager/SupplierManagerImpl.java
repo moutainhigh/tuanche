@@ -90,6 +90,7 @@ public class SupplierManagerImpl {
 		return supplierPackageDao.getSupplierPackageByList(list);
 	}
 
+
 	/**
 	 * 获取礼包map
 	 * @author afi

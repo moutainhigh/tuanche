@@ -314,6 +314,52 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         c.setTime(new Date());
         return c.get(Calendar.DAY_OF_WEEK);
     }
+
+    /**
+     * 获取当前的分类
+     *
+     * @param supplierCode
+     * @return
+     * @author afi
+     */
+    public Map<String, List<SupplierProductVO>> getSupplierProductMapOnly(String supplierCode,Integer week) {
+        Map<String, List<SupplierProductVO>> rst = new HashMap<>();
+        Map<String, List<ProductEntity>> map = new HashMap<>();
+        SupplierProductRequest request = new SupplierProductRequest();
+        request.setSupplierCode(supplierCode);
+        if (Check.NuNObj(week)){
+            week = getWeek();
+        }
+        request.setWeek(week);
+        List<ProductEntity> list = supplierManager.getProductListBySupplierAndType(request);
+        if (Check.NuNCollection(list)) {
+            return rst;
+        }
+        for (ProductEntity productEntity : list) {
+            Integer productClassify = productEntity.getProductClassify();
+            if (Check.NuNObj(productClassify)) {
+                //直接过滤掉异常数据
+                continue;
+            }
+            String key = productClassify + "";
+            if (map.containsKey(key)) {
+                map.get(key).add(productEntity);
+            } else {
+                List<ProductEntity> tmp = new ArrayList<>();
+                tmp.add(productEntity);
+                map.put(key, tmp);
+            }
+        }
+        for (String key : map.keySet()) {
+            List<ProductEntity> proList = map.get(key);
+            List<SupplierProductVO> voList = this.transProductList2VO(proList, SupplierProductTypeEnum.PRODUCT);
+            rst.put(key, voList);
+        }
+
+        return rst;
+    }
+
+
     /**
      * 获取当前的分类
      *

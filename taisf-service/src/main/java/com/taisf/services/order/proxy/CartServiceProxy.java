@@ -18,6 +18,7 @@ import com.taisf.services.order.vo.CartVO;
 import com.taisf.services.order.vo.CartInfoVO;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.product.manager.ProductManagerImpl;
+import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.user.proxy.IndexServiceProxy;
@@ -27,10 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>TODO</p>
@@ -145,7 +143,7 @@ public class CartServiceProxy implements CartService{
         }
         if (!Check.NuNCollection(proList)){
             //处理商品
-            dealCartProduct(dto,proList,orderTypeEnum);
+            dealCartProduct(dto,proList,orderTypeEnum,businessUid);
         }
         dto.setData(vo);
         return dto;
@@ -197,14 +195,22 @@ public class CartServiceProxy implements CartService{
         }
     }
 
-
+    /**
+     * 获取今天周几
+     * @return
+     */
+    private int getWeek() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        return c.get(Calendar.DAY_OF_WEEK);
+    }
 
     /**
      * 填充普通药品逻辑
      * @param dto
      * @param proList
      */
-    private void dealCartProduct(DataTransferObject<CartInfoVO> dto,List<CartEleVO> proList,OrderTypeEnum orderTypeEnum){
+    private void dealCartProduct(DataTransferObject<CartInfoVO> dto,List<CartEleVO> proList,OrderTypeEnum orderTypeEnum,String supplierCode){
         if (!dto.checkSuccess()){
             return;
         }
@@ -220,7 +226,13 @@ public class CartServiceProxy implements CartService{
             pList.add(eleVO.getProductCode());
             numMap.put(eleVO.getProductCode()+"",eleVO.getProductNum());
         }
-        List<ProductEntity> list = productManager.getProductByList(pList);
+        SupplierProductRequest supplierProductRequest = new SupplierProductRequest();
+        supplierProductRequest.setProductIds(pList);
+        supplierProductRequest.setWeek(getWeek());
+        supplierProductRequest.setSupplierCode(supplierCode);
+        supplierProductRequest.setOrderType(orderTypeEnum.getCode());
+
+        List<ProductEntity> list = supplierProductManager.getProductListBySupplierAndType(supplierProductRequest);
         if (Check.NuNCollection(list)){
             return;
         }
