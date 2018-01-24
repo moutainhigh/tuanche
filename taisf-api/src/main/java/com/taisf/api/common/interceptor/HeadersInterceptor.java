@@ -38,6 +38,9 @@ public class HeadersInterceptor extends HandlerInterceptorAdapter {
 	/** 请求头属性名 */
 	public final static String USERID = HeaderIterator.class.getName() + ".UserId";
 
+	/** 请求头属性名 */
+	public final static String USER = HeaderIterator.class.getName() + ".User";
+
 	/** Token值属性名. */
 	public final static String TOKEN =HeadersInterceptor.class.getName() + ".Token";
 

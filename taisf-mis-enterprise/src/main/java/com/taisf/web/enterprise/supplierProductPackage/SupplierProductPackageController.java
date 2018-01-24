@@ -271,7 +271,7 @@ public class SupplierProductPackageController {
         if (Check.NuNStr(employeeEntity.getEmpBiz())){
             return;
         }
-        Map<String, List<SupplierProductVO>> map = supplierProductServiceProxy.getSupplierProductMap(employeeEntity.getEmpBiz(),week);
+        Map<String, List<SupplierProductVO>> map = supplierProductServiceProxy.getSupplierProductMapOnly(employeeEntity.getEmpBiz(),week);
 
         //不同分类集合
         List<SupplierProductVO> dahunList = map.get(ProductClassifyEnum.DAHUN.getCode()+"");

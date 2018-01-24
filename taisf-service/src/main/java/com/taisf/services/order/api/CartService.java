@@ -51,7 +51,7 @@ public interface CartService {
      * @param userUid
      * @return
      */
-    DataTransferObject<CartInfoVO> cartInfo(String userUid, String businessUid);
+    DataTransferObject<CartInfoVO> cartInfo(String userUid, String businessUid,String enterpriseCode);
 
 
 

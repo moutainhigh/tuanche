@@ -1,5 +1,6 @@
 package com.taisf.services.order.entity;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.BaseEntity;
 
 import java.util.Date;
@@ -57,6 +58,7 @@ public class CartEntity extends BaseEntity {
      * 创建时间
      */
     private Date createTime;
+
 
 
     public Integer getId() {

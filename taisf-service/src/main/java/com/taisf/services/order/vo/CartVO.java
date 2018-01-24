@@ -1,5 +1,6 @@
 package com.taisf.services.order.vo;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.taisf.services.order.entity.CartEntity;
 
 /**
@@ -28,6 +29,34 @@ public class CartVO extends CartEntity{
      */
     private Integer productPrice;
 
+
+    /**
+     * 是否失效 1:失效 0:未失效
+     */
+    private Integer outFlag = YesNoEnum.NO.getCode();
+
+
+    /**
+     * 失效原因
+     */
+    private String outDes ;
+
+
+    public Integer getOutFlag() {
+        return outFlag;
+    }
+
+    public void setOutFlag(Integer outFlag) {
+        this.outFlag = outFlag;
+    }
+
+    public String getOutDes() {
+        return outDes;
+    }
+
+    public void setOutDes(String outDes) {
+        this.outDes = outDes;
+    }
 
     public String getProductName() {
         return productName;

@@ -28,13 +28,15 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_del" jdbcType="INTEGER" property="isDel"/>
+        <result column="for_lunch" jdbcType="INTEGER" property="forLunch"/>
+        <result column="for_dinner" jdbcType="INTEGER" property="forDinner"/>
 
     </resultMap>
 
 
     <sql id="Base_Column_List_Supplier">
     t.id, t.product_name, t.product_classify, t.product_type, t.product_source, t.product_des, t.product_pic,
-    t.price_sale  as price_sale,   t.price_market  as price_market, t.create_time, t.update_time, is_del
+    t.price_sale  as price_sale,   t.price_market  as price_market, t.create_time, t.update_time, is_del, p.for_lunch, p.for_dinner
   </sql>
 
 
@@ -55,6 +57,20 @@
         <if test="week != null">
             and p.week = #{week,jdbcType=INTEGER}
         </if>
+
+        <if test="orderType != null and orderType == 20 ">
+            and p.for_lunch = 1
+        </if>
+
+        <if test="orderType != null and orderType == 30 ">
+            and p.for_dinner = 1
+        </if>
+        <if test="productIds != null ">
+            and t.id in <foreach collection="productIds" item="item" index="index"
+                               open="(" separator="," close=")">#{item}</foreach>
+        </if>
+
+
     </select>
 
     <select id="getSupplierProductByCode" parameterType="java.lang.String" resultMap="BaseResultMap">

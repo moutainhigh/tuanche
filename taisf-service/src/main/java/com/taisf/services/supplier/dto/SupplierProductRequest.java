@@ -2,6 +2,8 @@ package com.taisf.services.supplier.dto;
 
 import com.jk.framework.base.page.PageRequest;
 
+import java.util.List;
+
 /**
  * <p>TODO</p>
  * <p/>
@@ -32,6 +34,34 @@ public class SupplierProductRequest extends PageRequest {
      * 商品分类
      */
     private Integer productClassify;
+
+
+    /**
+     * 订单类型
+     */
+    private Integer orderType;
+
+    /**
+     * 商品id
+     */
+    private List<Integer> productIds;
+
+
+    public List<Integer> getProductIds() {
+        return productIds;
+    }
+
+    public void setProductIds(List<Integer> productIds) {
+        this.productIds = productIds;
+    }
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
 
     public String getSupplierCode() {
         return supplierCode;

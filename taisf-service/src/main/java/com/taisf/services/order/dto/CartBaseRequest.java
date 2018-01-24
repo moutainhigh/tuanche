@@ -41,7 +41,18 @@ public class CartBaseRequest extends BaseEntity{
      */
     private Integer supplierProductType;
 
+    /**
+     * 企业编码
+     */
+    private String enterpriseCode;
 
+    public String getEnterpriseCode() {
+        return enterpriseCode;
+    }
+
+    public void setEnterpriseCode(String enterpriseCode) {
+        this.enterpriseCode = enterpriseCode;
+    }
 
     public Integer getSupplierProductType() {
         return supplierProductType;

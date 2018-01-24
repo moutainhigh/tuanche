@@ -61,6 +61,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
         request.setAttribute(HeadersInterceptor.USERID, userModel.getUserId());
+        request.setAttribute(HeadersInterceptor.USER, userModel);
          return true;
     }
 }

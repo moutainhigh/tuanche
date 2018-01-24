@@ -9,6 +9,7 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.common.utils.CloseableHttpUtil;
 import com.taisf.api.common.collector.ParamCollector;
 import com.taisf.api.common.interceptor.HeadersInterceptor;
+import com.taisf.services.user.vo.UserModelVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -124,6 +125,18 @@ public abstract class AbstractController {
     protected final String getUserId(final HttpServletRequest request) {
         return (String) request.getAttribute(HeadersInterceptor.USERID);
     }
+
+
+
+    /**
+     * 获取用户信息
+     * @param request
+     * @return
+     */
+    protected final UserModelVO getUser(final HttpServletRequest request) {
+        return (UserModelVO) request.getAttribute(HeadersInterceptor.USER);
+    }
+
 
     /**
      * 将openId转成userId

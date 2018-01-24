@@ -11,6 +11,7 @@ import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.dto.CartAddRequest;
 import com.taisf.services.order.dto.CartCleanRequest;
 import com.taisf.services.order.vo.CartInfoVO;
+import com.taisf.services.user.vo.UserModelVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,12 +60,24 @@ public class CartController extends AbstractController {
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
         }
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
+
         //获取当前参数
         CartAddRequest paramRequest = getEntity(request, CartAddRequest.class);
         paramRequest.setUserUid(getUserId(request));
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
+        paramRequest.setEnterpriseCode(user.getEnterpriseCode());
 
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
@@ -94,12 +107,24 @@ public class CartController extends AbstractController {
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
         }
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
+
         //获取当前参数
         CartAddRequest paramRequest = getEntity(request, CartAddRequest.class);
         paramRequest.setUserUid(getUserId(request));
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("参数异常");
         }
+        paramRequest.setEnterpriseCode(user.getEnterpriseCode());
 
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
@@ -167,10 +192,21 @@ public class CartController extends AbstractController {
             return new ResponseDto("参数异常");
         }
 
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
+
         LogUtil.info(LOGGER, "传入参数:businessUid:{}", JsonEntityTransform.Object2Json(businessUid));
         try {
 
-            DataTransferObject<CartInfoVO> dto =cartService.cartInfo(userUid,businessUid);
+            DataTransferObject<CartInfoVO> dto =cartService.cartInfo(userUid,businessUid,user.getEnterpriseCode());
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【查看购物车】错误,par:{}, e={}",JsonEntityTransform.Object2Json(businessUid), e);

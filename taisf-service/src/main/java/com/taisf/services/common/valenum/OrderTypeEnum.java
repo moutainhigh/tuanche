@@ -1,5 +1,7 @@
 package com.taisf.services.common.valenum;
 
+import com.jk.framework.base.constant.YesNoEnum;
+
 /**
  * <p>订单类型</p>
  * <p/>
@@ -15,14 +17,24 @@ package com.taisf.services.common.valenum;
  */
 public enum OrderTypeEnum {
 
-    LUNCH_COMMON(20,"午餐正常"),
+    LUNCH_COMMON(20,"午餐正常"){
+        @Override
+        public boolean checkSuit(int forLunch, int forDinner) {
+            return forLunch == YesNoEnum.YES.getCode();
+        }
+    },
     LUNCH_EXT(21,"午餐补餐"){
         @Override
         public boolean isExt() {
             return true;
         }
     },
-    DINNER_COMMON(30,"晚餐正常"),
+    DINNER_COMMON(30,"晚餐正常"){
+        @Override
+        public boolean checkSuit(int forLunch, int forDinner) {
+            return forDinner == YesNoEnum.YES.getCode();
+        }
+    },
     DINNER_EXT(31,"晚餐补单"){
         @Override
         public boolean isExt() {
@@ -68,6 +80,16 @@ public enum OrderTypeEnum {
      * @return
      */
     public boolean isExt(){
+        return false;
+    }
+
+    /**
+     * 当前是否匹配
+     * @param forLunch
+     * @param forDinner
+     * @return
+     */
+    public boolean checkSuit(int forLunch,int forDinner){
         return false;
     }
 

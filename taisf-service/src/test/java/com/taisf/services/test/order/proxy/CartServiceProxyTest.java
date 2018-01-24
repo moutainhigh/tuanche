@@ -38,7 +38,7 @@ public class CartServiceProxyTest extends BaseTest {
     @Test
     public void cartInfoTest() {
 
-        DataTransferObject<CartInfoVO> classify = cartService.cartInfo("afi","123");
+        DataTransferObject<CartInfoVO> classify = cartService.cartInfo("afi","123","11");
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }

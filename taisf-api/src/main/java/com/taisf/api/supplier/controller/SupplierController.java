@@ -11,6 +11,7 @@ import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
+import com.taisf.services.user.vo.UserModelVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,13 +122,19 @@ public class SupplierController extends AbstractController {
     @ResponseBody
     public ResponseDto classifyProduct(HttpServletRequest request, HttpServletResponse response,String supplierCode) {
 
-
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
         if (Check.NuNStr(supplierCode)) {
             return new ResponseDto("参数异常");
         }
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(supplierCode));
         try {
-            DataTransferObject<List<ProductClassifyInfo>> dto =supplierProductService.getSupplierClassifyProduct(supplierCode);
+            DataTransferObject<List<ProductClassifyInfo>> dto =supplierProductService.getSupplierClassifyProduct(supplierCode,user.getEnterpriseCode());
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【获取分类商品】错误,par:{}, e={}",JsonEntityTransform.Object2Json(supplierCode), e);
