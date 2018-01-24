@@ -72,6 +72,7 @@ public class SupplierProductController {
                         entityList.stream().forEach((y) -> {
                             if (x.getId().equals(y.getProductCode())) {
                                 x.setIsDel(1);
+                                x.setForLunch(y.getForLunch());
                                 x.setForDinner(y.getForDinner());
                             }
                         });
