@@ -263,6 +263,14 @@
                                     </div>
                                 </form>
                             </div>
+                            <label class="col-xs-1 col-sm-1 control-label mtop">午餐:</label>
+                            <div class="col-xs-2 col-sm-2">
+                                <input  style="margin-top: 15;" id="forLunch" name="lunch" type="checkbox" value="1" />
+                            </div>
+                            <label class="col-xs-1 col-sm-1 control-label mtop">晚餐:</label>
+                            <div class="col-xs-2 col-sm-2">
+                                <input  style="margin-top: 15;" id="forDinner" name="dinner" type="checkbox" value="1" />
+                            </div>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 10px;">
@@ -294,6 +302,14 @@
                 $("#saveBtnE").removeAttr("disabled");
                 return false;
             };*/
+            var forLunch = 0;
+            if($('#forLunch').is(':checked')) {
+                forLunch = 1;
+            }
+            var forDinner = 0;
+            if($('#forDinner').is(':checked')) {
+                forDinner = 1;
+            }
             $.ajax({
                 data: {
                     'title': $("#supplierPackageName").val(),
@@ -308,6 +324,8 @@
                     'fruitCode': $("#shuiguo option:selected").val(),
                     'packagePic':  $("#imgUrl-1").val(),
                     'week': $("#week").val(),
+                    'forLunch': forLunch,
+                    'forDinner': forDinner
                 },
                 type: "post",
                 dataType: "json",

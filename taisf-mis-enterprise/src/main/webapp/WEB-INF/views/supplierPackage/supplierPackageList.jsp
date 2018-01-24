@@ -204,6 +204,10 @@
                                 data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="title" data-width="10%"
                                 data-align="center"><span class="tdfont">组合名称</span></th>
+                            <th data-field="forLunch" data-width="10%" data-formatter="formatForLunch"
+                                data-align="center"><span class="tdfont">是否午餐</span></th>
+                            <th data-field="forDinner" data-width="10%" data-formatter="formatForLunch"
+                                data-align="center"><span class="tdfont">是否晚餐</span></th>
                             <th data-field="bigName" data-width="10%"
                                 data-align="center"><span class="tdfont">大荤</span></th>
                             <th data-field="smallName" data-width="10%"
@@ -270,6 +274,13 @@
             productSource: $("#productSourceS").val(),
             week:week
         };
+    }
+    function formatForLunch(value, row, index) {
+        if (value == 1) {
+            return "是";
+        } else {
+            return "否";
+        }
     }
     // 操作列
     function formatOperate(value, row, index) {

@@ -10,6 +10,8 @@
         <result column="product_price" jdbcType="INTEGER" property="productPrice"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="is_send" jdbcType="SMALLINT" property="isSend"/>
+        <result column="for_lunch" jdbcType="INTEGER" property="forLunch"/>
+        <result column="for_dinner" jdbcType="INTEGER" property="forDinner"/>
     </resultMap>
 
 
@@ -26,6 +28,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_del" jdbcType="INTEGER" property="isDel"/>
+
     </resultMap>
 
 
@@ -36,7 +39,7 @@
 
 
     <sql id="Base_Column_List">
-    id, supplier_code, product_code, product_type,product_price, create_time, is_send
+    id, supplier_code, product_code, product_type,product_price, create_time, is_send,for_lunch,for_dinner
   </sql>
 
     <select id="getProductListBySupplierAndType" parameterType="com.taisf.services.supplier.dto.SupplierProductRequest"
@@ -124,6 +127,12 @@
             <if test="isSend != null">
                 is_send,
             </if>
+            <if test="forLunch != null">
+                for_lunch,
+            </if>
+            <if test="forDinner != null">
+                for_dinner,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="week != null">
@@ -146,6 +155,12 @@
             </if>
             <if test="isSend != null">
                 #{isSend,jdbcType=SMALLINT},
+            </if>
+            <if test="forLunch != null">
+                #{forLunch,jdbcType=INTEGER},
+            </if>
+            <if test="forDinner != null">
+                #{forDinner,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>

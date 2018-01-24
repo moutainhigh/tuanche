@@ -78,6 +78,25 @@ public class ProductEntity extends BaseEntity {
      */
     private Integer isDel;
 
+    private Integer forLunch;
+
+    private Integer forDinner;
+
+    public Integer getForLunch() {
+        return forLunch;
+    }
+
+    public void setForLunch(Integer forLunch) {
+        this.forLunch = forLunch;
+    }
+
+    public Integer getForDinner() {
+        return forDinner;
+    }
+
+    public void setForDinner(Integer forDinner) {
+        this.forDinner = forDinner;
+    }
 
     public Integer getPriceMarket() {
         return priceMarket;
