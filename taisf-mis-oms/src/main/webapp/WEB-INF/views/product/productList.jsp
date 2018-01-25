@@ -159,9 +159,9 @@
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="productClassify" id="productSourceS">
                             <option value="">--全部--</option>
-                            <option value="1">--普通餐--</option>
+                            <option value="3">--普通餐--</option>
                             <option value="2">--西餐--</option>
-                            <option value="3">--清真--</option>
+                            <option value="1">--清真--</option>
                         </select>
                     </div>
                     <div class="col-sm-1">
@@ -269,9 +269,9 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">菜品属性:</label>
                                 <div class="col-sm-8">
-                                    <input type="radio" value="1" name="productSource"> 普通餐
+                                    <input type="radio" value="3" name="productSource"> 普通餐
                                     <input type="radio" value="2" name="productSource"> 西餐
-                                    <input type="radio" value="3" name="productSource"> 清真(单选)
+                                    <input type="radio" value="1" name="productSource"> 清真(单选)
                                     </select>
                                 </div>
                             </div>
