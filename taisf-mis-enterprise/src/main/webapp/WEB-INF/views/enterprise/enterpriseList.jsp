@@ -252,9 +252,9 @@
 				result = result + "<a title='提交' href='javascript:changeStatus(" + row.id + ", 1)'>提交</a>";
 			}
 					
-			if(row.enterpriseStatus == 1) {
-				result = result + "<a title='停止合作' href='javascript:changeStatus(" + row.id + ", 3)'>停止</a>";
-			}
+//			if(row.enterpriseStatus == 1) {
+//				result = result + "<a title='停止合作' href='javascript:changeStatus(" + row.id + ", 3)'>停止</a>";
+//			}
 			return result;
 		}
 
