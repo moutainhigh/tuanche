@@ -213,12 +213,15 @@
         <result column="product_type" jdbcType="INTEGER" property="productType"/>
         <result column="product_source" jdbcType="INTEGER" property="productSource"/>
         <result column="price_sale" jdbcType="INTEGER" property="priceSale"/>
+
+        <result column="for_lunch" jdbcType="INTEGER" property="forLunch"/>
+        <result column="for_dinner" jdbcType="INTEGER" property="forDinner"/>
     </resultMap>
 
     <select id="pageListSupplierProduct" parameterType="com.taisf.services.product.dto.ProductListRequest"
             resultMap="BaseResultMapList">
         select
-        t_product.product_name, t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale
+        t_product.product_name, t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale,for_lunch,for_dinner
         from t_supplier_product
         INNER JOIN t_product ON t_product.id = t_supplier_product.product_code
         where 1=1
@@ -240,6 +243,12 @@
         </if>
         <if test="week != null ">
             AND t_supplier_product.week = #{week}
+        </if>
+        <if test="forLunch != null and forLunch != ''">
+            AND for_lunch = #{forLunch}
+        </if>
+        <if test="forDinner != null and forDinner != ''">
+            AND for_dinner = #{forDinner}
         </if>
     </select>
 </mapper>

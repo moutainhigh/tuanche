@@ -34,6 +34,26 @@ public class ProductListRequest extends PageRequest {
 
     private String supplierCode;
 
+    private Integer forLunch;
+
+    private Integer forDinner;
+
+    public Integer getForLunch() {
+        return forLunch;
+    }
+
+    public void setForLunch(Integer forLunch) {
+        this.forLunch = forLunch;
+    }
+
+    public Integer getForDinner() {
+        return forDinner;
+    }
+
+    public void setForDinner(Integer forDinner) {
+        this.forDinner = forDinner;
+    }
+
     public String getSupplierCode() {
         return supplierCode;
     }

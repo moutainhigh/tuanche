@@ -128,9 +128,9 @@
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="productClassify" id="productSourceS">
                             <option value="">--全部--</option>
-                            <option value="1">--普通餐--</option>
+                            <option value="3">--普通餐--</option>
                             <option value="2">--西餐--</option>
-                            <option value="3">--清真--</option>
+                            <option value="1">--清真--</option>
                         </select>
                     </div>
                     <div class="col-sm-3">
@@ -200,14 +200,13 @@
                            data-url="supplierProductPackage/pageList">
                         <thead>
                         <tr>
+                            <th data-field="forDinner" data-visible="false"></th>
                             <th data-field="id" data-width="5%"
                                 data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="title" data-width="10%"
                                 data-align="center"><span class="tdfont">组合名称</span></th>
                             <th data-field="forLunch" data-width="10%" data-formatter="formatForLunch"
-                                data-align="center"><span class="tdfont">是否午餐</span></th>
-                            <th data-field="forDinner" data-width="10%" data-formatter="formatForLunch"
-                                data-align="center"><span class="tdfont">是否晚餐</span></th>
+                                data-align="center"><span class="tdfont">午餐/晚餐</span></th>
                             <th data-field="bigName" data-width="10%"
                                 data-align="center"><span class="tdfont">大荤</span></th>
                             <th data-field="smallName" data-width="10%"
@@ -276,11 +275,21 @@
         };
     }
     function formatForLunch(value, row, index) {
-        if (value == 1) {
-            return "是";
-        } else {
-            return "否";
+        if(row.forLunch == undefined && row.forDinner == undefined){
+            return "";
         }
+        var result = "";
+        if (row.forLunch == 1) {
+            result += "是";
+        } else{
+            result += "否";
+        }
+        if(row.forDinner ==1){
+            result += "/是";
+        }else{
+            result += "/否";
+        }
+        return result;
     }
     // 操作列
     function formatOperate(value, row, index) {

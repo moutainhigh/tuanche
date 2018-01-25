@@ -73,6 +73,14 @@
                             <option value="3">--员工餐--</option>
                         </select>
                     </div>
+                    <label class="col-xs-1 col-sm-1 control-label mtop">午餐/晚餐:</label>
+                    <div class="col-xs-2 col-sm-2">
+                        <select class="form-control" name="lunchDinner" id="lunchDinner">
+                            <option value="">--请选择--</option>
+                            <option value="1">--午餐--</option>
+                            <option value="2">--晚餐--</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="row" style="margin-top: 10px;">
@@ -81,9 +89,9 @@
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="productClassify" id="productSourceS">
                             <option value="">--全部--</option>
-                            <option value="1">--普通餐--</option>
+                            <option value="3">--普通餐--</option>
                             <option value="2">--西餐--</option>
-                            <option value="3">--清真--</option>
+                            <option value="1">--清真--</option>
                         </select>
                     </div>
                     <div class="col-sm-1">
@@ -146,6 +154,7 @@
                            data-url="supplierProduct/findPageList">
                         <thead>
                         <tr>
+                            <th data-field="for" data-visible="false"></th>
                             <th data-field="productName" data-width="10%"
                                 data-align="center"><span class="tdfont">菜单名称</span></th>
                             <th data-field="productType" data-width="15%" data-formatter="formatProductType"
@@ -154,6 +163,8 @@
                                 data-align="center"><span class="tdfont">菜品属性</span></th>
                             <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                 data-align="center"><span class="tdfont">分类</span></th>
+                            <th data-field="forLunch" data-width="10%" data-formatter="formatForLunch"
+                                data-align="center"><span class="tdfont">午餐/晚餐</span></th>
                             <th data-field="priceSale" data-width="10%"  data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">单价</span></th>
                         </tr>
@@ -175,7 +186,6 @@
     function paginationParam(params) {
         var openTime = $("#openTime").val();
         var tillTime = $("#tillTime").val();
-
         if (openTime == "") {
             openTime = undefined;
         } else {
@@ -185,6 +195,14 @@
             tillTime = undefined;
         } else
             tillTime += " 00:00:00";
+        var forLunch = "";
+        var forDinner = "";
+        if($("#lunchDinner").val() == 1){
+            forLunch = 1;
+        }
+        if($("#lunchDinner").val() == 2){
+            forDinner = 1;
+        }
 
         return {
             limit: params.limit,
@@ -195,10 +213,28 @@
             productClassify: $("#productClassifyS").val(),
             productType: $("#productTypeS").val(),
             productSource: $("#productSourceS").val(),
-            week:week
+            week:week,
+            forLunch:forLunch,
+            forDinner:forDinner,
         };
     }
-
+    function formatForLunch(value, row, index) {
+        if(row.forLunch == undefined && row.forDinner == undefined){
+            return "";
+        }
+        var result = "";
+        if (row.forLunch == 1) {
+            result += "是";
+        } else{
+            result += "否";
+        }
+        if(row.forDinner ==1){
+            result += "/是";
+        }else{
+            result += "/否";
+        }
+        return result;
+    }
     // 格式化时间
     function formatDate(value, row, index) {
         if (value != null) {
@@ -218,11 +254,11 @@
         }
     }
     function formatProductSource(value, row, index) {
-        if (value == 1) {
+        if (value == 3) {
             return "普通餐";
         } else if (value == 2) {
             return "西餐";
-        } else if (value == 3) {
+        } else if (value == 1) {
             return "清真";
         }
     }
