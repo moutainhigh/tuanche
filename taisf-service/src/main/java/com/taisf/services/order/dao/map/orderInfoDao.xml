@@ -268,11 +268,21 @@
         1 ELSE 0
         END AS noExtNum,
         1 AS allNum,
-        m.pay_money AS payMoney,
-        m.pay_balance AS payBalance
+
+        CASE
+        WHEN m.pay_type = 3 THEN
+        m.total_fee ELSE 0
+        END AS payMoney,
+
+        CASE
+        WHEN m.pay_type != 3 THEN
+        m.total_fee ELSE 0
+        END AS payBalance
+
+
         FROM
         t_order t
-        INNER JOIN t_order_money m ON t.order_sn = m.order_sn
+        INNER JOIN t_pay_record m ON t.order_sn = m.order_sn
         WHERE
         t.enterprise_code IS NOT NULL
 
