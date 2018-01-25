@@ -280,14 +280,19 @@
         }
         var result = "";
         if (row.forLunch == 1) {
-            result += "是";
+            result += "午餐";
         } else{
-            result += "否";
+            result += "";
         }
+
         if(row.forDinner ==1){
-            result += "/是";
+            if(row.forLunch == 1){
+                result += "/晚餐";
+            }else{
+                result += "晚餐";
+            }
         }else{
-            result += "/否";
+            result += "";
         }
         return result;
     }
