@@ -115,8 +115,8 @@
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
                                 data-align="center"><span class="tdfont">下单时间</span></th>
                             <th data-field="userUid" data-width="10%"
-                                data-align="center"><span class="tdfont">用户编号</span></th>
-                            <th data-field="businessUid" data-width="15%"
+                                data-align="center"><span class="tdfont">用户电话</span></th>
+                            <th data-field="userTel" data-width="15%"
                                 data-align="center"><span class="tdfont">企业编号</span></th>
                             <th data-field="supplierName" data-width="15%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
@@ -192,7 +192,7 @@
     function formatDate(value, row, index) {
         if (value != null) {
             var _date = new Date(value);
-            return _date.format("yyyy-MM-dd");
+            return _date.format("yyyy-MM-dd HH:mm:ss");
         } else {
             return "-";
         }
