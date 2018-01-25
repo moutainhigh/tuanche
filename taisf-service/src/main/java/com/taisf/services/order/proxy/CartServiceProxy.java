@@ -230,8 +230,6 @@ public class CartServiceProxy implements CartService{
         supplierProductRequest.setProductIds(pList);
         supplierProductRequest.setWeek(getWeek());
         supplierProductRequest.setSupplierCode(supplierCode);
-        supplierProductRequest.setOrderType(orderTypeEnum.getCode());
-
         List<ProductEntity> list = supplierProductManager.getProductListBySupplierAndType(supplierProductRequest);
         if (Check.NuNCollection(list)){
             return;
