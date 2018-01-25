@@ -177,8 +177,12 @@ public class UserDao extends BaseDao {
      * @param userPhone
      * @return
      */
-    public UserEntity getUserByUserPhone(String userPhone){
-        return mybatisDaoContext.findOne(SQLID + "getUserByUserPhone", UserEntity.class, userPhone);
+    public UserEntity getUserByUserPhone(String userPhone,int userType){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userPhone", userPhone);
+        par.put("userType", userType);
+
+        return mybatisDaoContext.findOne(SQLID + "getUserByUserPhone", UserEntity.class, par);
     }
     /**
      * 根据用户id查询用户

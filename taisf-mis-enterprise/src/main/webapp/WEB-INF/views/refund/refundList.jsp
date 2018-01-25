@@ -592,7 +592,7 @@
         }
         ;
         if ($("#priceSale").val() == null || $("#priceSale").val() == "") {
-            layer.alert("单价不能为空", {icon: 5, time: 2000, title: '提示'});
+            layer.alert("促销价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }

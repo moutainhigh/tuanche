@@ -18,9 +18,24 @@ import com.jk.framework.base.utils.Check;
 public enum ApplicationCodeEnum {
 
 
-    USER(1,"user","用户"),
-    H5(3,"open","open"),
-    KNIGHT(2,"knight","骑士")
+    USER(1,"user","用户"){
+        @Override
+        public UserTypeEnum getUserType() {
+            return UserTypeEnum.YONGHU;
+        }
+    },
+    H5(3,"open","open"){
+        @Override
+        public UserTypeEnum getUserType() {
+            return UserTypeEnum.YONGHU;
+        }
+    },
+    KNIGHT(2,"knight","骑士"){
+        @Override
+        public UserTypeEnum getUserType() {
+            return UserTypeEnum.SONGCAN;
+        }
+    }
     ;
     private int code;
     private String applicationCode;
@@ -80,6 +95,15 @@ public enum ApplicationCodeEnum {
                 return enumtype;
             }
         }
+        return null;
+    }
+
+
+    /**
+     * 获取当前的用户类型
+     * @return
+     */
+    public UserTypeEnum getUserType(){
         return null;
     }
 

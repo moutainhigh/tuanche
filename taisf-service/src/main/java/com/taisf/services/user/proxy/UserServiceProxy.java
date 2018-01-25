@@ -119,7 +119,7 @@ public class UserServiceProxy implements UserService {
         }
 
         //1. 验证手机号信息
-        UserEntity userEntity = userManager.getUserByUserPhone(phone);
+        UserEntity userEntity = userManager.getUserByUserPhone(phone,UserTypeEnum.YONGHU.getCode());
         if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号不存在");
             return dto;
@@ -207,7 +207,7 @@ public class UserServiceProxy implements UserService {
             return dto;
         }
         //1. 验证手机号信息
-        UserEntity userEntity = userManager.getUserByUserPhone(userRegistRequest.getUserPhone());
+        UserEntity userEntity = userManager.getUserByUserPhone(userRegistRequest.getUserPhone(),UserTypeEnum.YONGHU.getCode());
         if (!Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号已经注册过");
             return dto;
@@ -285,7 +285,7 @@ public class UserServiceProxy implements UserService {
             return dto;
         }
         //1. 验证手机号信息
-        UserEntity userEntity = userManager.getUserByUserPhone(userRegistRequest.getUserPhone());
+        UserEntity userEntity = userManager.getUserByUserPhone(userRegistRequest.getUserPhone(),UserTypeEnum.YONGHU.getCode());
         if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号不存在");
             return dto;
@@ -428,8 +428,14 @@ public class UserServiceProxy implements UserService {
             dto.setErrorMsg("异常的应用名称");
             return dto;
         }
+
+        UserTypeEnum userType = applicationCodeEnum.getUserType();
+        if (Check.NuNObj(userType)){
+            dto.setErrorMsg("异常的用户类型");
+            return dto;
+        }
         //1. 验证手机号信息
-        UserEntity userEntity = userManager.getUserByUserPhone(userLoginRequest.getUserPhone());
+        UserEntity userEntity = userManager.getUserByUserPhone(userLoginRequest.getUserPhone(),userType.getCode());
         if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号不存在");
             return dto;
@@ -455,33 +461,11 @@ public class UserServiceProxy implements UserService {
             return dto;
         }
 
-        //2. 获取企业信息
-        EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
-        if (Check.NuNObj(infoVO)) {
-            dto.setErrorMsg("异常的企业信息");
-            return dto;
-        }
 
-        //获取合作企业状态
-        EnterpriseStatusEnum statusEnum = EnterpriseStatusEnum.getTypeByCode(infoVO.getEnterpriseStatus());
-        if (Check.NuNObj(statusEnum)) {
-            dto.setErrorMsg("异常的企业状态信息");
-            return dto;
-        }
-        if (!statusEnum.checkOk()) {
-            dto.setErrorMsg(statusEnum.getDes());
-            return dto;
-        }
-        if (Check.NuNObj(infoVO.getTillTime())) {
-            dto.setErrorMsg("异常的企业合作信息,请联系管理员");
-            return dto;
-        }
-        if (infoVO.getTillTime().before(new Date())) {
-            dto.setErrorMsg("该企业合作已过期");
-            return dto;
-        }
-        //2. 获取token信息
-        //处理token信息
+        //处理当前的企业验证信息
+        this.dealUserEntCheck(dto, userEntity,userType.getCode());
+
+        //3. 获取token信息
         this.dealToken(userLoginRequest, dto, applicationCodeEnum, userEntity);
         return dto;
     }
@@ -570,8 +554,15 @@ public class UserServiceProxy implements UserService {
             dto.setErrorMsg("异常的应用名称");
             return dto;
         }
+
+        UserTypeEnum userType = applicationCodeEnum.getUserType();
+        if (Check.NuNObj(userType)){
+            dto.setErrorMsg("异常的用户类型");
+            return dto;
+        }
+
         //1. 验证手机号信息
-        UserEntity userEntity = userManager.getUserByUserPhone(userLoginRequest.getUserPhone());
+        UserEntity userEntity = userManager.getUserByUserPhone(userLoginRequest.getUserPhone(),userType.getCode());
         if (Check.NuNObj(userEntity)) {
             dto.setErrorMsg("该手机号不存在");
             return dto;
@@ -594,36 +585,52 @@ public class UserServiceProxy implements UserService {
             return dto;
         }
 
+        //处理当前的企业验证信息
+        this.dealUserEntCheck(dto, userEntity,userType.getCode());
+
+        //处理token信息
+        this.dealToken(userLoginRequest, dto, applicationCodeEnum, userEntity);
+
+        return dto;
+
+    }
+
+    /**
+     * 处理当前的企业信息
+     * @param dto
+     * @param userEntity
+     * @return
+     */
+    private void dealUserEntCheck(DataTransferObject<String> dto, UserEntity userEntity,int userType) {
+
+        if (userType != UserTypeEnum.YONGHU.getCode()){
+            return ;
+        }
         //2. 获取企业信息
         EnterpriseEntity infoVO = enterpriseManager.getEnterpriseByCode(userEntity.getEnterpriseCode());
         if (Check.NuNObj(infoVO)) {
             dto.setErrorMsg("异常的企业信息");
-            return dto;
+            return ;
         }
 
         //获取合作企业状态
         EnterpriseStatusEnum statusEnum = EnterpriseStatusEnum.getTypeByCode(infoVO.getEnterpriseStatus());
         if (Check.NuNObj(statusEnum)) {
             dto.setErrorMsg("异常的企业状态信息");
-            return dto;
+            return;
         }
         if (!statusEnum.checkOk()) {
             dto.setErrorMsg(statusEnum.getDes());
-            return dto;
+            return ;
         }
         if (Check.NuNObj(infoVO.getTillTime())) {
             dto.setErrorMsg("异常的企业合作信息,请联系管理员");
-            return dto;
+            return ;
         }
         if (infoVO.getTillTime().before(new Date())) {
             dto.setErrorMsg("该企业合作已过期");
-            return dto;
+            return ;
         }
-        //处理token信息
-        this.dealToken(userLoginRequest, dto, applicationCodeEnum, userEntity);
-
-        return dto;
-
     }
 
     /**

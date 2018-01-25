@@ -313,9 +313,9 @@
     }
     function formatSelf(value, row, index) {
         if (value == 1){
-            return "自提";
+            return "到店自取";
         } else {
-            return "非自提";
+            return " 送餐上门";
         }
     }
 

@@ -327,11 +327,11 @@ public class UserManagerImpl {
      * @param userPhone
      * @return
      */
-    public UserEntity getUserByUserPhone(String userPhone){
+    public UserEntity getUserByUserPhone(String userPhone,int userType){
         if (Check.NuNStr(userPhone)){
             return null;
         }
-        return userDao.getUserByUserPhone(userPhone);
+        return userDao.getUserByUserPhone(userPhone,userType);
     }
 
 

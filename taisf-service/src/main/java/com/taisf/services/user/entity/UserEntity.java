@@ -91,6 +91,20 @@ public class UserEntity extends BaseEntity {
 
 	private String empMail;
 
+	/**
+	 * 业务编码
+	 */
+	private String bizCode;
+
+
+	public String getBizCode() {
+		return bizCode;
+	}
+
+	public void setBizCode(String bizCode) {
+		this.bizCode = bizCode;
+	}
+
 	public String getEmpMail() {
 		return empMail;
 	}

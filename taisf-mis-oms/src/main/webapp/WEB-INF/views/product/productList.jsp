@@ -208,7 +208,7 @@
                             <th data-field="priceMarket" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">市场价</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
-                                data-align="center"><span class="tdfont">单价</span></th>
+                                data-align="center"><span class="tdfont">促销价</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
                         </tr>
@@ -283,7 +283,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">单价(元):</label>
+                                <label class="col-sm-3 control-label">促销价(元):</label>
                                 <div class="col-sm-8">
                                     <input id="priceSale" name="priceSale" type="text"
                                            class="form-control">
@@ -389,7 +389,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">单价(元):</label>
+                                <label class="col-sm-3 control-label">促销价(元):</label>
                                 <div class="col-sm-8">
                                     <input id="priceSaleE" name="priceSale" type="text"
                                            class="form-control">
@@ -497,7 +497,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">单价(元):</label>
+                                <label class="col-sm-3 control-label">促销价(元):</label>
                                 <div class="col-sm-8">
                                     <input readonly id="priceSaleD" name="priceSale" type="text"
                                            class="form-control">
@@ -737,7 +737,7 @@
         ;
 
         if ($("#priceSale").val() == null || $("#priceSale").val() == "") {
-            layer.alert("单价不能为空", {icon: 5, time: 2000, title: '提示'});
+            layer.alert("促销价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
@@ -815,7 +815,7 @@
         }
         ;
         if ($("#priceSaleE").val() == null || $("#priceSaleE").val() == "") {
-            layer.alert("单价不能为空", {icon: 5, time: 2000, title: '提示'});
+            layer.alert("促销价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
         }

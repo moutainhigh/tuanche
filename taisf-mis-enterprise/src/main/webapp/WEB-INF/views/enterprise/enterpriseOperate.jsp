@@ -84,7 +84,7 @@
 							
 							<tr>
 								<td align="right" class="td-title"><font color="red">*&nbsp;</font>供餐单位:</td>
-								<td><select class="form-control" id="supplierCode" name="supplierCode">  
+								<td><select class="form-control" id="supplierCode" name="supplierCode"  readonly="true">
 				                        <option value="">-请选择-</option>  
 				                    	<c:if test="${ not empty suppliers}" > 
 				                        <c:forEach var="su" items="${suppliers}">  
