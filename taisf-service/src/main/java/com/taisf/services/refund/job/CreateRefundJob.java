@@ -134,6 +134,7 @@ public class CreateRefundJob {
 
         RefundRequest refundRequest =new RefundRequest();
         refundRequest.setRefundSn(refundEntity.getRefundSn());
+        refundRequest.setOrderSn(refundEntity.getOrderSn());
         refundRequest.setOpName("system");
         refundRequest.setOpUid("001");
         String remark = "直接退款到余额";
@@ -141,6 +142,7 @@ public class CreateRefundJob {
         Integer retryTime = 1; //失败记录重试次数
         refundRequest.setRemark(remark);
         refundRequest.setRefundStatus(refundStatus);
+        refundRequest.setOldStatus(refundEntity.getRefundStatus());
         refundRequest.setRetryTime(retryTime);
         AccountLogEntity has = rechargeManager.getAccountLogByBizSn(refundEntity.getRefundSn());
         try {
