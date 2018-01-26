@@ -203,9 +203,12 @@
                             <input disabled id="sumMoneyD" type="text" value="" class="form-control">
                         </div>
                     </div>
+
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-sm-2 control-label mtop">地址:</label>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <input disabled id="addressD" type="text" value="" class="form-control">
                         </div>
                     </div>
