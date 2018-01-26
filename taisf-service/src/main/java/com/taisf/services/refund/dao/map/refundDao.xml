@@ -261,7 +261,7 @@
   <!-- 修改退款状态和失败重试次数的叠加 -->
   <update id="updateRefundStatusAndRetryTimes" parameterType="java.util.Map">
     UPDATE t_refund
-    set refund_status =  #{toStatus,jdbcType=INTEGER}, retry_times = #{retryTimes, jdbcType=INTEGER},
+    set refund_status =  #{toStatus,jdbcType=INTEGER}, retry_times = retry_times + #{retryTimes, jdbcType=INTEGER},
     update_time = now()
     <if test="toStatus == 4">
       , refund_time = now()

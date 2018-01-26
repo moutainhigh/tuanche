@@ -93,17 +93,53 @@ public class RefundManagerImpl {
     /**
      * @author:zhangzhengguang
      * @date:2017/12/21
-     * @description:根据id修改
+     * @description:后台审核当前的退款单
      **/
-    public int updateRefund(RefundEntity refundEntity,OrderEntity base) {
+    public int updateRefundAudit(RefundEntity refundEntity) {
         //如果驳回 修改订单的状态 REFUND_NO
         if(refundEntity.getRefundStatus() == RefundStatusEnum.NO_PASS.getCode()){
+
+            OrderEntity base = new OrderEntity();
+            base.setOrderSn(refundEntity.getOrderSn());
             base.setOrderStatus(OrdersStatusEnum.REFUND_NO.getCode());
             orderBaseDao.updateOrderBaseByOrderSn(base);
         }
         return refundDao.updateRefund(refundEntity);
     }
 
+
+    /**
+     * 强制更新当前的退款单状态
+     * @authior afi
+     * @param refundRequest
+     */
+    public void updateRefundSuccessForce(RefundRequest refundRequest){
+
+        //修改状态
+        int num = refundDao.updateRefundStatusAndRetryTimes(refundRequest.getRefundSn(),refundRequest.getRefundStatus(),refundRequest.getOldStatus(), 1);
+        if (num > 1){
+            LogUtil.error(logger,"异常的更新条数:par:{}",JsonEntityTransform.Object2Json(refundRequest));
+            throw new BusinessException("异常的更新条数");
+        }else if (num == 0){
+            return;
+        }
+
+        //处理日志
+        RefundLogEntity entity = new RefundLogEntity();
+        entity.setRefundSn(refundRequest.getRefundSn());
+        entity.setStatusFrom(refundRequest.getOldStatus());
+        entity.setStatusTo(refundRequest.getRefundStatus());
+        entity.setOpName(refundRequest.getOpName());
+        entity.setOpUid(refundRequest.getOpUid());
+        entity.setRemark(refundRequest.getRemark());
+        entity.setCreateTime(new Date());
+        refundLogDao.saveRefundLog(entity);
+
+
+        //打款成功变更订单为打款成功
+        orderBaseDao.refundOrderSuccess(refundRequest.getOrderSn());
+
+    }
 
 
 
@@ -113,17 +149,12 @@ public class RefundManagerImpl {
      * @param refundRequest
      * @param refund
      */
-    public void updateRefund(RefundRequest refundRequest, RefundEntity refund ) {
+    public void updateRefund4ChangeAll(RefundRequest refundRequest, RefundEntity refund ) {
         LogUtil.info(logger,"[退款] 保存退款操作记录:refundRequest:{} refund:{} ", JsonEntityTransform.Object2Json(refundRequest),JsonEntityTransform.Object2Json(refund));
 
         RefundEntity refundEntity = refundDao.findRefundByCode(refund.getRefundSn());
-        Integer retryTimes = 0; //重试次数
-        if(!Check.NuNObj(refundEntity)) {
-            retryTimes = refundEntity.getRetryTimes() + refundRequest.getRetryTime();
-        }
-        LogUtil.info(logger,"[退款] 退款失败重试次数记录: DB:retryTimes:{}; retryTime的值:{}",
-                refundEntity.getRetryTimes(), refundRequest.getRetryTime());
-
+        Integer retryTimes = 1; //重试次数
+        LogUtil.info(logger,"[退款] 退款失败重试次数记录: DB:retryTimes:{}; retryTime的值:{}", refundEntity.getRetryTimes(), refundRequest.getRetryTime());
         if (ValueUtil.getintValue(refundEntity.getRefundStatus()) == refundRequest.getRefundStatus()){
             //重复调用,幂等返回
             return;
