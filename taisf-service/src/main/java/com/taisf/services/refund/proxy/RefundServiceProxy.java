@@ -146,7 +146,7 @@ public class RefundServiceProxy implements RefundService {
                 return dto;
             }
             //5. 修改退款单
-            int num = refundManagerImpl.updateRefund(refundEntity,base);
+            int num = refundManagerImpl.updateRefundAudit(refundEntity);
             if (num != 1) {
                 dto.setErrCode(DataTransferObject.ERROR);
                 dto.setErrorMsg("修改退款信息失败");
@@ -233,7 +233,7 @@ public class RefundServiceProxy implements RefundService {
             return dto;
         }
         try {
-            refundManagerImpl.updateRefund(refundRequest,has);
+            refundManagerImpl.updateRefund4ChangeAll(refundRequest,has);
         }catch (Exception e){
             LogUtil.error(LOGGER,"退款失败:par:{}", JsonEntityTransform.Object2Json(refundRequest));
             dto.setErrorMsg("服务错误");

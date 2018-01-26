@@ -11,6 +11,7 @@
         <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
         <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
         <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="is_self" jdbcType="INTEGER" property="isSelf" />
         <result column="order_source" jdbcType="TINYINT" property="orderSource" />
         <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
         <result column="accounts_status" jdbcType="TINYINT" property="accountsStatus" />
@@ -37,7 +38,7 @@
         <!--  -->
         id, order_sn,title, province_code,area_code, city_code,address, order_source,eva_status, order_status, accounts_status,
         pay_status,order_type, business_uid, user_uid, user_tel, user_name,user_code,knight_uid,
-        send_time, pay_time,create_time, last_modify_date, mark,supplier_code
+        send_time, pay_time,create_time, last_modify_date, mark,supplier_code,is_self
     </sql>
 
 

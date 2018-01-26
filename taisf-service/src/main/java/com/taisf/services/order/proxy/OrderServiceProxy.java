@@ -215,9 +215,20 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("异常的定点状态");
             return dto;
         }
-        if (ordersStatusEnum.getCode() != OrdersStatusEnum.SEND.getCode()){
+
+        Integer isSelf = base.getIsSelf();
+        if (Check.NuNObj(isSelf)){
+            dto.setErrorMsg("异常的配送类型");
+            return dto;
+        }
+
+        if (isSelf ==  YesNoEnum.NO.getCode() && ordersStatusEnum.getCode() != OrdersStatusEnum.SEND.getCode()){
             dto.setErrorMsg("当前订单状态不能结束");
             return dto;
+        }else  if (isSelf ==  YesNoEnum.YES.getCode() && ordersStatusEnum.getCode() != OrdersStatusEnum.HAS_PAY.getCode()){
+            dto.setErrorMsg("当前订单状态不能结束");
+            return dto;
+
         }
         //结束订单
         orderManager.finishOrder(finishOrderRequest,base);

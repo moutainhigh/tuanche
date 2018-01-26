@@ -131,29 +131,35 @@ public class CreateRefundJob {
      */
     private void dealRefund4Yue(RefundEntity refundEntity){
         LogUtil.info(LOGGER,"[退款] 余额退款参数:par:{}", JsonEntityTransform.Object2Json(refundEntity));
-        AccountLogEntity has = rechargeManager.getAccountLogByBizSn(refundEntity.getRefundSn());
-        if (!Check.NuNObj(has)){
-            return;
-        }
 
         RefundRequest refundRequest =new RefundRequest();
         refundRequest.setRefundSn(refundEntity.getRefundSn());
+        refundRequest.setOrderSn(refundEntity.getOrderSn());
         refundRequest.setOpName("system");
         refundRequest.setOpUid("001");
-        //更新当前的退款单状态
         String remark = "直接退款到余额";
         Integer refundStatus = RefundStatusEnum.SUCCESS.getCode();
         Integer retryTime = 1; //失败记录重试次数
         refundRequest.setRemark(remark);
         refundRequest.setRefundStatus(refundStatus);
+        refundRequest.setOldStatus(refundEntity.getRefundStatus());
         refundRequest.setRetryTime(retryTime);
+        AccountLogEntity has = rechargeManager.getAccountLogByBizSn(refundEntity.getRefundSn());
         try {
-            refundManagerImpl.updateRefund(refundRequest,refundEntity);
+            if (!Check.NuNObj(has)){
+                LogUtil.info(LOGGER,"[退款] 幂等处理:par:{}", JsonEntityTransform.Object2Json(refundEntity));
+                //幂等成功,直接强制更新当前的订单和退款单状态
+                refundManagerImpl.updateRefundSuccessForce(refundRequest);
+            }else {
+                LogUtil.info(LOGGER,"[退款] 更新退款:par:{}", JsonEntityTransform.Object2Json(refundEntity));
+                //处理当前的退款
+                refundManagerImpl.updateRefund4ChangeAll(refundRequest,refundEntity);
+            }
         }catch (Exception e){
             LogUtil.error(LOGGER, "【调用退款失败】error:{}", e);
         }
+        LogUtil.info(LOGGER,"[退款] 余额退款成功:par:{}", JsonEntityTransform.Object2Json(refundEntity));
     }
-
 
     /**
      * 处理退款的逻辑-支付平台
@@ -208,7 +214,7 @@ public class CreateRefundJob {
         refundRequest.setRefundStatus(refundStatus);
         refundRequest.setRetryTime(retryTime);
         try {
-            refundManagerImpl.updateRefund(refundRequest,refundEntity);
+            refundManagerImpl.updateRefund4ChangeAll(refundRequest,refundEntity);
         }catch (Exception e){
             LogUtil.error(LOGGER, "【调用退款失败】error:{}", e);
         }

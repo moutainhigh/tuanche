@@ -25,10 +25,21 @@ public class RefundRequest extends BaseEntity{
     private String refundSn;
 
     /**
+     * 订单编号
+     */
+    private String orderSn;
+
+
+    /**
      * 退款状态
      */
     private Integer refundStatus;
 
+
+    /**
+     * 原始状态
+     */
+    private Integer oldStatus;
 
     /**
      * 操作人
@@ -50,6 +61,22 @@ public class RefundRequest extends BaseEntity{
      */
     private Integer retryTime;
 
+
+    public String getOrderSn() {
+        return orderSn;
+    }
+
+    public void setOrderSn(String orderSn) {
+        this.orderSn = orderSn;
+    }
+
+    public Integer getOldStatus() {
+        return oldStatus;
+    }
+
+    public void setOldStatus(Integer oldStatus) {
+        this.oldStatus = oldStatus;
+    }
 
     public String getRefundSn() {
         return refundSn;
