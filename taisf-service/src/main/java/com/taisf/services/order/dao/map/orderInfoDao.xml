@@ -28,6 +28,7 @@
         <result column="last_modify_date" jdbcType="TIMESTAMP" property="lastModifyDate"/>
         <result column="mark" jdbcType="VARCHAR" property="mark"/>
 
+        <result column="is_self" property="isSelf" jdbcType="INTEGER"/>
         <result column="sum_money" property="sumMoney" jdbcType="INTEGER"/>
         <result column="coupon_money" property="couponMoney" jdbcType="INTEGER"/>
         <result column="discount_money" property="discountMoney" jdbcType="INTEGER"/>
@@ -55,7 +56,7 @@
     <!-- 获取订单详情 -->
     <select id="getOrderInfoByOrderSn" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
-        <include refid="Base_Column_List"/>,p.enterprise_name
+        <include refid="Base_Column_List"/>,p.enterprise_name,t.is_self
         FROM t_order t
         INNER join t_order_money m on t.order_sn = m.order_sn
         LEFT JOIN t_enterprise p on p.enterprise_code = t.enterprise_code
@@ -113,13 +114,26 @@
         </if>
         <if test="openTime != null and openTime != '' ">
             <![CDATA[
-				and create_time >= #{openTime}
+				and t.create_time >= #{openTime}
 			]]>
         </if>
         <if test="tillTime != null and tillTime != '' ">
             <![CDATA[
-				and create_time <= #{tillTime}
+				and t.create_time <= #{tillTime}
 			]]>
+        </if>
+
+        <if test="userTel != null and userTel != '' ">
+            and t.user_tel like concat('%',#{userTel},'%')
+        </if>
+        <if test="isSelf != null">
+            and t.is_self = #{isSelf,jdbcType=INTEGER}
+        </if>
+        <if test="supplierName != null and supplierName != ''">
+            and s.supplier_name LIKE  concat('%',#{supplierName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="orderStatus != null">
+            and t.order_status = #{orderStatus,jdbcType=INTEGER}
         </if>
         ORDER BY t.id DESC
     </select>

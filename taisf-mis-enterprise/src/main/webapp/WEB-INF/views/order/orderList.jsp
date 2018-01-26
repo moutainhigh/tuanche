@@ -44,31 +44,37 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
         <div class="ibox-content">
+            <input type="hidden" id="orderSnP">
             <div class="row">
                 <div class="form-group">
                     <label class="col-sm-1 control-label mtop">手机号:</label>
                     <div class="col-sm-2">
                         <input id="userPhoneS" type="text" value="" class="form-control">
                     </div>
-                    <label class="col-xs-1 col-sm-1 control-label mtop">餐食标准:</label>
+                    <label class="col-xs-1 col-sm-1 control-label mtop">到店自取:</label>
                     <div class="col-xs-2 col-sm-2">
-                        <select class="form-control" name="userRole" id="userRole">
+                        <select class="form-control" name="isSelfS" id="isSelfS">
                             <option value="">--请选择--</option>
-                            <option value="1">--普通餐--</option>
-                            <option value="2">--老板餐--</option>
+                            <option value="1">--是--</option>
+                            <option value="0">--否--</option>
                         </select>
                     </div>
                     <label class="col-sm-1 control-label mtop">企业名称:</label>
                     <div class="col-sm-2">
-                        <input id="enterpriseName" type="text" value="" class="form-control">
+                        <input id="supplierName" type="text" value="" class="form-control">
                     </div>
                     <label class="col-xs-1 col-sm-1 control-label mtop">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:</label>
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="status" id="status">
                             <option value="">--请选择--</option>
-                            <option value="1">--正常--</option>
-                            <option value="2">--冻结--</option>
-                            <option value="3">--已过期--</option>
+                            <option value="10">--待支付--</option>
+                            <option value="11">--部分支付--</option>
+                            <option value="30">--取消--</option>
+                            <option value="40">--已经退款--</option>
+                            <option value="40">--已经退款--</option>
+                            <option value="50">--已支付--</option>
+                            <option value="60">--配送中--</option>
+                            <option value="70">--已签收--</option>
                         </select>
                     </div>
                 </div>
@@ -105,7 +111,6 @@
                            data-pagination-next-text="下一页" data-pagination-last-text="末页"
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
-                           data-single-select="true"
                            data-url="order/pageList">
                         <thead>
                         <tr>
@@ -134,26 +139,143 @@
         </div>
     </div>
 </div>
-<%--<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content animated bounceInRight">
-            <div class="modal-header">
+<div class="modal inmodal" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 15px 6px;">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">关闭</span>
-                </button>
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">订单详情</h4>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">订单编号:</label>
+                        <div class="col-sm-4">
+                            <input disabled id="orderSnD" type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">预订人:</label>
+                        <div class="col-sm-4">
+                            <input disabled id="userNameD" type="text" value="" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">用户工号:</label>
+                        <div class="col-sm-4">
+                            <input disabled id="userCodeD" type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">到店自取:</label>
+                        <div class="col-sm-2">
+                            <input disabled id="isSelfD" type="text" value="" class="form-control">
+                        </div>
+                        <div id="signIn" class="col-sm-2">
+                            <button  class="btn btn-primary" type="button"
+                                    onclick="signIn();">签收
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">创建时间:</label>
+                        <div class="col-sm-4">
+                            <input disabled id="createTimeD" type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">手机号:</label>
+                        <div class="col-sm-4">
+                            <input disabled id="userTelDD" type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">订单金额:</label>
+                        <div class="col-sm-4">
+                            <input disabled id="sumMoneyD" type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">地址:</label>
+                        <div class="col-sm-4">
+                            <input disabled id="addressD" type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- 搜索框panel -->
+            <div class="ibox float-e-margins">
+                <input id="id_enterpriseCode" name="enterpriseCode" type="hidden"
+                       class="form-control">
+            </div>
+            <!-- 列表 -->
+            <div class="float-e-margins">
+                <div class="ibox-content">
+                    <div class="row row-lg">
+                        <div class="col-sm-12">
+                            <table id="listTableP" class="table table-bordered" data-click-to-select="true"
+                                   data-toggle="table" data-side-pagination="server"
+                                   data-pagination="true" data-page-list="[5,10,20,50]"
+                                   data-pagination="true" data-page-size="10"
+                                   data-pagination-first-text="首页" data-pagination-pre-text="上一页"
+                                   data-pagination-next-text="下一页" data-pagination-last-text="末页"
+                                   data-content-type="application/x-www-form-urlencoded"
+                                   data-query-params="paginationParamP" data-method="post"
+                                   data-single-select="false"
+                                   data-url="order/orderProductPageList">
+                                <thead>
+                                <tr>
+                                    <th data-field="productType" data-width="10%" data-formatter="formatProductClassify"
+                                        data-align="center"><span class="tdfont">分类</span></th>
+                                    <th data-field="productName" data-width="10%"
+                                        data-align="center"><span class="tdfont">菜单名称</span></th>
+                                    <th data-field="productNum" data-width="10%" data-formatter="formatProductSource"
+                                        data-align="center"><span class="tdfont">数量</span></th>
+                                    <th data-field="productPrice" data-width="10%" data-formatter="formatAmount"
+                                        data-align="center"><span class="tdfont">单价</span></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">返回</button>
+            </div>
         </div>
     </div>
-</div>--%>
+</div>
 <script>
+
     $(function () {
         //初始化日期
         CommonUtils.datePickerFormat("openTime");
         CommonUtils.datePickerFormat("tillTime");
+        $("#signIn").hide();
     });
-
+    var num = 0;
+    function initTime() {
+        num += 1;
+        //昨天的时间
+        var day1 = new Date();
+        day1.setTime(day1.getTime() - 24 * 60 * 60 * 1000);
+        var s1 = day1.getFullYear() + "-" + (day1.getMonth() + 1) + "-" + day1.getDate();
+        $("#openTime").val(s1);
+    }
     function paginationParam(params) {
+        if (num == 0) {
+            initTime();
+        }
         var openTime = $("#openTime").val();
         var tillTime = $("#tillTime").val();
 
@@ -172,9 +294,10 @@
             page: $("#listTable").bootstrapTable("getOptions").pageNumber,
             openTime: openTime,
             tillTime: tillTime,
-            userPhone: $("#userPhoneS").val(),
-            userRole: $("#userRole").val(),
-            enterpriseName: $("#enterpriseName").val(),
+            userTel: $("#userPhoneS").val().trim(),
+            orderStatus: $("#status").val(),
+            isSelf: $("#isSelfS").val(),
+            supplierName: $("#supplierName").val().trim(),
         };
     }
     function paginationParamC(params) {
@@ -230,9 +353,67 @@
         }
     }
     function showOrderProduct(orderSn) {
-        $.openNewTab(new Date().getTime(), "order/showOrderProduct?orderSn=" + orderSn, "订单详情");
-    }
+        debugger
+        $("#orderSnP").val(orderSn)
+        $('#detailModal').modal('show');
+        queryP();
+        //查询订单详情
+        $.ajax({
+            data: {
+                'orderSn': orderSn,
+            },
+            type: "post",
+            dataType: "json",
+            url: 'order/getOrderBaseBySn',
+            success: function (result) {
+                //订单编号,预订人,工号 电话,送餐地址,订单金额,是否自提(是自提并且已经支付,显示签收按钮,异步签收),创建时间
+                $('#orderSnD').val(result.orderSn);
+                $('#userNameD').val(result.userName);
+                $('#userCodeD').val(result.userCode);
+                $('#userTelDD').val(result.userTel);
+                $('#addressD').val(result.address);
+                if(result.sumMoney != null && result.sumMoney != "" && result.sumMoney != undefined){
+                    $('#sumMoneyD').val(((result.sumMoney)/100).toFixed(2));
+                }
+                if (result.isSelf == 1) {
+                    $('#isSelfD').val("是");
+                    if (result.orderStatus == 50) {
+                        //显示签收按钮
+                        $("#signIn").show();
+                    }
+                } else {
+                    $('#isSelfD').val("否");
+                }
 
+                if (result.createTime != null) {
+                    var _date = new Date(result.createTime);
+                    $('#createTimeD').val(_date.format("yyyy-MM-dd HH:mm:ss"));
+                }
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtn").removeAttr("disabled");
+            }
+        });
+    }
+    function formatProductSource(value, row, index) {
+        if (value == 1) {
+            return "普通餐";
+        } else if (value == 2) {
+            return "西餐";
+        } else if (value == 3) {
+            return "清真";
+        }
+    }
+    function formatProductClassify(value, row, index) {
+        if (value == 1) {
+            return "大荤";
+        } else if (value == 2) {
+            return "小荤";
+        } else if (value == 3) {
+            return "素";
+        }
+    }
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
@@ -240,8 +421,41 @@
 
         return result;
     }
+    function paginationParamP(params) {
+        return {
+            limit: params.limit,
+            page: $("#listTableP").bootstrapTable("getOptions").pageNumber,
+            orderSn: $("#orderSnP").val(),
+        };
+    }
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);
+    }
+    function queryP() {
+        $("#listTableP").bootstrapTable("selectPage", 1);
+    }
+    function signIn(){
+        layer.confirm("确定签收吗", {icon: 6, title:'提示'},function(index){
+            $.ajax({
+                type: "POST",
+                url: 'order/signIn',
+                dataType:"json",
+                traditional: true,
+                data: {'orderSn': $("#orderSnP").val()},
+                success: function (result) {
+                    if(result.code == 0){
+                        layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                        $("#signIn").hide();
+                    }else{
+                        layer.alert("操作失败", {icon: 6, time: 2000, title: '提示'});
+                    }
+                },
+                error: function(result) {
+                    layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                }
+            });
+            layer.close(index);
+        });
     }
 </script>
 

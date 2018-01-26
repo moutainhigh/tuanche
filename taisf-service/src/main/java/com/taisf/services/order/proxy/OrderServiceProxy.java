@@ -7,6 +7,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.ValueUtil;
+import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
@@ -1126,5 +1127,23 @@ public class OrderServiceProxy implements OrderService {
             price = empPrice;
         }
         return price;
+    }
+
+    @Override
+    public DataTransferObject<OrderEntity> getOrderBaseBySn(String orderSn){
+        DataTransferObject<OrderEntity> dto = new DataTransferObject<>();
+        if (Check.NuNStr(orderSn)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try{
+            OrderEntity orderBaseBySn = orderManager.getOrderBaseBySn(orderSn);
+            dto.setData(orderBaseBySn);
+        }catch (Exception e){
+            LogUtil.error(LOGGER,"根据订单号查询详情异常param{}",orderSn);
+            dto.setErrorMsg("根据订单号查询详情异常");
+            return dto;
+        }
+        return dto;
     }
 }

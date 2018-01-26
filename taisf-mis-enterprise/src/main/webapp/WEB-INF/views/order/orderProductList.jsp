@@ -75,13 +75,6 @@
     </div>
 </div>
 <script>
-    function paginationParam(params) {
-        return {
-            limit: params.limit,
-            page: $("#listTable").bootstrapTable("getOptions").pageNumber,
-            orderSn: $("#orderSn").val(),
-        };
-    }
 
     // 格式化时间
     function formatDate(value, row, index) {

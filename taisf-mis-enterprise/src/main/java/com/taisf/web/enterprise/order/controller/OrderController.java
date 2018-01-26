@@ -1,10 +1,13 @@
 package com.taisf.web.enterprise.order.controller;
 
+import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
+import com.taisf.services.order.api.OrderService;
+import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.dto.OrderProductListRequest;
 import com.taisf.services.order.entity.OrderProductEntity;
@@ -31,6 +34,9 @@ public class OrderController {
 
     @Autowired
     private OrderManagerImpl orderManagerImpl;
+
+    @Autowired
+    private OrderService orderService;
 
     /**
      * @author:zhangzhengguang
@@ -89,9 +95,12 @@ public class OrderController {
         PageResult pageResult = new PageResult();
         try {
             PagingResult<OrderProductEntity> pagingResult = orderManagerImpl.getOrderProductPageList(orderProductListRequest);
-            if (!Check.NuNObj(pagingResult)) {
+            if (!Check.NuNCollection(pagingResult.getList())) {
                 pageResult.setRows(pagingResult.getList());
                 pageResult.setTotal(pagingResult.getTotal());
+            }else{
+                pageResult.setRows(new OrderProductEntity());
+                pageResult.setTotal(1L);
             }
         } catch (Exception e) {
             LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(orderProductListRequest));
@@ -147,4 +156,50 @@ public class OrderController {
         }
         return pageResult;
     }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/26
+     * @description:查询订单详情
+     **/
+    @RequestMapping("getOrderBaseBySn")
+    @ResponseBody
+    public OrderInfoVO getOrderBaseBySn(HttpServletRequest request, String orderSn) {
+        PageResult pageResult = new PageResult();
+        OrderInfoVO orderInfoVO;
+        try {
+            orderInfoVO = orderManagerImpl.getOrderInfoByOrderSn(orderSn);
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "查询订单详情异常params:{}", JsonEntityTransform.Object2Json(orderSn));
+            LogUtil.error(LOGGER, "查询订单详情异常error:{}", e);
+            return null;
+        }
+        return orderInfoVO;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/1/26
+     * @description:签收
+     **/
+    @RequestMapping("signIn")
+    @ResponseBody
+    public DataTransferObject<Void> signIn(HttpServletRequest request, FinishOrderRequest req) {
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if(Check.NuNObj(req)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        try {
+            EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            req.setOpId(employeeEntity.getUserId());
+            dto = orderService.finishOrder(req);
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "签收异常params:{}", JsonEntityTransform.Object2Json(req));
+            LogUtil.error(LOGGER, "签收异常error:{}", e);
+            return null;
+        }
+        return dto;
+    }
+
 }

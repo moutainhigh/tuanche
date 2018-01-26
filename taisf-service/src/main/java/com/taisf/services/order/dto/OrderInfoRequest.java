@@ -60,6 +60,26 @@ public class OrderInfoRequest extends PageRequest {
 
     private String bizCode;
 
+    private Integer isSelf;
+
+    private String supplierName;
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public Integer getIsSelf() {
+        return isSelf;
+    }
+
+    public void setIsSelf(Integer isSelf) {
+        this.isSelf = isSelf;
+    }
+
     public String getBizCode() {
         return bizCode;
     }

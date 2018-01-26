@@ -4,6 +4,7 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.dto.*;
+import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.vo.DayTaskVO;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
@@ -135,5 +136,7 @@ public interface OrderService {
 
 
     DataTransferObject<PagingResult<OrderInfoVO>> getOrderListPageByEnterprisCode(OrderInfoRequest orderInfoRequest);
+
+    DataTransferObject<OrderEntity> getOrderBaseBySn(String orderSn);
 
 }
