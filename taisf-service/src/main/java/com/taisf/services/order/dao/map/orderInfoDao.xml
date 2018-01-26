@@ -272,12 +272,12 @@
         CASE
         WHEN m.pay_type = 3 THEN
         m.total_fee ELSE 0
-        END AS payMoney,
+        END AS payBalance,
 
         CASE
         WHEN m.pay_type != 3 THEN
         m.total_fee ELSE 0
-        END AS payBalance
+        END AS payMoney
 
 
         FROM
