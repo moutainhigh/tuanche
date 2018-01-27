@@ -2,6 +2,7 @@ package com.taisf.web.enterprise.controller;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.BigDecimalUtil;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
@@ -104,15 +105,18 @@ public class RefundController {
      **/
     @RequestMapping("updateRefund")
     @ResponseBody
-    public DataTransferObject<Void> updateRefund(HttpServletRequest request, RefundEntity refundEntity,double fee) {
+    public DataTransferObject<Void> updateRefund(HttpServletRequest request, RefundEntity refundEntity,Double fee) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(refundEntity)) {
-            dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
-        if(!Check.NuNObj(fee)){
-            refundEntity.setRefundFee(((int)fee*100));
+        if(Check.NuNObj(fee)){
+            dto.setErrorMsg("无效的退款金额");
+            return dto;
+        }else {
+            Double mul = BigDecimalUtil.mul(fee, 100);
+            refundEntity.setRefundFee(mul.intValue());
         }
         try {
             dto = refundService.updateRefund(refundEntity);

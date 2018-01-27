@@ -105,55 +105,59 @@ public class RefundServiceProxy implements RefundService {
      * @description:根据ID修改
      **/
     @Override
-    public DataTransferObject<Void> updateRefund(RefundEntity refundEntity) {
+    public DataTransferObject<Void> updateRefund(RefundEntity par) {
         DataTransferObject<Void> dto = new DataTransferObject();
-        if (Check.NuNObj(refundEntity)) {
+        if (Check.NuNObj(par)) {
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setErrorMsg("参数异常");
             return dto;
         }
         try {
-            RefundEntity entity = refundManagerImpl.findRefundById(refundEntity.getId());
-            if(Check.NuNObj(entity)){
+            RefundEntity has = refundManagerImpl.findRefundById(par.getId());
+            if(Check.NuNObj(has)){
                 dto.setErrCode(DataTransferObject.ERROR);
                 dto.setErrorMsg("当前退款单不存在");
                 return dto;
             }
             //1.校验订单是否存在
-            OrderEntity base = orderManager.getOrderBaseBySn(entity.getOrderSn());
+            OrderEntity base = orderManager.getOrderBaseBySn(has.getOrderSn());
             if (Check.NuNObj(base)){
                 dto.setErrorMsg("当前订单不存在");
                 return dto;
             }
             //2.退款单状态
-            if (!entity.getRefundStatus().equals(RefundStatusEnum.WAIT.getCode())){
+            if (!has.getRefundStatus().equals(RefundStatusEnum.WAIT.getCode())){
                 dto.setErrorMsg("退款单状态异常");
                 return dto;
             }
 
             //3. 退款单金额 还有订单的金额的比对
-            if(refundEntity.getRefundStatus() == RefundStatusEnum.PASS.getCode()){
-                OrderMoneyEntity orderMoneyEntity = orderManager.getOrderMoneyByOrderSn(refundEntity.getOrderSn());
-                if (Check.NuNObj(refundEntity.getRefundFee()) || orderMoneyEntity.getPayMoney() <refundEntity.getRefundFee()){
+            if(par.getRefundStatus() == RefundStatusEnum.PASS.getCode()){
+                OrderMoneyEntity orderMoneyEntity = orderManager.getOrderMoneyByOrderSn(has.getOrderSn());
+                if (Check.NuNObj(orderMoneyEntity)){
+                    dto.setErrorMsg("异常的订单金额信息");
+                    return dto;
+                }
+                if (Check.NuNObj(par.getRefundFee()) || orderMoneyEntity.getSumMoney() <par.getRefundFee()){
                     dto.setErrorMsg("退款金额异常");
                     return dto;
                 }
             }
             //4. 订单状态校验
             OrdersStatusEnum ordersStatusEnum = OrdersStatusEnum.getByCode(base.getOrderStatus());
-            if (Check.NuNObj(ordersStatusEnum) || ordersStatusEnum.getCode() == OrdersStatusEnum.REFUND.getCode() ){
+            if (Check.NuNObj(ordersStatusEnum) || ordersStatusEnum.getCode() != OrdersStatusEnum.REFUND.getCode() ){
                 dto.setErrorMsg("异常的订单状态");
                 return dto;
             }
             //5. 修改退款单
-            int num = refundManagerImpl.updateRefundAudit(refundEntity);
+            int num = refundManagerImpl.updateRefundAudit(par);
             if (num != 1) {
                 dto.setErrCode(DataTransferObject.ERROR);
                 dto.setErrorMsg("修改退款信息失败");
                 return dto;
             }
         } catch (Exception e) {
-            LogUtil.error(LOGGER, "修改退款信息失败 error:{}{}", e, JsonEntityTransform.Object2Json(refundEntity));
+            LogUtil.error(LOGGER, "修改退款信息失败 error:{}{}", e, JsonEntityTransform.Object2Json(par));
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("修改退款信息失败");
             return dto;
