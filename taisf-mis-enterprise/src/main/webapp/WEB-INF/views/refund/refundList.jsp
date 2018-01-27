@@ -291,7 +291,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">退款类型</label>
+                                <label class="col-sm-3 control-label">支付类型</label>
                                 <div class="col-sm-8">
                                     <input readonly id="cardType" name="cardType" type="text"
                                            class="form-control">
@@ -531,7 +531,7 @@
                     }else if(result.data.cardType ==2){
                         $('#cardType').val("支付宝");
                     }else if(result.data.cardType ==3){
-                        $('#cardType').val("银行卡");
+                        $('#cardType').val("余额");
                     }
                     $('#cardNo').val(result.data.cardNo);
                     $('#refundName').val(result.data.refundName);
