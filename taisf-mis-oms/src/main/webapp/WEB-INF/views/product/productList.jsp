@@ -366,9 +366,9 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">供餐类型:</label>
                                 <div class="col-sm-8">
-                                    <input type="radio" value="0" name="productTypeE"> 全部
-                                    <input type="radio" value="1" name="productTypeE"> 普通餐
-                                    <input type="radio" value="2" name="productTypeE"> 老板餐(单选)
+                                    <input type="radio" value="1" name="productTypeE"> 全部
+                                    <input type="radio" value="2" name="productTypeE"> 老板餐
+                                    <input type="radio" value="3" name="productTypeE"> 员工餐(单选)
                                     </select>
                                 </div>
                             </div>
@@ -473,9 +473,9 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">供餐类型:</label>
                                 <div class="col-sm-8">
-                                    <input disabled="disabled" type="radio" value="0" name="productTypeD"> 全部
-                                    <input disabled="disabled" type="radio" value="1" name="productTypeD"> 普通餐
-                                    <input disabled="disabled" type="radio" value="2" name="productTypeD"> 老板餐(单选)
+                                    <input disabled="disabled" type="radio" value="1" name="productTypeD"> 全部
+                                    <input disabled="disabled" type="radio" value="2" name="productTypeD"> 老板餐
+                                    <input disabled="disabled" type="radio" value="3" name="productTypeD"> 员工餐(单选)
                                     </select>
                                 </div>
                             </div>
@@ -577,12 +577,12 @@
         }
     }
     function formatProductType(value, row, index) {
-        if (value == 0) {
+        if (value == 1) {
             return "全部";
-        } else if (value == 1) {
-            return "普通餐";
         } else if (value == 2) {
             return "老板餐";
+        } else if (value == 3) {
+            return "员工餐";
         }
     }
     function formatProductSource(value, row, index) {
