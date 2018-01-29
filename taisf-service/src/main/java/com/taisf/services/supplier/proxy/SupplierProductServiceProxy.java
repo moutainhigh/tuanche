@@ -3,8 +3,8 @@ package com.taisf.services.supplier.proxy;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.constant.PathConstant;
 import com.taisf.services.common.valenum.OrderTypeEnum;
@@ -22,7 +22,6 @@ import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
-import com.taisf.services.user.api.IndexService;
 import com.taisf.services.user.proxy.IndexServiceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +100,15 @@ public class SupplierProductServiceProxy implements SupplierProductService {
                     dealProduct(map, list, c);
                 }
                 if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PACKAGE.getCode()) {
-                    List<SupplierProductVO> tmp = this.dealPackage(supplierCode);
+                    List<SupplierProductVO> full = this.dealPackage(supplierCode);
+
+                    List<SupplierProductVO> tmp = new ArrayList<>();
+                    for (SupplierProductVO supplierProductVO : full) {
+                        //获取当前的匹配情况
+                        if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
+                            tmp.add(supplierProductVO);
+                        }
+                    }
                     ProductClassifyInfo vo = new ProductClassifyInfo();
                     String key = c.getCode() + "";
                     vo.setProductClassify(key);
