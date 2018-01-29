@@ -241,6 +241,16 @@ public class IndexServiceProxy implements IndexService {
         if (!Check.NuNObj(isOpen) && isOpen == YesNoEnum.NO.getCode()){
             isExt = true;
         }
+        //设置供应商的code
+        indexVO.setSupplierCode(infoVO.getEnterpriseEntity().getSupplierCode());
+
+        EnterpriseDayEntity day = enterpriseManager.getCurrentDay(userEntity.getEnterpriseCode());
+        if (Check.NuNObj(day)
+                || ValueUtil.getintValue(day.getDayType()) ==DayTypeEnum.NO.getCode()){
+            indexVO.setTimeTitle("点餐（今日不配送）");
+            indexVO.setTimeMsg("当天不配送");
+            return dto;
+        }
 
         //获取当前的订餐类型
         OrderTypeEnum orderTypeEnum = this.dealTime4Lunch(config,now,indexVO,isExt);
@@ -254,8 +264,7 @@ public class IndexServiceProxy implements IndexService {
             indexVO.setOrderType(orderTypeEnum.getCode());
         }
 
-        //设置供应商的code
-        indexVO.setSupplierCode(infoVO.getEnterpriseEntity().getSupplierCode());
+
         return dto;
     }
 
