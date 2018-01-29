@@ -51,12 +51,12 @@
                     <div class="col-sm-2">
                         <input id="userPhoneS" type="text" value="" class="form-control">
                     </div>
-                    <label class="col-xs-1 col-sm-1 control-label mtop">到店自取:</label>
+                    <label class="col-xs-1 col-sm-1 control-label mtop">配送方式:</label>
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="isSelfS" id="isSelfS">
                             <option value="">--请选择--</option>
-                            <option value="1">--是--</option>
-                            <option value="0">--否--</option>
+                            <option value="1">--到店自取--</option>
+                            <option value="0">--送餐上门--</option>
                         </select>
                     </div>
                     <label class="col-sm-1 control-label mtop">企业名称:</label>
@@ -71,7 +71,8 @@
                             <option value="11">--部分支付--</option>
                             <option value="30">--取消--</option>
                             <option value="40">--已经退款--</option>
-                            <option value="40">--已经退款--</option>
+                            <option value="41">--退款成功--</option>
+                            <option value="42">--退款失败--</option>
                             <option value="50">--已支付--</option>
                             <option value="60">--配送中--</option>
                             <option value="70">--已签收--</option>
@@ -121,12 +122,14 @@
                                 data-align="center"><span class="tdfont">下单时间</span></th>
                             <th data-field="userTel" data-width="10%"
                                 data-align="center"><span class="tdfont">用户电话</span></th>
-                            <th data-field="enterpriseCode" data-width="15%"
-                                data-align="center"><span class="tdfont">企业编号</span></th>
+                            <%--<th data-field="enterpriseCode" data-width="15%"
+                                data-align="center"><span class="tdfont">企业编号</span></th>--%>
                             <th data-field="enterpriseName" data-width="15%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
                             <th data-field="sumMoney" data-width="15%" data-formatter="formatAmount"
                                 data-align="center"><span class="tdfont">订单金额(元)</span></th>
+                                <th data-field="isSelf" data-width="15%" data-formatter="formaIsSelf"
+                                data-align="center"><span class="tdfont">配送方式</span></th>
                             <th data-field="orderStatus" data-width="10%" data-formatter="formatAccountStatus"
                                 data-align="center"><span class="tdfont">状态</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
@@ -171,7 +174,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label mtop">到店自取:</label>
+                        <label class="col-sm-2 control-label mtop">配送方式:</label>
                         <div class="col-sm-2">
                             <input disabled id="isSelfD" type="text" value="" class="form-control">
                         </div>
@@ -313,6 +316,13 @@
     function formatAmount(value, row, index) {
         return (value / 100).toFixed(2);
     }
+    function formaIsSelf(value, row, index) {
+        if(value == 1){
+            return "到店自取";
+        }else{
+            return "送餐上门";
+        }
+    }
 
     // 格式化时间
     function formatDate(value, row, index) {
@@ -338,6 +348,8 @@
             return "午餐"
         }
     }
+
+
     function formatAccountStatus(value, row, index) {
         if (value == 10) {
             return "待支付";
@@ -347,6 +359,10 @@
             return "取消";
         } else if (value == 40) {
             return "已经退款";
+        } else if (value == 41) {
+            return "退款成功";
+        } else if (value == 42) {
+            return "退款失败";
         } else if (value == 50) {
             return "已支付";
         } else if (value == 60) {
@@ -379,13 +395,13 @@
                     $('#sumMoneyD').val(((result.sumMoney)/100).toFixed(2));
                 }
                 if (result.isSelf == 1) {
-                    $('#isSelfD').val("是");
+                    $('#isSelfD').val("到店自取");
                     if (result.orderStatus == 50) {
                         //显示签收按钮
                         $("#signIn").show();
                     }
                 } else {
-                    $('#isSelfD').val("否");
+                    $('#isSelfD').val("送餐上门");
                 }
 
                 if (result.createTime != null) {
