@@ -121,9 +121,9 @@
                                 data-align="center"><span class="tdfont">下单时间</span></th>
                             <th data-field="userTel" data-width="10%"
                                 data-align="center"><span class="tdfont">用户电话</span></th>
-                            <th data-field="userUid" data-width="15%"
+                            <th data-field="enterpriseCode" data-width="15%"
                                 data-align="center"><span class="tdfont">企业编号</span></th>
-                            <th data-field="supplierName" data-width="15%"
+                            <th data-field="enterpriseName" data-width="15%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
                             <th data-field="sumMoney" data-width="15%" data-formatter="formatAmount"
                                 data-align="center"><span class="tdfont">订单金额(元)</span></th>

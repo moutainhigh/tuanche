@@ -644,6 +644,11 @@
             $("#saveBtnE").removeAttr("disabled");
             return false;
         }else{
+            if($("#refundFee_E").val() <= 0){
+                layer.alert("退款金额必须大于0", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtnE").removeAttr("disabled");
+                return false;
+            }
             if($("#refundFee_E").val() > $("#refundFee_H").val()){
                 layer.alert("退款金额不能大于支付金额", {icon: 5, time: 2000, title: '提示'});
                 $("#saveBtnE").removeAttr("disabled");

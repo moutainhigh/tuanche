@@ -106,10 +106,11 @@
     <select id="pageListOrder" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest">
         SELECT
         <include refid="Base_Column_List"/>
-        ,supplier_name
+        ,supplier_name,e.enterprise_code,e.enterprise_name
         FROM t_order t
         INNER join t_order_money m on t.order_sn = m.order_sn
         LEFT JOIN t_supplier s ON s.supplier_code = t.business_uid
+        LEFT JOIN t_enterprise e ON e.enterprise_code = t.enterprise_code
         WHERE 1=1 AND t.supplier_code = #{bizCode,jdbcType=VARCHAR}
         <if test="userUid != null and userUid != '' ">
             and t.user_uid = #{userUid,jdbcType=VARCHAR}

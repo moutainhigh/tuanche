@@ -253,6 +253,7 @@ public class SupplierProductPackageController {
         packageEntity.setPackagePrice(last.intValue());
 
         try {
+            packageEntity.setPackagePic(packageEntity.getPackagePic().replaceAll(pathConstant.PIC_URL,""));
             dto = supplierPackageService.updateSupplierPackage(packageEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
