@@ -544,6 +544,8 @@
                     if(result.data.refundTime != null){
                         var _date = new Date(result.data.refundTime);
                         $('#refundTime').val(_date.format("yyyy-MM-dd HH:mm:ss"));
+                    }else{
+                        $('#refundTime').val("");
                     }
                 } else {
                     layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
