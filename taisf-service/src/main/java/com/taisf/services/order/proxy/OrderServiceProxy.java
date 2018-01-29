@@ -1041,7 +1041,7 @@ public class OrderServiceProxy implements OrderService {
         if (!Check.NuNCollection(list)){
             for (EnterpriseAddressEntity entity : list) {
                 entity.setConTel(userEntity.getUserPhone());
-                entity.setConName(userEntity.getUserName() + "["+userEntity.getUserCode()+"]");
+                entity.setConName(userEntity.getUserName());
             }
             orderSaveVO.setAddressList(list);
         }

@@ -72,7 +72,9 @@
         INNER join t_order_money m on t.order_sn = m.order_sn
         LEFT JOIN t_enterprise p on p.enterprise_code = t.enterprise_code
         WHERE t.user_uid = #{userUid,jdbcType=VARCHAR}
-        AND t.order_status in (60,40)
+        AND(
+        t.order_status in (60,40) OR ( t.order_status = 50 AND t.is_self = 1)
+        )
         ORDER BY t.id DESC
     </select>
 

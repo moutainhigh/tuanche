@@ -49,7 +49,7 @@
         select
         <include refid="Base_Column_List_Supplier"/>
         from t_product t
-        inner join t_supplier_product p ON p.product_code = t.id and p.product_type = 1
+        inner join t_supplier_product p ON p.product_code = t.id
         where p.supplier_code = #{supplierCode,jdbcType=VARCHAR}
         <if test="productClassify != null">
             and t.product_classify = #{productClassify,jdbcType=VARCHAR}
