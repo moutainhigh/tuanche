@@ -68,15 +68,20 @@ public class SupplierProductController {
             if (!Check.NuNObj(dto.getData())) {
                 List<SupplierProductEntity> entityList = supplierProductService.getSupplierProductByCodeAndWeek(employeeEntity.getEmpBiz(),productListRequest.getWeek()).getData();
                 if (!Check.NuNCollection(entityList)) {
-                    dto.getData().getList().stream().forEach((x) -> {
-                        entityList.stream().forEach((y) -> {
+                    List<ProductEntity> list = dto.getData().getList();
+                    for (ProductEntity x : list) {
+                        for (SupplierProductEntity y : entityList) {
                             if (x.getId().equals(y.getProductCode())) {
                                 x.setIsDel(1);
                                 x.setForLunch(y.getForLunch());
                                 x.setForDinner(y.getForDinner());
+                                break;
+                            }else {
+                                x.setIsDel(0);
                             }
-                        });
-                    });
+                        }
+                    }
+
                 }
                 pageResult.setRows(dto.getData().getList());
                 pageResult.setTotal(dto.getData().getTotal());
