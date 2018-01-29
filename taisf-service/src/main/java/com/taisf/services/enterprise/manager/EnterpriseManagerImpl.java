@@ -266,6 +266,26 @@ public class EnterpriseManagerImpl {
 	 * @author afi
 	 * @param enterpriseCode
 	 */
+	public EnterpriseDayEntity getCurrentDay(String enterpriseCode){
+		Date now = new Date();
+		String key = DateUtil.intFormat(now)+"";
+		Map<String,EnterpriseDayEntity> map = new HashMap<>();
+		List<EnterpriseDayEntity>  list = getEnterpriseDaysByTime(enterpriseCode,now,DateUtil.jumpDate(now,1));
+		if (!Check.NuNCollection(list)){
+			for (EnterpriseDayEntity dayEntity : list) {
+				map.put(dayEntity.getDayTime(),dayEntity);
+			}
+		}
+		return map.get(key);
+	}
+
+
+
+	/**
+	 * 获取月内时间节点信息
+	 * @author afi
+	 * @param enterpriseCode
+	 */
 	public Map<String,EnterpriseDayEntity> dealEnterpriseMapDays(String enterpriseCode){
 		Map<String,EnterpriseDayEntity> map = new HashMap<>();
 		List<EnterpriseDayEntity>  list = getEnterpriseDaysByTime(enterpriseCode,getMonthStart(),DateUtil.jumpDate(getMonthStart(),42));

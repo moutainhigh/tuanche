@@ -7,10 +7,12 @@ import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.AccountStatusEnum;
+import com.taisf.services.common.valenum.DayTypeEnum;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.UserStatusEnum;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
+import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
@@ -289,6 +291,16 @@ public class IndexServiceProxy implements IndexService {
         EnterpriseConfigEntity config =infoVO.getEnterpriseConfigEntity();
         if(Check.NuNObj(config)){
             dto.setErrorMsg("异常的企业配置信息");
+            return dto;
+        }
+
+        EnterpriseDayEntity day = enterpriseManager.getCurrentDay(enterpriseCode);
+        if (Check.NuNObj(day)){
+            dto.setErrorMsg("当天不配送");
+            return dto;
+        }
+        if (ValueUtil.getintValue(day.getDayType()) == DayTypeEnum.NO.getCode()){
+            dto.setErrorMsg("当天不配送");
             return dto;
         }
 
