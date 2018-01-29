@@ -195,6 +195,8 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             //处理套餐标题
             vo.setProductName(supplierPackageManager.dealPackageTitle(packageEntity.getTitle(),packageEntity.getId(),null,1));
             vo.setProductPic(packageEntity.getPackagePic());
+            vo.setForLunch(packageEntity.getForLunch());
+            vo.setForDinner(packageEntity.getForDinner());
             dealPic(vo);
             voList.add(vo);
         }
