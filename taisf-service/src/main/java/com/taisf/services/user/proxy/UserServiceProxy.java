@@ -968,6 +968,7 @@ public class UserServiceProxy implements UserService {
         employeeEntity.setEmpValid(0);
         employeeEntity.setEmpMobile(userEntity.getUserPhone());
         employeeEntity.setEmpMail(userEntity.getEmpMail());
+        employeeEntity.setEmpBiz(userEntity.getBizCode());
         employeeDao.insertEmployeeSysc(employeeEntity);
     }
 
