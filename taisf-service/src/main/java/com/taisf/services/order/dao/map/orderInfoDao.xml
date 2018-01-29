@@ -106,7 +106,7 @@
     <select id="pageListOrder" resultMap="BaseResultMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest">
         SELECT
         <include refid="Base_Column_List"/>
-        ,supplier_name,e.enterprise_code,e.enterprise_name
+        ,supplier_name,e.enterprise_code,e.enterprise_name,t.is_self
         FROM t_order t
         INNER join t_order_money m on t.order_sn = m.order_sn
         LEFT JOIN t_supplier s ON s.supplier_code = t.business_uid
