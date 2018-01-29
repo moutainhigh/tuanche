@@ -7,10 +7,12 @@ import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.AccountStatusEnum;
+import com.taisf.services.common.valenum.DayTypeEnum;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.UserStatusEnum;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
+import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
@@ -164,8 +166,7 @@ public class IndexServiceProxy implements IndexService {
         //校验当前的账户状态
         AccountStatusEnum accountStatusEnum = AccountStatusEnum.getTypeByCode(accountEntity.getAccountStatus());
         if (Check.NuNObj(accountStatusEnum)){
-            dto.setErrorMsg("异常的账户状态");
-            return ;
+            accountStatusEnum = AccountStatusEnum.AVAILABLE;
         }
         if (!accountStatusEnum.checkOk()){
             dto.setErrorMsg(accountStatusEnum.getDesc());
@@ -240,6 +241,16 @@ public class IndexServiceProxy implements IndexService {
         if (!Check.NuNObj(isOpen) && isOpen == YesNoEnum.NO.getCode()){
             isExt = true;
         }
+        //设置供应商的code
+        indexVO.setSupplierCode(infoVO.getEnterpriseEntity().getSupplierCode());
+
+        EnterpriseDayEntity day = enterpriseManager.getCurrentDay(userEntity.getEnterpriseCode());
+        if (Check.NuNObj(day)
+                || ValueUtil.getintValue(day.getDayType()) ==DayTypeEnum.NO.getCode()){
+            indexVO.setTimeTitle("点餐（今日不配送）");
+            indexVO.setTimeMsg("当天不配送");
+            return dto;
+        }
 
         //获取当前的订餐类型
         OrderTypeEnum orderTypeEnum = this.dealTime4Lunch(config,now,indexVO,isExt);
@@ -253,8 +264,7 @@ public class IndexServiceProxy implements IndexService {
             indexVO.setOrderType(orderTypeEnum.getCode());
         }
 
-        //设置供应商的code
-        indexVO.setSupplierCode(infoVO.getEnterpriseEntity().getSupplierCode());
+
         return dto;
     }
 
@@ -289,6 +299,16 @@ public class IndexServiceProxy implements IndexService {
         EnterpriseConfigEntity config =infoVO.getEnterpriseConfigEntity();
         if(Check.NuNObj(config)){
             dto.setErrorMsg("异常的企业配置信息");
+            return dto;
+        }
+
+        EnterpriseDayEntity day = enterpriseManager.getCurrentDay(enterpriseCode);
+        if (Check.NuNObj(day)){
+            dto.setErrorMsg("当天不配送");
+            return dto;
+        }
+        if (ValueUtil.getintValue(day.getDayType()) == DayTypeEnum.NO.getCode()){
+            dto.setErrorMsg("当天不配送");
             return dto;
         }
 

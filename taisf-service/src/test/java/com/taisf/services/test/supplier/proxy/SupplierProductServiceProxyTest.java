@@ -39,7 +39,7 @@ public class SupplierProductServiceProxyTest extends BaseTest {
     @Test
     public void getSupplierClassifyProductTest() {
 
-        DataTransferObject<List<ProductClassifyInfo>> classify = supplierProductService.getSupplierClassifyProduct("jipin","0001");
+        DataTransferObject<List<ProductClassifyInfo>> classify = supplierProductService.getSupplierClassifyProduct("jipin","qpg001");
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }

@@ -48,7 +48,7 @@ public class IndexServiceProxyTest extends BaseTest {
     @Test
     public void getIndexTest() {
 
-        DataTransferObject<IndexVO> dto = indexService.getIndex("baozi");
+        DataTransferObject<IndexVO> dto = indexService.getIndex("2c91340c613249c401613b1217640016");
 
         System.out.println(JsonEntityTransform.Object2Json(dto));
     }
