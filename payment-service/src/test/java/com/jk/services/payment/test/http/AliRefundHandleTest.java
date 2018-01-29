@@ -2,7 +2,6 @@ package com.jk.services.payment.test.http;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.services.payment.entity.PayInfo;
-import com.jk.services.payment.handle.alipay.AliRefundHandle;
 import com.jk.services.payment.service.PaymentService;
 import com.jk.services.payment.test.base.BaseTest;
 import org.junit.Test;
@@ -34,16 +33,7 @@ public class AliRefundHandleTest  extends BaseTest {
     protected PaymentService paymentService;
 
 
-    @Autowired
-    protected AliRefundHandle aliRefundHandle;
 
-
-    @Test
-    public void refundTaskTest() throws Exception{
-
-
-        aliRefundHandle.doTask();
-    }
 
     @Test
     public void refundTest() throws Exception{
@@ -57,10 +47,10 @@ public class AliRefundHandleTest  extends BaseTest {
         payInfo.setAmount(200);
         DataTransferObject dto = new DataTransferObject();
         paymentService.dealRefundParameter(payInfo,dto);
-        if (dto.checkSuccess()){
-            String rst =   aliRefundHandle.doRefundBusiness(payInfo);
-            aliRefundHandle.notifyHandle(payInfo,rst);
-        }
+//        if (dto.checkSuccess()){
+//            String rst =   aliRefundHandle.doRefundBusiness(payInfo);
+//            aliRefundHandle.notifyHandle(payInfo,rst);
+//        }
 
 
         System.out.println(111);
