@@ -166,8 +166,7 @@ public class IndexServiceProxy implements IndexService {
         //校验当前的账户状态
         AccountStatusEnum accountStatusEnum = AccountStatusEnum.getTypeByCode(accountEntity.getAccountStatus());
         if (Check.NuNObj(accountStatusEnum)){
-            dto.setErrorMsg("异常的账户状态");
-            return ;
+            accountStatusEnum = AccountStatusEnum.AVAILABLE;
         }
         if (!accountStatusEnum.checkOk()){
             dto.setErrorMsg(accountStatusEnum.getDesc());
