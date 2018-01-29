@@ -13,7 +13,6 @@ import com.jk.framework.log.utils.LogUtil;
 import com.jk.services.payment.constant.PayConstants;
 import com.jk.services.payment.entity.PayInfo;
 import com.jk.services.payment.exception.PaymentException;
-import com.jk.services.payment.handle.alipay.AliRefundHandle;
 import com.jk.services.payment.handle.tenpay.TenpayRefundHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +49,6 @@ public class RefundController extends BaseController {
 	private TenpayRefundHandle tenpayRefundHandle;
 
 
-	@Autowired
-	private AliRefundHandle aliRefundHandle;
 
 
 	/**
@@ -90,10 +87,7 @@ public class RefundController extends BaseController {
 					|| PayConstants.HandleType.Handle_weChat_Wap.getCode().equals(code)){
 				//微信退款
 				rst = tenpayRefundHandle.doRefundBusiness(payInfo);
-			}else if(PayConstants.HandleType.Handle_alipay_App.getCode().equals(code)){
-				//支付宝退款
-				rst = aliRefundHandle.doRefundBusiness(payInfo);
-			}else{
+			}else {
 				//当前业务还未提供退款支持
 				dto.setErrorMsg("当前支付未提供退款支持");
 				return dto.trans2Res();

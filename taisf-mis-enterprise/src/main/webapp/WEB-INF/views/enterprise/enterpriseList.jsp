@@ -92,9 +92,9 @@
 				<div class="row row-lg">
 						<!-- Example Pagination -->
 					<div class="col-sm-12">				
-						<%--<button id="addMenuButton" type="button" onclick="addEnterprise();" class="btn btn-primary" data-toggle="modal" data-target="#addModal">--%>
-							<%--<i class="fa fa-plus"></i>&nbsp;添加企业--%>
-						<%--</button>--%>
+						<button id="addMenuButton" type="button" onclick="addEnterprise();" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+							<i class="fa fa-plus"></i>&nbsp;添加企业
+						</button>
 						<table id="listTable" class="table table-bordered" data-click-to-select="true"
 							data-toggle="table" data-side-pagination="server"
 							data-pagination="true" data-page-list="[5,10,20,50]"

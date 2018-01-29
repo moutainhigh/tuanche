@@ -57,9 +57,7 @@ public class HeadersInterceptor extends HandlerInterceptorAdapter {
 		final String traceinfo = request.getHeader("traceInfo");
 		final Header header = matchTraceInfoToHeader(traceinfo);
 		final String token = request.getHeader("token");
-//		if (Check.NuNStr(token)){
-//			token = header.getUserToken();
-//		}
+
 
 		System.out.println(header.getUserToken());
 
@@ -69,10 +67,6 @@ public class HeadersInterceptor extends HandlerInterceptorAdapter {
 		}else {
 			request.setAttribute(TOKEN, token);
 		}
-
-//		if (Check.NuNObj(uid) && !Check.NuNObj(header))
-//			uid = header.getUserId();
-//		request.setAttribute(USERID, uid);
 		if (isPrint) {
 			logger.info("header: {}, token: {}.", header, token);
 		}
