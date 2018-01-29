@@ -109,6 +109,9 @@ public class SupplierProductServiceProxy implements SupplierProductService {
                     if (!Check.NuNCollection(tmp)) {
                         vo.setList(tmp);
                     }
+                    if (Check.NuNCollection(tmp)){
+                       continue;
+                    }
                     list.add(vo);
                 }
 
@@ -156,10 +159,9 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             for (SupplierProductVO productVO : tmp) {
                 dealPic(productVO);
             }
-
             vo.setList(tmp);
+            list.add(vo);
         }
-        list.add(vo);
     }
 
 
