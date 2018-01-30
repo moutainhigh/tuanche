@@ -1,10 +1,8 @@
 package com.jk.api.payment.controller;
 
 
-import com.alipay.api.internal.util.AlipaySignature;
 import com.jk.api.payment.base.BaseController;
 import com.jk.api.payment.vo.CreateVO;
-import com.jk.api.payment.vo.RefundVO;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.rst.ResponseDto;
 import com.jk.framework.base.rst.SignResponseDto;
@@ -18,13 +16,11 @@ import com.jk.services.payment.entity.PayEntity;
 import com.jk.services.payment.entity.PayInfo;
 import com.jk.services.payment.exception.PaymentException;
 import com.jk.services.payment.handle.PaymentHandle;
-import com.jk.services.payment.handle.tenpay.TenpayRefundHandle;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +29,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 
@@ -172,60 +167,60 @@ public class PayController extends BaseController {
 		return "fail";
 	}
 
-	/**
-	 * 支付平台异步回调
-	 * @param model
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping("/alipayNotify")
-	@ResponseBody
-	public String alipayNotify(Model model, HttpServletRequest request, HttpServletResponse response){
-		Map<String,String> params = new HashMap<String,String>();
-		Object payId = null;
-		String content ="";
-		try {
-			content = this.getJson(request);
-			LOGGER.info("支付宝平台接收异步返回 request：{}",content);
-			payId = request.getParameter("out_trade_no");
-			Map requestParams = request.getParameterMap();
-			for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
-				String name = (String) iter.next();
-				String[] values = (String[]) requestParams.get(name);
-				String valueStr = "";
-				for (int i = 0; i < values.length; i++) {
-					valueStr = (i == values.length - 1) ? valueStr + values[i]
-							: valueStr + values[i] + ",";
-				}
-				//乱码解决，这段代码在出现乱码时使用。
-				//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-				params.put(name, valueStr);
-			}
-			LOGGER.info("获取异步通知 payId：{}",payId);
-			if(payId != null) {
-				PayEntity pay = paymentService.selectPayByakeId(payId.toString());
-				LOGGER.info("获取异步通知 pay：{}",JsonEntityTransform.Object2Json(pay));
-				if( pay == null){
-					return "fail";
-				}
-				PayInfo payInfo = paymentService.createPayInfo(pay);
-				boolean flag = AlipaySignature.rsaCheckV1(params, payInfo.getPartnerKey(), "UTF-8", "RSA");
-				if(!flag){
-					LOGGER.error(payId+"异步通知验签失败");
-					return "fail";
-				}
-				content = JsonEntityTransform.Object2Json(params);
-				return getPaymentHandleByCode(pay.getCode()).notifyHandle(payInfo, content);
-
-			}
-		} catch (PaymentException e){
-			LOGGER.error(payId+"异步通知发生异常: ",e);
-		}catch (Exception e) {
-			LOGGER.error(payId+"异步通知发生异常: ",e);
-		}
-		return "fail";
-	}
+//	/**
+//	 * 支付平台异步回调
+//	 * @param model
+//	 * @param request
+//	 * @param response
+//	 * @return
+//	 */
+//	@RequestMapping("/alipayNotify")
+//	@ResponseBody
+//	public String alipayNotify(Model model, HttpServletRequest request, HttpServletResponse response){
+//		Map<String,String> params = new HashMap<String,String>();
+//		Object payId = null;
+//		String content ="";
+//		try {
+//			content = this.getJson(request);
+//			LOGGER.info("支付宝平台接收异步返回 request：{}",content);
+//			payId = request.getParameter("out_trade_no");
+//			Map requestParams = request.getParameterMap();
+//			for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+//				String name = (String) iter.next();
+//				String[] values = (String[]) requestParams.get(name);
+//				String valueStr = "";
+//				for (int i = 0; i < values.length; i++) {
+//					valueStr = (i == values.length - 1) ? valueStr + values[i]
+//							: valueStr + values[i] + ",";
+//				}
+//				//乱码解决，这段代码在出现乱码时使用。
+//				//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+//				params.put(name, valueStr);
+//			}
+//			LOGGER.info("获取异步通知 payId：{}",payId);
+//			if(payId != null) {
+//				PayEntity pay = paymentService.selectPayByakeId(payId.toString());
+//				LOGGER.info("获取异步通知 pay：{}",JsonEntityTransform.Object2Json(pay));
+//				if( pay == null){
+//					return "fail";
+//				}
+//				PayInfo payInfo = paymentService.createPayInfo(pay);
+//				boolean flag = AlipaySignature.rsaCheckV1(params, payInfo.getPartnerKey(), "UTF-8", "RSA");
+//				if(!flag){
+//					LOGGER.error(payId+"异步通知验签失败");
+//					return "fail";
+//				}
+//				content = JsonEntityTransform.Object2Json(params);
+//				return getPaymentHandleByCode(pay.getCode()).notifyHandle(payInfo, content);
+//
+//			}
+//		} catch (PaymentException e){
+//			LOGGER.error(payId+"异步通知发生异常: ",e);
+//		}catch (Exception e) {
+//			LOGGER.error(payId+"异步通知发生异常: ",e);
+//		}
+//		return "fail";
+//	}
 
 	/**
 	 * 同步的回调地址
