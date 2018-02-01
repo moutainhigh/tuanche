@@ -70,7 +70,7 @@ public class OrderServiceProxyTest extends BaseTest {
         createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(3);
         createOrderRequest.setPrice(100);
-        DataTransferObject<String> classify = orderService.faceOrder(createOrderRequest);
+        DataTransferObject<String> classify = orderService.faceOrder(createOrderRequest,true);
         System.out.println(JsonEntityTransform.Object2Json(classify));
     }
 

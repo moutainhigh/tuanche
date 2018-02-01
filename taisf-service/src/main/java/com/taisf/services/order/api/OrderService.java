@@ -34,7 +34,7 @@ public interface OrderService {
      * @param createOrderRequest
      * @return
      */
-    DataTransferObject<String> faceOrder(CreateOrderRequest createOrderRequest);
+    DataTransferObject<String> faceOrder(CreateOrderRequest createOrderRequest,boolean needPwd);
 
     /**
      * 申请退款

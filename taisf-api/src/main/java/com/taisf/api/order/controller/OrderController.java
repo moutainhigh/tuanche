@@ -233,7 +233,7 @@ public class OrderController extends AbstractController {
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
 
-            DataTransferObject<String> dto =ordersService.faceOrder(paramRequest);
+            DataTransferObject<String> dto =ordersService.faceOrder(paramRequest,true);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【面对面收款】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
