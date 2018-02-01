@@ -2,14 +2,19 @@ package com.taisf.web.enterprise.cashondelivery.controller;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.BigDecimalUtil;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.order.api.OrderService;
+import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.services.user.entity.UserEntity;
+import com.taisf.services.user.manager.UserManagerImpl;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
 import org.slf4j.Logger;
@@ -19,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -30,8 +36,13 @@ public class CashOnDeliveryController {
     @Autowired
     private OrderManagerImpl orderManagerImpl;
 
+
     @Autowired
     private OrderService orderService;
+
+    @Resource(name = "user.userManagerImpl")
+    private UserManagerImpl userManager;
+
 
     /**
      * @author:zhangzhengguang
@@ -49,8 +60,8 @@ public class CashOnDeliveryController {
      * @description:订单详情商品列表
      **/
     @RequestMapping("showOrderProduct")
-    public String showOrderProduct(HttpServletRequest request,String orderSn) {
-        request.setAttribute("orderSn",orderSn);
+    public String showOrderProduct(HttpServletRequest request, String orderSn) {
+        request.setAttribute("orderSn", orderSn);
         return "order/orderProductList";
     }
 
@@ -64,7 +75,7 @@ public class CashOnDeliveryController {
     public PageResult pageList(HttpServletRequest request, OrderInfoRequest orderInfoRequest) {
         PageResult pageResult = new PageResult();
         try {
-            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            EmployeeEntity emp = (EmployeeEntity) request.getSession().getAttribute(LoginConstant.SESSION_KEY);
             orderInfoRequest.setBizCode(emp.getEmpBiz());
             PagingResult<OrderInfoVO> pagingResult = orderManagerImpl.pageListOrder(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
@@ -86,18 +97,29 @@ public class CashOnDeliveryController {
      **/
     @RequestMapping("confirmation")
     @ResponseBody
-    public DataTransferObject<Void> confirmation(HttpServletRequest request,String userTel,double sumMoney) {
-        DataTransferObject<Void> dto = new DataTransferObject<>();
-        if(Check.NuNObjs(userTel,sumMoney)){
+    public DataTransferObject<String> confirmation(HttpServletRequest request, String userTel, Double sumMoney) {
+        DataTransferObject<String> dto = new DataTransferObject<>();
+        if (Check.NuNObjs(userTel, sumMoney)) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
         try {
-            EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            EmployeeEntity employeeEntity = (EmployeeEntity) request.getSession().getAttribute(LoginConstant.SESSION_KEY);
             String biz = employeeEntity.getEmpBiz();
-            // TODO: 2018/2/1  biz,userTel,money
+            CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+            UserEntity userEntity = userManager.getUserByUserPhone(userTel, UserTypeEnum.YONGHU.getCode());
+            if (Check.NuNObj(userEntity)) {
+                dto.setErrorMsg("当前用户不存在");
+                return dto;
+            }
+            createOrderRequest.setUserUid(userEntity.getUserUid());
+            createOrderRequest.setBusinessUid(biz);
+            createOrderRequest.setSource(3);
+            sumMoney = BigDecimalUtil.mul(sumMoney, 100);
+            createOrderRequest.setPrice(sumMoney.intValue());
+            dto = orderService.faceOrder(createOrderRequest);
         } catch (Exception e) {
-            LogUtil.info(LOGGER, "确认收款异常params:{}{}", userTel,sumMoney);
+            LogUtil.info(LOGGER, "确认收款异常params:{}{}", userTel, sumMoney);
             LogUtil.error(LOGGER, "确认收款异常error:{}", e);
             return null;
         }
