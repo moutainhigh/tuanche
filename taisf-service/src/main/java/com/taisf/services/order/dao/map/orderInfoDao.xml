@@ -129,6 +129,9 @@
         <if test="userTel != null and userTel != '' ">
             and t.user_tel like concat('%',#{userTel},'%')
         </if>
+        <if test="orderType != null">
+            and t.order_type = #{orderType,jdbcType=INTEGER}
+        </if>
         <if test="isSelf != null">
             and t.is_self = #{isSelf,jdbcType=INTEGER}
         </if>

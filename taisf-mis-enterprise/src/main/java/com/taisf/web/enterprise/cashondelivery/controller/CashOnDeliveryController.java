@@ -6,6 +6,7 @@ import com.jk.framework.base.utils.BigDecimalUtil;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
@@ -77,6 +78,7 @@ public class CashOnDeliveryController {
         try {
             EmployeeEntity emp = (EmployeeEntity) request.getSession().getAttribute(LoginConstant.SESSION_KEY);
             orderInfoRequest.setBizCode(emp.getEmpBiz());
+            orderInfoRequest.setOrderType(OrderTypeEnum.FACE.getCode());
             PagingResult<OrderInfoVO> pagingResult = orderManagerImpl.pageListOrder(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());

@@ -104,6 +104,11 @@
             <div class="row row-lg">
                 <!-- Example Pagination -->
                 <div class="col-sm-12">
+                    <button class="btn btn-primary" type="button" data-toggle='modal' data-target='#editModal')
+                            ">
+                        <!-- <a href="stats/refund/testPoi"> </a>-->
+                        面对面收款
+                    </button>
                     <table id="listTable" class="table table-bordered" data-click-to-select="true"
                            data-toggle="table" data-side-pagination="server"
                            data-pagination="true" data-page-list="[5,10,20,50]"
@@ -150,7 +155,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">关闭</span>
                 </button>
-                <h4 class="modal-title">确认收款</h4>
+                <h4 class="modal-title">面对面收款</h4>
             </div>
             <div class="col-sm-14">
                 <div class="ibox float-e-margins">
@@ -480,7 +485,7 @@
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='确认收款' onclick='toedit(\"" + row.orderSn + "\",\"" + row.userTel + "\",\"" + row.sumMoney + "\")'  data-toggle='modal' data-target='#editModal')>确认收款</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        //result = result + "<a title='确认收款' onclick='toedit(\"" + row.orderSn + "\",\"" + row.userTel + "\",\"" + row.sumMoney + "\")'  data-toggle='modal' data-target='#editModal')>确认收款</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         result = result + "<a title='查看' onclick='showOrderProduct(\"" + row.orderSn + "\")'>查看</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         return result;
     }
@@ -514,11 +519,7 @@
                 $("#saveBtnE").removeAttr("disabled");
                 return false;
             }
-            if ($("#sumMoney_E").val() > $("#sumMoney_H").val()) {
-                layer.alert("收款金额不能大于总金额", {icon: 5, time: 2000, title: '提示'});
-                $("#saveBtnE").removeAttr("disabled");
-                return false;
-            }
+
         }
         console.log($("#userTel_E").val()+"====="+$("#sumMoney_E").val()+"====="+$("#sumMoney_H").val());
         $.ajax({

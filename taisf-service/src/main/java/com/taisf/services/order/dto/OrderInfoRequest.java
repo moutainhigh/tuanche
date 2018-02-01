@@ -64,6 +64,16 @@ public class OrderInfoRequest extends PageRequest {
 
     private String supplierName;
 
+    private Integer orderType;
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
+
     public String getSupplierName() {
         return supplierName;
     }
