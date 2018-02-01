@@ -524,7 +524,7 @@ public class OrderServiceProxy implements OrderService {
         this.dealFaceOrderMoneyInfo(dto,orderSaveVO, createOrderRequest);
 
         //6. 处理账户信息
-        this.dealBalanceInfo(dto,orderSaveVO,createOrderRequest.getPrice(), createOrderRequest,true);
+        this.dealBalanceInfo(dto,orderSaveVO,createOrderRequest.getPrice(), createOrderRequest,true,true);
 
 
     }
@@ -682,7 +682,7 @@ public class OrderServiceProxy implements OrderService {
         this.dealExtOrderMoneyInfo(dto,orderSaveVO, createOrderRequest);
 
         //6. 处理账户信息
-        this.dealBalanceInfo(dto,orderSaveVO,orderSaveVO.getExtPrice(), createOrderRequest,createFlag);
+        this.dealBalanceInfo(dto,orderSaveVO,orderSaveVO.getExtPrice(), createOrderRequest,createFlag,false);
 
     }
 
@@ -729,7 +729,7 @@ public class OrderServiceProxy implements OrderService {
         this.dealMoneyInfo(dto,orderSaveVO,cartInfoVO, createOrderRequest);
 
         //6. 处理账户信息
-        this.dealBalanceInfo(dto,orderSaveVO,cartInfoVO.getPrice(), createOrderRequest,createFlag);
+        this.dealBalanceInfo(dto,orderSaveVO,cartInfoVO.getPrice(), createOrderRequest,createFlag,false);
 
     }
 
@@ -742,7 +742,7 @@ public class OrderServiceProxy implements OrderService {
      * @param createOrderRequest
      * @param createFlag
      */
-    private void dealBalanceInfo(DataTransferObject dto, OrderSaveVO orderSaveVO, int cost, CreateOrderRequest createOrderRequest, boolean createFlag) {
+    private void dealBalanceInfo(DataTransferObject dto, OrderSaveVO orderSaveVO, int cost, CreateOrderRequest createOrderRequest, boolean createFlag,boolean face) {
 
         if (!dto.checkSuccess()) {
             return;
@@ -786,8 +786,14 @@ public class OrderServiceProxy implements OrderService {
         }
         if (ValueUtil.getintValue(money.getPayBalance()) <= 0){
             //不需要余额支付,就不需要密码
-            return;
+            if (face){
+                dto.setErrorMsg("余额不足,请充值");
+                return;
+            }else {
+                return;
+            }
         }
+
         if (Check.NuNStr(createOrderRequest.getPwd())){
             dto.setErrorMsg("请输入交易密码");
             return;
