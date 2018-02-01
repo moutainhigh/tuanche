@@ -88,7 +88,7 @@ public class IndexServiceProxy implements IndexService {
                     //如果是自取点,直接返回不做处理
                 }
                 entity.setConTel(userEntity.getUserPhone());
-                entity.setConName(userEntity.getUserName() + "["+userEntity.getUserCode()+"]");
+                entity.setConName(userEntity.getUserName());
             }
         }
         dto.setData(list);

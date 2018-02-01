@@ -103,9 +103,6 @@ public class SupplierPackageManagerImpl {
 		if (!Check.NuNObj(packageEntity.getBigCode())){
 			list.add(packageEntity.getBigCode());
 		}
-		if (!Check.NuNObj(packageEntity.getBigCode())){
-			list.add(packageEntity.getBigCode());
-		}
 		if (!Check.NuNObj(packageEntity.getSmallCode())){
 			list.add(packageEntity.getSmallCode());
 		}
