@@ -47,11 +47,11 @@ public class PayNotifyAspect {
 	 */
 	private static final String TENREFUND_NOTIFY  = "target(com.jk.services.payment.handle.tenpay.TenpayRefundHandle)";
 
-	/**
-	 * 支付宝退款切面
-	 */
-	private static final String ALIEFUND_NOTIFY  = "target(com.jk.services.payment.handle.alipay.AliRefundHandle)";
-
+//	/**
+//	 * 支付宝退款切面
+//	 */
+//	private static final String ALIEFUND_NOTIFY  = "target(com.jk.services.payment.handle.alipay.AliRefundHandle)";
+//
 
 	/**
 	 * 方法切入点
@@ -61,21 +61,21 @@ public class PayNotifyAspect {
 
 	}
 
-
-	/**
-	 * 支付宝退款切面
-	 * @param point
-	 * @param returnStr
-	 * @throws Throwable
-	 */
-	@AfterReturning(value=ALIEFUND_NOTIFY+" && notifyHandle()",returning="returnStr")
-	public void alipayRefundResult(JoinPoint point, String returnStr) throws Throwable {
-		LOGGER.info("支付宝退款通知结果：{}", returnStr);
-		if(PayConstants.SUCCESS.equalsIgnoreCase(returnStr)){
-			LOGGER.info("开始切面同步,同步参数:{}", JsonEntityTransform.Object2Json(point.getArgs()[0]));
-			this.notify(point.getArgs()[0]);
-		}
-	}
+//
+//	/**
+//	 * 支付宝退款切面
+//	 * @param point
+//	 * @param returnStr
+//	 * @throws Throwable
+//	 */
+//	@AfterReturning(value=ALIEFUND_NOTIFY+" && notifyHandle()",returning="returnStr")
+//	public void alipayRefundResult(JoinPoint point, String returnStr) throws Throwable {
+//		LOGGER.info("支付宝退款通知结果：{}", returnStr);
+//		if(PayConstants.SUCCESS.equalsIgnoreCase(returnStr)){
+//			LOGGER.info("开始切面同步,同步参数:{}", JsonEntityTransform.Object2Json(point.getArgs()[0]));
+//			this.notify(point.getArgs()[0]);
+//		}
+//	}
 
 
 	/**
