@@ -27,6 +27,15 @@ import java.util.List;
  */
 public interface OrderService {
 
+
+    /**
+     * 面对面收款
+     * @author afi
+     * @param createOrderRequest
+     * @return
+     */
+    DataTransferObject<String> faceOrder(CreateOrderRequest createOrderRequest);
+
     /**
      * 申请退款
      * @author afi

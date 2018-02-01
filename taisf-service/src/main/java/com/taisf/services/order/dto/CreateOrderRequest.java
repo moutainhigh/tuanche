@@ -55,6 +55,18 @@ public class CreateOrderRequest extends BaseEntity{
      */
     private String enterpriseCode;
 
+    /**
+     * 金额
+     */
+    private Integer price;
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
 
     public String getEnterpriseCode() {
         return enterpriseCode;

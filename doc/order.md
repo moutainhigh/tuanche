@@ -746,3 +746,68 @@ page|否|Integer|页码 从1开始
 
 
 
+## 8. 面对面收款
+
+
+###  地址
+
+    order/faceOrder
+
+
+###  提交方式
+提交方式|post
+Content-Type|application/json
+参数|放在body流中,依照json格式
+
+### 参数
+
+字段|是否必填|类型|描述
+---|---|---|---
+businessUid|是|String|供应商code
+price|是|Integer|金额,单位分
+pwd|否|String|只有初始化订单的情况才需要输入密码,不接受明文,需要时md5加密之后
+    
+
+
+返回信息:成功
+
+   {
+       "msg": {
+           "info": "",
+           "code": 0,
+           "success": true
+       },
+       "data": "1710118HV517A9234345"
+   }
+
+
+返回信息解析
+1710118HV517A9234345 //订单编号
+
+返回信息:失败
+
+    {
+    msg: {
+        info: "参数异常",
+        code: 1,
+        success: false
+    },
+    data: null
+    }
+
+
+demo:
+
+
+````
+            curl -X POST \
+            http://localhost:8080/order/faceOrder \
+            -H 'cache-control: no-cache' \
+            -H 'content-type: application/json' \
+            -H 'postman-token: 0c56a128-9d68-88da-c4c8-d4cfd04a7921' \
+            -H 'token: token' \
+            -H 'traceinfo: applicationCode=user;deviceUuid=deviceUuid;versionCode=versionCode;source=1;' \
+            -d '{"businessUid":"123","orderType":31,"addressFid":"111"}'
+
+````
+

@@ -451,6 +451,87 @@ public class OrderServiceProxy implements OrderService {
         return dto;
     }
 
+
+
+    /**
+     * 面对面收款
+     * @author afi
+     * @param createOrderRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<String> faceOrder(CreateOrderRequest createOrderRequest){
+        DataTransferObject<String> dto = new DataTransferObject<>();
+
+        if (Check.NuNStr(createOrderRequest.getBusinessUid())
+                || Check.NuNStr(createOrderRequest.getUserUid())) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (ValueUtil.getintValue(createOrderRequest.getPrice()) < 0){
+            dto.setErrorMsg("异常的金额");
+            return dto;
+        }
+        OrderSaveVO orderSaveVO = new OrderSaveVO();
+        orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE.getCode());
+
+        //1. 填充面对面收款订单的信息
+        this.faceOrderInfo(dto,orderSaveVO, createOrderRequest);
+
+        //2. 下单的逻辑
+        if (dto.checkSuccess()){
+            orderManager.saveOrderSave(orderSaveVO);
+        }
+        dto.setData(orderSaveVO.getOrderSn());
+        return dto;
+    }
+
+
+
+    /**
+     * 填充面对面收款
+     * @author afi
+     * @param orderSaveVO
+     * @param createOrderRequest
+     */
+    private void  faceOrderInfo(DataTransferObject dto, OrderSaveVO orderSaveVO,  CreateOrderRequest createOrderRequest){
+        if (!dto.checkSuccess()){
+            return;
+        }
+        if (Check.NuNObjs(orderSaveVO)){
+            return;
+        }
+
+        //处理订单的基本信息
+        orderSaveVO.getOrderBase().setOrderSource(createOrderRequest.getSource());
+
+        orderSaveVO.setExtPrice(createOrderRequest.getPrice());
+
+        //1. 填充商家信息
+        this.dealBusinessInfo(dto,orderSaveVO, createOrderRequest);
+
+        //2. 获取用户信息
+        this.dealUserInfo(dto,orderSaveVO, createOrderRequest,true);
+
+        //3. 填充当前订单的收货信息
+        this.dealFaceAddressInfo(dto,orderSaveVO);
+
+
+        //4. 购物车中的商品信息
+        this.dealFaceOrderProductInfo(dto,orderSaveVO);
+
+        //5. 处理钱信息
+        this.dealFaceOrderMoneyInfo(dto,orderSaveVO, createOrderRequest);
+
+        //6. 处理账户信息
+        this.dealBalanceInfo(dto,orderSaveVO,createOrderRequest.getPrice(), createOrderRequest,true);
+
+
+    }
+
+
+
+
     /**
      * 下单
      *
@@ -739,6 +820,23 @@ public class OrderServiceProxy implements OrderService {
      * @param orderSaveVO
      * @param createOrderRequest
      */
+    private void dealFaceOrderMoneyInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,CreateOrderRequest createOrderRequest) {
+        if (!dto.checkSuccess()) {
+            return;
+        }
+        OrderMoneyEntity money =  orderSaveVO.getOrderMoney();
+        money.setSumMoney(createOrderRequest.getPrice());
+        dealOrderMoneyBase(money);
+    }
+
+
+
+    /**
+     * 处理当前的补单的商品价格信息
+     * @param dto
+     * @param orderSaveVO
+     * @param createOrderRequest
+     */
     private void dealExtOrderMoneyInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,CreateOrderRequest createOrderRequest) {
         if (!dto.checkSuccess()) {
             return;
@@ -796,6 +894,28 @@ public class OrderServiceProxy implements OrderService {
         //添加商品信息
         orderSaveVO.getList().add(product);
         orderSaveVO.getOrderBase().setTitle("补单由供餐商随即分配菜品");
+    }
+
+
+    /**
+     * 处理面对面收款的订单
+     * @param dto
+     * @param orderSaveVO
+     */
+    private void dealFaceOrderProductInfo(DataTransferObject dto,OrderSaveVO orderSaveVO) {
+        if (!dto.checkSuccess()) {
+            return;
+        }
+        OrderProductEntity product = new OrderProductEntity();
+        product.setOrderSn(orderSaveVO.getOrderSn());
+        product.setProductCode(0);
+        product.setProductType(SupplierProductTypeEnum.EXR_PRODUCT.getCode());
+        product.setProductPrice(orderSaveVO.getExtPrice());
+        product.setProductNum(1);
+        product.setProductName("现场收款");
+        //添加商品信息
+        orderSaveVO.getList().add(product);
+        orderSaveVO.getOrderBase().setTitle("现场收款");
     }
 
 
@@ -886,6 +1006,24 @@ public class OrderServiceProxy implements OrderService {
      * 处理当前的的下单的收货地址信息
      * @param dto
      * @param orderSaveVO
+     */
+    private void dealFaceAddressInfo(DataTransferObject dto, OrderSaveVO orderSaveVO){
+        if (!dto.checkSuccess()){
+            return;
+        }
+
+        //基本的订单信息
+        OrderEntity order =orderSaveVO.getOrderBase();
+        //收货地址
+        order.setAddress("");
+        order.setIsSelf(YesNoEnum.YES.getCode());
+    }
+
+
+    /**
+     * 处理当前的的下单的收货地址信息
+     * @param dto
+     * @param orderSaveVO
      * @param createOrderRequest
      */
     private void dealUserAddressInfo(DataTransferObject dto, OrderSaveVO orderSaveVO, CreateOrderRequest createOrderRequest, boolean createFlag){
@@ -955,6 +1093,15 @@ public class OrderServiceProxy implements OrderService {
      * @param createOrderRequest
      */
     private void dealUserInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,CreateOrderRequest createOrderRequest){
+        dealUserInfo(dto,orderSaveVO,createOrderRequest,false);
+    }
+
+    /**
+     * 处理当前的的下单用户信息
+     * @param dto
+     * @param createOrderRequest
+     */
+    private void dealUserInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,CreateOrderRequest createOrderRequest,boolean face){
         if (!dto.checkSuccess()){
             return;
         }
@@ -992,9 +1139,8 @@ public class OrderServiceProxy implements OrderService {
             //默认设置了密码,当前为设置密码
             user.setPwdFlag(false);
         }
-
         //设置当前的用户关联的企业的用餐信息
-        this.dealEnterpriseInfo( dto, orderSaveVO,userEntity, createOrderRequest);
+        this.dealEnterpriseInfo( dto, orderSaveVO,userEntity, createOrderRequest,face);
     }
 
 
@@ -1006,7 +1152,7 @@ public class OrderServiceProxy implements OrderService {
      * @param userEntity
      * @param createOrderRequest
      */
-    private void dealEnterpriseInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,UserEntity userEntity,CreateOrderRequest createOrderRequest){
+    private void dealEnterpriseInfo(DataTransferObject dto,OrderSaveVO orderSaveVO,UserEntity userEntity,CreateOrderRequest createOrderRequest,boolean face){
         if (!dto.checkSuccess()){
             return;
         }
@@ -1024,6 +1170,18 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("加盟时间已经失效,请联系企业管理人员");
             return;
         }
+
+        //设置城市code
+        orderSaveVO.getOrderBase().setProvinceCode(infoVO.getEnterpriseEntity().getProvinceCode());
+        orderSaveVO.getOrderBase().setCityCode(infoVO.getEnterpriseEntity().getCityCode());
+        orderSaveVO.getOrderBase().setAreaCode(infoVO.getEnterpriseEntity().getAreaCode());
+        orderSaveVO.getOrderBase().setEnterpriseCode(infoVO.getEnterpriseEntity().getEnterpriseCode());
+
+        if (face){
+            //面对面收款直接返回
+            return;
+        }
+
         EnterpriseConfigEntity config =infoVO.getEnterpriseConfigEntity();
         if(Check.NuNObj(config)){
             dto.setErrorMsg("异常的企业配置信息");
@@ -1045,12 +1203,6 @@ public class OrderServiceProxy implements OrderService {
             }
             orderSaveVO.setAddressList(list);
         }
-        //设置城市code
-        orderSaveVO.getOrderBase().setProvinceCode(infoVO.getEnterpriseEntity().getProvinceCode());
-        orderSaveVO.getOrderBase().setCityCode(infoVO.getEnterpriseEntity().getCityCode());
-        orderSaveVO.getOrderBase().setAreaCode(infoVO.getEnterpriseEntity().getAreaCode());
-        orderSaveVO.getOrderBase().setEnterpriseCode(infoVO.getEnterpriseEntity().getEnterpriseCode());
-
         if (orderTypeEnum.isExt()){
             //补餐
             int extPrice = this.getExtprice(dto,userEntity,orderTypeEnum,config);

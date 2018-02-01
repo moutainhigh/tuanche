@@ -41,6 +41,8 @@ public enum OrderTypeEnum {
             return true;
         }
     },
+    FACE(41,"面对面收款"){
+    },
     ;
     private int code;
     private String name;

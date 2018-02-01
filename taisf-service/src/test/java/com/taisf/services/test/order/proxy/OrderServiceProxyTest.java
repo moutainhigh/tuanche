@@ -39,6 +39,9 @@ public class OrderServiceProxyTest extends BaseTest {
 
 
 
+
+
+
     @Test
     public void getOrderInfoWaitingListTest() {
 
@@ -57,6 +60,18 @@ public class OrderServiceProxyTest extends BaseTest {
         DataTransferObject<Void> classify = orderService.finishOrder(request);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
+    }
+
+    @Test
+    public void faceOrderTest() {
+        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        createOrderRequest.setUserUid("baozi");
+        createOrderRequest.setBusinessUid("jipin");
+        createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
+        createOrderRequest.setSource(3);
+        createOrderRequest.setPrice(100);
+        DataTransferObject<String> classify = orderService.faceOrder(createOrderRequest);
+        System.out.println(JsonEntityTransform.Object2Json(classify));
     }
 
 
