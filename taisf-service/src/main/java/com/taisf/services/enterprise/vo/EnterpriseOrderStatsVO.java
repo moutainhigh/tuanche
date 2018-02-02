@@ -37,6 +37,10 @@ public class EnterpriseOrderStatsVO  extends BaseEntity{
      * 非补单数量
      */
     private Integer noExtNum;
+    /**
+     * 面对面收款
+     */
+    private Integer faceNum;
 
     /**
      * 全部数量
@@ -53,6 +57,14 @@ public class EnterpriseOrderStatsVO  extends BaseEntity{
      */
     private Integer payBalance;
 
+
+    public Integer getFaceNum() {
+        return faceNum;
+    }
+
+    public void setFaceNum(Integer faceNum) {
+        this.faceNum = faceNum;
+    }
 
     public String getTime() {
         return time;

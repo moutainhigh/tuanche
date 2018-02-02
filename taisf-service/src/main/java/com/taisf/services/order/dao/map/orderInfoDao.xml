@@ -261,6 +261,7 @@
         ll.enterpriseCode,
         ll.extNum,
         ll.noExtNum,
+        ll.faceNum,
         ll.allNum,
         ll.payMoney,
         ll.payBalance
@@ -270,6 +271,7 @@
         tmp.enterprise_code AS enterpriseCode,
         SUM( extNum ) AS extNum,
         SUM( noExtNum ) AS noExtNum,
+        SUM( faceNum ) AS faceNum,
         SUM( allNum ) AS allNum,
         SUM( payMoney ) AS payMoney,
         SUM( payBalance ) AS payBalance
@@ -278,15 +280,21 @@
         SELECT
         t.enterprise_code,
         CASE
-
-        WHEN t.order_type IN ( 21, 31 ) THEN
+          WHEN t.order_type IN ( 21, 31 ) THEN
         1 ELSE 0
         END AS extNum,
-        CASE
 
-        WHEN t.order_type IN ( 20, 30 ) THEN
+        CASE
+          WHEN t.order_type IN ( 20, 30 ) THEN
         1 ELSE 0
         END AS noExtNum,
+
+        CASE
+        WHEN t.order_type IN ( 40, 41 ) THEN
+        1 ELSE 0
+        END AS faceNum,
+
+
         1 AS allNum,
 
         CASE
