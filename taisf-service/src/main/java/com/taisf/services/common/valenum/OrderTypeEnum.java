@@ -41,6 +41,10 @@ public enum OrderTypeEnum {
             return true;
         }
     },
+
+    FACE_FACE(40,"面对面收款"){
+    },
+
     FACE(41,"面对面收款"){
     },
     ;

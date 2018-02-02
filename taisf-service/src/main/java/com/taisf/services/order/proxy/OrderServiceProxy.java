@@ -473,7 +473,11 @@ public class OrderServiceProxy implements OrderService {
             return dto;
         }
         OrderSaveVO orderSaveVO = new OrderSaveVO();
-        orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE.getCode());
+        if (needPwd){
+            orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE_FACE.getCode());
+        }else {
+            orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE.getCode());
+        }
 
         //1. 填充面对面收款订单的信息
         this.faceOrderInfo(dto,orderSaveVO, createOrderRequest,needPwd);
@@ -773,13 +777,11 @@ public class OrderServiceProxy implements OrderService {
         if (drawBalance >= cost){
             //全部用余额支付
             money.setPayBalance(cost);
-            orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
+            orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.RECEIVE.getCode());
             money.setNeedPay(0);
         }else{
-            //余额不足
-            money.setPayBalance(0);
-            orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
-            money.setNeedPay(cost);
+            dto.setErrorMsg("余额不足");
+            return;
         }
         if (!createFlag){
             //非创建订单,直接返回
