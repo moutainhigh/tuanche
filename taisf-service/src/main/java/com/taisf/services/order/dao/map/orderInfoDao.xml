@@ -157,13 +157,21 @@
         SELECT o.enterprise_code,e.enterprise_name,w.num AS 'lunchCommon',wb.num AS 'lunchExt',wc.num AS
         'dinnerCommon',wcb.num AS 'dinnerExt',o.user_name,o.user_tel
         FROM t_order o LEFT JOIN t_enterprise e ON o.enterprise_code = e.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '20' GROUP BY
-        enterprise_code) w ON w.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21' GROUP BY
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '20'
+        AND order_status = 50 AND enterprise_code != ""
+        GROUP BY
+        enterprise_code  ) w ON w.enterprise_code = o.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21'
+        AND order_status = 50 AND enterprise_code != ""
+        GROUP BY
         enterprise_code) wb ON wb.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30' GROUP BY
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30'
+        AND order_status = 50 AND enterprise_code != ""
+        GROUP BY
         enterprise_code) wc ON wc.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31' GROUP BY
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31'
+        AND order_status = 50 AND enterprise_code != ""
+        GROUP BY
         enterprise_code) wcb ON wcb.enterprise_code = o.enterprise_code
         WHERE o.order_status = 50 AND o.enterprise_code != ""
         <if test="enterpriseName != null and enterpriseName != '' ">
@@ -261,6 +269,7 @@
         ll.enterpriseCode,
         ll.extNum,
         ll.noExtNum,
+        ll.faceNum,
         ll.allNum,
         ll.payMoney,
         ll.payBalance
@@ -270,6 +279,7 @@
         tmp.enterprise_code AS enterpriseCode,
         SUM( extNum ) AS extNum,
         SUM( noExtNum ) AS noExtNum,
+        SUM( faceNum ) AS faceNum,
         SUM( allNum ) AS allNum,
         SUM( payMoney ) AS payMoney,
         SUM( payBalance ) AS payBalance
@@ -278,15 +288,21 @@
         SELECT
         t.enterprise_code,
         CASE
-
-        WHEN t.order_type IN ( 21, 31 ) THEN
+          WHEN t.order_type IN ( 21, 31 ) THEN
         1 ELSE 0
         END AS extNum,
-        CASE
 
-        WHEN t.order_type IN ( 20, 30 ) THEN
+        CASE
+          WHEN t.order_type IN ( 20, 30 ) THEN
         1 ELSE 0
         END AS noExtNum,
+
+        CASE
+        WHEN t.order_type IN ( 40, 41 ) THEN
+        1 ELSE 0
+        END AS faceNum,
+
+
         1 AS allNum,
 
         CASE

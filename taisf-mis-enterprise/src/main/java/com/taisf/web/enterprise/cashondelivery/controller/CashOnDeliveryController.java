@@ -119,7 +119,7 @@ public class CashOnDeliveryController {
             createOrderRequest.setSource(3);
             sumMoney = BigDecimalUtil.mul(sumMoney, 100);
             createOrderRequest.setPrice(sumMoney.intValue());
-            dto = orderService.faceOrder(createOrderRequest);
+            dto = orderService.faceOrder(createOrderRequest,false);
         } catch (Exception e) {
             LogUtil.info(LOGGER, "确认收款异常params:{}{}", userTel, sumMoney);
             LogUtil.error(LOGGER, "确认收款异常error:{}", e);

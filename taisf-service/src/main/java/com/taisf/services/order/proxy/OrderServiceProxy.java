@@ -460,7 +460,7 @@ public class OrderServiceProxy implements OrderService {
      * @return
      */
     @Override
-    public DataTransferObject<String> faceOrder(CreateOrderRequest createOrderRequest){
+    public DataTransferObject<String> faceOrder(CreateOrderRequest createOrderRequest,boolean needPwd){
         DataTransferObject<String> dto = new DataTransferObject<>();
 
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
@@ -473,10 +473,14 @@ public class OrderServiceProxy implements OrderService {
             return dto;
         }
         OrderSaveVO orderSaveVO = new OrderSaveVO();
-        orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE.getCode());
+        if (needPwd){
+            orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE_FACE.getCode());
+        }else {
+            orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE.getCode());
+        }
 
         //1. 填充面对面收款订单的信息
-        this.faceOrderInfo(dto,orderSaveVO, createOrderRequest);
+        this.faceOrderInfo(dto,orderSaveVO, createOrderRequest,needPwd);
 
         //2. 下单的逻辑
         if (dto.checkSuccess()){
@@ -494,7 +498,7 @@ public class OrderServiceProxy implements OrderService {
      * @param orderSaveVO
      * @param createOrderRequest
      */
-    private void  faceOrderInfo(DataTransferObject dto, OrderSaveVO orderSaveVO,  CreateOrderRequest createOrderRequest){
+    private void  faceOrderInfo(DataTransferObject dto, OrderSaveVO orderSaveVO,  CreateOrderRequest createOrderRequest,boolean needPwd){
         if (!dto.checkSuccess()){
             return;
         }
@@ -524,7 +528,7 @@ public class OrderServiceProxy implements OrderService {
         this.dealFaceOrderMoneyInfo(dto,orderSaveVO, createOrderRequest);
 
         //6. 处理账户信息
-        this.dealBalanceInfo(dto,orderSaveVO,createOrderRequest.getPrice(), createOrderRequest,true,true);
+        this.dealBalanceInfoFace(dto,orderSaveVO,createOrderRequest.getPrice(), createOrderRequest,true,needPwd);
 
 
     }
@@ -682,7 +686,7 @@ public class OrderServiceProxy implements OrderService {
         this.dealExtOrderMoneyInfo(dto,orderSaveVO, createOrderRequest);
 
         //6. 处理账户信息
-        this.dealBalanceInfo(dto,orderSaveVO,orderSaveVO.getExtPrice(), createOrderRequest,createFlag,false);
+        this.dealBalanceInfo(dto,orderSaveVO,orderSaveVO.getExtPrice(), createOrderRequest,createFlag);
 
     }
 
@@ -729,9 +733,10 @@ public class OrderServiceProxy implements OrderService {
         this.dealMoneyInfo(dto,orderSaveVO,cartInfoVO, createOrderRequest);
 
         //6. 处理账户信息
-        this.dealBalanceInfo(dto,orderSaveVO,cartInfoVO.getPrice(), createOrderRequest,createFlag,false);
+        this.dealBalanceInfo(dto,orderSaveVO,cartInfoVO.getPrice(), createOrderRequest,createFlag);
 
     }
+
 
     /**
      * 处理当前的余额信息
@@ -742,7 +747,77 @@ public class OrderServiceProxy implements OrderService {
      * @param createOrderRequest
      * @param createFlag
      */
-    private void dealBalanceInfo(DataTransferObject dto, OrderSaveVO orderSaveVO, int cost, CreateOrderRequest createOrderRequest, boolean createFlag,boolean face) {
+    private void dealBalanceInfoFace(DataTransferObject dto, OrderSaveVO orderSaveVO, int cost, CreateOrderRequest createOrderRequest, boolean createFlag,boolean pwd) {
+
+        if (!dto.checkSuccess()) {
+            return;
+        }
+        OrderMoneyEntity money =  orderSaveVO.getOrderMoney();
+
+        UserAccountEntity accountEntity =userManager.fillAndGetAccountUser(createOrderRequest.getUserUid());
+
+        //校验当前的账户状态
+        AccountStatusEnum accountStatusEnum = AccountStatusEnum.getTypeByCode(accountEntity.getAccountStatus());
+        if (Check.NuNObj(accountStatusEnum)){
+            dto.setErrorMsg("异常的账户状态");
+            return;
+        }
+        if (!accountStatusEnum.checkOk()){
+            dto.setErrorMsg(accountStatusEnum.getDesc());
+            return;
+        }
+        //获取当前的余额
+        int drawBalance = ValueUtil.getintValue(accountEntity.getDrawBalance());
+        if (drawBalance < 0){
+            dto.setErrorMsg("异常的账户信息");
+            return;
+        }
+        orderSaveVO.setDrawBalance(drawBalance);
+
+        if (drawBalance >= cost){
+            //全部用余额支付
+            money.setPayBalance(cost);
+            orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.RECEIVE.getCode());
+            money.setNeedPay(0);
+        }else{
+            dto.setErrorMsg("余额不足");
+            return;
+        }
+        if (!createFlag){
+            //非创建订单,直接返回
+            return;
+        }
+        if (ValueUtil.getintValue(money.getPayBalance()) <= 0){
+            return;
+        }
+        if (!pwd){
+            return;
+        }
+        if (Check.NuNStr(createOrderRequest.getPwd()) && pwd){
+            dto.setErrorMsg("请输入交易密码");
+            return;
+        }
+        if (Check.NuNStr(accountEntity.getAccountPassword())){
+            dto.setErrorMsg("余额支付下单,需要先设置支付密码");
+            return;
+        }
+        if (!createOrderRequest.getPwd().equals(accountEntity.getAccountPassword())){
+            dto.setErrorMsg("支付密码错误");
+            return;
+        }
+    }
+
+
+    /**
+     * 处理当前的余额信息
+     * @author  afi
+     * @param dto
+     * @param orderSaveVO
+     * @param cost
+     * @param createOrderRequest
+     * @param createFlag
+     */
+    private void dealBalanceInfo(DataTransferObject dto, OrderSaveVO orderSaveVO, int cost, CreateOrderRequest createOrderRequest, boolean createFlag) {
 
         if (!dto.checkSuccess()) {
             return;
@@ -785,13 +860,8 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
         if (ValueUtil.getintValue(money.getPayBalance()) <= 0){
-            //不需要余额支付,就不需要密码
-            if (face){
-                dto.setErrorMsg("余额不足,请充值");
-                return;
-            }else {
-                return;
-            }
+            return;
+
         }
 
         if (Check.NuNStr(createOrderRequest.getPwd())){
