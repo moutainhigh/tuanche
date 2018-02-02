@@ -157,13 +157,21 @@
         SELECT o.enterprise_code,e.enterprise_name,w.num AS 'lunchCommon',wb.num AS 'lunchExt',wc.num AS
         'dinnerCommon',wcb.num AS 'dinnerExt',o.user_name,o.user_tel
         FROM t_order o LEFT JOIN t_enterprise e ON o.enterprise_code = e.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '20' GROUP BY
-        enterprise_code) w ON w.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21' GROUP BY
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '20'
+        AND order_status = 50 AND enterprise_code != ""
+        GROUP BY
+        enterprise_code  ) w ON w.enterprise_code = o.enterprise_code
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21'
+        AND order_status = 50 AND enterprise_code != ""
+        GROUP BY
         enterprise_code) wb ON wb.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30' GROUP BY
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30'
+        AND order_status = 50 AND enterprise_code != ""
+        GROUP BY
         enterprise_code) wc ON wc.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31' GROUP BY
+        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31'
+        AND order_status = 50 AND enterprise_code != ""
+        GROUP BY
         enterprise_code) wcb ON wcb.enterprise_code = o.enterprise_code
         WHERE o.order_status = 50 AND o.enterprise_code != ""
         <if test="enterpriseName != null and enterpriseName != '' ">
