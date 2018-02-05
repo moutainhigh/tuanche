@@ -11,6 +11,7 @@ import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderListVo;
+import com.taisf.services.order.vo.OrderSendStatsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -104,11 +105,11 @@ public class OrderInfoDao extends BaseDao{
      * @date:2017/10/18
      * @description:企业订单配送
      **/
-    public PagingResult<OrderListVo> finOrderDistributionList(EnterpriseListRequest enterpriseListRequest){
+    public PagingResult<OrderSendStatsVo> finOrderDistributionList(EnterpriseListRequest enterpriseListRequest){
 		PageBounds pageBounds=new PageBounds();
 		pageBounds.setLimit(enterpriseListRequest.getLimit());
 		pageBounds.setPage(enterpriseListRequest.getPage());
-        return mybatisDaoContext.findForPage(SQLID + "enterpriseOrderDistributionList", OrderListVo.class, enterpriseListRequest,pageBounds);
+        return mybatisDaoContext.findForPage(SQLID + "enterpriseOrderDistributionList", OrderSendStatsVo.class, enterpriseListRequest,pageBounds);
     }
 
     /**

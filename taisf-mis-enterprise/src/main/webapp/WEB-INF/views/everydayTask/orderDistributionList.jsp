@@ -120,28 +120,6 @@
     <ol class="indicator"></ol>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="ibox">
-        <div class="ibox-content">
-            <div class="row" style="margin-top: 10px;">
-                <div class="form-group">
-                    <label class="col-xs-1 col-sm-1 control-label mtop">企业:</label>
-                    <div class="col-xs-2 col-sm-2">
-                        <select class="form-control" name="enterpriseCodeS" id="enterpriseCodeS">
-                            <option value="">--全部--</option>
-                            <c:forEach var="v" items="${entityList}">
-                                <option value="${v.enterpriseCode}">--${v.enterpriseName}--</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-sm-1">
-                        <button class="btn btn-primary" type="button" onclick="query();">
-                            <i class="fa fa-search"></i>&nbsp;搜索
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Panel Other -->
     <div class="float-e-margins">
         <div class="ibox-content">
@@ -164,17 +142,14 @@
                                 data-align="center"><span class="tdfont">企业编号</span></th>
                             <th data-field="enterpriseName" data-width="10%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
-                            <th data-field="lunchCommon" data-width="10%"
-                                data-align="center"><span class="tdfont">午餐</span></th>
-                            <th data-field="lunchExt" data-width="10%"
-                                data-align="center"><span class="tdfont">午餐补餐</span></th>
-                            <th data-field="dinnerCommon" data-width="10%"
-                                data-align="center"><span class="tdfont">晚餐</span></th>
-                            <th data-field="dinnerExt" data-width="10%"
-                                data-align="center"><span class="tdfont">晚餐补餐</span></th>
-                            <th data-field="userName" data-width="10%"
+                            <th data-field="orderType" data-width="10%" data-formatter="formatOrderType"
+                                data-align="center"><span class="tdfont">供餐信息</span></th>
+
+                            <th data-field="address" data-width="10%"
+                                data-align="center"><span class="tdfont">配送地址</span></th>
+                            <th data-field="conName" data-width="10%"
                                 data-align="center"><span class="tdfont">联系人</span></th>
-                            <th data-field="userTel" data-width="10%"
+                            <th data-field="conTel" data-width="10%"
                                 data-align="center"><span class="tdfont">联系电话</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
@@ -254,6 +229,18 @@
             enterpriseCode: $("#enterpriseCodeS").val(),
         };
     }
+
+
+    function formatOrderType(value, row, index) {
+        if (value == 20) {
+            return "午餐";
+        } else if (value == 30) {
+            return "晚餐";
+        }
+    }
+
+
+
     function formatProductClassify(value, row, index) {
         if (value == 1) {
             return "大荤";

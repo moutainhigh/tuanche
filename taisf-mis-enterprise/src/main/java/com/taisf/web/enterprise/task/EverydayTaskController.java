@@ -16,6 +16,7 @@ import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.DayTaskVO;
 import com.taisf.services.order.vo.OrderListVo;
+import com.taisf.services.order.vo.OrderSendStatsVo;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
@@ -113,7 +114,7 @@ public class EverydayTaskController {
         try {
             EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
             enterpriseListRequest.setSupplierCode(emp.getEmpBiz());
-            PagingResult<OrderListVo> pagingResult = orderManagerImpl.finOrderDistributionList(enterpriseListRequest);
+            PagingResult<OrderSendStatsVo> pagingResult = orderManagerImpl.finOrderDistributionList(enterpriseListRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());
                 pageResult.setTotal(pagingResult.getTotal());

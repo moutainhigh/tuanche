@@ -214,8 +214,8 @@ public class OrderManagerImpl {
 	 * @date:2017/10/18
 	 * @description:企业订单配送
 	 **/
-	public PagingResult<OrderListVo> finOrderDistributionList(EnterpriseListRequest enterpriseListRequest){
-		PagingResult<OrderListVo> orderListVoPagingResult = orderInfoDao.finOrderDistributionList(enterpriseListRequest);
+	public PagingResult<OrderSendStatsVo> finOrderDistributionList(EnterpriseListRequest enterpriseListRequest){
+		PagingResult<OrderSendStatsVo> orderListVoPagingResult = orderInfoDao.finOrderDistributionList(enterpriseListRequest);
 		return orderListVoPagingResult;
 	}
 

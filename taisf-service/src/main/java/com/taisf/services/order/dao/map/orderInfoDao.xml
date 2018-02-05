@@ -144,42 +144,44 @@
         ORDER BY t.id DESC
     </select>
 
-    <resultMap id="ResultListMap" type="com.taisf.services.order.vo.OrderListVo" extends="BaseResultMap">
-        <result column="lunchCommon" property="lunchCommon" jdbcType="INTEGER"/>
-        <result column="lunchExt" property="lunchExt" jdbcType="INTEGER"/>
-        <result column="dinnerCommon" property="dinnerCommon" jdbcType="INTEGER"/>
-        <result column="dinnerExt" property="dinnerExt" jdbcType="INTEGER"/>
-        <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR"/>
-    </resultMap>
+
 
     <select id="enterpriseOrderDistributionList" parameterType="com.taisf.services.enterprise.dto.EnterpriseListRequest"
-            resultMap="ResultListMap">
-        SELECT o.enterprise_code,e.enterprise_name,w.num AS 'lunchCommon',wb.num AS 'lunchExt',wc.num AS
-        'dinnerCommon',wcb.num AS 'dinnerExt',o.user_name,o.user_tel
-        FROM t_order o LEFT JOIN t_enterprise e ON o.enterprise_code = e.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '20'
-        AND order_status = 50 AND enterprise_code != ""
-        GROUP BY
-        enterprise_code  ) w ON w.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '21'
-        AND order_status = 50 AND enterprise_code != ""
-        GROUP BY
-        enterprise_code) wb ON wb.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '30'
-        AND order_status = 50 AND enterprise_code != ""
-        GROUP BY
-        enterprise_code) wc ON wc.enterprise_code = o.enterprise_code
-        LEFT JOIN (SELECT enterprise_code, COUNT(enterprise_code) AS num from t_order where order_type = '31'
-        AND order_status = 50 AND enterprise_code != ""
-        GROUP BY
-        enterprise_code) wcb ON wcb.enterprise_code = o.enterprise_code
-        WHERE o.order_status = 50 AND o.enterprise_code != ""
-        <if test="enterpriseName != null and enterpriseName != '' ">
-            AND e.enterprise_name = #{enterpriseName,jdbcType=VARCHAR}
-        </if>
-        AND o.supplier_code = #{supplierCode,jdbcType=VARCHAR}
-        GROUP BY o.enterprise_code
+            resultType="com.taisf.services.order.vo.OrderSendStatsVo">
 
+        SELECT
+            tmp.address_fid as addressFid,
+            tmp.order_type as orderType,
+            tmp.orderNum,
+            adr.enterprise_code as enterpriseCode,
+            adr.address,
+            adr.con_tel as conTel,
+            adr.con_name as conName,
+            ent.enterprise_name as enterpriseName
+        FROM
+            (
+                SELECT
+                    t.address_fid,
+                    t.order_type,
+                    COUNT(1) AS orderNum
+                FROM
+                    (
+                    SELECT
+                        address_fid,
+                        order_type
+                    FROM
+                        t_order
+                    WHERE
+                        order_status = 50
+                        AND enterprise_code != ""
+                        AND address_fid IS NOT NULL
+                    ) t
+                GROUP BY
+                    t.address_fid,
+                    t.order_type
+            )tmp
+            LEFT JOIN t_enterprise_address adr ON tmp.address_fid = adr.fid
+            LEFT JOIN t_enterprise ent ON adr.enterprise_code = ent.enterprise_code
     </select>
 
     <update id="sendByEnterpriseCode" parameterType="com.taisf.services.order.entity.OrderEntity">
