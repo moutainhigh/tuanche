@@ -75,6 +75,11 @@
             <if test="areaCode != null">
                 area_code,
             </if>
+
+            <if test="addressFid != null">
+                address_fid,
+            </if>
+
             <if test="address != null">
                 address,
             </if>
@@ -163,6 +168,9 @@
                 #{areaCode,jdbcType=VARCHAR},
             </if>
 
+            <if test="addressFid != null">
+                #{addressFid,jdbcType=VARCHAR},
+            </if>
             <if test="address != null">
                 #{address,jdbcType=VARCHAR},
             </if>

@@ -1123,6 +1123,7 @@ public class OrderServiceProxy implements OrderService {
         //基本的订单信息
         OrderEntity order =orderSaveVO.getOrderBase();
         //收货地址
+        order.setAddressFid(createOrderRequest.getAddressFid());
         order.setAddress(addressEntity.getAddress());
         order.setIsSelf(addressEntity.getIsSelf());
     }

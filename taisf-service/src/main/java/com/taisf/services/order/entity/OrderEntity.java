@@ -39,6 +39,12 @@ public class OrderEntity extends BaseEntity {
     /** 区域code */
     private String areaCode;
 
+
+    /**
+     * 收货地址
+     */
+    private String addressFid;
+
     /**  收货地址 */
     private String  address;
 
@@ -116,6 +122,14 @@ public class OrderEntity extends BaseEntity {
      */
     private String supplierCode;
 
+
+    public String getAddressFid() {
+        return addressFid;
+    }
+
+    public void setAddressFid(String addressFid) {
+        this.addressFid = addressFid;
+    }
 
     public Integer getIsSelf() {
         return isSelf;
