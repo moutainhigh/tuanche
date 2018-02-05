@@ -63,8 +63,17 @@ public class OrderInfoRequest extends PageRequest {
     private Integer isSelf;
 
     private String supplierName;
+    private String addressFid;
 
     private Integer orderType;
+
+    public String getAddressFid() {
+        return addressFid;
+    }
+
+    public void setAddressFid(String addressFid) {
+        this.addressFid = addressFid;
+    }
 
     public Integer getOrderType() {
         return orderType;

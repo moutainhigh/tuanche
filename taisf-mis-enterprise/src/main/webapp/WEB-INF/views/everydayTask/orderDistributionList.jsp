@@ -138,6 +138,7 @@
                            data-url="everydayTask/finOrderDistributionList">
                         <thead>
                         <tr>
+                            <th data-field="addressFid" data-visible="false"></th>
                             <th data-field="enterpriseCode" data-width="10%"
                                 data-align="center"><span class="tdfont">企业编号</span></th>
                             <th data-field="enterpriseName" data-width="10%"
@@ -151,6 +152,9 @@
                                 data-align="center"><span class="tdfont">联系人</span></th>
                             <th data-field="conTel" data-width="10%"
                                 data-align="center"><span class="tdfont">联系电话</span></th>
+                            <th data-field="createTime" data-width="10%" data-formatter="formatDate"
+
+                                data-align="center"><span class="tdfont">下单时间</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
                         </tr>
@@ -176,6 +180,10 @@
             <!-- 搜索框panel -->
             <div class="ibox float-e-margins">
                 <input id="id_enterpriseCode" name="enterpriseCode" type="hidden"
+                       class="form-control">
+                <input id="orderType_S" name="enterpriseCode" type="hidden"
+                       class="form-control">
+            <input id="addressFid_S" name="enterpriseCode" type="hidden"
                        class="form-control">
             </div>
             <!-- 列表 -->
@@ -254,12 +262,12 @@
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='编辑' onclick='toedit(\"" + row.enterpriseCode + "\")'>开始配送</a>&nbsp;&nbsp;&nbsp;&nbsp;";
-        result = result + "<a title='查看' onclick='detail(\"" + row.enterpriseCode + "\")'>详情</a>";
+        result = result + "<a title='编辑' onclick='toedit(\"" + row.enterpriseCode + "\",\""+ row.orderType + "\",\""+ row.addressFid + "\")'>开始配送</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='查看' onclick='detail(\"" + row.enterpriseCode + "\",\""+ row.orderType + "\",\""+ row.addressFid + "\")'>详情</a>";
         return result;
     }
 
-    function toedit(enterpriseCode) {
+    function toedit(enterpriseCode,orderType,addressFid) {
         layer.confirm("确认配送吗", {
             //icon : iconNum,
             title : '开始配送'
@@ -267,6 +275,8 @@
             $.ajax({
                 data: {
                     'enterpriseCode': enterpriseCode,
+                    'orderType': orderType,
+                    'addressFid': addressFid,
                 },
                 type: "post",
                 dataType: "json",
@@ -294,13 +304,26 @@
             limit: params.limit,
             page: $("#listTableEmp").bootstrapTable("getOptions").pageNumber,
             enterpriseCode: $("#id_enterpriseCode").val(),
+            addressFid: $("#addressFid_S").val(),
+            orderType: $("#orderType_S").val(),
             orderStatus: 50,
         };
 
     }
+    // 格式化时间
+    function formatDate(value, row, index) {
+        if (value != null) {
+            var _date = new Date(value);
+            return _date.format("yyyy-MM-dd HH:mm:ss");
+        } else {
+            return "-";
+        }
+    }
 
-    function detail(enterpriseCode) {
+    function detail(enterpriseCode,orderType,addressFid) {
         $("#id_enterpriseCode").val(enterpriseCode)
+        $("#orderType_S").val(orderType)
+        $("#addressFid_S").val(addressFid)
         $('#detailModal').modal('show');
         queryEmp();
     }

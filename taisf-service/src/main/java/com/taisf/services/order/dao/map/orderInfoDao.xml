@@ -153,6 +153,7 @@
             tmp.address_fid as addressFid,
             tmp.order_type as orderType,
             tmp.orderNum,
+            tmp.create_time AS createTime,
             adr.enterprise_code as enterpriseCode,
             adr.address,
             adr.con_tel as conTel,
@@ -163,12 +164,14 @@
                 SELECT
                     t.address_fid,
                     t.order_type,
+                    t.create_time,
                     COUNT(1) AS orderNum
                 FROM
                     (
                     SELECT
                         address_fid,
-                        order_type
+                        order_type,
+                        create_time
                     FROM
                         t_order
                     WHERE
@@ -188,6 +191,12 @@
         UPDATE  t_order SET order_status = #{orderStatus},send_time = now()
         WHERE  enterprise_code = #{enterpriseCode}
         AND order_status = 50 and is_self = 0
+        <if test="addressFid != null">
+            and  address_fid = #{addressFid,jdbcType=VARCHAR}
+        </if>
+        <if test="orderType != null">
+            and order_type = #{orderType,jdbcType=INTEGER}
+        </if>
     </update>
 
 
@@ -215,6 +224,12 @@
             <![CDATA[
 				AND t.create_time <= #{tillTime}
 			]]>
+        </if>
+        <if test="addressFid != null">
+            and t.address_fid = #{addressFid,jdbcType=VARCHAR}
+        </if>
+        <if test="orderType != null">
+            and t.order_type = #{orderType,jdbcType=INTEGER}
         </if>
 
         <if test="orderStatus != null">

@@ -2,6 +2,8 @@ package com.taisf.services.order.vo;
 
 import com.jk.framework.base.entity.BaseEntity;
 
+import java.util.Date;
+
 /**
  * <p>订单的统计</p>
  * <p/>
@@ -46,6 +48,8 @@ public class OrderSendStatsVo extends BaseEntity {
 
     private String enterpriseName;
 
+    private Date createTime;
+
 
 
     /**
@@ -59,7 +63,14 @@ public class OrderSendStatsVo extends BaseEntity {
     private String conName;
 
 
-   
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     public String getAddressFid() {
         return addressFid;
     }
