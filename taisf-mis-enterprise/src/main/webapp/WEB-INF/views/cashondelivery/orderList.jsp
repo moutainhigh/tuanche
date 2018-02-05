@@ -503,18 +503,19 @@
     }
 
     function editSaveProduct() {
-
-        if ($("#userTel_E").val() == null || $("#userTel_E").val() == "") {
+        var userTel = $("#userTel_E").val();
+        if (userTel == null || userTel == "") {
             layer.alert("请输入手机号", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
         }
-        if ($("#sumMoney_E").val() == null || $("#sumMoney_E").val() == "") {
+        var sumMoney = $("#sumMoney_E").val();
+        if (sumMoney == null || sumMoney == "") {
             layer.alert("请输入退款金额", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
         } else {
-            if ($("#sumMoney_E").val() <= 0) {
+            if (sumMoney <= 0) {
                 layer.alert("退款金额必须大于0", {icon: 5, time: 2000, title: '提示'});
                 $("#saveBtnE").removeAttr("disabled");
                 return false;
@@ -522,31 +523,35 @@
 
         }
         console.log($("#userTel_E").val()+"====="+$("#sumMoney_E").val()+"====="+$("#sumMoney_H").val());
-        $.ajax({
-            data: {
-                'userTel': $("#userTel_E").val(),
-                'sumMoney': $("#sumMoney_E").val(),
-            },
-            type: "post",
-            dataType: "json",
-            url: 'cashOnDelivery/confirmation',
-            success: function (result) {
-                if (result.code === 0) {
-                    layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
-                    $('#listTable').bootstrapTable('refresh');
-                    $('#editModal').modal('hide');
-                    $("#editReset").trigger("click");
-                    $("#saveBtnE").removeAttr("disabled");
-                } else {
-                    layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
-                    $("#saveBtnE").removeAttr("disabled");
+        layer.confirm("确认给"+userTel+"扣款"+sumMoney+"元吗?", {icon: 6, title:'提示'},function(index){
+            $.ajax({
+                data: {
+                    'userTel': userTel,
+                    'sumMoney': sumMoney,
+                },
+                type: "post",
+                dataType: "json",
+                url: 'cashOnDelivery/confirmation',
+                success: function (result) {
+                    if (result.code === 0) {
+                        layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
+                        $('#listTable').bootstrapTable('refresh');
+                        $('#editModal').modal('hide');
+                        $("#editReset").trigger("click");
+                        $("#saveBtnE").removeAttr("disabled");
+                    } else {
+                        layer.alert(result.msg, {icon: 5, time: 2000, title: '提示'});
+                        $("#saveBtnE").removeAttr("disabled");
+                    }
+                },
+                error: function (result) {
+                    layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                    $("#saveBtn").removeAttr("disabled");
                 }
-            },
-            error: function (result) {
-                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
-                $("#saveBtn").removeAttr("disabled");
-            }
+            });
+            layer.close(index);
         });
+
     }
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);

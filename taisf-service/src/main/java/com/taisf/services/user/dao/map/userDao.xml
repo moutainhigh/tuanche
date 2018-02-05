@@ -382,9 +382,9 @@
     <if test="userRole != null and userRole != '' ">
       and user_role = #{userRole,jdbcType=INTEGER}
     </if>
-   <!-- <if test="userStatus != null and userStatus != '' ">
-      and user_status = #{userStatus,jdbcType=INTEGER}
-    </if>-->
+    <if test="bizCode != null and bizCode != '' ">
+      and biz_code = #{bizCode}
+    </if>
     <if test="userPhone != null and userPhone != '' ">
       and user_phone = #{userPhone,jdbcType=VARCHAR}
     </if>
