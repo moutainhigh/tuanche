@@ -209,7 +209,7 @@
         t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,t.user_code,
         t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark
         FROM t_order t
-        WHERE t.enterprise_code = #{enterpriseCode}
+        WHERE t.enterprise_code = #{enterpriseCode}  AND t.is_self = 0
         <if test="orderStatus != null">
             AND t.order_status = #{orderStatus}
         </if>

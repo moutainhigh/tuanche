@@ -15,7 +15,6 @@ import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.DayTaskVO;
-import com.taisf.services.order.vo.OrderListVo;
 import com.taisf.services.order.vo.OrderSendStatsVo;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
@@ -136,7 +135,12 @@ public class EverydayTaskController {
     @ResponseBody
     public DataTransferObject<Void> distribution(HttpServletRequest request, OrderEntity orderEntity) {
         DataTransferObject<Void> dto = new DataTransferObject<>();
-        if(Check.NuNObjs(orderEntity,orderEntity.getEnterpriseCode())){
+        if(Check.NuNObjs(orderEntity)){
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("参数异常");
+            return dto;
+        }
+        if(Check.NuNObjs(orderEntity.getEnterpriseCode(),orderEntity.getAddressFid(),orderEntity.getOrderType())){
             dto.setErrCode(DataTransferObject.ERROR);
             dto.setMsg("参数异常");
             return dto;
@@ -167,7 +171,10 @@ public class EverydayTaskController {
             if (Check.NuNObj(orderInfoRequest)){
                 orderInfoRequest = new OrderInfoRequest();
             }
-//            orderInfoRequest.setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
+            if(Check.NuNObjs(orderInfoRequest.getEnterpriseCode(),orderInfoRequest.getAddressFid(),orderInfoRequest.getOrderType())){
+                LogUtil.error(LOGGER, "据企业code查询企业下所有待配送订单参数异常params:{}", JsonEntityTransform.Object2Json(orderInfoRequest));
+                return new PageResult();
+            }
             PagingResult<OrderEntity> pagingResult = orderManagerImpl.findListByEnterpriseCode(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());
