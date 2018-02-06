@@ -5,10 +5,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.dto.*;
 import com.taisf.services.order.entity.OrderEntity;
-import com.taisf.services.order.vo.DayTaskVO;
-import com.taisf.services.order.vo.OrderDetailVO;
-import com.taisf.services.order.vo.OrderInfoVO;
-import com.taisf.services.order.vo.OrderSaveInfo;
+import com.taisf.services.order.vo.*;
 
 import java.util.List;
 
@@ -34,7 +31,7 @@ public interface OrderService {
      * @param createOrderRequest
      * @return
      */
-    DataTransferObject<String> faceOrder(CreateOrderRequest createOrderRequest,boolean needPwd);
+    DataTransferObject<FaceVO> faceOrder(CreateOrderRequest createOrderRequest, boolean needPwd);
 
     /**
      * 申请退款

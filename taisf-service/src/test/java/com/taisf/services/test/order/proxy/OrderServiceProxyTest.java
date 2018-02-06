@@ -9,6 +9,7 @@ import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.FinishOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.dto.RefundOrderRequest;
+import com.taisf.services.order.vo.FaceVO;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
@@ -70,7 +71,7 @@ public class OrderServiceProxyTest extends BaseTest {
         createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(3);
         createOrderRequest.setPrice(100);
-        DataTransferObject<String> classify = orderService.faceOrder(createOrderRequest,true);
+        DataTransferObject<FaceVO> classify = orderService.faceOrder(createOrderRequest,true);
         System.out.println(JsonEntityTransform.Object2Json(classify));
     }
 

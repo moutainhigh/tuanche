@@ -50,6 +50,20 @@ public class OrderSaveVO extends BaseEntity{
     private Date now = new Date();
 
     /**
+     * 供应商code
+     */
+    private String supplierName;
+
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    /**
      * 订单的基本信息
      */
     private transient OrderEntity orderBase = new OrderEntity();

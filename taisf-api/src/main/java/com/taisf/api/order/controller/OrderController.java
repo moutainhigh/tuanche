@@ -12,6 +12,7 @@ import com.taisf.api.common.abs.AbstractController;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.vo.FaceVO;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
@@ -232,8 +233,7 @@ public class OrderController extends AbstractController {
         paramRequest.setEnterpriseCode(user.getEnterpriseCode());
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
-
-            DataTransferObject<String> dto =ordersService.faceOrder(paramRequest,true);
+            DataTransferObject<FaceVO> dto =ordersService.faceOrder(paramRequest,true);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【面对面收款】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);

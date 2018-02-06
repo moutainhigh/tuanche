@@ -12,6 +12,7 @@ import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.manager.OrderManagerImpl;
+import com.taisf.services.order.vo.FaceVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.services.user.entity.UserEntity;
@@ -99,8 +100,8 @@ public class CashOnDeliveryController {
      **/
     @RequestMapping("confirmation")
     @ResponseBody
-    public DataTransferObject<String> confirmation(HttpServletRequest request, String userTel, Double sumMoney) {
-        DataTransferObject<String> dto = new DataTransferObject<>();
+    public DataTransferObject<FaceVO> confirmation(HttpServletRequest request, String userTel, Double sumMoney) {
+        DataTransferObject<FaceVO> dto = new DataTransferObject<>();
         if (Check.NuNObjs(userTel, sumMoney)) {
             dto.setErrorMsg("参数异常");
             return dto;

@@ -460,8 +460,8 @@ public class OrderServiceProxy implements OrderService {
      * @return
      */
     @Override
-    public DataTransferObject<String> faceOrder(CreateOrderRequest createOrderRequest,boolean needPwd){
-        DataTransferObject<String> dto = new DataTransferObject<>();
+    public DataTransferObject<FaceVO> faceOrder(CreateOrderRequest createOrderRequest,boolean needPwd){
+        DataTransferObject<FaceVO> dto = new DataTransferObject<>();
 
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
                 || Check.NuNStr(createOrderRequest.getUserUid())) {
@@ -486,7 +486,13 @@ public class OrderServiceProxy implements OrderService {
         if (dto.checkSuccess()){
             orderManager.saveOrderSave(orderSaveVO);
         }
-        dto.setData(orderSaveVO.getOrderSn());
+
+        FaceVO vo =new FaceVO();
+        vo.setOrderSn(orderSaveVO.getOrderSn());
+        vo.setPrice(orderSaveVO.getExtPrice());
+        vo.setSupplierCode(orderSaveVO.getOrderBase().getSupplierCode());
+        vo.setSupplierName(orderSaveVO.getSupplierName());
+        dto.setData(vo);
         return dto;
     }
 
