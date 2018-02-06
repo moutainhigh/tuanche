@@ -120,6 +120,31 @@
     <ol class="indicator"></ol>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row" style="margin-top: 10px;">
+                <div class="form-group">
+                    <%--<label class="col-xs-1 col-sm-1 control-label mtop">企业:</label>--%>
+                    <%--<div class="col-xs-2 col-sm-2">--%>
+                        <%--<select class="form-control" name="enterpriseCodeS" id="enterpriseCodeS">--%>
+                            <%--<option value="">--全部--</option>--%>
+                            <%--<c:forEach var="v" items="${entityList}">--%>
+                                <%--<option value="${v.enterpriseCode}">--${v.enterpriseName}--</option>--%>
+                            <%--</c:forEach>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary" type="button" onclick="query();">
+                            <i class="fa fa-search"></i>&nbsp;刷新
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Panel Other -->
     <div class="float-e-margins">
         <div class="ibox-content">
