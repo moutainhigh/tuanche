@@ -228,7 +228,7 @@
                                            data-content-type="application/x-www-form-urlencoded"
                                            data-query-params="paginationAccountS" data-method="post"
                                            data-single-select="true"
-                                           data-url="everydayTask/findListByEnterpriseCode?orderStatus=50">
+                                           data-url="everydayTask/findListByEnterpriseCode">
                                         <thead>
                                         <tr>
                                             <th data-field="userName" data-width="10%">预订人</th>
