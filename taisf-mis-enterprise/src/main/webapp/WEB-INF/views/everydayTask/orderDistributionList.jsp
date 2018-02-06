@@ -171,6 +171,9 @@
                             <th data-field="orderType" data-width="10%" data-formatter="formatOrderType"
                                 data-align="center"><span class="tdfont">供餐信息</span></th>
 
+                            <th data-field="orderNum" data-width="10%"
+                                data-align="center"><span class="tdfont">数量(份)</span></th>
+
                             <th data-field="address" data-width="10%"
                                 data-align="center"><span class="tdfont">配送地址</span></th>
                             <th data-field="conName" data-width="10%"
@@ -353,7 +356,25 @@
     }
 
     function query() {
+        $("#listTable").bootstrapTable('destroy');
+        $("#listTable").bootstrapTable({
+            dataType: "json",
+            method: 'post',
+            contentType: "application/x-www-form-urlencoded",
+            cache: false,
+            url:"everydayTask/finOrderDistributionList",
+            queryParams: paginationParam,
+            columns:[],
+            pagination:true,
+            sidePagination:'server',
+            pageNumber:1,
+            pageSize:10,
+            pageList:[5,10,20,50]
+        });
+
         $("#listTable").bootstrapTable("selectPage", 1);
+
+
     }
     function queryEmp() {
         $("#listTableEmp").bootstrapTable("selectPage", 1);
