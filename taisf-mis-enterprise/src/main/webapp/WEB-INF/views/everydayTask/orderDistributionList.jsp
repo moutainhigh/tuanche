@@ -231,8 +231,7 @@
                                            data-url="everydayTask/findListByEnterpriseCode">
                                         <thead>
                                         <tr>
-                                            <th data-field="userName" data-width="10%">预订人</th>
-                                            <th data-field="userCode" data-width="10%">工号</th>
+                                            <th data-field="userName" data-width="10%">姓名</th>
                                             <th data-field="title" data-width="50%" data-align="center">详情</th>
                                             <th data-field="userTel" data-width="10%" data-align="center">电话</th>
                                             <th data-field="address" data-width="20%"
