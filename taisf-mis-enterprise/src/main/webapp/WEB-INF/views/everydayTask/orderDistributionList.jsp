@@ -152,9 +152,7 @@
                                 data-align="center"><span class="tdfont">联系人</span></th>
                             <th data-field="conTel" data-width="10%"
                                 data-align="center"><span class="tdfont">联系电话</span></th>
-                            <th data-field="createTime" data-width="10%" data-formatter="formatDate"
 
-                                data-align="center"><span class="tdfont">下单时间</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
                         </tr>
@@ -210,6 +208,8 @@
                                             <th data-field="userCode" data-width="10%">工号</th>
                                             <th data-field="title" data-width="50%" data-align="center">详情</th>
                                             <th data-field="userTel" data-width="10%" data-align="center">电话</th>
+                                            <th data-field="createTime" data-width="10%" data-formatter="formatDate"
+                                                data-align="center"><span class="tdfont">下单时间</span></th>
                                             <th data-field="address" data-width="20%"
                                                 data-align="center">送餐地址
                                             </th>
