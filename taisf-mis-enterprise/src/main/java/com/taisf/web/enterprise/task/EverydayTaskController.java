@@ -171,10 +171,7 @@ public class EverydayTaskController {
             if (Check.NuNObj(orderInfoRequest)){
                 orderInfoRequest = new OrderInfoRequest();
             }
-            if(Check.NuNObjs(orderInfoRequest.getEnterpriseCode(),orderInfoRequest.getAddressFid(),orderInfoRequest.getOrderType())){
-                LogUtil.error(LOGGER, "据企业code查询企业下所有待配送订单参数异常params:{}", JsonEntityTransform.Object2Json(orderInfoRequest));
-                return new PageResult();
-            }
+
             PagingResult<OrderEntity> pagingResult = orderManagerImpl.findListByEnterpriseCode(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
                 pageResult.setRows(pagingResult.getList());
