@@ -178,6 +178,7 @@
                         order_status = 50
                         AND enterprise_code != ""
                         AND address_fid IS NOT NULL
+                        AND is_self = 0
                     ) t
                 GROUP BY
                     t.address_fid,
