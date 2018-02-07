@@ -56,6 +56,11 @@ public class SupplierEntity extends BaseEntity {
 
     private Date lastModifyDate;
 
+    /**
+     * 图标
+     */
+    private String logoUrl = "";
+
     public Integer getId() {
         return id;
     }
@@ -182,5 +187,13 @@ public class SupplierEntity extends BaseEntity {
 
     public void setLastModifyDate(Date lastModifyDate) {
         this.lastModifyDate = lastModifyDate;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }
