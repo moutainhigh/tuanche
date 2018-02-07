@@ -252,6 +252,7 @@ public class UserServiceProxy implements UserService {
         userEntity.setEnterpriseName(infoVO.getEnterpriseName());
         userEntity.setUserPassword(userRegistRequest.getPwd());
         userEntity.setUserStatus(UserStatusEnum.ACTIVITY.getCode());
+        userEntity.setBizCode(infoVO.getSupplierCode());
 
         userManager.addUser(userEntity);
         return dto;
