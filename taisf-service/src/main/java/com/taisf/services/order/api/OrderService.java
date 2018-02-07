@@ -24,6 +24,12 @@ import java.util.List;
  */
 public interface OrderService {
 
+    /**
+     * 获取当前的用户简版信息
+     * @param userUid
+     * @return
+     */
+    DataTransferObject<UserSimpleVO> getUserSimpleInfo(String userUid);
 
     /**
      * 面对面收款

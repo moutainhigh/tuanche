@@ -4,6 +4,7 @@ import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.MD5Util;
+import com.taisf.services.common.valenum.AccountStatusEnum;
 import com.taisf.services.common.valenum.UserTypeEnum;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
@@ -253,6 +254,7 @@ public class UserManagerImpl {
         if (Check.NuNObj(has)){
             has = new UserAccountEntity();
             has.setUserId(userId);
+            has.setAccountStatus(AccountStatusEnum.AVAILABLE.getCode());
             userAccountDao.saveAccountUser(has);
         }
         return has;

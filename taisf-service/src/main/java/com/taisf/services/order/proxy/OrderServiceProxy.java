@@ -815,6 +815,47 @@ public class OrderServiceProxy implements OrderService {
 
 
     /**
+     * 获取当前的用户简版信息
+     * @param userUid
+     * @return
+     */
+    @Override
+    public DataTransferObject<UserSimpleVO> getUserSimpleInfo(String userUid){
+        DataTransferObject<UserSimpleVO> dto = new DataTransferObject<>();
+
+        if (Check.NuNStr(userUid)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
+        UserSimpleVO simple = new UserSimpleVO();
+        simple.setUserUid(userUid);
+        UserAccountEntity accountEntity =userManager.fillAndGetAccountUser(userUid);
+        //校验当前的账户状态
+        AccountStatusEnum accountStatusEnum = AccountStatusEnum.getTypeByCode(accountEntity.getAccountStatus());
+        if (Check.NuNObj(accountStatusEnum)){
+            dto.setErrorMsg("异常的账户状态");
+            return dto;
+        }
+        if (!accountStatusEnum.checkOk()){
+            dto.setErrorMsg(accountStatusEnum.getDesc());
+            return dto;
+        }
+        //获取当前的余额
+        int drawBalance = ValueUtil.getintValue(accountEntity.getDrawBalance());
+        if (drawBalance < 0){
+            dto.setErrorMsg("异常的账户信息");
+            return dto;
+        }
+        simple.setDrawBalance(drawBalance);
+        if (Check.NuNStr(accountEntity.getAccountPassword())){
+            simple.setPwdFlag(false);
+        }
+        dto.setData(simple);
+        return dto;
+    }
+
+    /**
      * 处理当前的余额信息
      * @author  afi
      * @param dto
