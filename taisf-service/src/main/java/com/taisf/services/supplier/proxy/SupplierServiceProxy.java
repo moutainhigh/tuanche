@@ -2,6 +2,7 @@ package com.taisf.services.supplier.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.Check;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dao.SupplierDao;
 import com.taisf.services.supplier.dto.SupplierRequest;
@@ -44,6 +45,24 @@ public class SupplierServiceProxy implements SupplierService{
 		PagingResult<SupplierEntity> pagingResult = supplierDao.supplierPageList(request);
 		dto.setData(pagingResult);
         return dto;
+	}
+
+
+	/**
+	 * 获取供应商信息
+	 * @param supplierCode
+	 * @return
+	 */
+	@Override
+	public DataTransferObject<SupplierEntity> getSupplierInfo(String  supplierCode) {
+		DataTransferObject<SupplierEntity> dto = new DataTransferObject<>();
+		SupplierEntity supplierEntity = supplierDao.getSupplierByCode(supplierCode);
+		if (Check.NuNObj(supplierEntity)){
+			dto.setErrorMsg("当前企业不存在");
+			return dto;
+		}
+		dto.setData(supplierEntity);
+		return dto;
 	}
 
 }

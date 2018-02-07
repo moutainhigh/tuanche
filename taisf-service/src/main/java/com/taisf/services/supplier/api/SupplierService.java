@@ -22,4 +22,12 @@ public interface SupplierService {
 	 **/
 	DataTransferObject<PagingResult<SupplierEntity>> supplierPageList(SupplierRequest request);
 
+
+	/**
+	 * 获取供应商信息
+	 * @param supplierCode
+	 * @return
+	 */
+	DataTransferObject<SupplierEntity> getSupplierInfo(String  supplierCode);
+
 }
