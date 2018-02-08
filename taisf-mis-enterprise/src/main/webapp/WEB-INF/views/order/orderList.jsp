@@ -82,6 +82,15 @@
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="form-group">
+                    <label class="col-xs-1 col-sm-1 control-label mtop">订单类型:</label>
+                    <div class="col-xs-2 col-sm-2">
+                        <select class="form-control" name="orderTypeS"  id="orderTypeS" >
+                            <option value="">--请选择--</option>
+                            <c:forEach items="${list}" var="z" >
+                                <option  value="${z.key}">${z.value}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                     <label class="col-sm-1 control-label mtop">日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期:</label>
                     <div class="col-sm-2">
                         <input id="openTime" name="openTime" value="" class="laydate-icon form-control layer-date">
@@ -128,7 +137,9 @@
                                 data-align="center"><span class="tdfont">企业名称</span></th>
                             <th data-field="sumMoney" data-width="15%" data-formatter="formatAmount"
                                 data-align="center"><span class="tdfont">订单金额(元)</span></th>
-                                <th data-field="isSelf" data-width="15%" data-formatter="formaIsSelf"
+                            <th data-field="orderTypeStr" data-width="15%"
+                                data-align="center"><span class="tdfont">订单类型</span></th>
+                            <th data-field="isSelf" data-width="15%" data-formatter="formaIsSelf"
                                 data-align="center"><span class="tdfont">配送方式</span></th>
                             <th data-field="orderStatus" data-width="10%" data-formatter="formatAccountStatus"
                                 data-align="center"><span class="tdfont">状态</span></th>
@@ -179,7 +190,7 @@
                             <input disabled id="isSelfD" type="text" value="" class="form-control">
                         </div>
                         <div id="signIn" class="col-sm-2">
-                            <button  class="btn btn-primary" type="button"
+                            <button class="btn btn-primary" type="button"
                                     onclick="signIn();">签收
                             </button>
                         </div>
@@ -244,7 +255,7 @@
                                         data-align="center"><span class="tdfont">分类</span></th>
                                     <th data-field="productName" data-width="10%"
                                         data-align="center"><span class="tdfont">菜单名称</span></th>
-                                    <th data-field="productNum" data-width="10%" 
+                                    <th data-field="productNum" data-width="10%"
                                         data-align="center"><span class="tdfont">数量</span></th>
                                     <th data-field="productPrice" data-width="10%" data-formatter="formatAmount"
                                         data-align="center"><span class="tdfont">单价</span></th>
@@ -304,6 +315,7 @@
             orderStatus: $("#status").val(),
             isSelf: $("#isSelfS").val(),
             supplierName: $("#supplierName").val().trim(),
+            orderType: $("#orderTypeS").val(),
         };
     }
     function paginationParamC(params) {
@@ -316,10 +328,12 @@
     function formatAmount(value, row, index) {
         return (value / 100).toFixed(2);
     }
+
+
     function formaIsSelf(value, row, index) {
-        if(value == 1){
+        if (value == 1) {
             return "到店自取";
-        }else{
+        } else {
             return "送餐上门";
         }
     }
@@ -391,8 +405,8 @@
                 $('#userCodeD').val(result.userCode);
                 $('#userTelDD').val(result.userTel);
                 $('#addressD').val(result.address);
-                if(result.sumMoney != null && result.sumMoney != "" && result.sumMoney != undefined){
-                    $('#sumMoneyD').val(((result.sumMoney)/100).toFixed(2));
+                if (result.sumMoney != null && result.sumMoney != "" && result.sumMoney != undefined) {
+                    $('#sumMoneyD').val(((result.sumMoney) / 100).toFixed(2));
                 }
                 if (result.isSelf == 1) {
                     $('#isSelfD').val("到店自取");
@@ -453,23 +467,23 @@
     function queryP() {
         $("#listTableP").bootstrapTable("selectPage", 1);
     }
-    function signIn(){
-        layer.confirm("确定签收吗", {icon: 6, title:'提示'},function(index){
+    function signIn() {
+        layer.confirm("确定签收吗", {icon: 6, title: '提示'}, function (index) {
             $.ajax({
                 type: "POST",
                 url: 'order/signIn',
-                dataType:"json",
+                dataType: "json",
                 traditional: true,
                 data: {'orderSn': $("#orderSnP").val()},
                 success: function (result) {
-                    if(result.code == 0){
+                    if (result.code == 0) {
                         layer.alert("操作成功", {icon: 6, time: 2000, title: '提示'});
                         $("#signIn").hide();
-                    }else{
+                    } else {
                         layer.alert("操作失败", {icon: 6, time: 2000, title: '提示'});
                     }
                 },
-                error: function(result) {
+                error: function (result) {
                     layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
                 }
             });

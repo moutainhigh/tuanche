@@ -9,12 +9,12 @@
 
 
 ###  提交方式
-提交方式|post
-Content-Type|application/json
-参数|放在body流中,依照json格式
-
-
-### 参数
+      提交方式|post
+      Content-Type|application/json
+      参数|放在body流中,依照json格式
+      
+      
+      ### 参数
 
 字段|是否必填|类型|描述
 ---|---|---|---

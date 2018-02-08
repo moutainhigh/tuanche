@@ -1,10 +1,12 @@
 package com.taisf.web.enterprise.order.controller;
 
+import com.jk.framework.base.entity.BaseEle;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.FinishOrderRequest;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("order/")
@@ -45,6 +48,8 @@ public class OrderController {
      **/
     @RequestMapping("list")
     public String list(HttpServletRequest request) {
+        List<BaseEle> list = OrderTypeEnum.trans2List();
+        request.setAttribute("list",list);
         return "order/orderList";
     }
 
@@ -73,6 +78,9 @@ public class OrderController {
             orderInfoRequest.setBizCode(emp.getEmpBiz());
             PagingResult<OrderInfoVO> pagingResult = orderManagerImpl.pageListOrder(orderInfoRequest);
             if (!Check.NuNObj(pagingResult)) {
+                for (OrderInfoVO vo : pagingResult.getList()) {
+                    vo.setOrderTypeStr(OrderTypeEnum.transCode2Name(vo.getOrderType()));
+                }
                 pageResult.setRows(pagingResult.getList());
                 pageResult.setTotal(pagingResult.getTotal());
             }

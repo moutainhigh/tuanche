@@ -18,38 +18,54 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-public class OrderInfoVO  extends OrderEntity{
+public class OrderInfoVO extends OrderEntity {
 
 
-    /** 总金额 所有费用之和 */
+    /**
+     * 总金额 所有费用之和
+     */
     private Integer sumMoney;
 
-    /** 优惠券金额 分 */
-    private Integer couponMoney ;
+    /**
+     * 优惠券金额 分
+     */
+    private Integer couponMoney;
 
-    /** 折扣金额 */
+    /**
+     * 折扣金额
+     */
     private Integer discountMoney;
 
-    /** 红包支付金额 */
+    /**
+     * 红包支付金额
+     */
     private Integer redMoney;
 
 
-    /** 应付金额 */
+    /**
+     * 应付金额
+     */
     private Integer needPay;
 
-    /** 实际支付金额 */
+    /**
+     * 实际支付金额
+     */
     private Integer payMoney;
 
-    /** 实际支付余额 */
+    /**
+     * 实际支付余额
+     */
     private Integer payBalance;
 
-    /** 运费 */
+    /**
+     * 运费
+     */
     private Integer carryMoney;
 
     /**
      * 订单的商品列表
      */
-    List<OrderProductEntity> list ;
+    List<OrderProductEntity> list;
 
     private String supplierName;
 
@@ -61,8 +77,17 @@ public class OrderInfoVO  extends OrderEntity{
     /**
      * 是否可退款
      */
-    private Integer canRefund= 0;
+    private Integer canRefund = 0;
 
+    private String orderTypeStr;
+
+    public String getOrderTypeStr() {
+        return orderTypeStr;
+    }
+
+    public void setOrderTypeStr(String orderTypeStr) {
+        this.orderTypeStr = orderTypeStr;
+    }
 
     public Integer getCanRefund() {
         return canRefund;
