@@ -1,7 +1,12 @@
 package com.taisf.services.common.valenum;
 
 import com.jk.framework.base.constant.YesNoEnum;
+import com.jk.framework.base.entity.BaseEle;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.ValueUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>订单类型</p>
@@ -72,6 +77,43 @@ public enum OrderTypeEnum {
         this.name = name;
     }
 
+
+    /**
+     * 将枚举转化列表
+     * @author afi
+     * @return
+     */
+    public static List<BaseEle> trans2List(){
+        List<BaseEle> list = new ArrayList<>();
+        OrderTypeEnum[] enums = OrderTypeEnum.values();
+        for(OrderTypeEnum enumtype:enums) {
+            BaseEle ele = new BaseEle() ;
+            ele.setKey(ValueUtil.getStrValue(enumtype.getCode()));
+            ele.setValue(enumtype.getName());
+           list.add(ele);
+        }
+        return list;
+    }
+
+    /**
+     * 转换当前的订单类型
+     * @param code
+     * @return
+     */
+    public static String transCode2Name(Integer code){
+        OrderTypeEnum  orderTypeEnum = getTypeByCode(code);
+        if (Check.NuNObj(orderTypeEnum)){
+            return "未知状态";
+        }
+        return orderTypeEnum.getName();
+    }
+
+
+    /**
+     * 匹配订单类型
+     * @param code
+     * @return
+     */
     public static OrderTypeEnum getTypeByCode(Integer code) {
         if (Check.NuNObj(code)){
             return null;
@@ -102,5 +144,8 @@ public enum OrderTypeEnum {
     public boolean checkSuit(int forLunch,int forDinner){
         return false;
     }
+
+
+
 
 }
