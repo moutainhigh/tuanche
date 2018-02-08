@@ -129,9 +129,6 @@
                                 data-align="center"><span class="tdfont">订单编号</span></th>
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
                                 data-align="center"><span class="tdfont">下单时间</span></th>
-                            <th data-field="userTel" data-width="10%"
-                                    data-align="center"><span class="tdfont">用户电话</span></th>
-
                             <th data-field="userName" data-width="10%"
                                     data-align="center"><span class="tdfont">用户姓名</span></th>
                             <th data-field="userCode" data-width="10%"
