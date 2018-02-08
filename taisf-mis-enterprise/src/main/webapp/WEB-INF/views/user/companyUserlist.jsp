@@ -118,7 +118,7 @@
                             <th data-field="id" data-width="10%"
                                 data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="userCode" data-width="10%"
-                                data-align="center"><span class="tdfont">编号</span></th>
+                                data-align="center"><span class="tdfont">工号</span></th>
                             <th data-field="userName" data-width="10%"
                                 data-align="center"><span class="tdfont">姓名</span></th>
 

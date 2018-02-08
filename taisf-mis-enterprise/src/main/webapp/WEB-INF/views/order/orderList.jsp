@@ -130,6 +130,13 @@
                             <th data-field="createTime" data-width="10%" data-formatter="formatDate"
                                 data-align="center"><span class="tdfont">下单时间</span></th>
                             <th data-field="userTel" data-width="10%"
+                                    data-align="center"><span class="tdfont">用户电话</span></th>
+
+                            <th data-field="userName" data-width="10%"
+                                    data-align="center"><span class="tdfont">用户姓名</span></th>
+                            <th data-field="userCode" data-width="10%"
+                                    data-align="center"><span class="tdfont">工号</span></th>
+                            <th data-field="userTel" data-width="10%"
                                 data-align="center"><span class="tdfont">用户电话</span></th>
                             <%--<th data-field="enterpriseCode" data-width="15%"
                                 data-align="center"><span class="tdfont">企业编号</span></th>--%>
@@ -170,7 +177,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label mtop">预订人:</label>
+                        <label class="col-sm-2 control-label mtop">姓名:</label>
                         <div class="col-sm-4">
                             <input disabled id="userNameD" type="text" value="" class="form-control">
                         </div>
@@ -179,7 +186,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label mtop">用户工号:</label>
+                        <label class="col-sm-2 control-label mtop">工号:</label>
                         <div class="col-sm-4">
                             <input disabled id="userCodeD" type="text" value="" class="form-control">
                         </div>
@@ -218,6 +225,9 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
