@@ -440,11 +440,11 @@
     }
     function formatProductClassify(value, row, index) {
         if (value == 1) {
-            return "大荤";
+            return "商品";
         } else if (value == 2) {
-            return "小荤";
+            return "礼包";
         } else if (value == 3) {
-            return "素";
+            return "补单商品";
         }
     }
     // 操作列
