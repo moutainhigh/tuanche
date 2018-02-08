@@ -1,6 +1,7 @@
 package com.taisf.services.common.valenum;
 
 import com.jk.framework.base.constant.YesNoEnum;
+import com.jk.framework.base.utils.Check;
 
 /**
  * <p>订单类型</p>
@@ -42,10 +43,10 @@ public enum OrderTypeEnum {
         }
     },
 
-    FACE_FACE(40,"面对面收款"){
+    FACE_FACE(40,"面对面付款"){
     },
 
-    FACE(41,"面对面收款"){
+    FACE(41,"现场收款"){
     },
     ;
     private int code;
@@ -71,7 +72,10 @@ public enum OrderTypeEnum {
         this.name = name;
     }
 
-    public static OrderTypeEnum getTypeByCode(int code) {
+    public static OrderTypeEnum getTypeByCode(Integer code) {
+        if (Check.NuNObj(code)){
+            return null;
+        }
         OrderTypeEnum[] enums = OrderTypeEnum.values();
         for(OrderTypeEnum enumtype:enums) {
             if(enumtype.getCode() == code) {

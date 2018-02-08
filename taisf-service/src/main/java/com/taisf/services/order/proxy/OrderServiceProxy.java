@@ -1029,16 +1029,21 @@ public class OrderServiceProxy implements OrderService {
         if (!dto.checkSuccess()) {
             return;
         }
+        OrderTypeEnum orderTypeEnum = OrderTypeEnum.getTypeByCode(orderSaveVO.getOrderBase().getOrderType());
+        if (Check.NuNObj(orderTypeEnum)){
+            dto.setErrorMsg("异常的订单类型");
+            return;
+        }
         OrderProductEntity product = new OrderProductEntity();
         product.setOrderSn(orderSaveVO.getOrderSn());
         product.setProductCode(0);
         product.setProductType(SupplierProductTypeEnum.EXR_PRODUCT.getCode());
         product.setProductPrice(orderSaveVO.getExtPrice());
         product.setProductNum(1);
-        product.setProductName("现场收款");
+        product.setProductName(orderTypeEnum.getName());
         //添加商品信息
         orderSaveVO.getList().add(product);
-        orderSaveVO.getOrderBase().setTitle("现场收款");
+        orderSaveVO.getOrderBase().setTitle(orderTypeEnum.getName());
     }
 
 
@@ -1207,7 +1212,7 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.getOrderBase().setSupplierCode(supplier.getSupplierCode());
         //设置商家信息
         orderSaveVO.getOrderBase().setBusinessUid(supplier.getSupplierCode());
-        
+        orderSaveVO.setSupplierName(supplier.getSupplierName());
     }
 
 
