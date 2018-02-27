@@ -53,11 +53,15 @@ public class OrderController {
         return "order/orderList";
     }
 
+
+
+
     /**
      * @author:zhangzhengguang
      * @date:2017/10/16
      * @description:订单详情商品列表
      **/
+
     @RequestMapping("showOrderProduct")
     public String showOrderProduct(HttpServletRequest request,String orderSn) {
         request.setAttribute("orderSn",orderSn);

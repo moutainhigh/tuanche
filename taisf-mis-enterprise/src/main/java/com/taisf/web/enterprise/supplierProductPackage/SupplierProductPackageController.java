@@ -141,7 +141,7 @@ public class SupplierProductPackageController {
     @RequestMapping("toAdd")
     public String toAdd(HttpServletRequest request,Integer week) {
         //不同分类集合
-        productCla01sifyList(request,week);
+        productCla01sifyList(request);
         request.setAttribute("week", week);
         return "supplierPackage/addSupplierPackage";
     }
@@ -217,7 +217,7 @@ public class SupplierProductPackageController {
     @RequestMapping("toedit")
     public String toedit(HttpServletRequest request, Integer id,Integer week) {
         //不同分类集合
-        productCla01sifyList(request,week);
+        productCla01sifyList(request);
         //当前编辑的组合套餐
         SupplierPackageEntity packageEntity = supplierPackageService.getSupplierPackageById(id).getData();
         if(!Check.NuNObjs(packageEntity.getPackagePic())){
@@ -265,14 +265,14 @@ public class SupplierProductPackageController {
         return dto;
     }
 
-    public void productCla01sifyList(HttpServletRequest request,Integer week) {
+    public void productCla01sifyList(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
         if (Check.NuNStr(employeeEntity.getEmpBiz())){
             return;
         }
-        Map<String, List<SupplierProductVO>> map = supplierProductServiceProxy.getSupplierProductMapOnly(employeeEntity.getEmpBiz(),week);
+        Map<String, List<SupplierProductVO>> map = supplierProductServiceProxy.getSupplierProductMapOnly(employeeEntity.getEmpBiz());
 
         //不同分类集合
         List<SupplierProductVO> dahunList = map.get(ProductClassifyEnum.DAHUN.getCode()+"");

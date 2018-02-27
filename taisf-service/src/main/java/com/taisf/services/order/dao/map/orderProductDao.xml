@@ -10,6 +10,7 @@
         <result column="product_code" jdbcType="INTEGER" property="productCode"/>
         <result column="product_num" jdbcType="VARCHAR" property="productNum"/>
         <result column="product_price" jdbcType="INTEGER" property="productPrice"/>
+        <result column="product_classify" jdbcType="INTEGER" property="productClassify"/>
     </resultMap>
 
 
@@ -19,8 +20,8 @@
 
     <select id="getOrderProductByOrderSn" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from t_order_product
+        op.id,op.order_sn, op.product_name, op.product_code, op.product_type, op.product_num,op.product_price,p.product_classify
+        from t_order_product op LEFT  JOIN  t_product p ON op.product_code = p.id
         where order_sn = #{orderSn,jdbcType=VARCHAR}
     </select>
 

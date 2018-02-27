@@ -333,15 +333,11 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @return
      * @author afi
      */
-    public Map<String, List<SupplierProductVO>> getSupplierProductMapOnly(String supplierCode,Integer week) {
+    public Map<String, List<SupplierProductVO>> getSupplierProductMapOnly(String supplierCode) {
         Map<String, List<SupplierProductVO>> rst = new HashMap<>();
         Map<String, List<ProductEntity>> map = new HashMap<>();
         SupplierProductRequest request = new SupplierProductRequest();
         request.setSupplierCode(supplierCode);
-        if (Check.NuNObj(week)){
-            week = getWeek();
-        }
-        request.setWeek(week);
         List<ProductEntity> list = supplierManager.getProductListBySupplierAndType(request);
         if (Check.NuNCollection(list)) {
             return rst;

@@ -343,7 +343,7 @@
         }
         var url = "supplierProductPackage/toAdd?week="+week+"&weekName="+getWeekName();
 
-        $.openNewTab(new Date().getTime(), url, "添加组合套餐["+getWeekName()+"]");
+        $.openNewTab(new Date().getTime(), url, "添加组合套餐");
     }
 
     //跳转编辑组合套餐页面

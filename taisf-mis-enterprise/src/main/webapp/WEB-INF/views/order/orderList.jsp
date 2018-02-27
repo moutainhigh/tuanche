@@ -251,7 +251,7 @@
                                    data-url="order/orderProductPageList">
                                 <thead>
                                 <tr>
-                                    <th data-field="productType" data-width="10%" data-formatter="formatProductClassify"
+                                    <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                         data-align="center"><span class="tdfont">分类</span></th>
                                     <th data-field="productName" data-width="10%"
                                         data-align="center"><span class="tdfont">菜单名称</span></th>
@@ -440,11 +440,19 @@
     }
     function formatProductClassify(value, row, index) {
         if (value == 1) {
-            return "商品";
+            return "大荤";
         } else if (value == 2) {
-            return "礼包";
+            return "小荤";
         } else if (value == 3) {
-            return "补单商品";
+            return "素";
+        } else if (value == 4) {
+            return "汤";
+        } else if (value == 5) {
+            return "饮品";
+        } else if (value == 6) {
+            return "主食";
+        } else if (value == 7) {
+            return "水果";
         }
     }
     // 操作列

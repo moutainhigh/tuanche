@@ -2,8 +2,6 @@ package com.taisf.services.order.entity;
 
 import com.jk.framework.base.entity.BaseEntity;
 
-import java.util.Date;
-
 /**
  * <p>订单商品表</p>
  * <PRE>
@@ -56,6 +54,16 @@ public class OrderProductEntity extends BaseEntity {
      */
     private Integer productPrice;
 
+
+    private Integer productClassify;
+
+    public Integer getProductClassify() {
+        return productClassify;
+    }
+
+    public void setProductClassify(Integer productClassify) {
+        this.productClassify = productClassify;
+    }
 
     public Integer getId() {
         return id;
