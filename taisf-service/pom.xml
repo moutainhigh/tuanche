@@ -435,10 +435,9 @@
                                 <include>META-INF/spring/*provider.xml</include>
                             </includes>
                             <excludes>
-                                <include>**/taisf/**/test/**/*.class</include>
-                                <include>logback.xml</include>
-                                <include>jdbc.properties</include>
-                                <include>redis.properties</include>
+                                <exclude>logback.xml</exclude>
+                                <exclude>jdbc.properties</exclude>
+                                <exclude>redis.properties</exclude>
                             </excludes>
                         </configuration>
                     </execution>
