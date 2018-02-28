@@ -297,9 +297,9 @@
         $("#openTime").val(s1);
     }
     function paginationParam(params) {
-        if (num == 0) {
+        /*if (num == 0) {
             initTime();
-        }
+        }*/
         var openTime = $("#openTime").val();
         var tillTime = $("#tillTime").val();
 
