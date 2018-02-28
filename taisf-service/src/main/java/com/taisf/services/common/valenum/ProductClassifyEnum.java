@@ -29,7 +29,8 @@ public enum ProductClassifyEnum {
     TANG("汤", 4),
     YINPIN("饮品", 5),
     ZHUSHI("主食", 6),
-    SHUIGUO("水果", 7)
+    SHUIGUO("水果", 7),
+    FULI("福利", 8)
 
     ;
 

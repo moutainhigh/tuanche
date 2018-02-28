@@ -254,6 +254,7 @@
                                         <option value="5">--饮品--</option>
                                         <option value="6">--主食--</option>
                                         <option value="7">--水果--</option>
+                                        <option value="8">--福利--</option>
                                     </select>
                                 </div>
                             </div>
@@ -360,6 +361,7 @@
                                         <option value="5">--饮品--</option>
                                         <option value="6">--主食--</option>
                                         <option value="7">--水果--</option>
+                                        <option value="8">--福利--</option>
                                     </select>
                                 </div>
                             </div>
@@ -609,6 +611,8 @@
             return "主食";
         }else if (value == 7) {
             return "水果";
+        }else if (value == 8) {
+            return "福利";
         }
     }
     // 操作列
