@@ -460,6 +460,8 @@
             return "主食";
         } else if (value == 7) {
             return "水果";
+        }else if (value == 8) {
+            return "福利";
         }
     }
     // 操作列
