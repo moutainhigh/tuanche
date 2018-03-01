@@ -221,7 +221,7 @@ public class OrderManagerImpl {
 			if(!Check.NuNCollection(orderProductEntityList)){
 				String str = "";
 				for (OrderProductEntity orderProductEntity : orderProductEntityList) {
-						str += orderProductEntity.getProductName()+",\r\n";
+						str += orderProductEntity.getProductName()+"*"+orderProductEntity.getProductNum()+",\r\n";
 				}
 				orderExcelVO.setOrderProduct(str.substring(0,str.length()-3));
 			}
