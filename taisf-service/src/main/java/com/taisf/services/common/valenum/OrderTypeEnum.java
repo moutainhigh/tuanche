@@ -23,43 +23,50 @@ import java.util.List;
  */
 public enum OrderTypeEnum {
 
-    LUNCH_COMMON(20,"午餐正常"){
+    LUNCH_COMMON(20,"午餐正常",true){
         @Override
         public boolean checkSuit(int forLunch, int forDinner) {
             return forLunch == YesNoEnum.YES.getCode();
         }
     },
-    LUNCH_EXT(21,"午餐补餐"){
+    LUNCH_EXT(21,"午餐补餐",false){
         @Override
         public boolean isExt() {
             return true;
         }
     },
-    DINNER_COMMON(30,"晚餐正常"){
+    DINNER_COMMON(30,"晚餐正常",true){
         @Override
         public boolean checkSuit(int forLunch, int forDinner) {
             return forDinner == YesNoEnum.YES.getCode();
         }
     },
-    DINNER_EXT(31,"晚餐补单"){
+    DINNER_EXT(31,"晚餐补单",false){
         @Override
         public boolean isExt() {
             return true;
         }
     },
 
-    FACE_FACE(40,"面对面付款"){
+    FACE_FACE(40,"面对面付款",true){
     },
 
-    FACE(41,"现场收款"){
+    FACE(41,"现场收款",true){
     },
     ;
     private int code;
     private String name;
 
-    private OrderTypeEnum(int code, String name) {
+    private Boolean show;
+
+    public Boolean getShow() {
+        return show;
+    }
+
+    private OrderTypeEnum(int code, String name, boolean show) {
         this.code = code;
         this.name = name;
+        this.show = show;
     }
 
     public int getCode() {
@@ -90,6 +97,9 @@ public enum OrderTypeEnum {
             BaseEle ele = new BaseEle() ;
             ele.setKey(ValueUtil.getStrValue(enumtype.getCode()));
             ele.setValue(enumtype.getName());
+            if (!enumtype.getShow()){
+                continue;
+            }
            list.add(ele);
         }
         return list;

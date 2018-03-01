@@ -265,7 +265,28 @@ public class SupplierProductPackageController {
         return dto;
     }
 
+
     public void productCla01sifyList(HttpServletRequest request) {
+        //不同分类集合
+        List<ProductEntity> dahunList = productService.getListByClassify(ProductClassifyEnum.DAHUN.getCode()).getData();
+        List<ProductEntity> xiaohunList = productService.getListByClassify(ProductClassifyEnum.XIAOHUN.getCode()).getData();
+        List<ProductEntity> suList = productService.getListByClassify(ProductClassifyEnum.SU.getCode()).getData();
+        List<ProductEntity> tangList = productService.getListByClassify(ProductClassifyEnum.TANG.getCode()).getData();
+        List<ProductEntity> yinpinList = productService.getListByClassify(ProductClassifyEnum.YINPIN.getCode()).getData();
+        List<ProductEntity> zhushiList = productService.getListByClassify(ProductClassifyEnum.ZHUSHI.getCode()).getData();
+        List<ProductEntity> shuiguoList = productService.getListByClassify(ProductClassifyEnum.SHUIGUO.getCode()).getData();
+        request.setAttribute("dahunList", dahunList);
+        request.setAttribute("xiaohunList", xiaohunList);
+        request.setAttribute("suList", suList);
+        request.setAttribute("tangList", tangList);
+        request.setAttribute("yinpinList", yinpinList);
+        request.setAttribute("zhushiList", zhushiList);
+        request.setAttribute("shuiguoList", shuiguoList);
+    }
+
+//
+    @Deprecated
+    public void productCla01sifyList_week(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);

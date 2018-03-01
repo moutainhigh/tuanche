@@ -8,6 +8,7 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.excel.utils.ExcelUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.OrderTypeEnum;
+import com.taisf.services.common.valenum.RecordPayTypeEnum;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.FinishOrderRequest;
@@ -18,6 +19,8 @@ import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.OrderExcelVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderListVo;
+import com.taisf.services.pay.entity.PayRecordEntity;
+import com.taisf.services.pay.manager.PayManagerImpl;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
@@ -41,6 +44,12 @@ public class OrderController {
 
     @Autowired
     private OrderManagerImpl orderManagerImpl;
+
+
+    @Autowired
+    private PayManagerImpl payManager;
+
+
 
     @Autowired
     private OrderService orderService;
@@ -181,7 +190,6 @@ public class OrderController {
     @RequestMapping("getOrderBaseBySn")
     @ResponseBody
     public OrderInfoVO getOrderBaseBySn(HttpServletRequest request, String orderSn) {
-        PageResult pageResult = new PageResult();
         OrderInfoVO orderInfoVO;
         try {
             orderInfoVO = orderManagerImpl.getOrderInfoByOrderSn(orderSn);
@@ -190,6 +198,19 @@ public class OrderController {
             LogUtil.error(LOGGER, "查询订单详情异常error:{}", e);
             return null;
         }
+        if (!Check.NuNObj(orderInfoVO)){
+            RecordPayTypeEnum recordPayTypeEnum = null;
+            PayRecordEntity record = payManager.getPayRecordByOrderSn(orderSn);
+            if (!Check.NuNObj(record)){
+                recordPayTypeEnum =  RecordPayTypeEnum.getTypeByCode(record.getPayType());
+            }
+            if (Check.NuNObj(recordPayTypeEnum)){
+                orderInfoVO.setPayTypeStr("未支付");
+            }else {
+                orderInfoVO.setPayTypeStr(recordPayTypeEnum.getName());
+            }
+        }
+
         return orderInfoVO;
     }
 

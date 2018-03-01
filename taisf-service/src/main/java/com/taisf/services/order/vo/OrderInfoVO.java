@@ -81,6 +81,19 @@ public class OrderInfoVO extends OrderEntity {
 
     private String orderTypeStr;
 
+    /**
+     * 支付方式
+     */
+    private String payTypeStr = "";
+
+    public String getPayTypeStr() {
+        return payTypeStr;
+    }
+
+    public void setPayTypeStr(String payTypeStr) {
+        this.payTypeStr = payTypeStr;
+    }
+
     public String getOrderTypeStr() {
         return orderTypeStr;
     }

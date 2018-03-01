@@ -78,7 +78,7 @@ public class EverydayTaskController {
             }
             PagingResult<DayTaskVO> pagingResult = dto.getData();
             if (!Check.NuNObj(pagingResult)) {
-                pageResult.setRows(pagingResult.getList());
+                pageResult.setRows(pagingResult.getList()==null?new ArrayList<>():pagingResult.getList());
                 pageResult.setTotal(pagingResult.getTotal());
             }
         } catch (Exception e) {

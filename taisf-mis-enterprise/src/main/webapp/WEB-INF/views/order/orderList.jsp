@@ -172,12 +172,14 @@
             </div>
             <div class="ibox-content">
                 <div class="row">
+
                     <div class="form-group">
                         <label class="col-sm-2 control-label mtop">订单编号:</label>
                         <div class="col-sm-4">
                             <input disabled id="orderSnD" type="text" value="" class="form-control">
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label class="col-sm-2 control-label mtop">姓名:</label>
                         <div class="col-sm-4">
@@ -220,6 +222,13 @@
                     </div>
                 </div>
                 <div class="row">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label mtop">支付方式:</label>
+                        <div class="col-sm-4">
+                            <input disabled id="payTypeD" type="text" value="" class="form-control">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label mtop">订单金额:</label>
                         <div class="col-sm-4">
@@ -227,10 +236,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
 
-                    </div>
                 </div>
+
                 <div class="row">
                     <div class="form-group">
                         <label class="col-sm-2 control-label mtop">地址:</label>
@@ -239,6 +247,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- 搜索框panel -->
@@ -420,6 +429,8 @@
                 if (result.sumMoney != null && result.sumMoney != "" && result.sumMoney != undefined) {
                     $('#sumMoneyD').val(((result.sumMoney) / 100).toFixed(2));
                 }
+                $('#payTypeD').val(result.payTypeStr);
+
                 if (result.isSelf == 1) {
                     $('#isSelfD').val("到店自取");
                     if (result.orderStatus == 50) {
