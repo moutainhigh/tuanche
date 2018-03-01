@@ -5,6 +5,7 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.excel.utils.ExcelUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
@@ -14,6 +15,7 @@ import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.dto.OrderProductListRequest;
 import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
+import com.taisf.services.order.vo.OrderExcelVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderListVo;
 import com.taisf.services.ups.entity.EmployeeEntity;
@@ -27,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -213,5 +217,27 @@ public class OrderController {
         }
         return dto;
     }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/2/28
+     * @description:订单查询导出
+     **/
+    @RequestMapping("listOrderExcel")
+    public void listOrderExcel(HttpServletRequest request, HttpServletResponse response,OrderInfoRequest orderInfoRequest) throws UnsupportedEncodingException {
+        response.setContentType("octets/stream");
+        String fileName = "订单查询";
+        response.addHeader("Content-Disposition", "attachment;filename="+ new String(fileName.getBytes("GB2312"),"ISO8859-1") +".xls");
+        try{
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            orderInfoRequest.setBizCode(emp.getEmpBiz());
+            List<OrderExcelVO> orderExcelVOList = orderManagerImpl.listOrderExcel(orderInfoRequest);
+            ExcelUtil.exportExcel(response.getOutputStream(), orderExcelVOList);
+        }catch (Exception e){
+            LogUtil.error(LOGGER, "订单查询导出excel异常:{}",e);
+        }
+
+    }
+
 
 }

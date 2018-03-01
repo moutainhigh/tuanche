@@ -393,4 +393,53 @@
         </if>
         ORDER BY t.id DESC
     </select>
+
+    <resultMap id="ExcelMap" type="com.taisf.services.order.vo.OrderExcelVO">
+        <result column="user_tel" jdbcType="VARCHAR" property="userTel"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="order_type" jdbcType="TINYINT" property="orderType"/>
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+    </resultMap>
+
+    <select id="listOrderExcel" resultMap="ExcelMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest">
+        SELECT
+        t.user_name,t.user_tel,t.address,t.create_time,t.order_type,t.order_sn
+        FROM t_order t
+        INNER join t_order_money m on t.order_sn = m.order_sn
+        LEFT JOIN t_supplier s ON s.supplier_code = t.business_uid
+        LEFT JOIN t_enterprise e ON e.enterprise_code = t.enterprise_code
+        WHERE 1=1 AND t.supplier_code = #{bizCode,jdbcType=VARCHAR}
+        <if test="userUid != null and userUid != '' ">
+            and t.user_uid = #{userUid,jdbcType=VARCHAR}
+        </if>
+        <if test="openTime != null and openTime != '' ">
+            <![CDATA[
+				and t.create_time >= #{openTime}
+			]]>
+        </if>
+        <if test="tillTime != null and tillTime != '' ">
+            <![CDATA[
+				and t.create_time <= #{tillTime}
+			]]>
+        </if>
+
+        <if test="userTel != null and userTel != '' ">
+            and t.user_tel like concat('%',#{userTel},'%')
+        </if>
+        <if test="orderType != null">
+            and t.order_type = #{orderType,jdbcType=INTEGER}
+        </if>
+        <if test="isSelf != null">
+            and t.is_self = #{isSelf,jdbcType=INTEGER}
+        </if>
+        <if test="supplierName != null and supplierName != ''">
+            and s.supplier_name LIKE  concat('%',#{supplierName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="orderStatus != null">
+            and t.order_status = #{orderStatus,jdbcType=INTEGER}
+        </if>
+        ORDER BY t.id DESC
+    </select>
 </mapper>

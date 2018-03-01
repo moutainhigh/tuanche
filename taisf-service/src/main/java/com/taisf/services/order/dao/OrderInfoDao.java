@@ -9,6 +9,7 @@ import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
+import com.taisf.services.order.vo.OrderExcelVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderListVo;
 import com.taisf.services.order.vo.OrderSendStatsVo;
@@ -98,6 +99,15 @@ public class OrderInfoDao extends BaseDao{
 		pageBounds.setLimit(orderInfoRequest.getLimit());
 		pageBounds.setPage(orderInfoRequest.getPage());
         return mybatisDaoContext.findForPage(SQLID + "pageListOrder", OrderInfoVO.class, orderInfoRequest,pageBounds);
+    }
+
+   /**
+    * @author:zhangzhengguang
+    * @date:2018/2/28
+    * @description:订单查询导出
+    **/
+    public List<OrderExcelVO> listOrderExcel(OrderInfoRequest orderInfoRequest){
+        return mybatisDaoContext.findAll(SQLID + "listOrderExcel", OrderExcelVO.class, orderInfoRequest);
     }
 
 	/**

@@ -211,6 +211,27 @@ public class OrderManagerImpl {
 
 	/**
 	 * @author:zhangzhengguang
+	 * @date:2018/2/28
+	 * @description:订单查询导出
+	 **/
+	public List<OrderExcelVO> listOrderExcel(OrderInfoRequest orderInfoRequest){
+		List<OrderExcelVO> orderExcelVOList = orderInfoDao.listOrderExcel(orderInfoRequest);
+		for (OrderExcelVO orderExcelVO : orderExcelVOList) {
+			List<OrderProductEntity> orderProductEntityList = orderProductDao.getOrderProductByOrderSn(orderExcelVO.getOrderSn());
+			if(!Check.NuNCollection(orderProductEntityList)){
+				String str = "";
+				for (OrderProductEntity orderProductEntity : orderProductEntityList) {
+						str += orderProductEntity.getProductName()+",\r\n";
+				}
+				orderExcelVO.setOrderProduct(str.substring(0,str.length()-3));
+			}
+		}
+		return orderExcelVOList;
+	}
+
+
+	/**
+	 * @author:zhangzhengguang
 	 * @date:2017/10/18
 	 * @description:企业订单配送
 	 **/

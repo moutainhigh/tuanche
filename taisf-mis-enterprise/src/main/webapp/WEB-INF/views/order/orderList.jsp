@@ -113,6 +113,11 @@
             <div class="row row-lg">
                 <!-- Example Pagination -->
                 <div class="col-sm-12">
+                    <button class="btn btn-primary" type="button"
+                            onclick="listOrderExcel();">
+                        <!-- <a href="stats/refund/testPoi"> </a>-->
+                        导出Excel
+                    </button>
                     <table id="listTable" class="table table-bordered" data-click-to-select="true"
                            data-toggle="table" data-side-pagination="server"
                            data-pagination="true" data-page-list="[5,10,20,50]"
@@ -504,6 +509,31 @@
             });
             layer.close(index);
         });
+    }
+
+    function listOrderExcel(){
+
+        var openTime = $("#openTime").val();
+        var tillTime = $("#tillTime").val();
+
+        if (openTime == "") {
+            openTime = "";
+        } else {
+            openTime += " 00:00:00";
+        }
+        if (tillTime == "") {
+            tillTime = "";
+        } else{
+            tillTime += " 23:59:59";
+        }
+        window.location.href="order/listOrderExcel?"
+            +"openTime="+openTime
+            +"&tillTime="+tillTime
+            +"&userTel="+$("#userPhoneS").val().trim()
+            +"&orderStatus="+$("#status").val()
+            +"&isSelf="+$("#isSelfS").val()
+            +"&supplierName="+$("#supplierName").val().trim()
+            +"&orderType="+$("#orderTypeS").val();
     }
 </script>
 
