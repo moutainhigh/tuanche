@@ -140,7 +140,7 @@
                             <option value="5">--饮品--</option>
                             <option value="6">--主食--</option>
                             <option value="7">--水果--</option>
-                            <option value="8">--福利--</option>
+                            <option value="8">--超市--</option>
                         </select>
                     </div>
                     <label class="col-xs-1 col-sm-1 control-label mtop">供餐类型:</label>
@@ -255,7 +255,7 @@
                                         <option value="5">--饮品--</option>
                                         <option value="6">--主食--</option>
                                         <option value="7">--水果--</option>
-                                        <option value="8">--福利--</option>
+                                        <option value="8">--超市--</option>
                                     </select>
                                 </div>
                             </div>
@@ -362,7 +362,7 @@
                                         <option value="5">--饮品--</option>
                                         <option value="6">--主食--</option>
                                         <option value="7">--水果--</option>
-                                        <option value="8">--福利--</option>
+                                        <option value="8">--超市--</option>
                                     </select>
                                 </div>
                             </div>
@@ -470,7 +470,7 @@
                                         <option value="5">--饮品--</option>
                                         <option value="6">--主食--</option>
                                         <option value="7">--水果--</option>
-                                        <option value="8">--福利--</option>
+                                        <option value="8">--超市--</option>
                                     </select>
                                 </div>
                             </div>
@@ -614,7 +614,7 @@
         }else if (value == 7) {
             return "水果";
         }else if (value == 8) {
-            return "福利";
+            return "超市";
         }
     }
     // 操作列
