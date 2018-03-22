@@ -1,8 +1,10 @@
 package com.taisf.services.recharge.manager;
 
+import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.UUIDGenerator;
+import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.AccountTypeEnum;
 import com.taisf.services.common.valenum.UserStatusEnum;
 import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
@@ -123,6 +125,8 @@ public class RechargeManagerImpl {
      */
     public void fillUserAccountOneByEnterprise(String enterpriseCode,String userUid,int money){
 
+        LogUtil.error(logger,"将企业的钱充值给用户.企业:{} 用户:{},金额:{}",enterpriseCode,userUid,money);
+
         //充值用户
         fillUserAccount(userUid,money,UUIDGenerator.hexUUID());
 
@@ -164,7 +168,11 @@ public class RechargeManagerImpl {
      */
     private void subEnterpriseAccount(String enterpriseCode,int money,String bizSn){
         //消费当前的余额信息
-        userAccountDao.changeUserBalance(enterpriseCode,money);
+        int num =  userAccountDao.changeUserBalance(enterpriseCode,money);
+        if (num != 1){
+            throw new BusinessException("更新用户金额失败");
+        }
+
         //记录当前的消费记录
         AccountLogEntity log = new AccountLogEntity();
         log.setAccountType(AccountTypeEnum.CHANGE.getCode());
@@ -226,7 +234,10 @@ public class RechargeManagerImpl {
      */
     private void fillUserAccount(String userUid,int money,String bizSn){
         //消费当前的余额信息
-        userAccountDao.changeUserBalance(userUid,money);
+        int num = userAccountDao.changeUserBalance(userUid,money);
+        if (num != 1){
+            throw new BusinessException("更新用户金额失败");
+        }
         //记录当前的消费记录
         AccountLogEntity log = new AccountLogEntity();
         log.setAccountType(AccountTypeEnum.FILL.getCode());
