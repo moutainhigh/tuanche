@@ -471,6 +471,7 @@ public class RechargeServiceProxy implements RechargeService {
         record.setRechargeSn(rechargeSn);
         record.setTotalPrice(total);
         record.setPayMoney(total);
+        record.setSupplierCode(infoVO.getEnterpriseEntity().getSupplierCode());
         rechargeManager.saveRecharge(record);
         return dto;
 
