@@ -206,6 +206,7 @@ public class OrderServiceProxy implements OrderService {
             StockWeekEntity entity = new StockWeekEntity();
             entity.setSupplierCode(base.getSupplierCode());
             entity.setWeek(getWeek(base.getCreateTime()));
+            entity.setOrderType(base.getOrderType());
             entity.setProductCode(db.getP());
             entity.setSupplierProductType(db.getT());
             entity.setOrderSn(base.getOrderSn());

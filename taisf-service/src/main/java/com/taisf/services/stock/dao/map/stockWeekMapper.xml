@@ -59,6 +59,12 @@
       <if test="orderSn != null" >
         order_sn,
       </if>
+
+      <if test="stockType != null" >
+        stock_type,
+      </if>
+
+
       <if test="weekSn != null" >
         week_sn,
       </if>
@@ -92,6 +98,11 @@
       <if test="orderSn != null" >
         #{orderSn,jdbcType=VARCHAR},
       </if>
+
+      <if test="stockType != null" >
+        #{stockType,jdbcType=INTEGER},
+      </if>
+
       <if test="weekSn != null" >
         #{weekSn,jdbcType=VARCHAR},
       </if>
