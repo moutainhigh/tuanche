@@ -57,8 +57,6 @@ public class StockWeekDao extends BaseDao {
         return mybatisDaoContext.findAll(SQLID+"getStockWeekByList", StockHasVO.class, par);
     }
 
-
-
     /**
      * 批量保存当前的库存情况
      * @author afi

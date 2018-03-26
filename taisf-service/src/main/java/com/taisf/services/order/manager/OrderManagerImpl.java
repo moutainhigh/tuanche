@@ -21,6 +21,7 @@ import com.taisf.services.refund.constants.RefundStatusEnum;
 import com.taisf.services.refund.dao.RefundDao;
 import com.taisf.services.refund.entity.RefundEntity;
 import com.taisf.services.stock.dao.StockWeekDao;
+import com.taisf.services.stock.entity.StockWeekEntity;
 import com.taisf.services.user.dao.AccountLogDao;
 import com.taisf.services.user.dao.UserAccountDao;
 import com.taisf.services.user.entity.AccountLogEntity;
@@ -106,7 +107,7 @@ public class OrderManagerImpl {
 	 * @param order
 	 * @param payRecord
 	 */
-	public  String refundOrder(OrderEntity order,PayRecordEntity payRecord){
+	public  String refundOrder(OrderEntity order,PayRecordEntity payRecord,List<StockWeekEntity> list){
 		int count = orderBaseDao.refundOrder(order.getOrderSn(),order.getOrderStatus());
 		if (count == 1){
 			//生成退款
@@ -124,6 +125,9 @@ public class OrderManagerImpl {
 			entity.setRefundStatus(RefundStatusEnum.WAIT.getCode());
 			entity.setSupplierCode(order.getSupplierCode());
 			int row =  refundDao.saveRefund(entity);
+			if (!Check.NuNCollection(list)){
+				stockWeekDao.batchSaveStockWeek(list);
+			}
 			return entity.getRefundSn();
 		}
 		return null;

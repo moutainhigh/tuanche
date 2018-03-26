@@ -176,13 +176,47 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("异常的支付信息");
             return dto;
         }
-        //结束订单
-        String refundSn = orderManager.refundOrder(base, payRecord);
+
+        List<StockWeekEntity> list = this.trans2Stock(base);
+        //退款
+        String refundSn = orderManager.refundOrder(base, payRecord,list);
         dto.setData(refundSn);
         return dto;
 
     }
 
+
+    /**
+     * 处理当前的库存信息
+     * @author afi
+     * @param base
+     * @return
+     */
+    private List<StockWeekEntity>  trans2Stock(OrderEntity base){
+        String json = base.getOrderJson();
+        List<StockWeekEntity> list = new ArrayList<>();
+        if (Check.NuNStr(json)){
+            return list;
+        }
+        List<StockDbVO>  dbs = JsonEntityTransform.json2List(json,StockDbVO.class);
+        if (Check.NuNCollection(dbs)){
+            return list;
+        }
+        for (StockDbVO db : dbs) {
+            StockWeekEntity entity = new StockWeekEntity();
+            entity.setSupplierCode(base.getSupplierCode());
+            entity.setWeek(getWeek(base.getCreateTime()));
+            entity.setProductCode(db.getP());
+            entity.setSupplierProductType(db.getT());
+            entity.setOrderSn(base.getOrderSn());
+            entity.setStockType(StockTypeEnum.OUT.getCode());
+            entity.setProductNum(-db.getN());
+            entity.setWeekSn(DateUtil.getFirstDayOfWeek(base.getCreateTime()));
+
+            list.add(entity);
+        }
+        return list;
+    }
 
 
     /**
@@ -1179,6 +1213,17 @@ public class OrderServiceProxy implements OrderService {
     private int getWeek() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
+        return c.get(Calendar.DAY_OF_WEEK);
+    }
+
+
+    /**
+     * 获取今天周几
+     * @return
+     */
+    private int getWeek(Date time) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
         return c.get(Calendar.DAY_OF_WEEK);
     }
 

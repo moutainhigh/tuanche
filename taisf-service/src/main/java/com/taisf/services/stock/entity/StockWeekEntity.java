@@ -18,6 +18,12 @@ public class StockWeekEntity  extends BaseEntity {
      */
     private String supplierCode;
 
+
+    /**
+     * 库存类型 1.入库 2:出库
+     */
+    private Integer stockType;
+
     /**
      * 订单编号
      */
@@ -69,6 +75,15 @@ public class StockWeekEntity  extends BaseEntity {
      * 更新时间
      */
     private Date updateTime;
+
+
+    public Integer getStockType() {
+        return stockType;
+    }
+
+    public void setStockType(Integer stockType) {
+        this.stockType = stockType;
+    }
 
     public Integer getId() {
         return id;
