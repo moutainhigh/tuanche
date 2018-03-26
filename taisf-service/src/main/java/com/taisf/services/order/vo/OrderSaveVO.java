@@ -6,6 +6,7 @@ import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
+import com.taisf.services.stock.entity.StockWeekEntity;
 import com.taisf.services.user.entity.UserEntity;
 
 import java.util.ArrayList;
@@ -82,6 +83,12 @@ public class OrderSaveVO extends BaseEntity{
      * 地址
      */
     List<EnterpriseAddressEntity> addressList = new ArrayList<>();
+
+    /**
+     * 当前订单的库存占用情况
+     */
+    List<StockWeekEntity> stockList = new ArrayList<>();
+
 
     /**
      * 不惨价格
@@ -180,5 +187,13 @@ public class OrderSaveVO extends BaseEntity{
 
     public void setAddressList(List<EnterpriseAddressEntity> addressList) {
         this.addressList = addressList;
+    }
+
+    public List<StockWeekEntity> getStockList() {
+        return stockList;
+    }
+
+    public void setStockList(List<StockWeekEntity> stockList) {
+        this.stockList = stockList;
     }
 }

@@ -122,6 +122,19 @@ public class OrderEntity extends BaseEntity {
      */
     private String supplierCode;
 
+    /**
+     * 订单的商品信息
+     */
+    private String orderJson;
+
+
+    public String getOrderJson() {
+        return orderJson;
+    }
+
+    public void setOrderJson(String orderJson) {
+        this.orderJson = orderJson;
+    }
 
     public String getAddressFid() {
         return addressFid;

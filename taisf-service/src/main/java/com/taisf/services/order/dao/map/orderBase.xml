@@ -30,6 +30,9 @@
         <result column="last_modify_date" jdbcType="TIMESTAMP" property="lastModifyDate" />
         <result column="mark" jdbcType="VARCHAR" property="mark" />
         <result column="supplier_code" jdbcType="VARCHAR" property="supplierCode" />
+        <result column="order_json" jdbcType="VARCHAR" property="orderJson" />
+
+
 
     </resultMap>
 
@@ -38,7 +41,7 @@
         <!--  -->
         id, order_sn,title, province_code,area_code, city_code,address, order_source,eva_status, order_status, accounts_status,
         pay_status,order_type, business_uid, user_uid, user_tel, user_name,user_code,knight_uid,
-        send_time, pay_time,create_time, last_modify_date, mark,supplier_code,is_self
+        send_time, pay_time,create_time, last_modify_date, mark,supplier_code,is_self,order_json
     </sql>
 
 
@@ -147,6 +150,12 @@
                 supplier_code,
             </if>
 
+            <if test="orderJson != null">
+                order_json,
+            </if>
+
+
+
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderSn != null">
@@ -234,6 +243,11 @@
             <if test="supplierCode != null">
                 #{supplierCode,jdbcType=VARCHAR},
             </if>
+
+            <if test="orderJson != null">
+                #{orderJson,jdbcType=VARCHAR},
+            </if>
+
         </trim>
     </insert>
 

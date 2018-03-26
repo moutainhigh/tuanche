@@ -40,6 +40,8 @@
         <result column="enterprise_code" property="enterpriseCode" jdbcType="VARCHAR"/>
         <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR"/>
 
+        <result column="order_json" jdbcType="VARCHAR" property="orderJson" />
+
     </resultMap>
 
 
@@ -48,7 +50,7 @@
         t.id, t.order_sn,t.title, t.province_code,t.area_code, t.city_code,t.address, t.order_source,t.eva_status,
         t.order_status, t.accounts_status,
         t.pay_status,t.order_type, t.business_uid, t.user_uid, t.user_tel, t.user_name,t.user_code,
-        t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark,
+        t.send_time, t.pay_time,t.create_time, t.last_modify_date, t.mark, t.order_json,
         m.sum_money, m.coupon_money, m.discount_money,m.red_money, m.need_pay, m.pay_money, m.pay_balance, m.carry_money
 
     </sql>

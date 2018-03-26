@@ -24,6 +24,8 @@ import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.*;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.pay.manager.PayManagerImpl;
+import com.taisf.services.stock.entity.StockWeekEntity;
+import com.taisf.services.stock.vo.StockDbVO;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
@@ -1046,6 +1048,84 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.getOrderBase().setTitle(orderTypeEnum.getName());
     }
 
+    /**
+     * 将当前的购物车 中的商品信息
+     * @auhor afi
+     * @param dto
+     * @param orderSaveVO
+     * @param cartList
+     * @return
+     */
+    private void transCart2Stock(DataTransferObject dto,OrderSaveVO orderSaveVO,List<CartVO> cartList){
+        if (!dto.checkSuccess()) {
+            return;
+        }
+        if (Check.NuNCollection(cartList)){
+            dto.setErrorMsg("请选择商品");
+            return;
+        }
+
+        // 去重当前的商品信息
+        Map<String,StockWeekEntity>  stockMap = new HashMap<>();
+        for (CartVO cartVO : cartList) {
+            String key = getAppendString(cartVO.getProductCode(),cartVO.getSupplierProductType());
+            if (stockMap.containsKey(key)){
+                //当前的已经占用情况
+                StockWeekEntity has = stockMap.get(key);
+                has.setProductNum(has.getProductNum() + ValueUtil.getintValue(cartVO.getProductNum()));
+            }else {
+                StockWeekEntity stock = new StockWeekEntity();
+                stock.setProductNum(ValueUtil.getintValue(cartVO.getProductNum()));
+                stock.setProductCode(cartVO.getProductCode());
+                stock.setSupplierProductType(cartVO.getSupplierProductType());
+                stockMap.put(key,stock);
+            }
+        }
+        // 当前订单的库存情况
+        List<StockDbVO> list =new ArrayList<>();
+        //拼接当前的商品的库存信息
+        for (StockWeekEntity stockWeekEntity : stockMap.values()) {
+            StockDbVO vo = new StockDbVO();
+            vo.setT(stockWeekEntity.getSupplierProductType());
+            vo.setP(stockWeekEntity.getProductCode());
+            vo.setN(stockWeekEntity.getProductNum());
+            list.add(vo);
+
+            stockWeekEntity.setSupplierCode(orderSaveVO.getOrderBase().getSupplierCode());
+            stockWeekEntity.setWeek(getWeek());
+            stockWeekEntity.setOrderSn(orderSaveVO.getOrderBase().getOrderSn());
+        }
+
+        //存储
+
+
+
+
+    }
+
+
+    /**
+     * 获取今天周几
+     * @return
+     */
+    private int getWeek() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        return c.get(Calendar.DAY_OF_WEEK);
+    }
+
+
+    /**
+     * 拼接当前商品的类型信息
+     * @author afi
+     * @param productCode
+     * @param supplierProductType
+     * @return
+     */
+    private String getAppendString(Integer productCode,Integer supplierProductType){
+
+        return ValueUtil.getStrValue(productCode) + "xxx" + ValueUtil.getStrValue(supplierProductType);
+    }
 
     /**
      * 处理当前的商品信息
