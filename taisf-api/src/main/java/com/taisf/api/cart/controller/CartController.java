@@ -7,10 +7,12 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.api.common.abs.AbstractController;
+import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.dto.CartAddRequest;
 import com.taisf.services.order.dto.CartCleanRequest;
 import com.taisf.services.order.vo.CartInfoVO;
+import com.taisf.services.user.api.IndexService;
 import com.taisf.services.user.vo.UserModelVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,10 @@ public class CartController extends AbstractController {
 
     @Autowired
     private CartService cartService;
+
+
+    @Autowired
+    private IndexService indexService;
 
     /**
      * 添加购物车
@@ -81,14 +87,18 @@ public class CartController extends AbstractController {
 
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
-
+            DataTransferObject<OrderTypeEnum> typeDto = indexService.getOrderType(user.getEnterpriseCode());
+            if (!typeDto.checkSuccess()){
+                return new ResponseDto("获取当前的订饭时间失败");
+            }
+            //设置当前的订单类型
+            paramRequest.setOrderType(typeDto.getData().getCode());
             DataTransferObject<CartInfoVO> dto =cartService.addCart(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【添加购物车】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
             return new ResponseDto("未知错误");
         }
-
     }
 
 

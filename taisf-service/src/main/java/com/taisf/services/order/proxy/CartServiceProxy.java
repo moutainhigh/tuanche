@@ -299,7 +299,7 @@ public class CartServiceProxy implements CartService{
         }
         int last = ValueUtil.getintValue(stock.getProductLimit()) - ValueUtil.getintValue(stock.getProductNum());
         if (last <= 0){
-            dto.setErrorMsg("当前商品已无货");
+            dto.setErrorMsg("当前商品已售完");
             return dto;
         }
         if (Check.NuNObj(has)){

@@ -38,6 +38,13 @@ public class StockWeekEntity  extends BaseEntity {
      */
     private Integer productCode;
 
+
+    /**
+     * 商品name
+     */
+    private String productName;
+
+
     /**
      * 类型
      */
@@ -149,5 +156,13 @@ public class StockWeekEntity  extends BaseEntity {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

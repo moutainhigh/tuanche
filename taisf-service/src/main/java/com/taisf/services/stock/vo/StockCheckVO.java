@@ -1,5 +1,7 @@
 package com.taisf.services.stock.vo;
 
+import com.jk.framework.base.utils.ValueUtil;
+
 /**
  * <p>TODO</p>
  * <p/>
@@ -42,5 +44,18 @@ public class StockCheckVO  extends StockHasVO {
 
     public void setLimitId(Integer limitId) {
         this.limitId = limitId;
+    }
+
+
+    /**
+     * 获取当前的数量限制
+     * @return
+     */
+    public int checkLast(){
+        Integer last = ValueUtil.getintValue(productLimit) - ValueUtil.getintValue(getProductNum());
+        if (last <= 0){
+            last = 0;
+        }
+        return last;
     }
 }
