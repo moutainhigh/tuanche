@@ -11,6 +11,8 @@ import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.stock.dao.StockProductDao;
 import com.taisf.services.stock.entity.StockProductEntity;
+import com.taisf.services.stock.vo.StockCheckVO;
+import com.taisf.services.stock.vo.StockHasVO;
 import com.taisf.services.ups.dao.EmployeeDao;
 import com.taisf.services.user.dao.*;
 import com.taisf.services.user.dto.AccountLogRequest;
@@ -41,10 +43,63 @@ import java.util.Map;
 @Service("stock.stockProductManagerImpl")
 public class StockProductManagerImpl {
 
+    @Resource(name="stock.stockWeekManagerImpl")
+    private StockWeekManagerImpl stockWeekManager;
 
     @Resource(name="stock.stockProductDao")
     private StockProductDao stockProductDao;
 
+    /**
+     * 校验当前的库存信息
+     * @param week
+     * @param supplierProductType
+     * @param orderType
+     * @param supplierCode
+     * @param productIds
+     * @return
+     */
+    public Map<String,StockCheckVO>  checkStockLimit(Integer week, Integer supplierProductType, Integer orderType, String supplierCode, List productIds){
+        if (Check.NuNCollection(productIds)){
+            throw  new BusinessException("参数为空");
+        }
+        if (Check.NuNObjs(week,supplierProductType,orderType,supplierCode)){
+            throw  new BusinessException("参数为空");
+        }
+
+        //获取当前的设置map
+        Map<String, StockProductEntity> stockLimitMap = this.getStockLimitMap(week, supplierProductType, orderType, supplierCode, productIds);
+
+        //当前商品的库存情况
+        Map<String, StockHasVO> stockMap = stockWeekManager.getStockLimitMap(week, supplierProductType, orderType, supplierCode, productIds);
+        Map<String,StockCheckVO> stocksMap = new HashMap<>();
+        for (Object productId : productIds) {
+            String key = ValueUtil.getStrValue(productId);
+            StockCheckVO check = new StockCheckVO();
+            check.setProductCode(ValueUtil.getintValue(productId));
+            if (stockLimitMap.containsKey(key)){
+                StockProductEntity pro = stockLimitMap.get(key);
+                if (!Check.NuNObj(pro)){
+                    check.setProductLimit(pro.getProductLimit());
+                }
+            }
+            if (Check.NuNObj(check.getProductLimit())){
+                check.setProductLimit(0);
+            }
+
+            if (stockMap.containsKey(key)){
+                StockHasVO has = stockMap.get(key);
+                if (!Check.NuNObj(has)){
+                    check.setProductNum(has.getProductNum());
+                }
+            }
+
+            if (Check.NuNObj(check.getProductNum())){
+                check.setProductNum(0);
+            }
+            stocksMap.put(key,check);
+        }
+        return stocksMap;
+    }
 
 
     /**
@@ -58,7 +113,7 @@ public class StockProductManagerImpl {
      */
     public Map<String,StockProductEntity> getStockLimitMap(Integer week, Integer supplierProductType, Integer orderType, String supplierCode, List productIds) {
         Map<String,StockProductEntity> map = new HashMap<>();
-        List<StockProductEntity> stockList =  getStockLimitByList(week,supplierProductType,orderType,supplierCode,productIds);
+        List<StockProductEntity> stockList =  this.getStockLimitByList(week,supplierProductType,orderType,supplierCode,productIds);
         if (!Check.NuNCollection(stockList)){
             for (StockProductEntity stockProductEntity : stockList) {
                 map.put(ValueUtil.getStrValue(stockProductEntity.getProductCode()),stockProductEntity);

@@ -21,6 +21,7 @@ import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.*;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.pay.manager.PayManagerImpl;
+import com.taisf.services.stock.StockUtil;
 import com.taisf.services.stock.entity.StockWeekEntity;
 import com.taisf.services.stock.vo.StockDbVO;
 import com.taisf.services.supplier.entity.SupplierEntity;
@@ -1053,7 +1054,7 @@ public class OrderServiceProxy implements OrderService {
      * @param cartList
      * @return
      */
-    private void transCart2Stock(DataTransferObject dto,OrderSaveVO orderSaveVO,List<CartVO> cartList){
+    private void transAndCheckCart2Stock(DataTransferObject dto,OrderSaveVO orderSaveVO,List<CartVO> cartList){
         if (!dto.checkSuccess()) {
             return;
         }
@@ -1065,7 +1066,7 @@ public class OrderServiceProxy implements OrderService {
         // 去重当前的商品信息
         Map<String,StockWeekEntity>  stockMap = new HashMap<>();
         for (CartVO cartVO : cartList) {
-            String key = getAppendString(cartVO.getProductCode(),cartVO.getSupplierProductType());
+            String key = StockUtil.getAppendString(cartVO.getProductCode(),cartVO.getSupplierProductType());
             if (stockMap.containsKey(key)){
                 //当前的已经占用情况
                 StockWeekEntity has = stockMap.get(key);
@@ -1093,8 +1094,11 @@ public class OrderServiceProxy implements OrderService {
             stockWeekEntity.setSupplierCode(orderSaveVO.getOrderBase().getSupplierCode());
             stockWeekEntity.setWeek(getWeek());
             stockWeekEntity.setOrderSn(orderSaveVO.getOrderBase().getOrderSn());
+            stockWeekEntity.setOrderType(orderSaveVO.getOrderBase().getOrderType());
             stockList.add(stockWeekEntity);
         }
+        orderSaveVO.setStockList(stockList);
+
         //存储
         orderSaveVO.getOrderBase().setOrderJson(JsonEntityTransform.Object2Json(list));
     }
@@ -1111,17 +1115,7 @@ public class OrderServiceProxy implements OrderService {
     }
 
 
-    /**
-     * 拼接当前商品的类型信息
-     * @author afi
-     * @param productCode
-     * @param supplierProductType
-     * @return
-     */
-    private String getAppendString(Integer productCode,Integer supplierProductType){
 
-        return ValueUtil.getStrValue(productCode) + "xxx" + ValueUtil.getStrValue(supplierProductType);
-    }
 
     /**
      * 处理当前的商品信息
@@ -1205,7 +1199,7 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
         //设置当前的购物车的库存
-        this.transCart2Stock(dto,orderSaveVO,cartList);
+        this.transAndCheckCart2Stock(dto,orderSaveVO,cartList);
     }
 
 
