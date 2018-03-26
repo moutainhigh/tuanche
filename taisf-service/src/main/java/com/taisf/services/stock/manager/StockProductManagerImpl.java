@@ -76,10 +76,12 @@ public class StockProductManagerImpl {
             String key = ValueUtil.getStrValue(productId);
             StockCheckVO check = new StockCheckVO();
             check.setProductCode(ValueUtil.getintValue(productId));
+
             if (stockLimitMap.containsKey(key)){
                 StockProductEntity pro = stockLimitMap.get(key);
                 if (!Check.NuNObj(pro)){
                     check.setProductLimit(pro.getProductLimit());
+                    check.setLimitId(pro.getId());
                 }
             }
             if (Check.NuNObj(check.getProductLimit())){

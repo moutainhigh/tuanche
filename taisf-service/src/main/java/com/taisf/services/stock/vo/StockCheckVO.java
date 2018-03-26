@@ -17,6 +17,12 @@ public class StockCheckVO  extends StockHasVO {
 
     private static final long serialVersionUID = 301231231201446703L;
 
+
+    /**
+     * 限制的id
+     */
+    private Integer limitId;
+
     /**
      * 商品数量限制
      */
@@ -28,5 +34,13 @@ public class StockCheckVO  extends StockHasVO {
 
     public void setProductLimit(Integer productLimit) {
         this.productLimit = productLimit;
+    }
+
+    public Integer getLimitId() {
+        return limitId;
+    }
+
+    public void setLimitId(Integer limitId) {
+        this.limitId = limitId;
     }
 }

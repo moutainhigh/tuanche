@@ -18,6 +18,8 @@ import com.taisf.services.order.vo.CartVO;
 import com.taisf.services.order.vo.CartInfoVO;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.product.manager.ProductManagerImpl;
+import com.taisf.services.stock.manager.StockProductManagerImpl;
+import com.taisf.services.stock.vo.StockCheckVO;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
@@ -61,6 +63,9 @@ public class CartServiceProxy implements CartService{
 
     @Resource(name = "user.indexServiceProxy")
     private IndexServiceProxy indexServiceProxy;
+
+    @Resource(name = "stock.stockProductManagerImpl")
+    private StockProductManagerImpl stockProductManager;
 
 
     /**
@@ -283,14 +288,39 @@ public class CartServiceProxy implements CartService{
             cartAddRequest.setProductNum(1);
         }
         CartEntity has = cartManager.getCartByProduct(cartAddRequest);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(cartAddRequest.getProductCode());
+        Map<String, StockCheckVO> map = stockProductManager.checkStockLimit(getWeek(), cartAddRequest.getSupplierProductType(), cartAddRequest.getOrderType(), cartAddRequest.getBusinessUid(), list);
+        StockCheckVO stock = map.get(ValueUtil.getStrValue(cartAddRequest.getProductCode()));
+        if (Check.NuNObj(stock)){
+            dto.setErrorMsg("异常的库存信息");
+            return dto;
+        }
+        int last = ValueUtil.getintValue(stock.getProductLimit()) - ValueUtil.getintValue(stock.getProductNum());
+        if (last <= 0){
+            dto.setErrorMsg("当前商品已无货");
+            return dto;
+        }
         if (Check.NuNObj(has)){
             CartEntity record = new CartEntity();
             BeanUtils.copyProperties(cartAddRequest,record);
+            //加入购物车限制
+            if (ValueUtil.getintValue(record.getProductNum()) > last ){
+                dto.setErrorMsg("当前商品只有" + last + "份");
+                return dto;
+            }
             //当前购物车中不存在
             cartManager.saveCart(record);
         }else {
             //当前购物车中已经存在
             has.setProductNum(has.getProductNum() + cartAddRequest.getProductNum());
+
+            //加入购物车限制
+            if (ValueUtil.getintValue(has.getProductNum()) > last ){
+                dto.setErrorMsg("当前商品只有" + last + "份");
+                return dto;
+            }
             cartManager.updateCart(has);
         }
         return cartInfo(cartAddRequest.getUserUid(),cartAddRequest.getBusinessUid(),cartAddRequest.getEnterpriseCode());
@@ -348,6 +378,9 @@ public class CartServiceProxy implements CartService{
                 cartBaseRequest.getProductCode(),
                 cartBaseRequest.getSupplierProductType())){
             dto.setErrorMsg("参数为空");
+        }
+        if (Check.NuNObj(cartBaseRequest.getOrderType())){
+            dto.setErrorMsg("初始化当前的订单类型失败");
         }
     }
 
