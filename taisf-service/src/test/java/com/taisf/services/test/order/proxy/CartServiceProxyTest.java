@@ -85,13 +85,26 @@ public class CartServiceProxyTest extends BaseTest {
 
         CartAddRequest cartAddRequest = new CartAddRequest();
 
-        cartAddRequest.setBusinessUid("123");
+        cartAddRequest.setBusinessUid("jipin");
         cartAddRequest.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
         cartAddRequest.setProductCode(1);
         cartAddRequest.setUserUid("afi");
+        cartAddRequest.setEnterpriseCode("qpg001");
         DataTransferObject<CartInfoVO> classify = cartService.addCart(cartAddRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }
+
+
+
+    @Test
+    public void cartInfoTest1() {
+
+        DataTransferObject<CartInfoVO> classify = cartService.cartInfo("afi","jipin","qpg001");
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+
+    }
+
+
 
 }

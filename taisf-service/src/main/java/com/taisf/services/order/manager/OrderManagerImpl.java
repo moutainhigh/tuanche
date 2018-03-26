@@ -20,6 +20,7 @@ import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.refund.constants.RefundStatusEnum;
 import com.taisf.services.refund.dao.RefundDao;
 import com.taisf.services.refund.entity.RefundEntity;
+import com.taisf.services.stock.dao.StockWeekDao;
 import com.taisf.services.user.dao.AccountLogDao;
 import com.taisf.services.user.dao.UserAccountDao;
 import com.taisf.services.user.entity.AccountLogEntity;
@@ -80,6 +81,11 @@ public class OrderManagerImpl {
 
 	@Resource(name = "pay.payRecordDao")
 	private PayRecordDao payRecordDao;
+
+	@Resource(name = "stock.stockWeekDao")
+	private StockWeekDao stockWeekDao;
+
+
 
 
 
@@ -316,6 +322,10 @@ public class OrderManagerImpl {
 		List<OrderProductEntity> list = saveVO.getList();
 		orderProductDao.batchSaveOrderProduct(list);
 
+		//保存当前的订单的库存信息
+		if (!Check.NuNCollection(saveVO.getStockList())){
+			stockWeekDao.batchSaveStockWeek(saveVO.getStockList());
+		}
 		int balanceCost = ValueUtil.getintValue(orderMoney.getPayBalance());
 		if (balanceCost > 0){
 			//如果消费余额大于0,直接消费余额
@@ -332,8 +342,9 @@ public class OrderManagerImpl {
 			record.setTradeNo(saveVO.getOrderSn());
 			record.setPayCode(DataTransferObject.SUCCESS +"");
 			payRecordDao.savePayRecord(record);
-
 		}
+
+
 	}
 
 	/**

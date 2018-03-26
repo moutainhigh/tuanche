@@ -3,10 +3,7 @@ package com.taisf.services.order.proxy;
 import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
-import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.DateUtil;
-import com.jk.framework.base.utils.MD5Util;
-import com.jk.framework.base.utils.ValueUtil;
+import com.jk.framework.base.utils.*;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
@@ -1083,6 +1080,8 @@ public class OrderServiceProxy implements OrderService {
         }
         // 当前订单的库存情况
         List<StockDbVO> list =new ArrayList<>();
+
+        List<StockWeekEntity> stockList =new ArrayList<>();
         //拼接当前的商品的库存信息
         for (StockWeekEntity stockWeekEntity : stockMap.values()) {
             StockDbVO vo = new StockDbVO();
@@ -1094,13 +1093,10 @@ public class OrderServiceProxy implements OrderService {
             stockWeekEntity.setSupplierCode(orderSaveVO.getOrderBase().getSupplierCode());
             stockWeekEntity.setWeek(getWeek());
             stockWeekEntity.setOrderSn(orderSaveVO.getOrderBase().getOrderSn());
+            stockList.add(stockWeekEntity);
         }
-
         //存储
-
-
-
-
+        orderSaveVO.getOrderBase().setOrderJson(JsonEntityTransform.Object2Json(list));
     }
 
 
@@ -1206,7 +1202,10 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.getOrderBase().setTitle(titleStr);
         if (!Check.NuNCollection(listOut)){
             dto.setErrorMsg("购物车中存在过期菜品");
+            return;
         }
+        //设置当前的购物车的库存
+        this.transCart2Stock(dto,orderSaveVO,cartList);
     }
 
 
