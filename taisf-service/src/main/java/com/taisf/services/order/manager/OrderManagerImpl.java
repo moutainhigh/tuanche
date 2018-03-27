@@ -88,6 +88,14 @@ public class OrderManagerImpl {
 
 
 
+	/**
+	 * 获取当前的待取消的定点列表
+	 * @author afi
+	 * @return
+	 */
+	public List<OrderEntity> getOrder2Canceled(){
+		return orderBaseDao.getOrder2Canceled();
+	}
 
 
 	/**
@@ -100,6 +108,23 @@ public class OrderManagerImpl {
 
 		return orderInfoDao.getEnterpriseOrderStats(request);
 	}
+
+
+
+	/**
+	 * 取消订单
+	 * @param order
+	 * @param list
+	 */
+	public  void cancelOrder(OrderEntity order,List<StockWeekEntity> list){
+		int count = orderBaseDao.cancelOrder(order.getOrderSn(),order.getOrderStatus());
+		if (count == 1){
+			if (!Check.NuNCollection(list)){
+				stockWeekDao.batchSaveStockWeek(list);
+			}
+		}
+	}
+
 
 
 	/**

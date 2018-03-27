@@ -24,6 +24,15 @@ import java.util.List;
  */
 public interface OrderService {
 
+
+    /**
+     * 取消订单
+     * @author afi
+     * @param refundOrderRequest
+     * @return
+     */
+    DataTransferObject<String>  cancelOrder(RefundOrderRequest refundOrderRequest);
+
     /**
      * 获取当前的用户简版信息
      * @param userUid

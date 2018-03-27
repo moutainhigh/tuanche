@@ -45,6 +45,18 @@
     </sql>
 
 
+
+
+
+    <!-- 通过订单号 查询订单的基础信息 -->
+    <select id="getOrder2Canceled" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM t_order
+        WHERE  order_status = 10 and create_time  <![CDATA[ <= ]]>  #{time,jdbcType=TIMESTAMP}
+    </select>
+
+
     <!-- 通过订单号 查询订单的基础信息 -->
     <select id="getOrderBaseByOrderSn" resultMap="BaseResultMap" parameterType="java.lang.String" >
         SELECT
@@ -271,6 +283,17 @@
         order_status = 41
         WHERE order_sn = #{orderSn,jdbcType=VARCHAR}
     </update>
+
+
+    <update id="cancelOrder" parameterType="com.taisf.services.order.entity.OrderEntity">
+        <!-- 更新订单为取消 -->
+        UPDATE t_order
+        set
+        order_status = 30
+        WHERE order_sn = #{orderSn,jdbcType=VARCHAR}
+        AND order_status =  #{oldStatus,jdbcType=TINYINT}
+    </update>
+
 
 
     <update id="refundOrder" parameterType="com.taisf.services.order.entity.OrderEntity">

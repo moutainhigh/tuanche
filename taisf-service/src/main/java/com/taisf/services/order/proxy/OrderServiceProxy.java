@@ -128,6 +128,52 @@ public class OrderServiceProxy implements OrderService {
         return dto;
     }
 
+
+
+    /**
+     * 取消订单
+     * @author afi
+     * @param refundOrderRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<String>  cancelOrder(RefundOrderRequest refundOrderRequest){
+
+        DataTransferObject<String> dto = new DataTransferObject<>();
+        if (Check.NuNObj(refundOrderRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(refundOrderRequest.getOrderSn())){
+            dto.setErrorMsg("异常的订单号");
+            return dto;
+        }
+
+        //获取订单信息
+        OrderEntity base = orderManager.getOrderBaseBySn(refundOrderRequest.getOrderSn());
+        if (Check.NuNObj(base)){
+            dto.setErrorMsg("当前订单不存在");
+            return dto;
+        }
+
+        OrdersStatusEnum ordersStatusEnum = OrdersStatusEnum.getByCode(base.getOrderStatus());
+        if (Check.NuNObj(ordersStatusEnum)){
+            dto.setErrorMsg("异常的订单状态");
+            return dto;
+        }
+        if (!ordersStatusEnum.checkCancel()){
+            dto.setErrorMsg("当前订单状态不能取消");
+            return dto;
+        }
+        List<StockWeekEntity> list = this.trans2Stock(base);
+        //退款
+        orderManager.cancelOrder(base,list);
+        return dto;
+
+    }
+
+
+
     /**
      * 申请退款
      * @author afi
