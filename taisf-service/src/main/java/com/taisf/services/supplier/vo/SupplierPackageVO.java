@@ -74,6 +74,9 @@ public class SupplierPackageVO extends BaseEntity {
      */
     private Integer forDinner;
 
+
+
+
     public Integer getForLunch() {
         return forLunch;
     }

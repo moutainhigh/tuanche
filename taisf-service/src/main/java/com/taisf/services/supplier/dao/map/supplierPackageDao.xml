@@ -57,8 +57,17 @@
     <include refid="Base_Column_List" />
     from t_supplier_product_package
     where 1=1
+    <if test="title != null and title != ''">
+      and title = #{title,jdbcType=VARCHAR}
+    </if>
     <if test="supplierCode != null">
       and supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    </if>
+    <if test="lunchDinner == 1">
+      and for_lunch = 1
+    </if>
+    <if test="lunchDinner == 2">
+      and for_dinner = 1
     </if>
     <if test="week != null">
       and week = #{week,jdbcType=INTEGER}

@@ -70,4 +70,11 @@ public class StockProductDao extends BaseDao {
         return mybatisDaoContext.save(SQLID + "saveStockProduct", record);
     }
 
+    public int updateStockProduct(StockProductEntity record){
+        if (Check.NuNObj(record)){
+            return 0;
+        }
+        return mybatisDaoContext.update(SQLID + "updateByPrimaryKeySelective", record);
+    }
+
 }

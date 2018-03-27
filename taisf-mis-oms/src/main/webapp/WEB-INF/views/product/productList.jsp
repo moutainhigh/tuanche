@@ -573,13 +573,7 @@
             return "-";
         }
     }
-    function formatPrice(value, row, index) {
-        if (value != null) {
-            return (value/100).toFixed(2);
-        } else {
-            return "-";
-        }
-    }
+
     function formatProductType(value, row, index) {
         if (value == 1) {
             return "全部";

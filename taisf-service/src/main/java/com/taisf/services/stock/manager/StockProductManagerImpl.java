@@ -1,24 +1,12 @@
 package com.taisf.services.stock.manager;
 
 import com.jk.framework.base.exception.BusinessException;
-import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.MD5Util;
 import com.jk.framework.base.utils.ValueUtil;
-import com.taisf.services.common.valenum.AccountStatusEnum;
-import com.taisf.services.common.valenum.UserTypeEnum;
-import com.taisf.services.enterprise.entity.EnterpriseEntity;
-import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.stock.dao.StockProductDao;
 import com.taisf.services.stock.entity.StockProductEntity;
 import com.taisf.services.stock.vo.StockCheckVO;
 import com.taisf.services.stock.vo.StockHasVO;
-import com.taisf.services.ups.dao.EmployeeDao;
-import com.taisf.services.user.dao.*;
-import com.taisf.services.user.dto.AccountLogRequest;
-import com.taisf.services.user.dto.UserAccountRequest;
-import com.taisf.services.user.entity.*;
-import com.taisf.services.user.vo.UserAccountVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -158,6 +146,15 @@ public class StockProductManagerImpl {
             return 0;
         }
         return stockProductDao.saveStockProduct(record);
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/3/26
+     * @description:修改
+     **/
+    public int updateStockProduct(StockProductEntity record){
+        return stockProductDao.updateStockProduct(record);
     }
 
 

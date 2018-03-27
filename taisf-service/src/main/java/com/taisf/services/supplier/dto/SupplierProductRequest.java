@@ -24,6 +24,15 @@ public class SupplierProductRequest extends PageRequest {
      * 周
      */
     private Integer week;
+    /**
+     * 套餐名称
+     */
+    private String title;
+
+    /**
+     * 午餐晚餐
+     */
+    private Integer lunchDinner;
 
     /**
      * 供应商的code
@@ -46,6 +55,22 @@ public class SupplierProductRequest extends PageRequest {
      */
     private List<Integer> productIds;
 
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getLunchDinner() {
+        return lunchDinner;
+    }
+
+    public void setLunchDinner(Integer lunchDinner) {
+        this.lunchDinner = lunchDinner;
+    }
 
     public List<Integer> getProductIds() {
         return productIds;

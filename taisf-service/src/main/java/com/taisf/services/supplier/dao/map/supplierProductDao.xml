@@ -208,6 +208,7 @@
     </update>
 
     <resultMap id="BaseResultMapList" type="com.taisf.services.product.entity.ProductEntity">
+        <result column="id" jdbcType="INTEGER" property="id"/>
         <result column="product_name" jdbcType="VARCHAR" property="productName"/>
         <result column="product_classify" jdbcType="INTEGER" property="productClassify"/>
         <result column="product_type" jdbcType="INTEGER" property="productType"/>
@@ -220,7 +221,7 @@
 
     <select id="pageListSupplierProduct" parameterType="com.taisf.services.product.dto.ProductListRequest"
             resultMap="BaseResultMapList">
-        select
+        select t_product.id,
         t_product.product_name, t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale,for_lunch,for_dinner
         from t_supplier_product
         INNER JOIN t_product ON t_product.id = t_supplier_product.product_code
