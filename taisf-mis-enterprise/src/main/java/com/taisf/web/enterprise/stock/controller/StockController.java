@@ -121,7 +121,7 @@ public class StockController {
                 stockVOList.add(vo);
             }
             pageResult.setRows(stockVOList);
-            pageResult.setTotal((long) stockVOList.size());
+            pageResult.setTotal(dto.getData().getTotal());
         } catch (Exception e) {
             LogUtil.info(LOGGER, "params :{}", JsonEntityTransform.Object2Json(productListRequest));
             LogUtil.error(LOGGER, "error :{}", e);
