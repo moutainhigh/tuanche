@@ -2,6 +2,7 @@ package com.taisf.services.order.dao;
 
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.order.entity.OrderEntity;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,6 +80,24 @@ public class OrderBaseDao extends BaseDao{
         return mybatisDaoContext.update(SQLID + "refundOrderSuccess", par);
     }
 
+
+
+
+    /**
+     * 取消订单
+     * @param orderSn
+     * @param oldStatus
+     * @return
+     */
+    public int cancelOrder(String orderSn,int oldStatus){
+        Map<String,Object> par = new HashMap<>();
+        par.put("orderSn",orderSn);
+        par.put("oldStatus",oldStatus);
+        return mybatisDaoContext.update(SQLID + "cancelOrder", par);
+    }
+
+
+
     /**
      * 申请退款
      * @param orderSn
@@ -106,9 +126,17 @@ public class OrderBaseDao extends BaseDao{
         }
         return mybatisDaoContext.findOne(SQLID + "getOrderBaseByOrderSn", OrderEntity.class, orderSn);
     }
-    
-    
 
+    /**
+     * 获取当前的待取消的定点列表
+     * @author afi
+     * @return
+     */
+    public List<OrderEntity> getOrder2Canceled(){
+        Map<String,Object> par = new HashMap<>();
+        par.put("time", DateUtil.jumpMinute(new Date(),-15));
+        return mybatisDaoContext.findAll(SQLID + "getOrder2Canceled", OrderEntity.class, par);
+    }
 
 
     /**

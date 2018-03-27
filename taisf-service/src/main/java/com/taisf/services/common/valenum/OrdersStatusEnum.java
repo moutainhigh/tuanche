@@ -20,7 +20,12 @@ public enum OrdersStatusEnum {
     //10:待支付 11:部分支付 30:取消 40.已经退款 50.已支付 60.已配送 70.已签收
 
 
-    NO_PAY("待支付", 10,OrdersStatusShowEnum.NOPAYED),
+    NO_PAY("待支付", 10,OrdersStatusShowEnum.NOPAYED){
+        @Override
+        public boolean checkCancel() {
+            return true;
+        }
+    },
     PART_PAY("部分支付", 11,OrdersStatusShowEnum.NOPAYED),
     CANCEL("取消", 30,OrdersStatusShowEnum.CANCLED),
     REFUND("退款中", 40,OrdersStatusShowEnum.REFUND),
@@ -76,7 +81,7 @@ public enum OrdersStatusEnum {
      * @return
      */
     public boolean checkCancel(){
-        return true;
+        return false;
     }
 
     /**
