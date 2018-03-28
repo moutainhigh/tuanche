@@ -259,7 +259,7 @@
             return "0" + "(0)";
         }
         var num = row.lunchProductLimit - row.lunchProductNum;
-        var str = '(<span style="color: red;">' + num + '</span>)';
+        var str = '(<spa90n style="color: red;">' + num + '</spa90n>)';
         return row.lunchProductLimit + str;
     }
     function formatForDinner(value, row, index) {
@@ -362,11 +362,24 @@
             layer.alert("午餐库存数量不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
+        }else{
+            if (!r.test($("#lunchProductLimitE").val())) {
+                layer.alert("午餐库存数量请输入正整数", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtnE").removeAttr("disabled");
+                return false;
+            }
         }
+
         ;if ($("#dinnerProductLimitE").val() == null || $("#dinnerProductLimitE").val() == "") {
             layer.alert("晚餐库存数量不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
+        }else{
+            if (!r.test($("#dinnerProductLimitE").val())) {
+                layer.alert("晚餐库存数量请输入正整数", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtnE").removeAttr("disabled");
+                return false;
+            }
         }
         ;
         console.log($("#idE").val())

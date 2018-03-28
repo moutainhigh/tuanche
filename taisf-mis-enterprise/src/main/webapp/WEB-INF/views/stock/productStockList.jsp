@@ -396,17 +396,31 @@
 
     function editSaveProduct() {
         $("#saveBtnE").attr("disabled", "disabled");
+        var r = /^[0-9]*[1-9][0-9]*$/;
         if ($("#lunchProductLimitE").val() == null || $("#lunchProductLimitE").val() == "") {
             layer.alert("午餐库存数量不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
+        }else{
+            if (!r.test($("#lunchProductLimitE").val())) {
+                layer.alert("午餐库存数量请输入正整数", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtnE").removeAttr("disabled");
+                return false;
+            }
         }
-        ;if ($("#dinnerProductLimitE").val() == null || $("#dinnerProductLimitE").val() == "") {
+        if ($("#dinnerProductLimitE").val() == null || $("#dinnerProductLimitE").val() == "") {
             layer.alert("晚餐库存数量不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtnE").removeAttr("disabled");
             return false;
+        }else{
+            if (!r.test($("#dinnerProductLimitE").val())) {
+                layer.alert("晚餐库存数量请输入正整数", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtnE").removeAttr("disabled");
+                return false;
+            }
         }
-        ;
+
+
         console.log($("#idE").val())
         console.log(week)
         console.log($("#lunchStockIdE").val())
