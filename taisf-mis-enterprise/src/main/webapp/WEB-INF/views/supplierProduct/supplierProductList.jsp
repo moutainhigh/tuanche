@@ -393,6 +393,10 @@
         if($('#forDinner').is(':checked')) {
             forDinner = 1;
         }
+        if(forLunch == 0 && forDinner == 0){
+            layer.alert("请选择午餐晚餐", {icon: 5, time: 2000, title: '提示'});
+            return false;
+        }
         $.ajax({
             data: {
                 'id': $("#IDE").val(),

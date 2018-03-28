@@ -366,13 +366,24 @@
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='编辑' onclick='toedit(\"" + row.id + "\",\"" + row.lunchStockId + "\",\"" + row.lunchProductLimit + "\",\"" + row.dinnerStockId + "\",\"" + row.dinnerProductLimit + "\",\"" + row.productName + "\")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='编辑' onclick='toedit(\"" + row.forLunch + "\",\"" + row.forDinner + "\",\"" + row.id + "\",\"" + row.lunchStockId + "\",\"" + row.lunchProductLimit + "\",\"" + row.dinnerStockId + "\",\"" + row.dinnerProductLimit + "\",\"" + row.productName + "\")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         return result;
     }
-    function toedit(id,lunchStockId, lunchProductLimit, dinnerStockId, dinnerProductLimit,productName) {
+    function toedit(forLunch,forDinner,id,lunchStockId, lunchProductLimit, dinnerStockId, dinnerProductLimit,productName) {
         $("#editReset").trigger("click");
 
         $("#idE").val(id)
+
+        if(forLunch == 0){
+            $('#lunchProductLimitE').attr("readonly","readonly")
+        }else{
+            $('#lunchProductLimitE').removeAttr("readonly");
+        }
+        if(forDinner == 0){
+            $('#dinnerProductLimitE').attr("readonly","readonly")
+        }else{
+            $('#dinnerProductLimitE').removeAttr("readonly");
+        }
 
         $("#productNameE").val(productName)
         if(lunchStockId > 0){
