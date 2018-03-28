@@ -207,7 +207,7 @@
                             <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
                                 data-align="center"><span class="tdfont">分类</span></th>
                             <th data-field="priceMarket" data-width="10%" data-formatter="formatPrice"
-                                data-align="center"><span class="tdfont">市场价</span></th>
+                                data-align="center"><span class="tdfont">销售价</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">促销价</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
@@ -278,7 +278,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">市场价(元):</label>
+                                <label class="col-sm-3 control-label">销售价(元):</label>
                                 <div class="col-sm-8">
                                     <input id="priceMarket" name="priceMarket" type="text"
                                            class="form-control">
@@ -385,7 +385,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">市场价(元):</label>
+                                <label class="col-sm-3 control-label">销售价(元):</label>
                                 <div class="col-sm-8">
                                     <input id="priceMarketE" name="priceMarket" type="text"
                                            class="form-control">
@@ -493,7 +493,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">市场价(元):</label>
+                                <label class="col-sm-3 control-label">销售价(元):</label>
                                 <div class="col-sm-8">
                                     <input readonly id="priceMarketD" name="priceMarket" type="text"
                                            class="form-control">
@@ -730,7 +730,7 @@
         ;
 
         if ($("#priceMarket").val() == null || $("#priceMarket").val() == "") {
-            layer.alert("市场价不能为空", {icon: 5, time: 2000, title: '提示'});
+            layer.alert("销售价不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }

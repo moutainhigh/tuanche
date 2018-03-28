@@ -58,7 +58,7 @@ public class ProductEntity extends BaseEntity {
     private Integer priceSale;
 
     /**
-     * 市场价
+     * 销售价
      */
     private Integer priceMarket;
 
