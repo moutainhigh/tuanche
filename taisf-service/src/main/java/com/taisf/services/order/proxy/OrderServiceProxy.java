@@ -717,6 +717,7 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
         if (cutProductStock4Redis(orderSaveVO.getOrderBase().getOrderType(),dbStockList)){
+            LogUtil.info(LOGGER,"[库存]:处理库存并发失败:参数信息:{}",JsonEntityTransform.Object2Json(orderSaveVO));
             dto.setErrorMsg("处理库存异常,请稍后重试");
             cutProductStock4RedisReset(orderSaveVO.getOrderBase().getOrderType(),dbStockList);
         }
@@ -748,9 +749,12 @@ public class OrderServiceProxy implements OrderService {
         //获取不缺货
         boolean lack = false;
 
+        LogUtil.info(LOGGER,"[库存]:开始处理库存,orderType:{},dbStockList:{}",orderType,JsonEntityTransform.Object2Json(dbStockList));
         for (StockDbVO stockDbVO : dbStockList) {
             String key = getLackRedisKey(orderType,stockDbVO);
-            if (redisOperations.incrByStep(key,stockDbVO.getN()) > stockDbVO.getL()){
+            Long has = redisOperations.incrByStep(key, stockDbVO.getN());
+            LogUtil.info(LOGGER,"[库存]:递归,key:{},has:{},limit:{}",key,has,stockDbVO.getL());
+            if (has > stockDbVO.getL()){
                 lack = true;
             }
         }
