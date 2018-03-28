@@ -259,7 +259,7 @@
             return "0" + "(0)";
         }
         var num = row.lunchProductLimit - row.lunchProductNum;
-        var str = '(<span collor:red>' + num + '</span>)';
+        var str = '(<span style="color: red;">' + num + '</span>)';
         return row.lunchProductLimit + str;
     }
     function formatForDinner(value, row, index) {
@@ -267,7 +267,7 @@
             return "0" + "(0)";
         }
         var num = row.dinnerProductLimit - row.dinnerProductNum;
-        var str = '(<span collor:red>' + num + '</span>)';
+        var str = '(<span style="color: red;">' + num + '</span>)';
         return row.dinnerProductLimit + str;
     }
 

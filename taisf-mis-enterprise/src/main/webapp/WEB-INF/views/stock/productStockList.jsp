@@ -286,15 +286,16 @@
             return "0" + "(0)";
         }
         var num = row.lunchProductLimit - row.lunchProductNum;
-        var str = '(<span collor:red>' + num + '</span>)';
+        var str = '(<span style="color: red;">' + num + '</span>)';
         return row.lunchProductLimit + str;
     }
+
     function dinnerProductLimit(value, row, index) {
         if (row.dinnerProductLimit == null || row.dinnerProductNum == null) {
             return "0" + "(0)";
         }
         var num = row.dinnerProductLimit - row.dinnerProductNum;
-        var str = '(<span collor:red>' + num + '</span>)';
+        var str = '(<span style="color: red;">' + num + '</span>)';
         return row.dinnerProductLimit + str;
     }
 
