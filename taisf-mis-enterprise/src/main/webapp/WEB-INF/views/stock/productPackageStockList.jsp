@@ -142,9 +142,9 @@
                                 data-align="center"><span class="tdfont">午餐</span></th>
                             <th data-field="lunchProductLimit" data-width="10%" data-formatter="formatLunchStock"
                                 data-align="center"><span class="tdfont">库存(剩余库数)</span></th>
-                            <th data-field="forDinner" data-width="10%" data-formatter="formatForLunch"
+                            <th data-field="forDinner" data-width="10%" data-formatter="formatForDinner"
                                 data-align="center"><span class="tdfont">晚餐</span></th>
-                            <th data-field="dinnerProductLimit" data-width="10%" data-formatter="formatForDinner"
+                            <th data-field="dinnerProductLimit" data-width="10%" data-formatter="dinnerProductLimit"
                                 data-align="center"><span class="tdfont">库存(剩余库数)</span></th>
                             <th data-field="handle" data-width="15%" data-align="center"
                                 data-formatter="formatOperate"><span class="tdfont">操作</span></th>
@@ -271,6 +271,15 @@
         return row.dinnerProductLimit + str;
     }
 
+    function dinnerProductLimit(value, row, index) {
+        if (row.dinnerProductLimit == null || row.dinnerProductNum == null) {
+            return "0" + "(0)";
+        }
+        var num = row.dinnerProductLimit - row.dinnerProductNum;
+        var str = '(<span style="color: red;">' + num + '</span>)';
+        return row.dinnerProductLimit + str;
+    }
+
     function formatProductType(value, row, index) {
         if (value == 1) {
             return "全部";
@@ -318,6 +327,16 @@
     function formatForLunch(value, row, index) {
         var result = "";
         if (row.forLunch == 1) {
+            result += "是";
+        } else {
+            result += "否";
+        }
+
+        return result;
+    }
+    function formatForDinner(value, row, index) {
+        var result = "";
+        if (row.forDinner == 1) {
             result += "是";
         } else {
             result += "否";
