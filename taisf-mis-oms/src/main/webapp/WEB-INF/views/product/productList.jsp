@@ -287,7 +287,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">促销价(元):</label>
                                 <div class="col-sm-8">
-                                    <input id="priceSale" name="priceSale" type="text"
+                                    <input id="priceSale" name="priceSale" type="text" placeholder="可不填写"
                                            class="form-control">
                                 </div>
                             </div>
@@ -394,7 +394,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">促销价(元):</label>
                                 <div class="col-sm-8">
-                                    <input id="priceSaleE" name="priceSale" type="text"
+                                    <input id="priceSaleE" name="priceSale" type="text" placeholder="可不填写"
                                            class="form-control">
                                 </div>
                             </div>
@@ -504,7 +504,7 @@
                                 <label class="col-sm-3 control-label">促销价(元):</label>
                                 <div class="col-sm-8">
                                     <input readonly id="priceSaleD" name="priceSale" type="text"
-                                           class="form-control">
+                                           class="form-control" >
                                 </div>
                             </div>
                             <div class="form-group">
@@ -736,12 +736,7 @@
         }
         ;
 
-        if ($("#priceSale").val() == null || $("#priceSale").val() == "") {
-            layer.alert("促销价不能为空", {icon: 5, time: 2000, title: '提示'});
-            $("#saveBtn").removeAttr("disabled");
-            return false;
-        }
-        ;
+
         if ($("#productDes").val() == null || $("#productDes").val() == "") {
             layer.alert("描述不能为空", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
@@ -814,12 +809,7 @@
             return false;
         }
         ;
-        if ($("#priceSaleE").val() == null || $("#priceSaleE").val() == "") {
-            layer.alert("促销价不能为空", {icon: 5, time: 2000, title: '提示'});
-            $("#saveBtnE").removeAttr("disabled");
-            return false;
-        }
-        ;
+
 
         if ($("#priceMarketE").val() == null || $("#priceMarketE").val() == "") {
             layer.alert("原价不能为空", {icon: 5, time: 2000, title: '提示'});
