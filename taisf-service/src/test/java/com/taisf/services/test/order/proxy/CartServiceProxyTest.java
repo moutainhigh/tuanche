@@ -2,6 +2,7 @@ package com.taisf.services.test.order.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.dto.CartAddRequest;
@@ -86,10 +87,11 @@ public class CartServiceProxyTest extends BaseTest {
         CartAddRequest cartAddRequest = new CartAddRequest();
 
         cartAddRequest.setBusinessUid("jipin");
-        cartAddRequest.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
-        cartAddRequest.setProductCode(1);
+        cartAddRequest.setSupplierProductType(SupplierProductTypeEnum.PRODUCT.getCode());
+        cartAddRequest.setProductCode(3);
         cartAddRequest.setUserUid("afi");
         cartAddRequest.setEnterpriseCode("qpg001");
+        cartAddRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
         DataTransferObject<CartInfoVO> classify = cartService.addCart(cartAddRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
