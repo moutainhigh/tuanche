@@ -7,6 +7,7 @@ import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.stock.entity.StockWeekEntity;
+import com.taisf.services.stock.vo.StockDbVO;
 import com.taisf.services.user.entity.UserEntity;
 
 import java.util.ArrayList;
@@ -91,10 +92,23 @@ public class OrderSaveVO extends BaseEntity{
 
 
     /**
+     * 当前DB的库存信息
+     */
+    List<StockDbVO> dbStockList = new ArrayList<>();
+
+    /**
      * 不惨价格
      */
     private transient Integer extPrice;
 
+
+    public List<StockDbVO> getDbStockList() {
+        return dbStockList;
+    }
+
+    public void setDbStockList(List<StockDbVO> dbStockList) {
+        this.dbStockList = dbStockList;
+    }
 
     /**
      * 构造函数

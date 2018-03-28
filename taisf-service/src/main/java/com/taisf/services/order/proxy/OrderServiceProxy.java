@@ -4,6 +4,7 @@ import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.*;
+import com.jk.framework.cache.redis.api.RedisOperations;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
@@ -35,6 +36,7 @@ import com.taisf.services.user.manager.UserManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -89,6 +91,9 @@ public class OrderServiceProxy implements OrderService {
     private EnterpriseManagerImpl enterpriseManager;
 
 
+
+    @Autowired
+    private RedisOperations redisOperations;
 
     /**
      * 获取当前的统计情况
@@ -165,6 +170,16 @@ public class OrderServiceProxy implements OrderService {
             dto.setErrorMsg("当前订单状态不能取消");
             return dto;
         }
+
+        //取消订单释放库存
+        if (!Check.NuNStr(base.getOrderJson())){
+            List<StockDbVO>  dbs = JsonEntityTransform.json2List(base.getOrderJson(),StockDbVO.class);
+            if (!Check.NuNCollection(dbs)){
+                //还原库存
+                this.cutProductStock4RedisReset(base.getOrderType(),dbs);
+            }
+        }
+
         List<StockWeekEntity> list = this.trans2Stock(base);
         //退款
         orderManager.cancelOrder(base,list);
@@ -221,6 +236,13 @@ public class OrderServiceProxy implements OrderService {
         if (Check.NuNObj(payRecord)){
             dto.setErrorMsg("异常的支付信息");
             return dto;
+        }
+        if (!Check.NuNStr(base.getOrderJson())){
+            List<StockDbVO>  dbs = JsonEntityTransform.json2List(base.getOrderJson(),StockDbVO.class);
+            if (!Check.NuNCollection(dbs)){
+                //还原库存
+                this.cutProductStock4RedisReset(base.getOrderType(),dbs);
+            }
         }
 
         List<StockWeekEntity> list = this.trans2Stock(base);
@@ -539,6 +561,8 @@ public class OrderServiceProxy implements OrderService {
 
 
 
+
+
     /**
      * 面对面收款
      * @author afi
@@ -663,6 +687,8 @@ public class OrderServiceProxy implements OrderService {
         //1. 填充订单的信息
         this.fillOrderInfo(dto,orderSaveVO,cartInfoVO, createOrderRequest,true);
 
+        //处理当前的处理库存的逻辑
+        this.dealProductStock4Redis(dto,orderSaveVO);
         //2. 下单的逻辑
         if (dto.checkSuccess()){
             orderManager.saveOrderSave(orderSaveVO);
@@ -670,6 +696,81 @@ public class OrderServiceProxy implements OrderService {
         dto.setData(orderSaveVO.getOrderSn());
         return dto;
     }
+
+    /**
+     * 处理当前的库存信息
+     * @param dto
+     * @param orderSaveVO
+     */
+    private void dealProductStock4Redis(DataTransferObject dto,OrderSaveVO orderSaveVO){
+        if (!dto.checkSuccess()){
+            return;
+        }
+        List<StockDbVO> dbStockList = orderSaveVO.getDbStockList();
+
+        if (Check.NuNCollection(dbStockList)){
+            return;
+        }
+
+        if (Check.NuNObj(orderSaveVO.getOrderBase().getOrderType())){
+            dto.setErrorMsg("异常的处理订单类型");
+            return;
+        }
+        if (cutProductStock4Redis(orderSaveVO.getOrderBase().getOrderType(),dbStockList)){
+            dto.setErrorMsg("处理库存异常,请稍后重试");
+            cutProductStock4RedisReset(orderSaveVO.getOrderBase().getOrderType(),dbStockList);
+        }
+    }
+
+
+    /**
+     * 处理当前的库存
+     * @param orderType
+     * @param dbStockList
+     * @return
+     */
+    private void cutProductStock4RedisReset(Integer orderType,List<StockDbVO> dbStockList){
+        for (StockDbVO stockDbVO : dbStockList) {
+            String key = getLackRedisKey(orderType,stockDbVO);
+            redisOperations.incrByStep(key,-stockDbVO.getN());
+        }
+
+    }
+
+
+    /**
+     * 处理当前的库存
+     * @param orderType
+     * @param dbStockList
+     * @return
+     */
+    private boolean cutProductStock4Redis(Integer orderType,List<StockDbVO> dbStockList){
+        //获取不缺货
+        boolean lack = false;
+
+        for (StockDbVO stockDbVO : dbStockList) {
+            String key = getLackRedisKey(orderType,stockDbVO);
+            if (redisOperations.incrByStep(key,stockDbVO.getN()) > stockDbVO.getL()){
+                lack = true;
+            }
+        }
+        return lack;
+    }
+
+
+    /**
+     * 获取当前的
+     * @param orderType
+     * @param stock
+     * @return
+     */
+    private String getLackRedisKey(Integer orderType,StockDbVO stock){
+        return  DateUtil.dateFormat(new Date()) + "-" +
+                ValueUtil.getStrValue(orderType) + "-" +
+                ValueUtil.getStrValue(stock.getP()) + "-" +
+                ValueUtil.getStrValue(stock.getT());
+    }
+
 
 
     /**
@@ -1214,7 +1315,6 @@ public class OrderServiceProxy implements OrderService {
             for (String s : map.keySet()) {
                 mapAll.put(StockUtil.getAppendString(ValueUtil.getintValue(s),SupplierProductTypeEnum.PACKAGE.getCode()),map.get(s));
             }
-
         }
         //提示信息
         StringBuffer sb = new StringBuffer();
@@ -1235,7 +1335,6 @@ public class OrderServiceProxy implements OrderService {
                     sb.append(",");
                     sb.append(stockWeekEntity.getProductName());
                 }
-
                 sb.append("库存不足");
                 sb.append(num);
                 sb.append("份");
@@ -1249,7 +1348,6 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.setStockList(stockList);
         //存储
         orderSaveVO.getOrderBase().setOrderJson(JsonEntityTransform.Object2Json(list));
-
     }
 
 

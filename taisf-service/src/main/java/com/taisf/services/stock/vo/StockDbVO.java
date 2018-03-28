@@ -37,6 +37,21 @@ public class StockDbVO extends BaseEntity {
      */
     private  Integer n;
 
+
+    /**
+     * 限制数量
+     */
+    private Integer l;
+
+
+    public Integer getL() {
+        return l;
+    }
+
+    public void setL(Integer l) {
+        this.l = l;
+    }
+
     public Integer getP() {
         return p;
     }
