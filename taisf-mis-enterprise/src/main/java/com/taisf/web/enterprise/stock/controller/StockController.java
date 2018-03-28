@@ -114,7 +114,7 @@ public class StockController {
 
                 StockCheckVO productdinnerVO = dinnerMap.get(String.valueOf(productEntity.getId()));
                 if (!Check.NuNObj(productdinnerVO)) {
-                    vo.setDinnerStockId(productdinnerVO.getLimitId());
+                         vo.setDinnerStockId(productdinnerVO.getLimitId());
                     vo.setDinnerProductLimit(productdinnerVO.getProductLimit());
                     vo.setDinnerProductNum(productdinnerVO.getProductNum());
                 }
@@ -159,9 +159,11 @@ public class StockController {
                 stockProductManager.saveStockProduct(entity);
             }else{
                 StockProductEntity entity = new StockProductEntity();
-                entity.setId(req.getLunchStockId());
-                entity.setProductLimit(req.getLunchProductLimit());
-                stockProductManager.updateStockProduct(entity);
+                if(!Check.NuNObjs(req.getLunchStockId(),req.getLunchProductLimit())){
+                    entity.setId(req.getLunchStockId());
+                    entity.setProductLimit(req.getLunchProductLimit());
+                    stockProductManager.updateStockProduct(entity);
+                }
             }
 
             if(Check.NuNObj(req.getDinnerStockId())){
@@ -174,10 +176,12 @@ public class StockController {
                 entity.setSupplierCode(employeeEntity.getEmpBiz());
                 stockProductManager.saveStockProduct(entity);
             }else{
-                StockProductEntity entity = new StockProductEntity();
-                entity.setId(req.getDinnerStockId());
-                entity.setProductLimit(req.getDinnerProductLimit());
-                stockProductManager.updateStockProduct(entity);
+                if(!Check.NuNObjs(req.getDinnerStockId(),req.getDinnerProductLimit())){
+                    StockProductEntity entity = new StockProductEntity();
+                    entity.setId(req.getDinnerStockId());
+                    entity.setProductLimit(req.getDinnerProductLimit());
+                    stockProductManager.updateStockProduct(entity);
+                 }
             }
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);

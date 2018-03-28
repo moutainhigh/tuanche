@@ -374,16 +374,6 @@
 
         $("#idE").val(id)
 
-        if(forLunch == 0){
-            $('#lunchProductLimitE').attr("readonly","readonly")
-        }else{
-            $('#lunchProductLimitE').removeAttr("readonly");
-        }
-        if(forDinner == 0){
-            $('#dinnerProductLimitE').attr("readonly","readonly")
-        }else{
-            $('#dinnerProductLimitE').removeAttr("readonly");
-        }
 
         $("#productNameE").val(productName)
         if(lunchStockId > 0){
@@ -399,8 +389,26 @@
         }else{
             $("#dinnerStockIdE").val("")
         }
+        debugger
         if(dinnerProductLimit >= 0){
             $("#dinnerProductLimitE").val(dinnerProductLimit)
+        }
+        if(forLunch == 0){
+            $('#lunchProductLimitE').attr("readonly","readonly");
+            $('#lunchProductLimitE').val("")
+            $('#lunchProductLimitE').attr("placeholder","暂不提供午餐");
+        }else{
+            $('#lunchProductLimitE').removeAttr("readonly");
+            $('#lunchProductLimitE').removeAttr("placeholder");
+        }
+
+        if(forDinner == 0){
+            $('#dinnerProductLimitE').attr("readonly","readonly");
+            $('#dinnerProductLimitE').val("")
+            $('#dinnerProductLimitE').attr("placeholder","暂不提供晚餐");
+        }else{
+            $('#dinnerProductLimitE').removeAttr("readonly");
+            $('#dinnerProductLimitE').removeAttr("placeholder");
         }
     }
 
@@ -409,9 +417,11 @@
         $("#saveBtnE").attr("disabled", "disabled");
         var r = /^[0-9]*[1-9][0-9]*$/;
         if ($("#lunchProductLimitE").val() == null || $("#lunchProductLimitE").val() == "") {
-            layer.alert("午餐库存数量不能为空", {icon: 5, time: 2000, title: '提示'});
-            $("#saveBtnE").removeAttr("disabled");
-            return false;
+            if(!document.getElementById("lunchProductLimitE").readOnly){
+                layer.alert("午餐库存数量不能为空", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtnE").removeAttr("disabled");
+                return false;
+            }
         }else{
             if (!r.test($("#lunchProductLimitE").val())) {
                 layer.alert("午餐库存数量请输入正整数", {icon: 5, time: 2000, title: '提示'});
@@ -420,9 +430,11 @@
             }
         }
         if ($("#dinnerProductLimitE").val() == null || $("#dinnerProductLimitE").val() == "") {
-            layer.alert("晚餐库存数量不能为空", {icon: 5, time: 2000, title: '提示'});
-            $("#saveBtnE").removeAttr("disabled");
-            return false;
+            if(!document.getElementById("dinnerProductLimitE").readOnly){
+                layer.alert("晚餐库存数量不能为空", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtnE").removeAttr("disabled");
+                return false;
+            }
         }else{
             if (!r.test($("#dinnerProductLimitE").val())) {
                 layer.alert("晚餐库存数量请输入正整数", {icon: 5, time: 2000, title: '提示'});
