@@ -1320,6 +1320,24 @@ public class OrderServiceProxy implements OrderService {
                 mapAll.put(StockUtil.getAppendString(ValueUtil.getintValue(s),SupplierProductTypeEnum.PACKAGE.getCode()),map.get(s));
             }
         }
+
+        //存储
+        orderSaveVO.getOrderBase().setOrderJson(JsonEntityTransform.Object2JsonWithOutNULL(list));
+
+
+
+        //获取当前的库存情况
+        for (StockDbVO db : list) {
+            String key = StockUtil.getAppendString(db.getP(),db.getT());
+            if (!mapAll.containsKey(key)){
+                dto.setErrorMsg("异常的库存信息");
+                return;
+            }
+            StockCheckVO stock = mapAll.get(key);
+            db.setL(stock.getProductLimit());
+        }
+
+
         //提示信息
         StringBuffer sb = new StringBuffer();
         //获取当前的库存情况
@@ -1350,8 +1368,8 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
         orderSaveVO.setStockList(stockList);
-        //存储
-        orderSaveVO.getOrderBase().setOrderJson(JsonEntityTransform.Object2Json(list));
+        orderSaveVO.setDbStockList(list);
+
     }
 
 
