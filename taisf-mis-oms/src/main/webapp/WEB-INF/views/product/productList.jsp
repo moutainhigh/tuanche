@@ -563,6 +563,13 @@
             productSource: $("#productSourceS").val(),
         };
     }
+    function formatPrice(value, row, index) {
+        if (value != null) {
+            return (value/100).toFixed(2);
+        } else {
+            return "-";
+        }
+    }
 
     // 格式化时间
     function formatDate(value, row, index) {
