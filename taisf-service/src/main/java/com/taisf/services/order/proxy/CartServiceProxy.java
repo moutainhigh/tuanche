@@ -274,7 +274,7 @@ public class CartServiceProxy implements CartService{
     public DataTransferObject<CartInfoVO> addCart(CartAddRequest cartAddRequest) {
         DataTransferObject<CartInfoVO> dto = new DataTransferObject<>();
         //1. 校验基本参数,≤
-        this.checkCartBasePar(dto,cartAddRequest);
+        this.checkCartBasePar(dto,cartAddRequest,true);
         if (!dto.checkSuccess()){
             return dto;
         }
@@ -335,7 +335,7 @@ public class CartServiceProxy implements CartService{
     public DataTransferObject<CartInfoVO> delCart(CartAddRequest cartBaseRequest) {
         DataTransferObject<CartInfoVO> dto = new DataTransferObject<>();
         //1. 校验基本参数
-        this.checkCartBasePar(dto,cartBaseRequest);
+        this.checkCartBasePar(dto,cartBaseRequest,false);
         if (!dto.checkSuccess()){
             return dto;
         }
@@ -369,7 +369,7 @@ public class CartServiceProxy implements CartService{
      * @param dto
      * @param cartBaseRequest
      */
-    private void checkCartBasePar(DataTransferObject dto,CartBaseRequest cartBaseRequest){
+    private void checkCartBasePar(DataTransferObject dto,CartBaseRequest cartBaseRequest,boolean orderTypeNeed){
         if (Check.NuNObj(cartBaseRequest)){
             dto.setErrorMsg("参数异常");
         }
@@ -379,7 +379,7 @@ public class CartServiceProxy implements CartService{
                 cartBaseRequest.getSupplierProductType())){
             dto.setErrorMsg("参数为空");
         }
-        if (Check.NuNObj(cartBaseRequest.getOrderType())){
+        if (orderTypeNeed && Check.NuNObj(cartBaseRequest.getOrderType())){
             dto.setErrorMsg("初始化当前的订单类型失败");
         }
     }
