@@ -384,7 +384,7 @@
     function formatDate(value, row, index) {
         if (value != null) {
             var _date = new Date(value);
-            return _date.format("yyyy-MM-dd");
+            return _date.format("yyyy-MM-dd hh:mm:ss");
         } else {
             return "-";
         }
