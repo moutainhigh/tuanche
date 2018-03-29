@@ -431,6 +431,8 @@ public class UserController {
             }
         }
         try {
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            userEntity.setBizCode(emp.getEmpBiz());
             String uuid = UUIDGenerator.hexUUID();
             userEntity.setUserPassword(MD5Util.MD5Encode(userEntity.getUserPhone()));
             userEntity.setUserStatus(UserStatusEnum.AVAILABLE.getCode());
