@@ -146,15 +146,16 @@ public class ProductController {
             dto.setErrorMsg("参数异常");
             return dto;
         }
+        if (Check.NuNObj(price)){
+            dto.setErrorMsg("异常的金额");
+            return dto;
+        }
         if(!Check.NuNObj(productEntity.getProductPic())){
             productEntity.setProductPic(productEntity.getProductPic().replace(pathConstant.PIC_URL,""));
         }
-        if(!Check.NuNObj(price)){
-            Double priceSale = BigDecimalUtil.mul(price,100);
-            productEntity.setPriceSale(priceSale.intValue());
-        }else{
-            productEntity.setPriceSale(0);
-        }
+        Double priceSale = BigDecimalUtil.mul(price,100);
+        productEntity.setPriceSale(priceSale.intValue());
+
 
         if (Check.NuNObj(priceOrg)){
             dto.setErrorMsg("异常的金额");
@@ -163,7 +164,7 @@ public class ProductController {
         Double priceMarket = BigDecimalUtil.mul(priceOrg,100);
         productEntity.setPriceMarket(priceMarket.intValue());
         try {
-                dto = productService.updateProduct(productEntity);
+            dto = productService.updateProduct(productEntity);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "error:{}", e);
             dto.setErrCode(DataTransferObject.ERROR);
