@@ -694,6 +694,15 @@
         });
     }
 
+    function formatPrice(value, row, index) {
+        if (value != null) {
+            return (value/100).toFixed(2);
+        } else {
+            return "-";
+        }
+    }
+
+
     //新增销售员工
     function saveProduct() {
         $("#saveBtn").attr("disabled", "disabled");
