@@ -73,7 +73,7 @@ public class StockProductManagerImpl {
                 }
             }
             if (Check.NuNObj(check.getProductLimit())){
-                check.setProductLimit(0);
+                check.setProductLimit(999);
             }
 
             if (stockMap.containsKey(key)){
