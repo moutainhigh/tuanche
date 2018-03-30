@@ -57,7 +57,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
         if(!header.getDeviceUuid().equals(userModel.getDeviceUuid())){
-            StreamUtils.outMessage(JsonEntityTransform.Object2Json( new ResponseDto("获取权限失败")), response);
+            StreamUtils.outMessage(JsonEntityTransform.Object2Json( new  ResponseDto("登录已失效", ReturnEnum.TOKEN_INVALID.getCode())), response);
             return false;
         }
         request.setAttribute(HeadersInterceptor.USERID, userModel.getUserId());
