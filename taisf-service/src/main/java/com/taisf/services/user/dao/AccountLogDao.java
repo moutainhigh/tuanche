@@ -5,12 +5,15 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.user.dto.AccountLogRequest;
+import com.taisf.services.user.dto.UserMoneyRequest;
 import com.taisf.services.user.entity.AccountLogEntity;
+import com.taisf.services.user.vo.AccountUserLogVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>用户的账户记录信息</p>
@@ -35,6 +38,33 @@ public class AccountLogDao extends BaseDao {
     private static Logger logger = LoggerFactory.getLogger(AccountLogDao.class);
 
     private String SQLID = "user.accountLogDao.";
+
+
+
+
+
+    /**
+     * 获取供应商用户的充值记录
+     * @author afi
+     * @param userMoneyRequest
+     * @return
+     */
+    public List<AccountUserLogVO> rechargeMoneyLogAll(UserMoneyRequest userMoneyRequest){
+        return mybatisDaoContext.findAll(SQLID + "rechargeMoneyLogByPage",AccountUserLogVO.class,userMoneyRequest);
+    }
+
+    /**
+     * 获取供应商用户的充值记录
+     * @author afi
+     * @param userMoneyRequest
+     * @return
+     */
+    public PagingResult<AccountUserLogVO> rechargeMoneyLogByPage(UserMoneyRequest userMoneyRequest){
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setLimit(userMoneyRequest.getLimit());
+        pageBounds.setPage(userMoneyRequest.getPage());
+        return mybatisDaoContext.findForPage(SQLID + "rechargeMoneyLogByPage",AccountUserLogVO.class,userMoneyRequest,pageBounds);
+    }
 
 
     /**

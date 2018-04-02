@@ -12,7 +12,9 @@ import com.taisf.services.ups.dao.EmployeeDao;
 import com.taisf.services.user.dao.*;
 import com.taisf.services.user.dto.AccountLogRequest;
 import com.taisf.services.user.dto.UserAccountRequest;
+import com.taisf.services.user.dto.UserMoneyRequest;
 import com.taisf.services.user.entity.*;
+import com.taisf.services.user.vo.AccountUserLogVO;
 import com.taisf.services.user.vo.UserAccountVO;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +60,27 @@ public class UserManagerImpl {
     private EmployeeDao employeeDao;
 
 
+
+    /**
+     * 获取供应商用户的充值记录
+     * @author afi
+     * @param userMoneyRequest
+     * @return
+     */
+    public  List<AccountUserLogVO> rechargeMoneyLogAll(UserMoneyRequest userMoneyRequest){
+        return accountLogDao.rechargeMoneyLogAll(userMoneyRequest);
+
+    }
+
+    /**
+     * 获取供应商用户的充值记录
+     * @author afi
+     * @param userMoneyRequest
+     * @return
+     */
+    public PagingResult<AccountUserLogVO> rechargeMoneyLogByPage(UserMoneyRequest userMoneyRequest){
+        return accountLogDao.rechargeMoneyLogByPage(userMoneyRequest);
+    }
 
     /**
      * 获取企业的余额的汇总

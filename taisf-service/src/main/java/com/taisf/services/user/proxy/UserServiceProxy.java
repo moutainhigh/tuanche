@@ -23,6 +23,7 @@ import com.taisf.services.user.entity.LoginTokenEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
+import com.taisf.services.user.vo.AccountUserLogVO;
 import com.taisf.services.user.vo.RegistInfoVO;
 import com.taisf.services.user.vo.UserAccountVO;
 import com.taisf.services.user.vo.UserModelVO;
@@ -771,6 +772,54 @@ public class UserServiceProxy implements UserService {
 
         //获取当前的信息
         PagingResult<AccountLogEntity> page = userManager.getIncomeLogByPage(accountLogRequest);
+        if (page == null) {
+            page = new PagingResult();
+        }
+
+        dto.setData(page);
+        return dto;
+    }
+
+    /**
+     * 获取所有查询条件
+     * @author afi
+     * @param userMoneyRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<List<AccountUserLogVO>> rechargeMoneyLogAll(UserMoneyRequest userMoneyRequest){
+
+        DataTransferObject<List<AccountUserLogVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userMoneyRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(userMoneyRequest.getSupplierCode())) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
+        //获取当前的信息
+        List<AccountUserLogVO> all = userManager.rechargeMoneyLogAll(userMoneyRequest);
+        dto.setData(all);
+        return dto;
+
+
+    }
+
+    @Override
+    public DataTransferObject<PagingResult<AccountUserLogVO>> rechargeMoneyLog(UserMoneyRequest userMoneyRequest) {
+        DataTransferObject<PagingResult<AccountUserLogVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userMoneyRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(userMoneyRequest.getSupplierCode())) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //获取当前的信息
+        PagingResult<AccountUserLogVO> page = userManager.rechargeMoneyLogByPage(userMoneyRequest);
         if (page == null) {
             page = new PagingResult();
         }

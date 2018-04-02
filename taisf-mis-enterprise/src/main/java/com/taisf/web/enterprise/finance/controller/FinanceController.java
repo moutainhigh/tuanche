@@ -3,7 +3,9 @@ package com.taisf.web.enterprise.finance.controller;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.excel.utils.ExcelUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.EnterpriseStatusEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
@@ -18,6 +20,8 @@ import com.taisf.services.recharge.vo.EnterpriseStatsNumber;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserAccountRequest;
+import com.taisf.services.user.dto.UserMoneyRequest;
+import com.taisf.services.user.vo.AccountUserLogVO;
 import com.taisf.services.user.vo.UserAccountVO;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
@@ -29,7 +33,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 /**
  * <p>财务相关</p>
@@ -211,6 +218,94 @@ public class FinanceController {
         return dto;
     }
 
+
+    @RequestMapping("/moneyList")
+    public String moneyList(HttpServletRequest request) {
+        return "finance/moneyList";
+    }
+
+
+
+    @RequestMapping("moneyListExcel")
+    public void moneyListExcel(HttpServletRequest request, HttpServletResponse response, UserMoneyRequest userMoneyRequest) throws UnsupportedEncodingException {
+        response.setContentType("octets/stream");
+        String fileName = "分配记录";
+        response.addHeader("Content-Disposition", "attachment;filename="+ new String(fileName.getBytes("GB2312"),"ISO8859-1") +".xls");
+
+        List<AccountUserLogVO> list = new ArrayList();
+        try{
+            if (!checkAndChangeMoneyRequest(request, userMoneyRequest)){
+
+                DataTransferObject<List<AccountUserLogVO>> dto =userService.rechargeMoneyLogAll(userMoneyRequest);
+                if (dto.checkSuccess()){
+                    list = dto.getData();
+                }
+            }
+            ExcelUtil.exportExcel(response.getOutputStream(),list);
+        }catch (Exception e){
+            LogUtil.error(LOGGER, "收费列表导出excel异常:{}",e);
+        }
+    }
+
+    /**
+     * 获取个人的到账明细
+     * @author afi
+     * @param request
+     * @param userMoneyRequest
+     * @return
+     */
+    @RequestMapping("/moneyListPage")
+    @ResponseBody
+    public PageResult moneyListPage(HttpServletRequest request, UserMoneyRequest userMoneyRequest) {
+
+        PageResult pageResult = new PageResult();
+        try {
+
+            if (checkAndChangeMoneyRequest(request, userMoneyRequest)){
+                return pageResult;
+            }
+
+            DataTransferObject<PagingResult<AccountUserLogVO>> dto =userService.rechargeMoneyLog(userMoneyRequest);
+            //查询出当前供餐商下所有菜品信息
+            if (!Check.NuNObj(dto.getData())) {
+                if(dto.getData().getList().size() == 0){
+                    dto.getData().getList().add(new AccountUserLogVO());
+                    dto.getData().setTotal(1);
+                }
+                pageResult.setRows(dto.getData().getList());
+                pageResult.setTotal(dto.getData().getTotal());
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params :{}", JsonEntityTransform.Object2Json(userMoneyRequest));
+            LogUtil.error(LOGGER, "error :{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
+
+    /**
+     * 校验当前的参数
+     * @param request
+     * @param userMoneyRequest
+     * @return
+     */
+    private boolean checkAndChangeMoneyRequest(HttpServletRequest request, UserMoneyRequest userMoneyRequest) {
+        if (!Check.NuNStr(userMoneyRequest.getStartStr())){
+            Date startTime = DateUtil.parseDate(userMoneyRequest.getStartStr(),DateUtil.dateFormatPattern);
+            userMoneyRequest.setStart(startTime);
+        }
+
+        if (!Check.NuNStr(userMoneyRequest.getEndStr())){
+            Date endTime = DateUtil.parseDate(userMoneyRequest.getEndStr(),DateUtil.dateFormatPattern);
+            userMoneyRequest.setEnd(endTime);
+        }
+        EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+        userMoneyRequest.setSupplierCode(emp.getEmpBiz());
+        if (Check.NuNStr(userMoneyRequest.getSupplierCode())){
+            return true;
+        }
+        return false;
+    }
 
 
     /**

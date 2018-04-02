@@ -1,6 +1,9 @@
 package com.taisf.services.user.entity;
 
 import com.jk.framework.base.entity.BaseEntity;
+import com.jk.framework.excel.annotation.FieldMeta;
+import com.jk.framework.excel.annotation.MoneyPenny2Yuan;
+import com.jk.framework.excel.annotation.TimeFormatPattern;
 
 import java.util.Date;
 
@@ -22,43 +25,56 @@ public class AccountLogEntity extends BaseEntity {
     private static final long serialVersionUID = 30122342342346703L;
 
 
+    @FieldMeta(skip = true)
     private Integer id;
 
     /**
      * 用户id
      */
+    @FieldMeta(skip = true)
     private String userId;
 
 
     /**
      * 账户变更类型 1:收入 2:消费 3:提现 4:充值
      */
+    @FieldMeta(skip = true)
     private Integer accountType;
 
     /**
      * 操作金额 单位:分
      */
+    @MoneyPenny2Yuan
+    @FieldMeta(name="金额",order=3)
     private Integer bizMoney;
 
     /**
      * 状态:1:处理完成  暂时现在所有的状态都是完成
      */
+    @FieldMeta(skip = true)
     private Integer bizStatus;
 
     /**
      * 操作业务的编号
      */
+    @FieldMeta(name="流水号",order=1)
     private String bizSn;
 
     /**
      * 创建时间
      */
+    /**
+     * 操作业务的编号
+     */
+    @TimeFormatPattern
+    @FieldMeta(name="分配时间",order=2)
     private Date createTime;
 
 
     /**
      * 显示标题
      */
+    @FieldMeta(skip = true)
     private String title;
 
     public String getTitle() {

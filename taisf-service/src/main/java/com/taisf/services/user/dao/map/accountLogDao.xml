@@ -15,9 +15,43 @@
   </resultMap>
 
 
+
+  <resultMap id="BaseResultMapUser" type="com.taisf.services.user.vo.AccountUserLogVO" extends="BaseResultMap" >
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+  </resultMap>
+
+
   <sql id="Base_Column_List" >
     id, user_id, title, account_type,  biz_money, biz_status, biz_sn, create_time
   </sql>
+
+
+
+
+
+  <select id="rechargeMoneyLogByPage" resultMap="BaseResultMapUser" parameterType="com.taisf.services.user.dto.UserMoneyRequest" >
+    select
+      t.id, t.user_id, t.title, t.account_type,  t.biz_money, t.biz_status, t.biz_sn, t.create_time,
+      u.user_name,  u.user_phone
+    from t_user_account_log t
+      inner join t_user u on t.user_id = u.user_uid
+    where  t.account_type = 4  and u.biz_code = #{supplierCode,jdbcType=VARCHAR}
+
+    <if test="userPhone != null and userPhone != '' " >
+      and  u.user_phone = #{userPhone,jdbcType=VARCHAR}
+    </if>
+
+    <if test="start!=null and start!=''">
+      AND t.create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}
+    </if>
+    <if test="end!=null and end!=''">
+      AND t.create_time <![CDATA[ <= ]]> #{end,jdbcType=TIMESTAMP}
+    </if>
+
+    ORDER BY t.id DESC
+  </select>
+
 
   <select id="getIncomeLogByPage" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select

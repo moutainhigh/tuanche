@@ -6,6 +6,7 @@ import com.taisf.services.user.dto.*;
 import com.taisf.services.user.entity.AccountLogEntity;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
+import com.taisf.services.user.vo.AccountUserLogVO;
 import com.taisf.services.user.vo.RegistInfoVO;
 import com.taisf.services.user.vo.UserAccountVO;
 
@@ -110,6 +111,24 @@ public interface UserService {
      */
     DataTransferObject<PagingResult<AccountLogEntity>> inconmeLog(AccountLogRequest accountLogRequest);
 
+
+
+    /**
+     * 获取充值记录
+     * @author afi
+     * @param userMoneyRequest
+     * @return
+     */
+    DataTransferObject<PagingResult<AccountUserLogVO>> rechargeMoneyLog(UserMoneyRequest userMoneyRequest);
+
+
+    /**
+     * 获取所有查询条件
+     * @author afi
+     * @param userMoneyRequest
+     * @return
+     */
+    DataTransferObject<List<AccountUserLogVO>> rechargeMoneyLogAll(UserMoneyRequest userMoneyRequest);
 
     /**
      * 修改支付密码
