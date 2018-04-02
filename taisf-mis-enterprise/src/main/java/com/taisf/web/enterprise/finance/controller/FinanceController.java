@@ -291,12 +291,12 @@ public class FinanceController {
      */
     private boolean checkAndChangeMoneyRequest(HttpServletRequest request, UserMoneyRequest userMoneyRequest) {
         if (!Check.NuNStr(userMoneyRequest.getStartStr())){
-            Date startTime = DateUtil.parseDate(userMoneyRequest.getStartStr(),DateUtil.dateFormatPattern);
+            Date startTime = DateUtil.parseDate(userMoneyRequest.getStartStr(),DateUtil.timestampPattern);
             userMoneyRequest.setStart(startTime);
         }
 
         if (!Check.NuNStr(userMoneyRequest.getEndStr())){
-            Date endTime = DateUtil.parseDate(userMoneyRequest.getEndStr(),DateUtil.dateFormatPattern);
+            Date endTime = DateUtil.parseDate(userMoneyRequest.getEndStr(),DateUtil.timestampPattern);
             userMoneyRequest.setEnd(endTime);
         }
         EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
