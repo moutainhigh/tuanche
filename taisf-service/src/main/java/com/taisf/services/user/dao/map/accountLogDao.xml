@@ -36,7 +36,9 @@
       u.user_name,  u.user_phone
     from t_user_account_log t
       inner join t_user u on t.user_id = u.user_uid
-    where  t.account_type = 4  and u.biz_code = #{supplierCode,jdbcType=VARCHAR}
+    where  t.account_type = 4  AND u.user_type = 1
+
+    and u.biz_code = #{supplierCode,jdbcType=VARCHAR}
 
     <if test="userPhone != null and userPhone != '' " >
       and  u.user_phone = #{userPhone,jdbcType=VARCHAR}
