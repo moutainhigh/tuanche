@@ -70,6 +70,20 @@ public class UserVO extends BaseEntity {
      */
     private Boolean pwdFlag = true;
 
+    /**
+     * 是否免密
+     */
+    private Boolean freePwd = false;
+
+
+    public Boolean getFreePwd() {
+        return freePwd;
+    }
+
+    public void setFreePwd(Boolean freePwd) {
+        this.freePwd = freePwd;
+    }
+
 
     public String getUserUid() {
         return userUid;

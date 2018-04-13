@@ -6,6 +6,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.*;
 import com.jk.framework.cache.redis.api.RedisOperations;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
@@ -20,6 +21,7 @@ import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.*;
+import com.taisf.services.pay.constant.PayConstant;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.pay.manager.PayManagerImpl;
 import com.taisf.services.stock.StockUtil;
@@ -273,7 +275,7 @@ public class OrderServiceProxy implements OrderService {
         for (StockDbVO db : dbs) {
             StockWeekEntity entity = new StockWeekEntity();
             entity.setSupplierCode(base.getSupplierCode());
-            entity.setWeek(getWeek(base.getCreateTime()));
+            entity.setWeek(WeekUtil.getWeek(base.getCreateTime()));
             entity.setOrderType(base.getOrderType());
             entity.setProductCode(db.getP());
             entity.setSupplierProductType(db.getT());
@@ -686,7 +688,6 @@ public class OrderServiceProxy implements OrderService {
 
         //1. 填充订单的信息
         this.fillOrderInfo(dto,orderSaveVO,cartInfoVO, createOrderRequest,true);
-
         //处理当前的处理库存的逻辑
         this.dealProductStock4Redis(dto,orderSaveVO);
         //2. 下单的逻辑
@@ -840,9 +841,31 @@ public class OrderServiceProxy implements OrderService {
 
         OrderSaveInfo saveInfo = new OrderSaveInfo();
         BeanUtils.copyProperties(orderSaveVO,saveInfo);
+        //当前订单是否需要密码
+        saveInfo.setNeedPwd(this.checkNeedPwd(createOrderRequest.getUserUid(),saveInfo.getOrderMoney().getNeedPay()));
         dto.setData(saveInfo);
         return dto;
     }
+
+    /**
+     * 当前的用户是否需要密码
+     * @param userId
+     * @param costMoney
+     * @return
+     */
+    private boolean checkNeedPwd(String userId,int costMoney){
+        boolean needPwd = true;
+        if (costMoney > PayConstant.FREE_LIMIT_ONE_MONEY){
+            return needPwd;
+        }
+        Long cost = payManager.getUserCostToday(userId);
+        if ((ValueUtil.getintValue(cost) +costMoney ) >  PayConstant.FREE_LIMIT_DAY_MONEY){
+            return needPwd;
+        }
+        return false;
+    }
+
+
 
 
     /**
@@ -1099,15 +1122,21 @@ public class OrderServiceProxy implements OrderService {
         }
         if (ValueUtil.getintValue(money.getPayBalance()) <= 0){
             return;
-
         }
 
-        if (Check.NuNStr(createOrderRequest.getPwd())){
-            dto.setErrorMsg("请输入交易密码");
-            return;
-        }
         if (Check.NuNStr(accountEntity.getAccountPassword())){
             dto.setErrorMsg("余额支付下单,需要先设置支付密码");
+            return;
+        }
+
+        //当前订单是否需要密码
+        boolean needPwd = this.checkNeedPwd(createOrderRequest.getUserUid(),cost);
+        if (!needPwd){
+            //不需要支付密码,直接下单
+            return;
+        }
+        if (Check.NuNStr(createOrderRequest.getPwd())){
+            dto.setErrorMsg("请输入交易密码");
             return;
         }
         if (!createOrderRequest.getPwd().equals(accountEntity.getAccountPassword())){
@@ -1289,7 +1318,7 @@ public class OrderServiceProxy implements OrderService {
             vo.setN(stockWeekEntity.getProductNum());
             list.add(vo);
             stockWeekEntity.setSupplierCode(orderSaveVO.getOrderBase().getSupplierCode());
-            stockWeekEntity.setWeek(getWeek());
+            stockWeekEntity.setWeek(WeekUtil.getWeek());
             stockWeekEntity.setOrderSn(orderSaveVO.getOrderBase().getOrderSn());
             stockWeekEntity.setOrderType(orderSaveVO.getOrderBase().getOrderType());
             stockList.add(stockWeekEntity);
@@ -1307,7 +1336,7 @@ public class OrderServiceProxy implements OrderService {
 
         //获取商品库存
         if (!Check.NuNCollection(listProduct)){
-            Map<String, StockCheckVO> map = stockProductManager.checkStockLimit(getWeek(), SupplierProductTypeEnum.PRODUCT.getCode(), orderSaveVO.getOrderBase().getOrderType(), orderSaveVO.getOrderBase().getSupplierCode(), listProduct);
+            Map<String, StockCheckVO> map = stockProductManager.checkStockLimit(WeekUtil.getWeek(), SupplierProductTypeEnum.PRODUCT.getCode(), orderSaveVO.getOrderBase().getOrderType(), orderSaveVO.getOrderBase().getSupplierCode(), listProduct);
             for (String s : map.keySet()) {
                 mapAll.put(StockUtil.getAppendString(ValueUtil.getintValue(s),SupplierProductTypeEnum.PRODUCT.getCode()),map.get(s));
             }
@@ -1315,7 +1344,7 @@ public class OrderServiceProxy implements OrderService {
 
         //获取礼包库存
         if (!Check.NuNCollection(listPackage)){
-            Map<String, StockCheckVO> map = stockProductManager.checkStockLimit(getWeek(), SupplierProductTypeEnum.PACKAGE.getCode(), orderSaveVO.getOrderBase().getOrderType(), orderSaveVO.getOrderBase().getSupplierCode(), listPackage);
+            Map<String, StockCheckVO> map = stockProductManager.checkStockLimit(WeekUtil.getWeek(), SupplierProductTypeEnum.PACKAGE.getCode(), orderSaveVO.getOrderBase().getOrderType(), orderSaveVO.getOrderBase().getSupplierCode(), listPackage);
             for (String s : map.keySet()) {
                 mapAll.put(StockUtil.getAppendString(ValueUtil.getintValue(s),SupplierProductTypeEnum.PACKAGE.getCode()),map.get(s));
             }
@@ -1373,26 +1402,6 @@ public class OrderServiceProxy implements OrderService {
     }
 
 
-    /**
-     * 获取今天周几
-     * @return
-     */
-    private int getWeek() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        return c.get(Calendar.DAY_OF_WEEK);
-    }
-
-
-    /**
-     * 获取今天周几
-     * @return
-     */
-    private int getWeek(Date time) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(time);
-        return c.get(Calendar.DAY_OF_WEEK);
-    }
 
 
 
@@ -1620,6 +1629,11 @@ public class OrderServiceProxy implements OrderService {
                 || Check.NuNStr(accountEntity.getAccountPassword())){
             //默认设置了密码,当前为设置密码
             user.setPwdFlag(false);
+        }
+
+        //设置当前的免密属性
+        if (ValueUtil.getintValue(userEntity.getIsPwd()) == YesNoEnum.YES.getCode()){
+            user.setFreePwd(true);
         }
         //设置当前的用户关联的企业的用餐信息
         this.dealEnterpriseInfo( dto, orderSaveVO,userEntity, createOrderRequest,face);

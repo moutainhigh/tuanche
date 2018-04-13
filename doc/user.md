@@ -525,6 +525,7 @@ demo:
 ---|---|---
 newPwd|String|新密码,一定是MD5之后的,不接受明文密码
 msgCode|String|手机验证码-测试统一用123456
+isPWd|Integer|1:免密 0或者不填写表示不免密
 
     
 
@@ -570,3 +571,66 @@ demo:
   }'
 
 ````
+
+
+
+
+## 9.修改支付密码
+
+###  地址
+
+    user/closePwd
+
+
+###  提交方式
+类型|描述
+---|---
+提交方式|post
+
+参数 放在url
+
+
+### 参数信息
+无
+
+    
+
+返回信息:成功
+
+    {
+        "msg": {
+            "info": "",
+            "code": 0,
+            "success": true
+        },
+        "data": {}
+    }
+
+返回信息:失败
+
+    {
+    msg: {
+        info: "参数异常",
+        code: 1,
+        success: false
+    },
+    data: null
+    }
+    
+
+      
+demo:
+
+
+````
+  curl -X POST \
+    http://localhost:8080/user/closePwd \
+    -H 'cache-control: no-cache' \
+    -H 'content-type: application/json' \
+    -H 'postman-token: 57ef03d1-9702-8107-6317-9c6401116e3b' \
+    -H 'token: token' \
+    -H 'traceinfo: applicationCode=aa;deviceUuid=deviceUuid;' \
+  
+
+````
+

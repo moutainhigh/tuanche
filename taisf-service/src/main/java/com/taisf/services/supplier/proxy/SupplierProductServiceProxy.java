@@ -1,5 +1,6 @@
 package com.taisf.services.supplier.proxy;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
@@ -7,6 +8,7 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.constant.PathConstant;
+import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.ProductClassifyEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
@@ -19,6 +21,7 @@ import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
+import com.taisf.services.supplier.vo.OrderTypeVO;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SupplierProductVO;
@@ -70,6 +73,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
     private PathConstant pathConstant;
 
 
+
     /**
      * 获取当前的列表信息
      *
@@ -78,7 +82,6 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      */
     @Override
     public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode,String enterpriseCode) {
-
         DataTransferObject dto = new DataTransferObject();
         if (Check.NuNStr(supplierCode)) {
             dto.setErrorMsg("参数异常");
@@ -91,7 +94,52 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return dto;
         }
         OrderTypeEnum orderTypeEnum = orderTypeDto.getData();
-        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode,null,orderTypeEnum.getCode());
+        return getSupplierClassifyProductBase(supplierCode, WeekUtil.getWeek(), dto,orderTypeEnum);
+    }
+
+    /**
+     * 获取当前的列表信息
+     *
+     * @param supplierCode
+     * @return
+     */
+    @Override
+    public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProductByWeek(String supplierCode,Integer week) {
+
+        DataTransferObject dto = new DataTransferObject();
+        if (Check.NuNStr(supplierCode)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNObj(week)){
+            week = WeekUtil.getWeek();
+        }
+        return getSupplierClassifyProductBase(supplierCode, week, dto);
+    }
+
+    /**
+     * 处理当前的商品分类的订单匹配信息
+     * @author afi
+     * @param supplierCode
+     * @param week
+     * @param dto
+     * @return
+     */
+    private DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProductBase(String supplierCode, Integer week, DataTransferObject dto) {
+        return getSupplierClassifyProductBase(supplierCode,week,dto,null);
+    }
+
+    /**
+     * 处理当前的商品分类的订单匹配信息
+     * @author afi
+     * @param supplierCode
+     * @param week
+     * @param dto
+     * @param orderTypeEnum
+     * @return
+     */
+    private DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProductBase(String supplierCode, Integer week, DataTransferObject dto,OrderTypeEnum orderTypeEnum) {
+        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode,week);
         List<ProductClassifyVO> list = new ArrayList<>();
         try {
             //便利当前的枚举信息
@@ -100,28 +148,8 @@ public class SupplierProductServiceProxy implements SupplierProductService {
                     dealProduct(map, list, c);
                 }
                 if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PACKAGE.getCode()) {
-                    List<SupplierProductVO> full = this.dealPackage(supplierCode);
-
-                    List<SupplierProductVO> tmp = new ArrayList<>();
-                    for (SupplierProductVO supplierProductVO : full) {
-                        //获取当前的匹配情况
-                        if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
-                            tmp.add(supplierProductVO);
-                        }
-                    }
-                    ProductClassifyInfo vo = new ProductClassifyInfo();
-                    String key = c.getCode() + "";
-                    vo.setProductClassify(key);
-                    vo.setProductClassifyName(c.getName());
-                    if (!Check.NuNCollection(tmp)) {
-                        vo.setList(tmp);
-                    }
-                    if (Check.NuNCollection(tmp)){
-                       continue;
-                    }
-                    list.add(vo);
+                    dealPackage(supplierCode, orderTypeEnum, list, c);
                 }
-
             }
             dto.setData(list);
         } catch (Exception e) {
@@ -132,6 +160,50 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         }
         return dto;
     }
+
+    /**
+     * 设置当前的套餐相关的信息
+     * @author afi
+     * @param supplierCode
+     * @param orderTypeEnum
+     * @param list
+     * @param c
+     * @return
+     */
+    private void dealPackage(String supplierCode, OrderTypeEnum orderTypeEnum, List<ProductClassifyVO> list, ProductClassifyEnum c) {
+        List<SupplierProductVO> full = this.dealPackage(supplierCode);
+        if (Check.NuNCollection(full)){
+            return ;
+        }
+        List<SupplierProductVO> tmp = new ArrayList<>();
+        for (SupplierProductVO supplierProductVO : full) {
+            //获取当前的匹配情况
+            if (!Check.NuNObj(orderTypeEnum)){
+                //情况1 属于指定的订单类型
+                if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
+                    tmp.add(supplierProductVO);
+                }else {
+                    continue;
+                }
+            }else {
+                //情况2 未指定的订单类型
+                fillOrderType(supplierProductVO);
+            }
+        }
+        if (Check.NuNCollection(tmp)) {
+            return;
+        }
+
+        ProductClassifyInfo vo = new ProductClassifyInfo();
+        String key = c.getCode() + "";
+        vo.setProductClassify(key);
+        vo.setProductClassifyName(c.getName());
+        vo.setList(tmp);
+        list.add(vo);
+    }
+
+
+
 
 
     /**
@@ -164,7 +236,10 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         List<SupplierProductVO> tmp = map.get(key);
         if (!Check.NuNCollection(tmp)) {
             for (SupplierProductVO productVO : tmp) {
+                //设置图片
                 dealPic(productVO);
+                //设置当前的展示列表
+                this.fillOrderType(productVO);
             }
             vo.setList(tmp);
             list.add(vo);
@@ -182,7 +257,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return null;
         }
 
-        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCodeAndWeek(supplierCode,getWeek());
+        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCodeAndWeek(supplierCode, WeekUtil.getWeek());
         if (Check.NuNCollection(list)) {
             list = new ArrayList<>();
         }
@@ -212,6 +287,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @param supplierCode
      * @return
      */
+    @Override
     public DataTransferObject<List<ProductClassifyVO>> getSupplierProductClassify(String supplierCode) {
         DataTransferObject dto = new DataTransferObject();
         List<ProductClassifyVO> list = new ArrayList<>();
@@ -316,15 +392,6 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         dto.setData(voList);
     }
 
-    /**
-     * 获取今天周几
-     * @return
-     */
-    private int getWeek() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        return c.get(Calendar.DAY_OF_WEEK);
-    }
 
     /**
      * 获取当前的分类
@@ -374,18 +441,25 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @return
      * @author afi
      */
+    public Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode,Integer week) {
+        return getSupplierProductMap(supplierCode,week,null);
+    }
+
+    /**
+     * 获取当前的分类
+     *
+     * @param supplierCode
+     * @return
+     * @author afi
+     */
     public Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode,Integer week,Integer orderType) {
         Map<String, List<SupplierProductVO>> rst = new HashMap<>();
 
-        //异常的类型 不错处理
-        if (Check.NuNObj(orderType)){
-            return rst;
-        }
         Map<String, List<ProductEntity>> map = new HashMap<>();
         SupplierProductRequest request = new SupplierProductRequest();
         request.setSupplierCode(supplierCode);
         if (Check.NuNObj(week)){
-            week = getWeek();
+            week = WeekUtil.getWeek();
         }
         request.setWeek(week);
         request.setOrderType(orderType);
@@ -443,6 +517,35 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     }
 
+    /**
+     * 填充当前的订单类型的订单信息
+     * @author afi
+     * @param supplierProductVO
+     */
+    private void fillOrderType(SupplierProductVO supplierProductVO){
+        if (Check.NuNObj(supplierProductVO)){
+            return;
+        }
+        //当前的支持的订单类型
+        List<OrderTypeVO> list = new ArrayList<>();
+        if (ValueUtil.getintValue(supplierProductVO.getForLunch()) == YesNoEnum.YES.getCode()){
+            //当前支持中午饭
+            OrderTypeVO lunch = new OrderTypeVO();
+            lunch.setOrderType(OrderTypeEnum.LUNCH_COMMON.getCode());
+            lunch.setOrderTypeName(OrderTypeEnum.LUNCH_COMMON.getName());
+            list.add(lunch);
+        }
+
+        if (ValueUtil.getintValue(supplierProductVO.getForDinner()) == YesNoEnum.YES.getCode()){
+            //当前支持中晚饭
+            OrderTypeVO dinner = new OrderTypeVO();
+            dinner.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
+            dinner.setOrderTypeName(OrderTypeEnum.DINNER_COMMON.getName());
+            list.add(dinner);
+        }
+        //设置当前的支持的餐的类型
+        supplierProductVO.setOrderList(list);
+    }
 
     /**
      * @author:zhangzhengguang

@@ -3,6 +3,8 @@ package com.taisf.services.user.vo;
 import com.jk.framework.base.entity.BaseEntity;
 import com.taisf.services.user.entity.UserEntity;
 
+import java.util.List;
+
 /**
  * <p>首页的信息</p>
  * <p/>
@@ -50,7 +52,19 @@ public class IndexVO extends IndexBaseVO{
      */
     private String supplierCode;
 
+    /**
+     * 订饭时间
+     */
+    private List<FanVO> timeList;
 
+
+    public List<FanVO> getTimeList() {
+        return timeList;
+    }
+
+    public void setTimeList(List<FanVO> timeList) {
+        this.timeList = timeList;
+    }
 
     public String getTimeMsg() {
         return timeMsg;

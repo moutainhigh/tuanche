@@ -38,6 +38,11 @@ public class OrderSaveInfo extends BaseEntity{
      */
     private  UserVO user;
 
+    /**
+     * 是否需要密码
+     */
+    private Boolean needPwd = true;
+
 
     /**
      * 订单的金额信息
@@ -93,5 +98,13 @@ public class OrderSaveInfo extends BaseEntity{
 
     public void setAddressList(List<EnterpriseAddressEntity> addressList) {
         this.addressList = addressList;
+    }
+
+    public Boolean getNeedPwd() {
+        return needPwd;
+    }
+
+    public void setNeedPwd(Boolean needPwd) {
+        this.needPwd = needPwd;
     }
 }

@@ -138,6 +138,30 @@ public interface UserService {
      */
     DataTransferObject<Void> updateAccountPassword(String userId,String accountPassword );
 
+    /**
+     * 修改支付密码,并设置免密
+     * @param userId
+     * @param accountPassword
+     * @return
+     */
+    DataTransferObject<Void> updateAccountPasswordAndPwd(String userId,String accountPassword ,boolean isPwd);
+
+
+
+    /**
+     * 开通免密服务
+     * @param userId
+     * @return
+     */
+    DataTransferObject<Void> openIsPwd(String userId,String accountPwd);
+
+    /**
+     * 关闭免密服务
+     * @param userId
+     * @return
+     */
+    DataTransferObject<Void> closeIsPwd(String userId);
+
 
     /**
      * 修改登录密码

@@ -4,6 +4,8 @@ import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
+import com.jk.framework.base.utils.ValueUtil;
+import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.DayTypeEnum;
 import com.taisf.services.enterprise.dao.*;
 import com.taisf.services.enterprise.dto.EnterpriseAddressRequest;
@@ -13,6 +15,7 @@ import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.*;
 import com.taisf.services.enterprise.vo.EnterpriseExtVO;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
+import com.taisf.services.user.vo.DayVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -277,6 +280,39 @@ public class EnterpriseManagerImpl {
 			}
 		}
 		return map.get(key);
+	}
+
+
+	/**
+	 * 获取月内时间节点信息
+	 * @author afi
+	 * @param enterpriseCode
+	 */
+	public List<DayVO> getCurrentWeek(String enterpriseCode){
+		Date first = DateUtil.getFirstDayOfWeekDay(new Date());
+		Map<String,EnterpriseDayEntity> map = new HashMap<>();
+		List<EnterpriseDayEntity>  list = getEnterpriseDaysByTime(enterpriseCode,first,DateUtil.jumpDate(first,6));
+		if (!Check.NuNCollection(list)){
+			for (EnterpriseDayEntity dayEntity : list) {
+				map.put(dayEntity.getDayTime(),dayEntity);
+			}
+		}
+		List<DayVO> dayList = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			String key = DateUtil.intFormat(first)+"";
+			EnterpriseDayEntity day = map.get(key);
+			DayVO dayVO = new DayVO();
+			dayVO.setWeek(WeekUtil.getWeek(first));
+			dayVO.setDayFlag(false);
+			if (!Check.NuNObj(day)
+					&& ValueUtil.getintValue(day.getDayType()) == DayTypeEnum.SEND.getCode()){
+				//当天配送
+				dayVO.setDayFlag(true);
+			}
+			first = DateUtil.jumpDate(first,1);
+			dayList.add(dayVO);
+		}
+		return dayList;
 	}
 
 

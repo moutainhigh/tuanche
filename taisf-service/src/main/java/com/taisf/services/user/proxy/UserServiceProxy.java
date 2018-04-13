@@ -860,6 +860,75 @@ public class UserServiceProxy implements UserService {
 
 
     /**
+     * 关闭免密服务
+     * @param userId
+     * @return
+     */
+    @Override
+    public DataTransferObject<Void> closeIsPwd(String userId){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userId)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        userManager.updateIsPwd(userId, YesNoEnum.NO.getCode());
+        return dto;
+    }
+
+
+    /**
+     * 开通免密服务
+     * @param userId
+     * @return
+     */
+    @Override
+    public DataTransferObject<Void> openIsPwd(String userId,String accountPwd){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNStr(userId)|| Check.NuNStr(accountPwd)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //1. 验证手机号信息
+        UserEntity userEntity = userManager.getUserByUid(userId);
+        if (Check.NuNObj(userEntity)) {
+            dto.setErrorMsg("当前用户不存在");
+            return dto;
+        }
+        //幂等创建当前的用户信息
+        UserAccountEntity userAccountEntity = userManager.fillAndGetAccountUser(userId);
+        if (Check.NuNObj(userAccountEntity)) {
+            dto.setErrorMsg("获取用户账户信息失败");
+            return dto;
+        }
+        if (ValueUtil.getStrValue(userAccountEntity.getAccountPassword()).equals(accountPwd)){
+            dto.setErrorMsg("密码错误");
+            return dto;
+        }
+        userManager.updateIsPwd(userId, YesNoEnum.YES.getCode());
+        return dto;
+    }
+
+
+
+    /**
+     * 修改支付密码,并设置免密
+     * @param userId
+     * @param accountPassword
+     * @return
+     */
+    @Override
+    public DataTransferObject<Void> updateAccountPasswordAndPwd(String userId,String accountPassword ,boolean isPwd){
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        if (Check.NuNObj(userId)
+                || Check.NuNObj(accountPassword)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        userManager.updateAccountPasswordAndPwd(userId, accountPassword,isPwd);
+        return dto;
+    }
+
+    /**
      * 修改支付密码
      *
      * @param userId

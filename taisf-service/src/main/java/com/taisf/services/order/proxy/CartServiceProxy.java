@@ -5,6 +5,7 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.util.MoneyDealUtil;
+import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.order.api.CartService;
@@ -200,15 +201,15 @@ public class CartServiceProxy implements CartService{
         }
     }
 
-    /**
-     * 获取今天周几
-     * @return
-     */
-    private int getWeek() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        return c.get(Calendar.DAY_OF_WEEK);
-    }
+//    /**
+//     * 获取今天周几
+//     * @return
+//     */
+//    private int getWeek() {
+//        Calendar c = Calendar.getInstance();
+//        c.setTime(new Date());
+//        return c.get(Calendar.DAY_OF_WEEK);
+//    }
 
     /**
      * 填充普通药品逻辑
@@ -233,7 +234,7 @@ public class CartServiceProxy implements CartService{
         }
         SupplierProductRequest supplierProductRequest = new SupplierProductRequest();
         supplierProductRequest.setProductIds(pList);
-        supplierProductRequest.setWeek(getWeek());
+        supplierProductRequest.setWeek(WeekUtil.getWeek());
         supplierProductRequest.setSupplierCode(supplierCode);
         List<ProductEntity> list = supplierProductManager.getProductListBySupplierAndType(supplierProductRequest);
         if (Check.NuNCollection(list)){
@@ -291,7 +292,7 @@ public class CartServiceProxy implements CartService{
 
         List<Integer> list = new ArrayList<>();
         list.add(cartAddRequest.getProductCode());
-        Map<String, StockCheckVO> map = stockProductManager.checkStockLimit(getWeek(), cartAddRequest.getSupplierProductType(), cartAddRequest.getOrderType(), cartAddRequest.getBusinessUid(), list);
+        Map<String, StockCheckVO> map = stockProductManager.checkStockLimit(WeekUtil.getWeek(), cartAddRequest.getSupplierProductType(), cartAddRequest.getOrderType(), cartAddRequest.getBusinessUid(), list);
         StockCheckVO stock = map.get(ValueUtil.getStrValue(cartAddRequest.getProductCode()));
         if (Check.NuNObj(stock)){
             dto.setErrorMsg("异常的库存信息");

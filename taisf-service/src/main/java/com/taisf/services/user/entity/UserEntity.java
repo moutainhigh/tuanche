@@ -77,6 +77,12 @@ public class UserEntity extends BaseEntity {
 
 
 	/**
+	 * 是否面密码支付
+	 */
+	private Integer isPwd;
+
+
+	/**
 	 * 用户状态： 1:注册成功 2：认证审核中 3：认证通过
 	 */
 	private Integer userBusinessStatus;
@@ -264,5 +270,13 @@ public class UserEntity extends BaseEntity {
 
 	public void setIsAdmin(Integer isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public Integer getIsPwd() {
+		return isPwd;
+	}
+
+	public void setIsPwd(Integer isPwd) {
+		this.isPwd = isPwd;
 	}
 }

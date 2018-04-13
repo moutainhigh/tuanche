@@ -20,6 +20,19 @@ public class PayManagerImpl {
 	@Resource(name = "order.orderBaseDao")
 	private OrderBaseDao orderBaseDao;
 
+
+	/**
+	 * 获取当前的用户当前的金额
+	 * @param userId
+	 * @return
+	 */
+	public Long getUserCostToday(String userId){
+		if (Check.NuNStr(userId)){
+			return 0L;
+		}
+		return payRecordDao.getUserCostToday(userId);
+	}
+
 	/**
 	 * 获取当前的支付记录信息
 	 * @author afi

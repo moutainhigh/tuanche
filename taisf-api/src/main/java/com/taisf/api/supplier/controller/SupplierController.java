@@ -6,6 +6,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.api.common.abs.AbstractController;
+import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.supplier.api.SupplierProductService;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
@@ -137,6 +138,41 @@ public class SupplierController extends AbstractController {
         }
 
     }
+
+    /**
+     * 获取商品分类
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/classifyProductWeek", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDto classifyProduct(HttpServletRequest request, HttpServletResponse response,String supplierCode,Integer week) {
+
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(supplierCode)) {
+            return new ResponseDto("参数异常");
+        }
+        if (Check.NuNObj(week)){
+            week = WeekUtil.getWeek();
+        }
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(supplierCode));
+        try {
+            DataTransferObject<List<ProductClassifyInfo>> dto =supplierProductService.getSupplierClassifyProductByWeek(supplierCode,week);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【获取分类商品】错误,par:{}, e={}",JsonEntityTransform.Object2Json(supplierCode), e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
 
 
     /**

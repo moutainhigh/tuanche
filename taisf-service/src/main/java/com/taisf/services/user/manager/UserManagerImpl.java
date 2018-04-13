@@ -1,5 +1,6 @@
 package com.taisf.services.user.manager;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
@@ -406,6 +407,32 @@ public class UserManagerImpl {
         return userDao.updateUserAdmin(userId,isAdmin);
     }
 
+
+    /**
+     * 更新用户的免密设置
+     * @param userId
+     * @param isPwd
+     * @return
+     */
+    public int updateIsPwd(String userId,Integer isPwd){
+        return userDao.updateIsPwd(userId,isPwd);
+    }
+
+
+    /**
+     * 修改当前的支付密码
+     * @author afi
+     * @param userId
+     * @param accountPassword
+     * @return
+     */
+    public int updateAccountPasswordAndPwd(String userId,String accountPassword ,boolean isPwd){
+        int num = userAccountDao.updateAccountPassword(userId,accountPassword);
+        if (num > 0 && isPwd){
+            userDao.updateIsPwd(userId, YesNoEnum.YES.getCode());
+        }
+        return num;
+    }
 
     /**
      * 修改当前的支付密码

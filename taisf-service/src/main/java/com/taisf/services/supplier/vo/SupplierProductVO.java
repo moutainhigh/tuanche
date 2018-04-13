@@ -2,6 +2,8 @@ package com.taisf.services.supplier.vo;
 
 import com.taisf.services.product.entity.ProductEntity;
 
+import java.util.List;
+
 /**
  * <p>供应商的商品列表</p>
  * <p/>
@@ -28,6 +30,19 @@ public class SupplierProductVO  extends ProductEntity {
      */
     private String supplierProductDes;
 
+    /**
+     * 订单类型列表
+     */
+    private List<OrderTypeVO> orderList;
+
+
+    public List<OrderTypeVO> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<OrderTypeVO> orderList) {
+        this.orderList = orderList;
+    }
 
     public Integer getSupplierProductType() {
         return supplierProductType;

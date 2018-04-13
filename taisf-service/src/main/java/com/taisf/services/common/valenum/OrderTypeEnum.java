@@ -23,7 +23,7 @@ import java.util.List;
  */
 public enum OrderTypeEnum {
 
-    LUNCH_COMMON(20,"午餐正常",true){
+    LUNCH_COMMON(20,"午餐",true){
         @Override
         public boolean checkSuit(int forLunch, int forDinner) {
             return forLunch == YesNoEnum.YES.getCode();
@@ -35,7 +35,7 @@ public enum OrderTypeEnum {
             return true;
         }
     },
-    DINNER_COMMON(30,"晚餐正常",true){
+    DINNER_COMMON(30,"晚餐",true){
         @Override
         public boolean checkSuit(int forLunch, int forDinner) {
             return forDinner == YesNoEnum.YES.getCode();

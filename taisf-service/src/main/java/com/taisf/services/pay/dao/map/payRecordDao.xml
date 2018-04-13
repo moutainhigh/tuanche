@@ -33,6 +33,24 @@
 
 
 
+
+  <select id="getUserCostToday" resultType="java.lang.Long" parameterType="java.util.Map" >
+    SELECT
+
+    IFNULL(SUM( total_fee), 0)
+    FROM
+      t_pay_record t
+    WHERE  record_uid = #{userId,jdbcType=VARCHAR}
+    <if test="start != null ">
+      and t.create_time <![CDATA[  >= ]]>#{startStr,jdbcType=TIMESTAMP}
+    </if>
+    <if test="end != null ">
+      and t.create_time <![CDATA[  <= ]]> #{endStr,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_pay_record
     where id = #{id,jdbcType=INTEGER}

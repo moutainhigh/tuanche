@@ -2,6 +2,7 @@ package com.taisf.services.pay.dao;
 
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.DateUtil;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import org.slf4j.Logger;
@@ -47,6 +48,20 @@ public class PayRecordDao extends BaseDao {
         return mybatisDaoContext.findOne(SQLID + "getPayRecordBySn",PayRecordEntity.class,par);
     }
 
+
+    /**
+     * 获取当前的用户当前的金额
+     * @param userId
+     * @return
+     */
+    public Long getUserCostToday(String userId){
+
+        Map<String,Object> par = new HashMap<>();
+        par.put("userId",userId);
+        par.put("start",DateUtil.getDayStart(new Date()));
+        par.put("end",DateUtil.getDayEnd(new Date()));
+        return mybatisDaoContext.count(SQLID + "getUserCostToday",par);
+    }
 
     /**
      * 保存支付回调信息

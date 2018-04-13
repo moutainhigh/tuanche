@@ -1,5 +1,6 @@
 package com.taisf.api.user.controller;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
 import com.jk.framework.base.rst.ResponseDto;
@@ -205,6 +206,35 @@ public class UserController extends AbstractController {
     }
 
 
+    /**
+     * 关闭免密支付
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/closePwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto closePwd(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        String userId = getUserId(request);
+        if (Check.NuNStr(userId)){
+            return new ResponseDto("异常的用户信息");
+        }
+        LogUtil.info(LOGGER, "关闭免密服务:{}", JsonEntityTransform.Object2Json(userId));
+        try {
+            DataTransferObject<Void> dto =userService.closeIsPwd(userId);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【关闭免密服务】错误,par:{}, e={}",userId, e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
+
 
 
     /**
@@ -233,7 +263,11 @@ public class UserController extends AbstractController {
         if (Check.NuNStr(paramRequest.getMsgCode())) {
             return new ResponseDto("请输入验证码");
         }
-
+        //默认不支持免密
+        boolean isPWd = false;
+        if (ValueUtil.getintValue(paramRequest.getIsPwd()) == YesNoEnum.YES.getCode()){
+            isPWd = true;
+        }
         String  key = HeaderUtil.getCodeStr(header, SmsTypeEnum.PWD_ACCOUNT.getCode());
         String value= redisOperation.get(key);
         if (!ValueUtil.getStrValue(value).equals(ValueUtil.getStrValue(paramRequest.getMsgCode()))){
@@ -241,13 +275,12 @@ public class UserController extends AbstractController {
         }
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
-            DataTransferObject<Void> dto =userService.updateAccountPassword(getUserId(request),paramRequest.getNewPwd());
+            DataTransferObject<Void> dto =userService.updateAccountPasswordAndPwd(getUserId(request),paramRequest.getNewPwd(),isPWd);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【修改登录密码】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
             return new ResponseDto("未知错误");
         }
-
     }
 
 

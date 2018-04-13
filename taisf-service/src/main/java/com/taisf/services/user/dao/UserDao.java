@@ -59,6 +59,20 @@ public class UserDao extends BaseDao {
     }
 
     /**
+     * 设置免密
+     * @param userId
+     * @param isPwd
+     * @return
+     */
+    public int updateIsPwd(String userId,Integer isPwd){
+        Map<String,Object> par = new HashMap<>();
+        par.put("userId",userId);
+        par.put("isPwd",isPwd);
+        return mybatisDaoContext.update(SQLID + "updateIsPwd", par);
+
+    }
+
+    /**
      * 更新用户
      * @param userId
      * @param isAdmin

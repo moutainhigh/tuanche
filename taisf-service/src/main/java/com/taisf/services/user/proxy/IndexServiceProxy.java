@@ -6,6 +6,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.AccountStatusEnum;
 import com.taisf.services.common.valenum.DayTypeEnum;
 import com.taisf.services.common.valenum.OrderTypeEnum;
@@ -20,15 +21,14 @@ import com.taisf.services.user.api.IndexService;
 import com.taisf.services.user.entity.UserAccountEntity;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
-import com.taisf.services.user.vo.IndexBaseVO;
-import com.taisf.services.user.vo.IndexUserVO;
-import com.taisf.services.user.vo.IndexVO;
+import com.taisf.services.user.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -244,14 +244,22 @@ public class IndexServiceProxy implements IndexService {
         //设置供应商的code
         indexVO.setSupplierCode(infoVO.getEnterpriseEntity().getSupplierCode());
 
-        EnterpriseDayEntity day = enterpriseManager.getCurrentDay(userEntity.getEnterpriseCode());
-        if (Check.NuNObj(day)
-                || ValueUtil.getintValue(day.getDayType()) ==DayTypeEnum.NO.getCode()){
-            indexVO.setTimeTitle("点餐（今日不配送）");
-            indexVO.setTimeMsg("当天不配送");
-            return dto;
+        DayVO today = null;
+        //获取当前周的配送时间
+        List<DayVO>  dayList = enterpriseManager.getCurrentWeek(userEntity.getEnterpriseCode());
+        if (!Check.NuNCollection(dayList)){
+            for (DayVO dayVO : dayList) {
+                if (ValueUtil.getintValue(dayVO.getWeek()) == WeekUtil.getWeek()){
+                    today = dayVO;
+                }
+            }
         }
-
+        if (Check.NuNObj(today)){
+            //设置
+            dealNoSend(indexVO);
+        }
+        //设置当前的订饭时间
+        this.dealTimeInfo(indexVO,config);
         //获取当前的订餐类型
         OrderTypeEnum orderTypeEnum = this.dealTime4Lunch(config,now,indexVO,isExt);
         if (Check.NuNObj(orderTypeEnum)){
@@ -263,9 +271,49 @@ public class IndexServiceProxy implements IndexService {
             indexVO.setOrderFlag(true);
             indexVO.setOrderType(orderTypeEnum.getCode());
         }
-
-
         return dto;
+    }
+
+    /**
+     * 设置当前不配送的信息
+     * @param indexVO
+     */
+    private void dealNoSend(IndexVO indexVO){
+        if (Check.NuNObj(indexVO)){
+            return;
+        }
+        indexVO.setTimeTitle("点餐（今日不配送）");
+        indexVO.setTimeMsg("当天不配送");
+
+    }
+
+    /**
+     * 处理当前的订单时间信息
+     * @param indexVO
+     * @param config
+     */
+    private void dealTimeInfo(IndexVO indexVO,EnterpriseConfigEntity config){
+        if (Check.NuNObjs(indexVO,config)){
+            return;
+        }
+        List<FanVO> timeList = new ArrayList<>();
+        //设置午饭时间
+        if (ValueUtil.getintValue(config.getForLunch()) == YesNoEnum.YES.getCode()){
+            FanVO time = new FanVO();
+            time.setName("午餐");
+            time.setStart(config.getLunchStart());
+            time.setEnd(config.getLunchEnd());
+            timeList.add(time);
+        }
+        //设置晚饭
+        if (ValueUtil.getintValue(config.getForDinner()) == YesNoEnum.YES.getCode()){
+            FanVO time = new FanVO();
+            time.setName("晚餐");
+            time.setStart(config.getDinnerStart());
+            time.setEnd(config.getDinnerEnd());
+            timeList.add(time);
+        }
+        indexVO.setTimeList(timeList);
     }
 
     /**

@@ -58,6 +58,11 @@ public class IndexUserVO  extends BaseEntity {
     private Integer isAdmin;
 
     /**
+     * 是否管理员
+     */
+    private Integer isPwd;
+
+    /**
      * 用户类型
      */
     private Integer userType;
@@ -73,6 +78,14 @@ public class IndexUserVO  extends BaseEntity {
      */
     private Integer productSource;
 
+
+    public Integer getIsPwd() {
+        return isPwd;
+    }
+
+    public void setIsPwd(Integer isPwd) {
+        this.isPwd = isPwd;
+    }
 
     public String getUserName() {
         return userName;
