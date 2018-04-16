@@ -16,6 +16,8 @@ import com.taisf.services.order.vo.FaceVO;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
+import com.taisf.services.pay.api.RechargeOrderService;
+import com.taisf.services.pay.dto.RechargeOrderRequest;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.vo.UserModelVO;
@@ -55,6 +57,11 @@ public class OrderController extends AbstractController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RechargeOrderService rechargeOrderService;
+
+
 
     /**
      * 初始化下单
@@ -392,4 +399,49 @@ public class OrderController extends AbstractController {
             return new ResponseDto("未知错误");
         }
     }
+
+
+
+
+    /**
+     * 去充值的逻辑
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/createRecharge", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto createRecharge(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
+        //获取当前参数
+        RechargeOrderRequest rechargeOrderRequest = getEntity(request, RechargeOrderRequest.class);
+        rechargeOrderRequest.setUserUid(getUserId(request));
+        if (Check.NuNObj(rechargeOrderRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(rechargeOrderRequest));
+        try {
+            DataTransferObject<String> dto =rechargeOrderService.createRechargeOrder(rechargeOrderRequest);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【充值】错误,par:{}, e={}",JsonEntityTransform.Object2Json(rechargeOrderRequest), e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
 }

@@ -1,0 +1,102 @@
+package com.taisf.services.pay.manager;
+
+import com.jk.framework.base.constant.YesNoEnum;
+import com.jk.framework.base.exception.BusinessException;
+import com.jk.framework.base.utils.Check;
+import com.taisf.services.common.valenum.AccountTypeEnum;
+import com.taisf.services.common.valenum.OrdersStatusEnum;
+import com.taisf.services.order.dao.OrderBaseDao;
+import com.taisf.services.pay.dao.PayRecordDao;
+import com.taisf.services.pay.dao.RechargeOrderDao;
+import com.taisf.services.pay.entity.PayRecordEntity;
+import com.taisf.services.pay.entity.RechargeOrderEntity;
+import com.taisf.services.user.dao.AccountLogDao;
+import com.taisf.services.user.dao.UserAccountDao;
+import com.taisf.services.user.entity.AccountLogEntity;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Date;
+
+
+@Service("pay.rechargeOrderManagerImpl")
+public class RechargeOrderManagerImpl {
+
+	@Resource(name = "pay.rechargeOrderDao")
+	private RechargeOrderDao rechargeOrderDao;
+
+	@Resource(name = "user.accountLogDao")
+	private AccountLogDao accountLogDao;
+
+	@Resource(name = "user.accountUserDao")
+	private UserAccountDao userAccountDao;
+
+	/**
+	 * 获取当前的充值信息
+	 * @author afi
+	 * @param orderSn
+	 * @return
+	 */
+	public RechargeOrderEntity getRechargeOrderByOrderSn(String orderSn){
+		return rechargeOrderDao.getRechargeOrderByOrderSn(orderSn);
+	}
+
+
+	/**
+	 * 保存支付回调信息
+	 * @author afi
+	 * @param recordEntity
+	 * @return
+	 */
+	public int saveRechargeOrder(RechargeOrderEntity  recordEntity){
+		if (Check.NuNObj(recordEntity.getCreateTime())){
+			recordEntity.setCreateTime(new Date());
+		}
+		return rechargeOrderDao.saveRechargeOrder(recordEntity);
+	}
+
+	/**
+	 * 保存支付回调信息
+	 * @author afi
+	 * @param recordEntity
+	 * @return
+	 */
+	public int updateOrderPayAndAccount(RechargeOrderEntity  recordEntity){
+		if (Check.NuNObj(recordEntity.getCreateTime())){
+			recordEntity.setCreateTime(new Date());
+		}
+		recordEntity.setPayStatus(YesNoEnum.YES.getCode());
+
+		int num =   rechargeOrderDao.updateRechargeOrder(recordEntity);
+		if (num == 1){
+			int money = recordEntity.getTotalFee();
+			//消费当前的余额信息
+			int change = userAccountDao.changeUserBalance(recordEntity.getUserUid(),money);
+			if (change != 1){
+				throw new BusinessException("更新用户金额失败");
+			}
+			//记录当前的消费记录
+			AccountLogEntity log = new AccountLogEntity();
+			log.setAccountType(AccountTypeEnum.FILL.getCode());
+			log.setBizMoney(money);
+			log.setBizSn(recordEntity.getOrderSn());
+			log.setUserId(recordEntity.getUserUid());
+			log.setTitle("个人充值");
+			accountLogDao.saveAccountLog(log);
+		}
+		return num;
+	}
+
+
+	/**
+	 * 充值
+	 * @param userUid
+	 * @param money
+	 * @param bizSn
+	 */
+	private void fillUserAccount(String userUid,int money,String bizSn){
+
+	}
+
+
+}

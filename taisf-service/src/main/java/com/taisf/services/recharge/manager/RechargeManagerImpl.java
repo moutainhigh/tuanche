@@ -244,7 +244,7 @@ public class RechargeManagerImpl {
         log.setBizMoney(money);
         log.setBizSn(bizSn);
         log.setUserId(userUid);
-        log.setTitle("企业充值");
+        log.setTitle("商家充值");
         accountLogDao.saveAccountLog(log);
     }
 
