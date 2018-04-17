@@ -259,7 +259,8 @@ public class IndexServiceProxy implements IndexService {
             dealNoSend(indexVO);
         }
         //设置当前的订饭时间
-        this.dealTimeInfo(indexVO,config);
+        List<FanVO> timeList = this.dealTimeInfo(config);
+        indexVO.setTimeList(timeList);
         //获取当前的订餐类型
         OrderTypeEnum orderTypeEnum = this.dealTime4Lunch(config,now,indexVO,isExt);
         if (Check.NuNObj(orderTypeEnum)){
@@ -289,14 +290,14 @@ public class IndexServiceProxy implements IndexService {
 
     /**
      * 处理当前的订单时间信息
-     * @param indexVO
      * @param config
      */
-    private void dealTimeInfo(IndexVO indexVO,EnterpriseConfigEntity config){
-        if (Check.NuNObjs(indexVO,config)){
-            return;
-        }
+    public List<FanVO> dealTimeInfo(EnterpriseConfigEntity config){
         List<FanVO> timeList = new ArrayList<>();
+        if (Check.NuNObjs(config)){
+            return timeList;
+        }
+
         //设置午饭时间
         if (ValueUtil.getintValue(config.getForLunch()) == YesNoEnum.YES.getCode()){
             FanVO time = new FanVO();
@@ -313,7 +314,7 @@ public class IndexServiceProxy implements IndexService {
             time.setEnd(config.getDinnerEnd());
             timeList.add(time);
         }
-        indexVO.setTimeList(timeList);
+        return timeList;
     }
 
     /**

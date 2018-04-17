@@ -12,6 +12,9 @@ import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.ProductClassifyEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
+import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
+import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
+import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.api.SupplierProductService;
@@ -21,11 +24,10 @@ import com.taisf.services.supplier.entity.SupplierPackageEntity;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
-import com.taisf.services.supplier.vo.OrderTypeVO;
-import com.taisf.services.supplier.vo.ProductClassifyInfo;
-import com.taisf.services.supplier.vo.ProductClassifyVO;
-import com.taisf.services.supplier.vo.SupplierProductVO;
+import com.taisf.services.supplier.vo.*;
 import com.taisf.services.user.proxy.IndexServiceProxy;
+import com.taisf.services.user.vo.DayVO;
+import com.taisf.services.user.vo.FanVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -73,6 +75,8 @@ public class SupplierProductServiceProxy implements SupplierProductService {
     private PathConstant pathConstant;
 
 
+    @Resource(name = "enterprise.enterpriseManagerImpl")
+    private EnterpriseManagerImpl enterpriseManager;
 
     /**
      * 获取当前的列表信息
@@ -104,8 +108,9 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @return
      */
     @Override
-    public DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProductByWeek(String supplierCode,Integer week) {
+    public DataTransferObject<SelectInfo4Week> getSupplierClassifyProductByWeek(String enterpriseCode,String supplierCode, Integer week) {
 
+        SelectInfo4Week selectInfo4Week = new SelectInfo4Week();
         DataTransferObject dto = new DataTransferObject();
         if (Check.NuNStr(supplierCode)) {
             dto.setErrorMsg("参数异常");
@@ -114,8 +119,52 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         if (Check.NuNObj(week)){
             week = WeekUtil.getWeek();
         }
-        return getSupplierClassifyProductBase(supplierCode, week, dto);
+
+        //1. 设置当前的时间配置
+        selectInfo4Week.setTimeList(dealTimeList(enterpriseCode, week, dto));
+        if (!dto.checkSuccess()){
+            return dto;
+        }
+        //2. 设置当前的菜单信息
+        DataTransferObject<List<ProductClassifyInfo>> classifyProductDto = getSupplierClassifyProductBase(supplierCode, week, dto);
+        if (classifyProductDto.checkSuccess()){
+            selectInfo4Week.setProductClassifyList(classifyProductDto.getData());
+        }
+        dto.setData(selectInfo4Week);
+        return dto;
     }
+
+
+    private List<FanVO>  dealTimeList(String enterpriseCode,Integer week,DataTransferObject dto){
+        List<FanVO> timeList = new ArrayList<>();
+
+        // 3.设置企业信息
+        EnterpriseInfoVO infoVO = enterpriseManager.getEnterpriseInfoByCode(enterpriseCode);
+
+        if (Check.NuNObj(infoVO)){
+            dto.setErrorMsg("异常的企业信息");
+            return timeList;
+        }
+        if (Check.NuNObj(infoVO.getEnterpriseEntity().getTillTime())){
+            dto.setErrorMsg("异常的企业截止时间");
+            return timeList;
+        }
+
+        //当前时间
+        Date now = new Date();
+        if (infoVO.getEnterpriseEntity().getTillTime().before(now)){
+            dto.setErrorMsg("加盟时间已经失效,请联系企业管理人员");
+            return timeList;
+        }
+        EnterpriseConfigEntity config =infoVO.getEnterpriseConfigEntity();
+        if(Check.NuNObj(config)){
+            dto.setErrorMsg("异常的企业配置信息");
+            return timeList;
+        }
+        return this.indexServiceProxy.dealTimeInfo(config);
+    }
+
+
 
     /**
      * 处理当前的商品分类的订单匹配信息

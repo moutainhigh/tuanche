@@ -8,6 +8,7 @@ import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
+import com.taisf.services.supplier.vo.SelectInfo4Week;
 import com.taisf.services.supplier.vo.SupplierProductVO;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public interface SupplierProductService {
      * @param supplierCode
      * @return
      */
-    DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProductByWeek(String supplierCode,Integer week);
+    DataTransferObject<SelectInfo4Week> getSupplierClassifyProductByWeek(String enterpriseCode,String supplierCode, Integer week);
 
     /**
      * 获取当前的列表信息

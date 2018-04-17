@@ -7,6 +7,7 @@ import com.taisf.services.supplier.api.SupplierProductService;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
+import com.taisf.services.supplier.vo.SelectInfo4Week;
 import com.taisf.services.supplier.vo.SupplierProductVO;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
@@ -62,5 +63,16 @@ public class SupplierProductServiceProxyTest extends BaseTest {
         System.out.println(JsonEntityTransform.Object2Json(supplierProductList));
 
     }
+
+
+    @Test
+    public void getSupplierClassifyProductByWeekTest() {
+
+        DataTransferObject<SelectInfo4Week> classify = supplierProductService.getSupplierClassifyProductByWeek("0001","jipin",null);
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+
+    }
+
+
 
 }

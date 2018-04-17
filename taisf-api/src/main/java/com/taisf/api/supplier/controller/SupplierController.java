@@ -12,6 +12,7 @@ import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
+import com.taisf.services.supplier.vo.SelectInfo4Week;
 import com.taisf.services.supplier.vo.SupplierProductVO;
 import com.taisf.services.user.vo.UserModelVO;
 import org.slf4j.Logger;
@@ -165,7 +166,7 @@ public class SupplierController extends AbstractController {
         }
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(supplierCode));
         try {
-            DataTransferObject<List<ProductClassifyInfo>> dto =supplierProductService.getSupplierClassifyProductByWeek(supplierCode,week);
+            DataTransferObject<SelectInfo4Week> dto =supplierProductService.getSupplierClassifyProductByWeek(user.getEnterpriseCode(),supplierCode,week);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【获取分类商品】错误,par:{}, e={}",JsonEntityTransform.Object2Json(supplierCode), e);
