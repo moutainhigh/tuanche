@@ -229,4 +229,13 @@ public class UserDao extends BaseDao {
         return mybatisDaoContext.findOne(SQLID + "selectByUserPhone", UserEntity.class, userPhone);
     }
 
+    /**
+     * 根据支付code获取骑手信息
+     * @param payCode
+     * @return
+     */
+    public UserEntity getByPayCode(String payCode){
+        return mybatisDaoContext.findOne(SQLID + "getByPayCode", UserEntity.class, payCode);
+    }
+
 }

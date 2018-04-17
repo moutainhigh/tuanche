@@ -279,3 +279,65 @@ demo:
 ````
 
 
+
+
+
+
+
+## 4. 获取收款码 
+
+
+###  地址
+
+    knight/payCode
+
+
+###  提交方式
+提交方式|post
+Content-Type|application/json
+参数|放在body流中,依照json格式
+
+### 参数
+
+无
+
+
+返回信息:成功
+
+   {
+       "msg": {
+           "info": "",
+           "code": 0,
+           "success": true
+       },
+       "data": null
+   }
+
+返回信息:失败
+
+    {
+    msg: {
+        info: "参数异常",
+        code: 1,
+        success: false
+    },
+    data: null
+    }
+
+
+demo:
+
+
+````
+      curl -X POST \
+      http://localhost:8080/knight/payCode \
+      -H 'cache-control: no-cache' \
+      -H 'content-type: application/json' \
+      -H 'postman-token: d1615d61-a789-b0f8-ac36-6e1cca1f1903' \
+      -H 'token: token' \
+      -H 'traceinfo: applicationCode=knight;deviceUuid=deviceUuid;versionCode=versionCode;source=1;' \
+
+````
+
+
+

@@ -15,6 +15,8 @@ import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.vo.OrderDetailVO;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.order.vo.OrderSaveInfo;
+import com.taisf.services.supplier.api.SupplierService;
+import com.taisf.services.supplier.vo.SupplierPayInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,43 @@ public class KnightController extends AbstractController {
 
     @Autowired
     private OrderService ordersService;
+
+
+    @Autowired
+    private SupplierService supplierService;
+
+
+    /**
+     * 结束订单
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/payCode", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto payCode(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        String userId = getUserId(request);
+        if (Check.NuNStr(userId)){
+            return new ResponseDto("请登录");
+        }
+
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(userId));
+        try {
+
+            DataTransferObject<SupplierPayInfo> dto =supplierService.getPayInfo4knight(userId);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【结束订单】错误,par:{}, e={}",JsonEntityTransform.Object2Json(userId), e);
+            return new ResponseDto("未知错误");
+        }
+
+    }
+
 
     /**
      * 结束订单

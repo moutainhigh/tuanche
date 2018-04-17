@@ -48,6 +48,18 @@ public interface OrderService {
      */
     DataTransferObject<FaceVO> faceOrder(CreateOrderRequest createOrderRequest, boolean needPwd);
 
+
+    /**
+     * 骑士的面对面收款
+     * @author afi
+     * @param createOrderRequest
+     * @return
+     */
+    DataTransferObject<FaceVO> knightOrder(CreateOrderRequest createOrderRequest);
+
+
+
+
     /**
      * 申请退款
      * @author afi

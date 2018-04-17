@@ -251,6 +251,48 @@ public class OrderController extends AbstractController {
 
 
     /**
+     * 骑士面对面收款
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/knightOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto knightOrder(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        //获取当前参数
+        CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
+        paramRequest.setSource(header.getSource());
+        paramRequest.setUserUid(getUserId(request));
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        paramRequest.setEnterpriseCode(user.getEnterpriseCode());
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+            DataTransferObject<FaceVO> dto =ordersService.knightOrder(paramRequest);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【骑手收款】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
+
+
+
+    /**
      * 补单逻辑
      * @author afi
      * @param request

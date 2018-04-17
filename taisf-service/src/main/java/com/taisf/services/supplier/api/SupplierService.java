@@ -4,6 +4,7 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.supplier.dto.SupplierRequest;
 import com.taisf.services.supplier.entity.SupplierEntity;
+import com.taisf.services.supplier.vo.SupplierPayInfo;
 
 import java.util.List;
 
@@ -29,5 +30,14 @@ public interface SupplierService {
 	 * @return
 	 */
 	DataTransferObject<SupplierEntity> getSupplierInfo(String  supplierCode);
+
+
+	/**
+	 * 获取供应商信息
+	 * @param nightUid
+	 * @return
+	 */
+	DataTransferObject<SupplierPayInfo> getPayInfo4knight(String  nightUid);
+
 
 }

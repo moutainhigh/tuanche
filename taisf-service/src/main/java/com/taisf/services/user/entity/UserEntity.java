@@ -102,6 +102,19 @@ public class UserEntity extends BaseEntity {
 	 */
 	private String bizCode;
 
+	/**
+	 * 支付码
+	 */
+	private String payCode;
+
+
+	public String getPayCode() {
+		return payCode;
+	}
+
+	public void setPayCode(String payCode) {
+		this.payCode = payCode;
+	}
 
 	public String getBizCode() {
 		return bizCode;

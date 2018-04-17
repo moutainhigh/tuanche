@@ -8,6 +8,10 @@ import com.taisf.services.supplier.dao.SupplierDao;
 import com.taisf.services.supplier.dto.SupplierRequest;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import com.taisf.services.supplier.manager.SupplierManagerImpl;
+import com.taisf.services.supplier.vo.SupplierPayInfo;
+import com.taisf.services.user.entity.UserEntity;
+import com.taisf.services.user.manager.UserManagerImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +26,11 @@ public class SupplierServiceProxy implements SupplierService{
 
 	@Autowired
     private SupplierDao supplierDao;
+
+
+	@Resource(name = "user.userManagerImpl")
+	private UserManagerImpl userManager;
+
 
 	 /**
      * 获取供应商列表
@@ -65,4 +74,39 @@ public class SupplierServiceProxy implements SupplierService{
 		return dto;
 	}
 
+
+	/**
+	 * 获取骑士的信息
+	 * @param knightUid
+	 * @return
+	 */
+	@Override
+	public DataTransferObject<SupplierPayInfo> getPayInfo4knight(String  knightUid){
+
+		DataTransferObject<SupplierPayInfo> dto = new DataTransferObject<>();
+		if (Check.NuNStr(knightUid)){
+			dto.setErrorMsg("参数异常");
+			return dto;
+		}
+		UserEntity user = userManager.getUserByUid4Supply(knightUid);
+		if (Check.NuNObj(user)){
+			dto.setErrorMsg("当前用户不存在");
+			return dto;
+		}
+		if (Check.NuNStr(user.getPayCode())){
+			dto.setErrorMsg("当前骑手未开通收款权限");
+			return dto;
+		}
+		SupplierEntity supplierEntity = supplierDao.getSupplierByCode(user.getBizCode());
+		if (Check.NuNObj(supplierEntity)){
+			dto.setErrorMsg("当前骑手不属于任何一个供应商");
+			return dto;
+		}
+		SupplierPayInfo info = new SupplierPayInfo();
+		BeanUtils.copyProperties(supplierEntity,info);
+		info.setPayCode(user.getPayCode());
+		dto.setData(info);
+		return dto;
+
+	}
 }

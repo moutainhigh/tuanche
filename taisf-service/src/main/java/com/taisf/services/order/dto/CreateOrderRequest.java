@@ -60,6 +60,20 @@ public class CreateOrderRequest extends BaseEntity{
      */
     private Integer price;
 
+
+    /**
+     * 收款码
+     */
+    private String payCode;
+
+    public String getPayCode() {
+        return payCode;
+    }
+
+    public void setPayCode(String payCode) {
+        this.payCode = payCode;
+    }
+
     public Integer getPrice() {
         return price;
     }

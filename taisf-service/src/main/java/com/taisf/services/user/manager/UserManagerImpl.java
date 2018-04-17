@@ -310,6 +310,19 @@ public class UserManagerImpl {
         return userDao.getUserById(id);
     }
 
+
+    /**
+     * 根据code去支付
+     * @param payCode
+     * @return
+     */
+    public UserEntity getByPayCode(String payCode){
+        if (Check.NuNObj(payCode)){
+            return null;
+        }
+        return userDao.getByPayCode(payCode);
+    }
+
     /**
      * @author:zhangzhengguang
      * @date:2017/11/3
