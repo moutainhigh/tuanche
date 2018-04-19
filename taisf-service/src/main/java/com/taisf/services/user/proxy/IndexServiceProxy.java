@@ -253,6 +253,7 @@ public class IndexServiceProxy implements IndexService {
                     today = dayVO;
                 }
             }
+            indexVO.setDayList(dayList);
         }
         if (Check.NuNObj(today)){
             //设置

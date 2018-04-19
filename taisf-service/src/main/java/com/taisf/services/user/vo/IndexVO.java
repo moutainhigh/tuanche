@@ -57,6 +57,18 @@ public class IndexVO extends IndexBaseVO{
      */
     private List<FanVO> timeList;
 
+    /**
+     * 天
+     */
+    private List<DayVO>  dayList;
+
+    public List<DayVO> getDayList() {
+        return dayList;
+    }
+
+    public void setDayList(List<DayVO> dayList) {
+        this.dayList = dayList;
+    }
 
     public List<FanVO> getTimeList() {
         return timeList;
