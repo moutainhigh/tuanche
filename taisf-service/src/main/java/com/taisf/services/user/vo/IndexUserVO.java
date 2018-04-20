@@ -58,9 +58,16 @@ public class IndexUserVO  extends BaseEntity {
     private Integer isAdmin;
 
     /**
-     * 是否管理员
+     * 是否设置免密
      */
     private Integer isPwd;
+
+
+    /**
+     * 是否设置支付密码
+     */
+    private Integer isAccount;
+
 
     /**
      * 用户类型
@@ -78,6 +85,14 @@ public class IndexUserVO  extends BaseEntity {
      */
     private Integer productSource;
 
+
+    public Integer getIsAccount() {
+        return isAccount;
+    }
+
+    public void setIsAccount(Integer isAccount) {
+        this.isAccount = isAccount;
+    }
 
     public Integer getIsPwd() {
         return isPwd;

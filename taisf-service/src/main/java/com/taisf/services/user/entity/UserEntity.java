@@ -82,6 +82,8 @@ public class UserEntity extends BaseEntity {
 	private Integer isPwd;
 
 
+
+
 	/**
 	 * 用户状态： 1:注册成功 2：认证审核中 3：认证通过
 	 */

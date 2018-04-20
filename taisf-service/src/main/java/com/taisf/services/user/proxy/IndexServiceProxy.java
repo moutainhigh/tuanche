@@ -172,6 +172,12 @@ public class IndexServiceProxy implements IndexService {
             dto.setErrorMsg(accountStatusEnum.getDesc());
             return ;
         }
+        if (Check.NuNStr(accountEntity.getAccountPassword())){
+            //未设置密码
+            userVO.setIsAccount(YesNoEnum.NO.getCode());
+        }else {
+            userVO.setIsAccount(YesNoEnum.YES.getCode());
+        }
         //获取当前的余额
         int drawBalance = ValueUtil.getintValue(accountEntity.getDrawBalance());
         if (drawBalance < 0){
