@@ -213,6 +213,46 @@ public class UserController extends AbstractController {
      * @param response
      * @return
      */
+    @RequestMapping(value = "/openPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto openPwd(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        String userId = getUserId(request);
+        if (Check.NuNStr(userId)){
+            return new ResponseDto("异常的用户信息");
+        }
+
+
+        //获取当前参数
+        CloseIsPwdRequest paramRequest = getEntity(request, CloseIsPwdRequest.class);
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        if (Check.NuNStr(paramRequest.getAccountPwd())) {
+            return new ResponseDto("请输入支付密码");
+        }
+        LogUtil.info(LOGGER, "开通免密服务:{}", JsonEntityTransform.Object2Json(userId));
+        try {
+            DataTransferObject<Void> dto =userService.openIsPwd(userId,paramRequest.getAccountPwd());
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【关闭免密服务】错误,par:{}, e={}",userId, e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
+
+
+    /**
+     * 关闭免密支付
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/closePwd", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDto closePwd(HttpServletRequest request, HttpServletResponse response) {
