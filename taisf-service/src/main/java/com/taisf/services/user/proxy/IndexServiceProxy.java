@@ -259,9 +259,6 @@ public class IndexServiceProxy implements IndexService {
             //设置
             dealNoSend(indexVO);
         }
-        //设置当前的订饭时间
-        List<FanVO> timeList = this.dealTimeInfo(config);
-        indexVO.setTimeList(timeList);
         //获取当前的订餐类型
         OrderTypeEnum orderTypeEnum = this.dealTime4Lunch(config,now,indexVO,isExt);
         if (Check.NuNObj(orderTypeEnum)){

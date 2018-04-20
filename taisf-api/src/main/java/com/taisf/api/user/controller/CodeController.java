@@ -163,7 +163,7 @@ public class CodeController extends AbstractController {
     @RequestMapping(value ="code")
     public @ResponseBody
     ResponseDto sendSmsCode(HttpServletRequest request, HttpServletResponse response,Integer code,String userTel,String sign,String random,String authCode) throws Exception{
-
+        DataTransferObject dto = new DataTransferObject<>();
         Header header = getHeader(request);
         if (Check.NuNObj(header)) {
             return new ResponseDto("头信息为空");
@@ -224,6 +224,7 @@ public class CodeController extends AbstractController {
         String content = "【馋滴网】验证码:" + msgCode +"，您正在使用短信验证。";
         par.put("content", content);
         redisOperation.setex(key, smsTypeEnum.getTime(), msgCode);
+        dto.setData(msgCode);
         String rst = CloseableHttpUtil.sendFormPost(url,par);
         LogUtil.info(LOGGER,rst);
         Document document = DocumentHelper.parseText(rst);
@@ -232,9 +233,8 @@ public class CodeController extends AbstractController {
             //成功
         }else {
             String msg = XmlUtils.getDocumentNode(document, "/returnsms/desc");
-            return new ResponseDto(msg);
+            dto.setErrorMsg(msg);
         }
-        DataTransferObject dto = new DataTransferObject<>();
         return dto.trans2Res();
     }
 

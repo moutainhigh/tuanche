@@ -27,6 +27,11 @@ public class DayVO extends BaseEntity{
      */
     private Integer week;
 
+    /**
+     * 显示名称
+     */
+    private String title;
+
 
     public Boolean getDayFlag() {
         return dayFlag;
@@ -42,5 +47,14 @@ public class DayVO extends BaseEntity{
 
     public void setWeek(Integer week) {
         this.week = week;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

@@ -878,7 +878,7 @@ public class OrderServiceProxy implements OrderService {
         OrderSaveInfo saveInfo = new OrderSaveInfo();
         BeanUtils.copyProperties(orderSaveVO,saveInfo);
         //当前订单是否需要密码
-        saveInfo.setNeedPwd(this.checkNeedPwd(createOrderRequest.getUserUid(),saveInfo.getOrderMoney().getNeedPay()));
+        saveInfo.setNeedPwd(this.checkNeedPwd(createOrderRequest.getUserUid(),saveInfo.getOrderMoney().getSumMoney()));
         dto.setData(saveInfo);
         return dto;
     }
@@ -1600,12 +1600,14 @@ public class OrderServiceProxy implements OrderService {
                 return;
             }
             tmpSupplierCode = userEntity.getBizCode();
+        }else {
+            tmpSupplierCode = createOrderRequest.getBusinessUid();
         }
-        if(!Check.NuNStr(createOrderRequest.getBusinessUid())
-                && createOrderRequest.getBusinessUid().equals(ValueUtil.getStrValue(tmpSupplierCode))){
-            dto.setErrorMsg("数据被篡改");
-            return;
-        }
+//        if(!Check.NuNStr(createOrderRequest.getBusinessUid())
+//                && !createOrderRequest.getBusinessUid().equals(ValueUtil.getStrValue(tmpSupplierCode))){
+//            dto.setErrorMsg("数据被篡改");
+//            return;
+//        }
         if (Check.NuNStr(tmpSupplierCode)){
             tmpSupplierCode = ValueUtil.getStrValue(tmpSupplierCode);
         }

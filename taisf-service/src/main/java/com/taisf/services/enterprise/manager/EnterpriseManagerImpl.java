@@ -226,7 +226,7 @@ public class EnterpriseManagerImpl {
 				map.put(day.getDayTime(),day);
 			}
 		}
-		while (firstDay.before(lastDay)){
+		while (!firstDay.after(lastDay)){
 			String key = DateUtil.intFormat(firstDay)+"";
 			if (map.containsKey(key)){
 				//DB包含直接过
@@ -297,16 +297,25 @@ public class EnterpriseManagerImpl {
 				map.put(dayEntity.getDayTime(),dayEntity);
 			}
 		}
+		//默认过期
+		boolean pass = true;
 		List<DayVO> dayList = new ArrayList<>();
-		for (int i = 0; i < 6; i++) {
+		for (int i = 1; i < 8; i++) {
 			String key = DateUtil.intFormat(first)+"";
 			EnterpriseDayEntity day = map.get(key);
 			DayVO dayVO = new DayVO();
 			dayVO.setWeek(WeekUtil.getWeek(first));
+			dayVO.setTitle(WeekUtil.getWeekName(WeekUtil.getWeek(first)));
 			dayVO.setDayFlag(false);
-			if (!Check.NuNObj(day)
+			if (ValueUtil.getintValue(day.getDayTime()) >= DateUtil.intFormat(new Date())){
+				// 没有过期
+				pass = false;
+			}
+			if (!pass
+					&& !Check.NuNObj(day)
 					&& ValueUtil.getintValue(day.getDayType()) == DayTypeEnum.SEND.getCode()){
 				//当天配送
+				// 1 并没过期 2.当前
 				dayVO.setDayFlag(true);
 			}
 			first = DateUtil.jumpDate(first,1);

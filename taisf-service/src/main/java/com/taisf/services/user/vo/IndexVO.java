@@ -1,6 +1,7 @@
 package com.taisf.services.user.vo;
 
 import com.jk.framework.base.entity.BaseEntity;
+import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.user.entity.UserEntity;
 
 import java.util.List;
@@ -52,10 +53,15 @@ public class IndexVO extends IndexBaseVO{
      */
     private String supplierCode;
 
-    /**
-     * 订饭时间
-     */
-    private List<FanVO> timeList;
+    private Integer week = WeekUtil.getWeek();
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
+    }
 
     /**
      * 天
@@ -68,14 +74,6 @@ public class IndexVO extends IndexBaseVO{
 
     public void setDayList(List<DayVO> dayList) {
         this.dayList = dayList;
-    }
-
-    public List<FanVO> getTimeList() {
-        return timeList;
-    }
-
-    public void setTimeList(List<FanVO> timeList) {
-        this.timeList = timeList;
     }
 
     public String getTimeMsg() {
