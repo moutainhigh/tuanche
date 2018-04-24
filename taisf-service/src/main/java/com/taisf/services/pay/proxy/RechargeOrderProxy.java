@@ -4,6 +4,7 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.SnUtil;
 import com.jk.framework.base.utils.ValueUtil;
+import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.pay.api.RechargeOrderService;
 import com.taisf.services.pay.dto.RechargeOrderRequest;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
@@ -137,7 +138,7 @@ public class RechargeOrderProxy  implements RechargeOrderService {
      */
     @Override
     public DataTransferObject<RechargeOrderEntity> getRechargeOrderByOrderSn(String orderSn) {
-        DataTransferObject dto = new DataTransferObject();
+        DataTransferObject<RechargeOrderEntity> dto = new DataTransferObject();
 
         if (Check.NuNObj(orderSn)){
             dto.setErrorMsg("参数异常");
@@ -147,10 +148,9 @@ public class RechargeOrderProxy  implements RechargeOrderService {
             RechargeOrderEntity rechargeOrderEntity = rechargeOrderManager.getRechargeOrderByOrderSn(orderSn);
             dto.setData(rechargeOrderEntity);
         }catch (Exception e){
+            LogUtil.error(LOGGER,"获取订单信息异常:par:{}",orderSn);
             dto.setErrorMsg("获取充值信息");
-            return dto;
         }
-        dto.setData(orderSn);
         return dto;
     }
 

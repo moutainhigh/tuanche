@@ -7,10 +7,7 @@ import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.util.WeekUtil;
-import com.taisf.services.common.valenum.AccountStatusEnum;
-import com.taisf.services.common.valenum.DayTypeEnum;
-import com.taisf.services.common.valenum.OrderTypeEnum;
-import com.taisf.services.common.valenum.UserStatusEnum;
+import com.taisf.services.common.valenum.*;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.entity.EnterpriseDayEntity;
@@ -143,6 +140,8 @@ public class IndexServiceProxy implements IndexService {
         }
         IndexUserVO  userVO = new IndexUserVO();
         BeanUtils.copyProperties(userEntity,userVO);
+
+        userVO.setPayCode(AppScanTypeEnum.QISHOU_PAY.transScanCode(userVO.getPayCode()));
         // 1. 设置基本属性
         indexVO.setUserInfo(userVO);
         UserStatusEnum statusEnum = UserStatusEnum.getTypeByCode(userEntity.getUserStatus());

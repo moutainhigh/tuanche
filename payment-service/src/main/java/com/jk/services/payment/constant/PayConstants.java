@@ -46,7 +46,7 @@ public class PayConstants {
 	 * 支付相关的操作
 	 */
 	public enum HandleType {
-		Handle_alipay_Refund("aliRefundHandle","支付宝退款"),
+//		Handle_alipay_Refund("aliRefundHandle","支付宝退款"),
 		Handle_tenpay_Refund("tenpayRefundHandle","微信退款"),
 		Handle_alipay_App("alipayAppHandle","支付宝app支付"),
 		Handle_tenpay_App("tenpayAppHandle","微信App支付"),

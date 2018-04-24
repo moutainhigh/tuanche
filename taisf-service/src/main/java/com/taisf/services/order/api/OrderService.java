@@ -59,6 +59,14 @@ public interface OrderService {
 
 
 
+    /**
+     * 初始化面对面收款
+     * @param userId
+     * @param costMoney
+     * @return
+     */
+    DataTransferObject<InitFaceVO> initFace(String userId,Integer costMoney) ;
+
 
     /**
      * 申请退款

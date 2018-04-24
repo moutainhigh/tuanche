@@ -34,6 +34,14 @@ public class RechargeOrderProxyTest extends BaseTest {
 
 
     @Test
+    public void getRechargeOrderByOrderSnTest() {
+        DataTransferObject<RechargeOrderEntity> dto = rechargeOrderProxy.getRechargeOrderByOrderSn("CZ180421MV0I5HMB155531");
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
+
+
+
+    @Test
     public void createRechargeOrderTest() {
         RechargeOrderRequest payRecordRequest = new RechargeOrderRequest();
         payRecordRequest.setUserUid("baozi");

@@ -151,7 +151,7 @@
   </update>
 
   <update id="updateIsPwd" parameterType="java.util.Map" >
-    update t_user set user_password = #{userPassword,jdbcType=VARCHAR}
+    update t_user set is_pwd = #{isPwd,jdbcType=INTEGER}
     where user_uid = #{userUid,jdbcType=VARCHAR}
   </update>
 

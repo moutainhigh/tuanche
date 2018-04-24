@@ -66,7 +66,7 @@ public class UserDao extends BaseDao {
      */
     public int updateIsPwd(String userId,Integer isPwd){
         Map<String,Object> par = new HashMap<>();
-        par.put("userId",userId);
+        par.put("userUid",userId);
         par.put("isPwd",isPwd);
         return mybatisDaoContext.update(SQLID + "updateIsPwd", par);
 
@@ -78,7 +78,7 @@ public class UserDao extends BaseDao {
      * @param isAdmin
      * @return
      */
-    public int updateUserAdmin(String userId,Integer isAdmin){
+    public  int updateUserAdmin(String userId,Integer isAdmin){
         Map<String,Object> par = new HashMap<>();
         par.put("userId",userId);
         par.put("isAdmin",isAdmin);

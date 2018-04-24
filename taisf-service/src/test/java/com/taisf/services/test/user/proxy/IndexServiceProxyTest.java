@@ -2,6 +2,7 @@ package com.taisf.services.test.user.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.test.common.BaseTest;
 import com.taisf.services.user.api.IndexService;
@@ -49,6 +50,15 @@ public class IndexServiceProxyTest extends BaseTest {
     public void getIndexTest() {
 
         DataTransferObject<IndexVO> dto = indexService.getIndex("2c91340c613249c401613b1217640016");
+
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
+
+
+    @Test
+    public void getOrderTypeTest() {
+
+        DataTransferObject<OrderTypeEnum> dto = indexService.getOrderType("0001");
 
         System.out.println(JsonEntityTransform.Object2Json(dto));
     }

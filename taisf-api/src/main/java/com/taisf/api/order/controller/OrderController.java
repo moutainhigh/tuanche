@@ -7,15 +7,13 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.rst.ResponseDto;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.api.common.abs.AbstractController;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.CreateOrderRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
-import com.taisf.services.order.vo.FaceVO;
-import com.taisf.services.order.vo.OrderDetailVO;
-import com.taisf.services.order.vo.OrderInfoVO;
-import com.taisf.services.order.vo.OrderSaveInfo;
+import com.taisf.services.order.vo.*;
 import com.taisf.services.pay.api.RechargeOrderService;
 import com.taisf.services.pay.dto.RechargeOrderRequest;
 import com.taisf.services.user.api.UserService;
@@ -31,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * <p>订单相关</p>
@@ -203,6 +202,49 @@ public class OrderController extends AbstractController {
         }
 
     }
+
+
+    /**
+     * 面对面收款
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/initFaceOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto initFaceOrder(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
+        //获取当前参数
+        Map<String,Object> paramRequest = getMap(request);
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+            DataTransferObject<InitFaceVO> dto =ordersService.initFace(user.getUserId(), ValueUtil.getintValue(paramRequest.get("price")));
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【初始化面对面】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
+
 
 
     /**

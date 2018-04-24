@@ -900,7 +900,7 @@ public class UserServiceProxy implements UserService {
             dto.setErrorMsg("获取用户账户信息失败");
             return dto;
         }
-        if (ValueUtil.getStrValue(userAccountEntity.getAccountPassword()).equals(accountPwd)){
+        if (!ValueUtil.getStrValue(userAccountEntity.getAccountPassword()).equals(accountPwd)){
             dto.setErrorMsg("密码错误");
             return dto;
         }

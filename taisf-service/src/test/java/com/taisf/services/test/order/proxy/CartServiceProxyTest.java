@@ -73,8 +73,10 @@ public class CartServiceProxyTest extends BaseTest {
 
         cartAddRequest.setBusinessUid("jipin");
         cartAddRequest.setSupplierProductType(SupplierProductTypeEnum.PRODUCT.getCode());
-        cartAddRequest.setProductCode(114);
+        cartAddRequest.setProductCode(188);
         cartAddRequest.setUserUid("baozi");
+        cartAddRequest.setEnterpriseCode("001");
+        cartAddRequest.setOrderType(OrderTypeEnum.LUNCH_COMMON.getCode());
         DataTransferObject<CartInfoVO> classify = cartService.addCart(cartAddRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 

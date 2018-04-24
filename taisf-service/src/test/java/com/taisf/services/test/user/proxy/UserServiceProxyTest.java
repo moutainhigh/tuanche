@@ -38,6 +38,15 @@ public class UserServiceProxyTest extends BaseTest {
 
 
     @Test
+    public void openIsPwdTest() {
+
+        DataTransferObject<Void>  dto = userService.openIsPwd("baozi","96e79218965eb72c92a549dd5a330112");
+
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
+
+
+    @Test
     public void getUserAccountPageTest() {
 
 

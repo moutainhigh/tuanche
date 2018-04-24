@@ -86,6 +86,19 @@ public class IndexUserVO  extends BaseEntity {
     private Integer productSource;
 
 
+    /**
+     * 支付码
+     */
+    private String payCode;
+
+    public String getPayCode() {
+        return payCode;
+    }
+
+    public void setPayCode(String payCode) {
+        this.payCode = payCode;
+    }
+
     public Integer getIsAccount() {
         return isAccount;
     }

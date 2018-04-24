@@ -324,7 +324,8 @@ public class CartServiceProxy implements CartService{
             }
             cartManager.updateCart(has);
         }
-        return cartInfo(cartAddRequest.getUserUid(),cartAddRequest.getBusinessUid(),cartAddRequest.getEnterpriseCode());
+        return dto;
+        //return cartInfo(cartAddRequest.getUserUid(),cartAddRequest.getBusinessUid(),cartAddRequest.getEnterpriseCode());
     }
 
     /**

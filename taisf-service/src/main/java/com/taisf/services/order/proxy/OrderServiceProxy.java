@@ -883,6 +883,32 @@ public class OrderServiceProxy implements OrderService {
         return dto;
     }
 
+
+    /**
+     * 初始化面对面收款
+     * @param userId
+     * @param costMoney
+     * @return
+     */
+    @Override
+    public DataTransferObject<InitFaceVO> initFace(String userId,Integer costMoney) {
+        DataTransferObject<InitFaceVO> dto = new DataTransferObject<>();
+        if (Check.NuNStr(userId)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (ValueUtil.getintValue(costMoney) <= 0) {
+            dto.setErrorMsg("异常的金额");
+            return dto;
+        }
+        InitFaceVO vo = new InitFaceVO();
+        vo.setNeedPwd(this.checkNeedPwd(userId,costMoney));
+        dto.setData(vo);
+        return dto;
+    }
+
+
+
     /**
      * 当前的用户是否需要密码
      * @param userId
@@ -891,6 +917,14 @@ public class OrderServiceProxy implements OrderService {
      */
     private boolean checkNeedPwd(String userId,int costMoney){
         boolean needPwd = true;
+
+        UserEntity has =userManager.getUserByUid(userId);
+        if (Check.NuNObj(has)){
+            return needPwd;
+        }
+        if (ValueUtil.getintValue(has.getIsPwd()) == YesNoEnum.NO.getCode()){
+            return needPwd;
+        }
         if (costMoney > PayConstant.FREE_LIMIT_ONE_MONEY){
             return needPwd;
         }
@@ -1596,18 +1630,27 @@ public class OrderServiceProxy implements OrderService {
         if (!Check.NuNStr(createOrderRequest.getPayCode())){
             UserEntity userEntity = userManager.getByPayCode(createOrderRequest.getPayCode());
             if (Check.NuNObj(userEntity)){
-                dto.setErrorMsg("一查的收款码");
+                dto.setErrorMsg("异常的收款码");
                 return;
             }
             tmpSupplierCode = userEntity.getBizCode();
         }else {
             tmpSupplierCode = createOrderRequest.getBusinessUid();
+            AppScanTypeEnum typeEnum =AppScanTypeEnum.transScanType(tmpSupplierCode);
+            if (Check.NuNObj(typeEnum)){
+                dto.setErrorMsg("异常的收款码");
+                return;
+            }
+            if (typeEnum.getCode().equals(AppScanTypeEnum.QISHOU_PAY.getCode())){
+                UserEntity userEntity = userManager.getByPayCode(typeEnum.parseScanCode(createOrderRequest.getBusinessUid()));
+                if (Check.NuNObj(userEntity)){
+                    dto.setErrorMsg("异常的收款码");
+                    return;
+                }
+                tmpSupplierCode = userEntity.getBizCode();
+            }
         }
-//        if(!Check.NuNStr(createOrderRequest.getBusinessUid())
-//                && !createOrderRequest.getBusinessUid().equals(ValueUtil.getStrValue(tmpSupplierCode))){
-//            dto.setErrorMsg("数据被篡改");
-//            return;
-//        }
+
         if (Check.NuNStr(tmpSupplierCode)){
             tmpSupplierCode = ValueUtil.getStrValue(tmpSupplierCode);
         }
