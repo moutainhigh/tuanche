@@ -167,6 +167,10 @@
             </if>
 
 
+            <if test="knightUid != null">
+                knight_uid,
+            </if>
+
 
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -258,6 +262,9 @@
 
             <if test="orderJson != null">
                 #{orderJson,jdbcType=VARCHAR},
+            </if>
+            <if test="knightUid != null">
+                #{knightUid,jdbcType=VARCHAR},
             </if>
 
         </trim>

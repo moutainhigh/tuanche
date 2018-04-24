@@ -94,6 +94,15 @@
             and t.user_uid = #{userUid,jdbcType=VARCHAR}
         </if>
 
+        <if test="knightType != null and knightType == 0 ">
+            and t.order_type in (20,30)
+        </if>
+
+        <if test="knightType != null and knightType == 1 ">
+            and t.order_type in (40,41)
+        </if>
+
+
         <if test="knightUid != null and knightUid != '' ">
             and t.knight_uid = #{knightUid,jdbcType=VARCHAR}
         </if>

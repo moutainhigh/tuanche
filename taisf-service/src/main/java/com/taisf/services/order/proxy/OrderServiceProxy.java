@@ -1633,6 +1633,7 @@ public class OrderServiceProxy implements OrderService {
                 dto.setErrorMsg("异常的收款码");
                 return;
             }
+            orderSaveVO.getOrderBase().setKnightUid(userEntity.getUserUid());
             tmpSupplierCode = userEntity.getBizCode();
         }else {
             tmpSupplierCode = createOrderRequest.getBusinessUid();
@@ -1647,6 +1648,7 @@ public class OrderServiceProxy implements OrderService {
                     dto.setErrorMsg("异常的收款码");
                     return;
                 }
+                orderSaveVO.getOrderBase().setKnightUid(userEntity.getUserUid());
                 tmpSupplierCode = userEntity.getBizCode();
             }
         }

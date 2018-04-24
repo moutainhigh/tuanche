@@ -67,6 +67,19 @@ public class OrderInfoRequest extends PageRequest {
 
     private Integer orderType;
 
+    /**
+     * 骑手类型 空:全部 0:收款 1:配送
+     */
+    private Integer knightType;
+
+    public Integer getKnightType() {
+        return knightType;
+    }
+
+    public void setKnightType(Integer knightType) {
+        this.knightType = knightType;
+    }
+
     public String getAddressFid() {
         return addressFid;
     }

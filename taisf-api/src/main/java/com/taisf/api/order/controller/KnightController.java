@@ -1,5 +1,6 @@
 package com.taisf.api.order.controller;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.head.Header;
 import com.jk.framework.base.page.PagingResult;
@@ -215,12 +216,46 @@ public class KnightController extends AbstractController {
         if (Check.NuNObj(paramRequest)) {
             return new ResponseDto("异常参数");
         }
+        paramRequest.setKnightType(YesNoEnum.NO.getCode());
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
             DataTransferObject<PagingResult<OrderInfoVO>> dto =ordersService.getOrderInfoPage(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【查询配送记录】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
+
+
+    /**
+     * 收款记录
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/moneyLog", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto moneyLog(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+        //获取当前参数
+        OrderInfoRequest paramRequest = getEntity(request, OrderInfoRequest.class);
+        paramRequest.setKnightUid(getUserId(request));
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("异常参数");
+        }
+        paramRequest.setKnightType(YesNoEnum.YES.getCode());
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        try {
+            DataTransferObject<PagingResult<OrderInfoVO>> dto =ordersService.getOrderInfoPage(paramRequest);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【查询收款记录】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
             return new ResponseDto("未知错误");
         }
     }
