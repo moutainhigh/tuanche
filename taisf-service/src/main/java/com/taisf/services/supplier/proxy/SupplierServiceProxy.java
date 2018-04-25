@@ -76,6 +76,35 @@ public class SupplierServiceProxy implements SupplierService{
 
 
 	/**
+	 * 获取供应商信息
+	 * @param payCode
+	 * @return
+	 */
+	@Override
+	public DataTransferObject<SupplierPayInfo> getPayInfo4payCode(String  payCode){
+		DataTransferObject<SupplierPayInfo> dto = new DataTransferObject<>();
+		if (Check.NuNStr(payCode)){
+			dto.setErrorMsg("参数异常");
+			return dto;
+		}
+		UserEntity user = userManager.getUserByPayCode(payCode);
+		if (Check.NuNObj(user)){
+			dto.setErrorMsg("当前骑手不存在");
+			return dto;
+		}
+		SupplierEntity supplierEntity = supplierDao.getSupplierByCode(user.getBizCode());
+		if (Check.NuNObj(supplierEntity)){
+			dto.setErrorMsg("当前骑手不属于任何一个供应商");
+			return dto;
+		}
+		SupplierPayInfo info = new SupplierPayInfo();
+		BeanUtils.copyProperties(supplierEntity,info);
+		info.setPayCode(user.getPayCode());
+		dto.setData(info);
+		return dto;
+	}
+
+	/**
 	 * 获取骑士的信息
 	 * @param knightUid
 	 * @return

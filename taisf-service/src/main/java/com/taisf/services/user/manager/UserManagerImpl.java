@@ -362,6 +362,19 @@ public class UserManagerImpl {
 
 
     /**
+     * 根据用户payCode查询用户
+     * @param payCode
+     * @return
+     */
+    public UserEntity getUserByPayCode(String payCode) {
+        if (Check.NuNStr(payCode)) {
+            return null;
+        }
+        return userDao.getUserByPayCode(payCode);
+    }
+
+
+    /**
      * 根据用户电话查询用户
      * @param userPhone
      * @return

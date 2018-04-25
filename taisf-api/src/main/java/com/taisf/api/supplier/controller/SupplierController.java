@@ -64,13 +64,16 @@ public class SupplierController extends AbstractController {
      */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDto info(HttpServletRequest request, HttpServletResponse response,String supplierCode) {
-        if (Check.NuNStr(supplierCode)) {
-            return new ResponseDto("参数异常");
-        }
-        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(supplierCode));
+    public ResponseDto info(HttpServletRequest request, HttpServletResponse response,String supplierCode,String payCode) {
+        LogUtil.info(LOGGER, "传入参数: supplierCode:{},payCode:{}", supplierCode,payCode);
         try {
-            return supplierService.getSupplierInfo(supplierCode).trans2Res();
+            if (!Check.NuNStr(supplierCode)){
+                return supplierService.getSupplierInfo(supplierCode).trans2Res();
+            }else if (!Check.NuNStr(payCode)){
+                return supplierService.getPayInfo4payCode(supplierCode).trans2Res();
+            }else {
+                return new ResponseDto("参数异常");
+            }
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【获取详情】错误,par:{}, e={}",JsonEntityTransform.Object2Json(supplierCode), e);
             return new ResponseDto("未知错误");

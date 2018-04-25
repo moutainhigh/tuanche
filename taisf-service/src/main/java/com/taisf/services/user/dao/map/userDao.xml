@@ -163,6 +163,15 @@
 
 
 
+
+  <select id="getUserByPayCode" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where pay_code = #{payCode,jdbcType=VARCHAR}
+  </select>
+
+
   <select id="getUserByUidAndType" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select
     <include refid="Base_Column_List" />

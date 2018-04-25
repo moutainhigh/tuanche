@@ -39,5 +39,11 @@ public interface SupplierService {
 	 */
 	DataTransferObject<SupplierPayInfo> getPayInfo4knight(String  nightUid);
 
+	/**
+	 * 获取供应商信息
+	 * @param payCode
+	 * @return
+	 */
+	DataTransferObject<SupplierPayInfo> getPayInfo4payCode(String  payCode);
 
 }

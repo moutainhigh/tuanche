@@ -121,6 +121,18 @@ public class UserDao extends BaseDao {
 
 
 
+    /**
+     * 根据用户payCode查询用户
+     * @param payCode
+     * @return
+     */
+    public UserEntity getUserByPayCode(String payCode) {
+
+        Map<String,Object> par = new HashMap<>();
+        par.put("payCode",payCode);
+        return mybatisDaoContext.findOne(SQLID + "getUserByPayCode", UserEntity.class, par);
+    }
+
 
     /**
      * 根据用户userid查询用户
