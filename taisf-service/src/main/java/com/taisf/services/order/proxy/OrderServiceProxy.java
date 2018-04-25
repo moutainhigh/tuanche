@@ -562,45 +562,6 @@ public class OrderServiceProxy implements OrderService {
     }
 
 
-    /**
-     * 骑士的面对面收款
-     * @author afi
-     * @param createOrderRequest
-     * @return
-     */
-    @Override
-    public DataTransferObject<FaceVO> knightOrder(CreateOrderRequest createOrderRequest){
-        DataTransferObject<FaceVO> dto = new DataTransferObject<>();
-
-        if (Check.NuNStr(createOrderRequest.getPayCode())
-                || Check.NuNStr(createOrderRequest.getUserUid())) {
-            dto.setErrorMsg("参数异常");
-            return dto;
-        }
-        if (ValueUtil.getintValue(createOrderRequest.getPrice()) < 0){
-            dto.setErrorMsg("异常的金额");
-            return dto;
-        }
-        OrderSaveVO orderSaveVO = new OrderSaveVO();
-        orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE_FACE.getCode());
-        //1. 填充面对面收款订单的信息
-        this.faceOrderInfo(dto,orderSaveVO, createOrderRequest,true);
-
-        //2. 下单的逻辑
-        if (dto.checkSuccess()){
-            orderManager.saveOrderSave(orderSaveVO);
-        }
-
-        FaceVO vo =new FaceVO();
-        vo.setOrderSn(orderSaveVO.getOrderSn());
-        vo.setPrice(orderSaveVO.getExtPrice());
-        vo.setSupplierCode(orderSaveVO.getOrderBase().getSupplierCode());
-        vo.setSupplierName(orderSaveVO.getSupplierName());
-        dto.setData(vo);
-        return dto;
-    }
-
-
 
     /**
      * 面对面收款
@@ -613,7 +574,11 @@ public class OrderServiceProxy implements OrderService {
         DataTransferObject<FaceVO> dto = new DataTransferObject<>();
 
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
-                || Check.NuNStr(createOrderRequest.getUserUid())) {
+            && Check.NuNStr(createOrderRequest.getPayCode())) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        if (Check.NuNStr(createOrderRequest.getUserUid())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
