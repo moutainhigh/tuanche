@@ -265,9 +265,6 @@ public class OrderController extends AbstractController {
         if (Check.NuNObj(user)){
             return new ResponseDto("请登录");
         }
-        if (Check.NuNStr(user.getEnterpriseCode())){
-            return new ResponseDto("请重新登录");
-        }
         if (Check.NuNStr(user.getEnterpriseCode())) {
             return new ResponseDto("参数异常");
         }

@@ -64,7 +64,8 @@ public class OrderServiceProxyTest extends BaseTest {
     public void faceOrderTest() {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         createOrderRequest.setUserUid("baozi");
-        createOrderRequest.setBusinessUid("jipin");
+//        createOrderRequest.setBusinessUid("jipin");
+        createOrderRequest.setPayCode("6781");
         createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(3);
         createOrderRequest.setPrice(100);

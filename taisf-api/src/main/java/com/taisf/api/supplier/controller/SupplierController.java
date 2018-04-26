@@ -70,7 +70,7 @@ public class SupplierController extends AbstractController {
             if (!Check.NuNStr(supplierCode)){
                 return supplierService.getSupplierInfo(supplierCode).trans2Res();
             }else if (!Check.NuNStr(payCode)){
-                return supplierService.getPayInfo4payCode(supplierCode).trans2Res();
+                return supplierService.getPayInfo4payCode(payCode).trans2Res();
             }else {
                 return new ResponseDto("参数异常");
             }
