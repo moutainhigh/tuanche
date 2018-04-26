@@ -10,6 +10,7 @@
         <module name="jk-service-payment" />
         <module name="payment-api" />
         <module name="payment-service" />
+        <module name="push-service" />
         <module name="taisf-api" />
         <module name="taisf-mis-enterprise" />
         <module name="taisf-mis-oms" />
@@ -22,6 +23,7 @@
       <module name="jk-service-payment" target="1.7" />
       <module name="payment-api" target="1.7" />
       <module name="payment-service" target="1.7" />
+      <module name="push-service" target="1.8" />
       <module name="taisf" target="1.7" />
       <module name="taisf-api" target="1.8" />
       <module name="taisf-mis-enterprise" target="1.8" />

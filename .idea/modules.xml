@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/payment-service/jk-service-payment.iml" filepath="$PROJECT_DIR$/payment-service/jk-service-payment.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-api/payment-api.iml" filepath="$PROJECT_DIR$/payment-api/payment-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-service.iml" filepath="$PROJECT_DIR$/payment-service/payment-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/push-service/push-service.iml" filepath="$PROJECT_DIR$/push-service/push-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/taisf.iml" filepath="$PROJECT_DIR$/taisf.iml" />
       <module fileurl="file://$PROJECT_DIR$/taisf-api/taisf-api.iml" filepath="$PROJECT_DIR$/taisf-api/taisf-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/taisf-mis-enterprise/taisf-mis-enterprise.iml" filepath="$PROJECT_DIR$/taisf-mis-enterprise/taisf-mis-enterprise.iml" />

@@ -8,6 +8,7 @@ import com.jk.framework.cache.redis.api.RedisOperations;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.*;
+import com.taisf.services.device.proxy.PushServiceProxy;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
@@ -24,6 +25,7 @@ import com.taisf.services.order.vo.*;
 import com.taisf.services.pay.constant.PayConstant;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.pay.manager.PayManagerImpl;
+import com.taisf.services.push.request.MoneySendRequest;
 import com.taisf.services.stock.StockUtil;
 import com.taisf.services.stock.entity.StockWeekEntity;
 import com.taisf.services.stock.manager.StockProductManagerImpl;
@@ -77,8 +79,6 @@ public class OrderServiceProxy implements OrderService {
     private StockProductManagerImpl stockProductManager;
 
 
-
-
     @Resource(name = "supplier.supplierPackageManagerImpl")
     private SupplierPackageManagerImpl supplierPackageManager;
 
@@ -93,6 +93,8 @@ public class OrderServiceProxy implements OrderService {
     private EnterpriseManagerImpl enterpriseManager;
 
 
+    @Resource(name = "push.pushServiceProxy")
+    private PushServiceProxy pushServiceProxy;
 
     @Autowired
     private RedisOperations redisOperations;
@@ -600,7 +602,10 @@ public class OrderServiceProxy implements OrderService {
         if (dto.checkSuccess()){
             orderManager.saveOrderSave(orderSaveVO);
         }
-
+        //如果是已经支付,直接给骑手发送push消息
+        if (orderSaveVO.getOrderBase().getOrderStatus() == OrdersStatusEnum.HAS_PAY.getCode()){
+            this.dealSend(orderSaveVO.getOrderBase().getKnightUid(),orderSaveVO.getOrderBase().getUserName(),orderSaveVO.getOrderBase().getUserTel(),ValueUtil.getintValue(orderSaveVO.getOrderMoney().getSumMoney()));
+        }
         FaceVO vo =new FaceVO();
         vo.setOrderSn(orderSaveVO.getOrderSn());
         vo.setPrice(orderSaveVO.getExtPrice());
@@ -610,6 +615,28 @@ public class OrderServiceProxy implements OrderService {
         return dto;
     }
 
+
+    /**
+     * 发送消息
+     * @param userId
+     * @param userName
+     * @param userTel
+     * @param money
+     */
+    private void dealSend(String userId, String userName,String userTel,Integer money){
+        if (Check.NuNStr(userId)){
+            return;
+        }
+        if (ValueUtil.getintValue(money) <= 0){
+            return;
+        }
+        MoneySendRequest moneySendRequest = new MoneySendRequest();
+        moneySendRequest.setUserId(userId);
+        moneySendRequest.setMoney(ValueUtil.getStrValue(BigDecimalUtil.div(money,2)));
+        moneySendRequest.setPhone(userTel);
+        moneySendRequest.setName(userName);
+        pushServiceProxy.sendMoneySuccess(moneySendRequest);
+    }
 
 
     /**

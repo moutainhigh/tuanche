@@ -6,6 +6,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
+import com.taisf.services.device.proxy.PushServiceProxy;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
@@ -13,6 +14,7 @@ import com.taisf.services.pay.api.PayService;
 import com.taisf.services.pay.dto.PayRecordRequest;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.pay.manager.PayManagerImpl;
+import com.taisf.services.push.request.MoneySendRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -40,6 +42,9 @@ public class PayServiceProxy implements PayService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PayServiceProxy.class);
 
+
+    @Resource(name = "push.pushServiceProxy")
+    private PushServiceProxy pushServiceProxy;
 
     @Resource(name = "order.orderManagerImpl")
     private OrderManagerImpl orderManager;
@@ -110,6 +115,8 @@ public class PayServiceProxy implements PayService {
                     save.setCreateTime(new Date());
                 }
                 payManager.updateOrderPay(save);
+
+                this.dealSend(orderEntity,payRecordRequest.getTotalFee());
             }else {
                 dto.setErrorMsg("异常的支付状态");
                 return dto;
@@ -121,6 +128,22 @@ public class PayServiceProxy implements PayService {
             return dto;
         }
         return dto;
+    }
+
+    /**
+     * 发送消息
+     * @param orderEntity
+     */
+    private void dealSend(OrderEntity orderEntity,Integer money){
+        if (ValueUtil.getintValue(money) <= 0){
+            return;
+        }
+        MoneySendRequest moneySendRequest = new MoneySendRequest();
+        moneySendRequest.setUserId(orderEntity.getKnightUid());
+        moneySendRequest.setMoney(ValueUtil.getStrValue(BigDecimalUtil.div(money,2)));
+        moneySendRequest.setPhone(orderEntity.getUserTel());
+        moneySendRequest.setName(orderEntity.getUserName());
+        pushServiceProxy.sendMoneySuccess(moneySendRequest);
     }
 
 }

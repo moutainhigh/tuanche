@@ -10,6 +10,7 @@
         <module>taisf-api</module>
         <module>payment-api</module>
         <module>payment-service</module>
+        <module>push-service</module>
     </modules>
 
 

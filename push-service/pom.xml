@@ -1,55 +1,38 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-
-
     <parent>
-        <artifactId>root-dependencies</artifactId>
-        <groupId>com.jk</groupId>
+        <artifactId>taisf</artifactId>
+        <groupId>com.taisf</groupId>
         <version>0.0.1</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.taisf</groupId>
-    <artifactId>taisf-api</artifactId>
-    <packaging>war</packaging>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>taisf-api Maven Webapp</name>
 
+    <artifactId>push-service</artifactId>
 
-
-    <properties>
-        <jstl-version>1.2</jstl-version>
-        <servletapi-version>2.5</servletapi-version>
-        <jsp-api.version>2.2</jsp-api.version>
-        <standard.version>1.1.2</standard.version>
-    </properties>
 
     <dependencies>
 
         <dependency>
-            <groupId>com.github.penggle</groupId>
-            <artifactId>kaptcha</artifactId>
-            <version>2.3.2</version>
+            <groupId>cn.jpush.api</groupId>
+            <artifactId>jpush-client</artifactId>
+            <version>3.3.0</version>
         </dependency>
 
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <!--<version>1.0.11</version>-->
+            <groupId>com.notnoop.apns</groupId>
+            <artifactId>apns</artifactId>
+            <version>1.0.0.Beta6</version>
         </dependency>
+
 
         <dependency>
-            <groupId>com.belerweb</groupId>
-            <artifactId>pinyin4j</artifactId>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.3</version>
         </dependency>
-
-        <!--<dependency>-->
-        <!--<groupId>javax.servlet</groupId>-->
-        <!--<artifactId>javax.servlet-api</artifactId>-->
-        <!--<version>3.1.0</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>com.jk</groupId>
@@ -65,57 +48,23 @@
             <artifactId>jk-framework-log</artifactId>
         </dependency>
 
-
-        <!-- web相关jar包 -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>${jsp-api.version}</version>
-            <scope>provided</scope>
+            <groupId>com.jk</groupId>
+            <artifactId>jk-framework-common</artifactId>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
-            <version>${standard.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${jstl-version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.taisf</groupId>
-            <artifactId>taisf-service</artifactId>
+            <groupId>com.jk</groupId>
+            <artifactId>jk-framework-cache</artifactId>
             <version>0.0.1</version>
         </dependency>
 
 
-        <dependency>
-            <groupId>com.taisf</groupId>
-            <artifactId>push-service</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-
-
-        <dependency>
-        <groupId>com.jk</groupId>
-        <artifactId>jk-framework-cache</artifactId>
-        <version>0.0.1</version>
-        </dependency>
-
-        <dependency>
-        <groupId>redis.clients</groupId>
-        <artifactId>jedis</artifactId>
-        </dependency>
-
-
+        <!-- <dependency>
+             <groupId>com.alipay</groupId>
+             <artifactId>alipay-sdk</artifactId>
+             <version>1.0</version>
+         </dependency>-->
 
         <dependency>
             <groupId>mysql</groupId>
@@ -162,23 +111,18 @@
             <artifactId>mybatis-spring</artifactId>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>com.alibaba</groupId>-->
-            <!--<artifactId>dubbo</artifactId>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.javassist</groupId>-->
-            <!--<artifactId>javassist</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>io.netty</groupId>-->
-            <!--<artifactId>netty</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.mina</groupId>-->
-            <!--<artifactId>mina-core</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.glassfish.grizzly</groupId>
             <artifactId>grizzly-core</artifactId>
@@ -261,13 +205,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-
-
-        <!-- dubbo-->
-
-
-
-
         <!-- Log libs -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -384,25 +321,36 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-
-        <!-- 跨域 -->
         <dependency>
-            <groupId>com.thetransactioncompany</groupId>
-            <artifactId>java-property-utils</artifactId>
-            <version>1.10</version>
-        </dependency>
-        <dependency>
-            <groupId>com.thetransactioncompany</groupId>
-            <artifactId>cors-filter</artifactId>
-            <version>1.9.1</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.11</version>
         </dependency>
 
-
-        <!-- druid-datasourse end -->
+        <dependency>
+            <groupId>com.jk</groupId>
+            <artifactId>jk-framework-excel</artifactId>
+        </dependency>
     </dependencies>
 
 
+
+    <distributionManagement>
+        <repository>
+            <id>bjdev-release</id>
+            <name>Beijing Dev Release Repo</name>
+            <url>http://maven.jianke.com/repository/bjdev-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>bjdev-snapshot</id>
+            <name>Beijing Dev Snapshot Repo</name>
+            <url>http://maven.jianke.com/repository/bjdev-snapshot/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
     <build>
+
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -418,126 +366,91 @@
             </resource>
         </resources>
 
+        <plugins>
 
-        <pluginManagement>
-            <plugins>
-                <!-- compiler插件, 设定JDK版本 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <encoding>UTF-8</encoding>
-                    </configuration>
-                </plugin>
-                <!-- test插件 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <!--<skip>true</skip> -->
-                        <skip>true</skip>
-                        <failIfNoTests>false</failIfNoTests>
-                        <includes>
-                            <include>**/*Test.java</include>
-                        </includes>
-                    </configuration>
-                </plugin>
-                <!-- resource插件, 设定编码 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <configuration>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                    </configuration>
-                </plugin>
-
-                <!-- clean插件 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                </plugin>
-
-                <!-- install插件 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                </plugin>
-
-                <!-- deploy插件 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                </plugin>
+            <!-- compiler插件, 设定JDK版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <!--test插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <!--<skip>true</skip> -->
+                    <skip>true</skip>
+                    <failIfNoTests>false</failIfNoTests>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
 
 
-                <!-- war插件 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>2.6</version>
-                </plugin>
+            <!-- war插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
 
-                <!-- jar插件 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.5</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                </plugin>
+            <!--release 插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.1</version>
+            </plugin>
 
-                <!-- dependency插件 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                </plugin>
+            <!--mybatis generator插件 -->
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.2</version>
+            </plugin>
 
-                <!--release 插件 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.1</version>
-                </plugin>
 
-                <!--mybatis generator插件 -->
-                <plugin>
-                    <groupId>org.mybatis.generator</groupId>
-                    <artifactId>mybatis-generator-maven-plugin</artifactId>
-                    <version>1.3.2</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <archive>
+                                <addMavenDescriptor>false</addMavenDescriptor>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                </manifest>
+                            </archive>
+                            <includes>
+                                <include>**/taisf/**/*.class</include>
+                                <include>**/*.xml</include>
+                                <include>META-INF/spring/application*.xml</include>
+                                <include>META-INF/spring/*provider.xml</include>
+                            </includes>
+                            <excludes>
+                                <exclude>logback.xml</exclude>
+                                <exclude>jdbc.properties</exclude>
+                                <exclude>redis.properties</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <deploy.type>dev</deploy.type>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-
-        <profile>
-            <id>test</id>
-            <properties>
-                <deploy.type>test</deploy.type>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>online</id>
-            <properties>
-                <deploy.type>online</deploy.type>
-            </properties>
-        </profile>
-    </profiles>
-
 
 </project>
