@@ -26,6 +26,7 @@
 
     <import resource="META-INF/spring/applicationContext-taisf.xml"/>
     <import resource="META-INF/spring/applicationContext-ups.xml"/>
+    <import resource="META-INF/spring/applicationContext-push.xml"/>
 
 
 

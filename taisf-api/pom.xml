@@ -27,6 +27,21 @@
 
     <dependencies>
 
+
+        <dependency>
+            <groupId>cn.jpush.api</groupId>
+            <artifactId>jpush-client</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.notnoop.apns</groupId>
+            <artifactId>apns</artifactId>
+            <version>1.0.0.Beta6</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>

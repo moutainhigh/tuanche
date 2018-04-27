@@ -99,6 +99,12 @@ public class OrderServiceProxy implements OrderService {
     @Autowired
     private RedisOperations redisOperations;
 
+
+    public static void main(String[] args) {
+//
+//        MD5Util.MD5Encode("test",);
+    }
+
     /**
      * 获取当前的统计情况
      * @param request
