@@ -445,6 +445,7 @@
                                 <exclude>logback.xml</exclude>
                                 <exclude>jdbc.properties</exclude>
                                 <exclude>redis.properties</exclude>
+                                <exclude>push.properties</exclude>
                             </excludes>
                         </configuration>
                     </execution>
