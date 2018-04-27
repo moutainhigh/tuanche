@@ -907,9 +907,11 @@ public class OrderServiceProxy implements OrderService {
      * @param costMoney
      * @return
      */
-    private boolean checkNeedPwd(String userId,int costMoney){
+    private boolean checkNeedPwd(String userId,int costMoney,boolean need){
         boolean needPwd = true;
-
+        if (need){
+            return false;
+        }
         UserEntity has =userManager.getUserByUid(userId);
         if (Check.NuNObj(has)){
             return needPwd;
@@ -925,6 +927,17 @@ public class OrderServiceProxy implements OrderService {
             return needPwd;
         }
         return false;
+    }
+
+
+    /**
+     * 当前的用户是否需要密码
+     * @param userId
+     * @param costMoney
+     * @return
+     */
+    private boolean checkNeedPwd(String userId,int costMoney){
+        return checkNeedPwd(userId,costMoney,true);
     }
 
 
@@ -1075,12 +1088,16 @@ public class OrderServiceProxy implements OrderService {
         if (!pwd){
             return;
         }
-        if (Check.NuNStr(createOrderRequest.getPwd()) && pwd){
-            dto.setErrorMsg("请输入交易密码");
-            return;
-        }
         if (Check.NuNStr(accountEntity.getAccountPassword())){
             dto.setErrorMsg("余额支付下单,需要先设置支付密码");
+            return;
+        }
+        if (!this.checkNeedPwd(createOrderRequest.getUserUid(),money.getPayBalance(),pwd)){
+            //不需要输入密码
+            return;
+        }
+        if (Check.NuNStr(createOrderRequest.getPwd())){
+            dto.setErrorMsg("请输入交易密码");
             return;
         }
         if (!createOrderRequest.getPwd().equals(accountEntity.getAccountPassword())){
@@ -1088,6 +1105,12 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
     }
+
+
+
+
+
+
 
 
     /**
