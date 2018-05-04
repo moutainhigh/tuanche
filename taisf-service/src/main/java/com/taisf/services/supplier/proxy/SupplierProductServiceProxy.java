@@ -197,7 +197,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
                     dealProduct(map, list, c);
                 }
                 if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PACKAGE.getCode()) {
-                    dealPackage(supplierCode, orderTypeEnum, list, c);
+                    dealPackage4week(supplierCode, week, list, c);
                 }
             }
             dto.setData(list);
@@ -210,34 +210,69 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         return dto;
     }
 
+
+//    /**
+//     * 设置当前的套餐相关的信息
+//     * @author afi
+//     * @param supplierCode
+//     * @param list
+//     * @param c
+//     * @return
+//     */
+//    @Deprecated
+//    private void dealPackage(String supplierCode,  List<ProductClassifyVO> list, ProductClassifyEnum c) {
+//        List<SupplierProductVO> full = this.getPackage(supplierCode);
+//        if (Check.NuNCollection(full)){
+//            return ;
+//        }
+//        List<SupplierProductVO> tmp = new ArrayList<>();
+//        for (SupplierProductVO supplierProductVO : full) {
+//            //获取当前的匹配情况
+//            if (!Check.NuNObj(orderTypeEnum)){
+//                //情况1 属于指定的订单类型
+//                if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
+//                    tmp.add(supplierProductVO);
+//                }else {
+//                    continue;
+//                }
+//            }else {
+//                //情况2 未指定的订单类型
+//                fillOrderType(supplierProductVO);
+//            }
+//        }
+//        if (Check.NuNCollection(tmp)) {
+//            return;
+//        }
+//
+//        ProductClassifyInfo vo = new ProductClassifyInfo();
+//        String key = c.getCode() + "";
+//        vo.setProductClassify(key);
+//        vo.setProductClassifyName(c.getName());
+//        vo.setList(tmp);
+//        list.add(vo);
+//    }
+
+
     /**
      * 设置当前的套餐相关的信息
      * @author afi
      * @param supplierCode
-     * @param orderTypeEnum
+     * @param week
      * @param list
      * @param c
      * @return
      */
-    private void dealPackage(String supplierCode, OrderTypeEnum orderTypeEnum, List<ProductClassifyVO> list, ProductClassifyEnum c) {
-        List<SupplierProductVO> full = this.dealPackage(supplierCode);
+    private void dealPackage4week(String supplierCode, Integer week, List<ProductClassifyVO> list, ProductClassifyEnum c) {
+        List<SupplierProductVO> full = this.getPackage(supplierCode,week);
         if (Check.NuNCollection(full)){
             return ;
         }
         List<SupplierProductVO> tmp = new ArrayList<>();
         for (SupplierProductVO supplierProductVO : full) {
-            //获取当前的匹配情况
-            if (!Check.NuNObj(orderTypeEnum)){
-                //情况1 属于指定的订单类型
-                if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
-                    tmp.add(supplierProductVO);
-                }else {
-                    continue;
-                }
-            }else {
-                //情况2 未指定的订单类型
-                fillOrderType(supplierProductVO);
-            }
+            //获取套餐
+            tmp.add(supplierProductVO);
+            //封装订单类型
+            fillOrderType(supplierProductVO);
         }
         if (Check.NuNCollection(tmp)) {
             return;
@@ -295,18 +330,16 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         }
     }
 
-
     /**
      * 处理包
      *
      * @param supplierCode
      */
-    private List<SupplierProductVO> dealPackage(String supplierCode) {
+    private List<SupplierProductVO> getPackage(String supplierCode,Integer week) {
         if (Check.NuNStr(supplierCode)) {
             return null;
         }
-
-        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCodeAndWeek(supplierCode, WeekUtil.getWeek());
+        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCodeAndWeek(supplierCode,week );
         if (Check.NuNCollection(list)) {
             list = new ArrayList<>();
         }
@@ -325,6 +358,15 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             voList.add(vo);
         }
         return voList;
+    }
+
+    /**
+     * 处理包
+     *
+     * @param supplierCode
+     */
+    private List<SupplierProductVO> getPackage(String supplierCode) {
+        return getPackage(supplierCode,WeekUtil.getWeek());
     }
 
 

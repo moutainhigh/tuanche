@@ -914,10 +914,10 @@ public class OrderServiceProxy implements OrderService {
      * @return
      */
     private boolean checkNeedPwd(String userId,int costMoney,boolean need){
-        boolean needPwd = true;
-        if (need){
+        if (!need){
             return false;
         }
+        Boolean needPwd = true;
         UserEntity has =userManager.getUserByUid(userId);
         if (Check.NuNObj(has)){
             return needPwd;
