@@ -4,6 +4,7 @@ import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
+import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.util.WeekUtil;
@@ -305,19 +306,42 @@ public class IndexServiceProxy implements IndexService {
         if (ValueUtil.getintValue(config.getForLunch()) == YesNoEnum.YES.getCode()){
             FanVO time = new FanVO();
             time.setName("午餐");
-            time.setStart(config.getLunchStart());
-            time.setEnd(config.getLunchEnd());
+            time.setStart(getFanTime(config.getLunchStart()));
+            time.setEnd(getFanTime(config.getLunchEnd()));
             timeList.add(time);
         }
         //设置晚饭
         if (ValueUtil.getintValue(config.getForDinner()) == YesNoEnum.YES.getCode()){
             FanVO time = new FanVO();
             time.setName("晚餐");
-            time.setStart(config.getDinnerStart());
-            time.setEnd(config.getDinnerEnd());
+            time.setStart(getFanTime(config.getDinnerStart()));
+            time.setEnd(getFanTime(config.getDinnerEnd()));
             timeList.add(time);
         }
         return timeList;
+    }
+
+    /**
+     * 获取当前时间展示逻辑
+     * @param fanTime
+     * @return
+     */
+    private static String getFanTime(String fanTime){
+        if (Check.NuNStr(fanTime)){
+            return "";
+        }
+        String[] fan = fanTime.split(":",3);
+        if (fan.length < 3){
+            return fanTime;
+        }
+        return fan[0] + ":" +fan[1];
+    }
+
+    public static void main(String[] args) {
+
+
+        String fanTime = getFanTime("10:00:00");
+        System.out.println(fanTime);
     }
 
     /**

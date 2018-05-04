@@ -3,6 +3,7 @@ package com.taisf.services.supplier.proxy;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.taisf.services.common.valenum.AppScanTypeEnum;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dao.SupplierDao;
 import com.taisf.services.supplier.dto.SupplierRequest;
@@ -133,7 +134,7 @@ public class SupplierServiceProxy implements SupplierService{
 		}
 		SupplierPayInfo info = new SupplierPayInfo();
 		BeanUtils.copyProperties(supplierEntity,info);
-		info.setPayCode(user.getPayCode());
+		info.setPayCode(AppScanTypeEnum.QISHOU_PAY.transScanCode(user.getPayCode()));
 		dto.setData(info);
 		return dto;
 

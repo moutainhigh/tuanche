@@ -1,6 +1,7 @@
 package com.taisf.services.common.valenum;
 
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.ValueUtil;
 
 /**
  * <p>扫描类型</p>
@@ -23,7 +24,7 @@ public enum AppScanTypeEnum {
         @Override
         public String transScanCode(String code) {
             if (Check.NuNStr(code)){
-                return code;
+                return "";
             }
             return QISHOU_PAY.getCode() + super.transScanCode(code);
         }
@@ -32,7 +33,7 @@ public enum AppScanTypeEnum {
         @Override
         public String parseScanCode(String orgCode) {
             if (Check.NuNStr(orgCode)){
-                return orgCode;
+                return "";
             }
             return orgCode.substring(1);
         }
@@ -68,7 +69,7 @@ public enum AppScanTypeEnum {
      * @return
      */
     public String transScanCode(String code){
-        return code;
+        return ValueUtil.getStrValue(code);
     }
 
     /**
