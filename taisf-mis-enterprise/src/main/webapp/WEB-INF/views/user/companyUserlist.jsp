@@ -559,7 +559,7 @@
             return false;
         }
         ;
-        var userPhoneSn = /^(1[34578][0-9])\d{8}$/;
+        var userPhoneSn = /^(1[3456789][0-9])\d{8}$/;
         if (userPhone != null && userPhone != '' && userPhone != undefined) {
             if (!userPhoneSn.test(userPhone)) {
                 layer.alert("请输入正确的手机号", {icon: 5, time: 5000, title: '提示'});
@@ -627,7 +627,7 @@
             return false;
         }
         ;
-        var userPhoneSn = /^(1[34578][0-9])\d{8}$/;
+        var userPhoneSn = /^(1[3456789][0-9])\d{8}$/;
         if (userPhone != null && userPhone != '' && userPhone != undefined) {
             if (!userPhoneSn.test(userPhone)) {
                 layer.alert("请输入正确的手机号", {icon: 5, time: 5000, title: '提示'});
