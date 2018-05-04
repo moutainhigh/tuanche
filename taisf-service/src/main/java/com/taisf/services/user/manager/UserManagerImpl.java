@@ -335,6 +335,8 @@ public class UserManagerImpl {
         return userDao.getByUserPhone(userPhone);
     }
 
+
+
     /**
      * 根据用户userid查询用户
      * @param userId

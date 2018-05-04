@@ -278,6 +278,9 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+     <if test="payCode != null" >
+       pay_code,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
 
@@ -334,6 +337,9 @@
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    <if test="payCode != null" >
+        #{payCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
