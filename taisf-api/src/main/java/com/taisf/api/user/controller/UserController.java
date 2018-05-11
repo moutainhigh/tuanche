@@ -234,7 +234,7 @@ public class UserController extends AbstractController {
         if (Check.NuNStr(paramRequest.getAccountPwd())) {
             return new ResponseDto("请输入支付密码");
         }
-        LogUtil.info(LOGGER, "开通免密服务:{}", JsonEntityTransform.Object2Json(userId));
+        LogUtil.info(LOGGER, "开通免密服务: user:{},par:{}", userId,JsonEntityTransform.Object2Json(paramRequest));
         try {
             DataTransferObject<Void> dto =userService.openIsPwd(userId,paramRequest.getAccountPwd());
             return dto.trans2Res();

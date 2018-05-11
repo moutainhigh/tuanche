@@ -607,11 +607,13 @@ public class OrderServiceProxy implements OrderService {
         //2. 下单的逻辑
         if (dto.checkSuccess()){
             orderManager.saveOrderSave(orderSaveVO);
+            LogUtil.info(LOGGER,"面对面收款完成: orderSaveVO:{}",JsonEntityTransform.Object2Json(orderSaveVO.getOrderBase()));
+            //如果是已经支付,直接给骑手发送push消息
+            if (orderSaveVO.getOrderBase().getOrderStatus() == OrdersStatusEnum.RECEIVE.getCode()){
+                this.dealSend(orderSaveVO.getOrderBase().getKnightUid(),orderSaveVO.getOrderBase().getUserName(),orderSaveVO.getOrderBase().getUserTel(),ValueUtil.getintValue(orderSaveVO.getOrderMoney().getSumMoney()));
+            }
         }
-        //如果是已经支付,直接给骑手发送push消息
-        if (orderSaveVO.getOrderBase().getOrderStatus() == OrdersStatusEnum.HAS_PAY.getCode()){
-            this.dealSend(orderSaveVO.getOrderBase().getKnightUid(),orderSaveVO.getOrderBase().getUserName(),orderSaveVO.getOrderBase().getUserTel(),ValueUtil.getintValue(orderSaveVO.getOrderMoney().getSumMoney()));
-        }
+
         FaceVO vo =new FaceVO();
         vo.setOrderSn(orderSaveVO.getOrderSn());
         vo.setPrice(orderSaveVO.getExtPrice());
@@ -630,6 +632,8 @@ public class OrderServiceProxy implements OrderService {
      * @param money
      */
     private void dealSend(String userId, String userName,String userTel,Integer money){
+
+        LogUtil.info(LOGGER,"开始发送推送: userId:{},money:{}",userId,money);
         if (Check.NuNStr(userId)){
             return;
         }

@@ -47,6 +47,9 @@ public class PushServiceProxy implements PushService {
      */
     @Override
     public DataTransferObject<Void> sendMoneySuccess(MoneySendRequest moneySendRequest) {
+
+        LogUtil.info(LOGGER,"发送推送消息,par:{}", JsonEntityTransform.Object2Json(moneySendRequest));
+
         DataTransferObject<Void> dto = new DataTransferObject();
         if (Check.NuNObj(moneySendRequest)) {
             dto.setErrCode(DataTransferObject.ERROR);

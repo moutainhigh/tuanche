@@ -41,6 +41,7 @@
             <mvc:mapping path="/cart/*" />
             <mvc:mapping path="/my/*" />
             <mvc:mapping path="/knight/*" />
+            <mvc:mapping path="/push/*" />
 
 
             <mvc:exclude-mapping path="/"/>

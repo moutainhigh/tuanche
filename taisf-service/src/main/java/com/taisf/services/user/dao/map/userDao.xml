@@ -156,6 +156,7 @@
   </update>
 
 
+
   <update id="updateUser2Activity" parameterType="java.util.Map" >
     update t_user set user_status = 2, user_password = #{userPassword,jdbcType=VARCHAR}
     where user_uid = #{userUid,jdbcType=VARCHAR}
@@ -346,9 +347,11 @@
 
   <!-- 设置当前的免密模式 -->
   <update id="updateUserPwd" parameterType="java.util.Map" >
-    update t_user set is_pwd = #{isPwd,jdbcType=INTEGER}
-    where user_uid = #{userId,jdbcType=VARCHAR}
+    update t_user set user_password = #{userPassword,jdbcType=VARCHAR}
+    where user_uid = #{userUid,jdbcType=VARCHAR}
   </update>
+
+
 
   <update id="updateUser" parameterType="com.taisf.services.user.entity.UserEntity" >
     update t_user

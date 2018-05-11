@@ -35,6 +35,22 @@ public class UserDaoTest extends BaseTest {
 
 
 
+	@Test
+	public void updateIsPwdTest() {
+
+		int  aa=  userDao.updateIsPwd("2c91340c613249c401613b1217640016",1);
+		System.out.println(JsonEntityTransform.Object2Json(aa));
+	}
+
+
+
+	@Test
+	public void updateUserPwdTest() {
+
+		int  aa=  userDao.updateUserPwd("2c91340c613249c401613b1217640016","e10adc3949ba59abbe56e057f20f883e");
+		System.out.println(JsonEntityTransform.Object2Json(aa));
+	}
+
 
 	@Test
 	public void getUserAccountPageTest() {
