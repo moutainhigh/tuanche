@@ -188,7 +188,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @return
      */
     private DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProductBase(String supplierCode, Integer week, DataTransferObject dto,OrderTypeEnum orderTypeEnum) {
-        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode,week);
+        Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode,week,orderTypeEnum==null?null:orderTypeEnum.getCode());
         List<ProductClassifyVO> list = new ArrayList<>();
         try {
             //便利当前的枚举信息
@@ -197,7 +197,14 @@ public class SupplierProductServiceProxy implements SupplierProductService {
                     dealProduct(map, list, c);
                 }
                 if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PACKAGE.getCode()) {
-                    dealPackage4week(supplierCode, week, list, c);
+                    if (!Check.NuNObj(orderTypeEnum)){
+                        //版本兼容,之前只获取当天当前饭点的
+                        dealPackage4old(supplierCode, list, c,orderTypeEnum);
+                    }else {
+                        dealPackage4week(supplierCode, week, list, c);
+                    }
+
+
                 }
             }
             dto.setData(list);
@@ -211,46 +218,42 @@ public class SupplierProductServiceProxy implements SupplierProductService {
     }
 
 
-//    /**
-//     * 设置当前的套餐相关的信息
-//     * @author afi
-//     * @param supplierCode
-//     * @param list
-//     * @param c
-//     * @return
-//     */
-//    @Deprecated
-//    private void dealPackage(String supplierCode,  List<ProductClassifyVO> list, ProductClassifyEnum c) {
-//        List<SupplierProductVO> full = this.getPackage(supplierCode);
-//        if (Check.NuNCollection(full)){
-//            return ;
-//        }
-//        List<SupplierProductVO> tmp = new ArrayList<>();
-//        for (SupplierProductVO supplierProductVO : full) {
-//            //获取当前的匹配情况
-//            if (!Check.NuNObj(orderTypeEnum)){
-//                //情况1 属于指定的订单类型
-//                if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
-//                    tmp.add(supplierProductVO);
-//                }else {
-//                    continue;
-//                }
-//            }else {
-//                //情况2 未指定的订单类型
-//                fillOrderType(supplierProductVO);
-//            }
-//        }
-//        if (Check.NuNCollection(tmp)) {
-//            return;
-//        }
-//
-//        ProductClassifyInfo vo = new ProductClassifyInfo();
-//        String key = c.getCode() + "";
-//        vo.setProductClassify(key);
-//        vo.setProductClassifyName(c.getName());
-//        vo.setList(tmp);
-//        list.add(vo);
-//    }
+    /**
+     * 设置当前的套餐相关的信息
+     * @author afi
+     * @param supplierCode
+     * @param list
+     * @param c
+     * @return
+     */
+    private void dealPackage4old(String supplierCode,  List<ProductClassifyVO> list, ProductClassifyEnum c,OrderTypeEnum orderTypeEnum) {
+        List<SupplierProductVO> full = this.getPackage(supplierCode);
+        if (Check.NuNCollection(full)){
+            return ;
+        }
+        if (Check.NuNObj(orderTypeEnum)){
+            return;
+        }
+        List<SupplierProductVO> tmp = new ArrayList<>();
+        for (SupplierProductVO supplierProductVO : full) {
+            if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
+                tmp.add(supplierProductVO);
+            }else {
+                continue;
+            }
+
+        }
+        if (Check.NuNCollection(tmp)) {
+            return;
+        }
+
+        ProductClassifyInfo vo = new ProductClassifyInfo();
+        String key = c.getCode() + "";
+        vo.setProductClassify(key);
+        vo.setProductClassifyName(c.getName());
+        vo.setList(tmp);
+        list.add(vo);
+    }
 
 
     /**
