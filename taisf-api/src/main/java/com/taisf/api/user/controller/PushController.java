@@ -51,7 +51,7 @@ public class PushController extends AbstractController {
             return dto;
         }
         device.setDeviceType(String.valueOf(header.getDeviceType()));
-        device.setUserId(header.getUserId());
+        device.setUserId(getUserId(request));
         if ((Check.NuNObj(device.getRegId()))) {
             dto = new ResponseDto("参数异常");
             return dto;
