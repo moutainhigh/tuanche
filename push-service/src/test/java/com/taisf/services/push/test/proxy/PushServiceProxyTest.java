@@ -36,10 +36,12 @@ public class PushServiceProxyTest extends BaseTest {
 
 	@Test
 	public void testregistDevice() {
+
+
 		DeviceEntity entity = new DeviceEntity();
-		entity.setRegId("1a0018970a8b36725ca");
-		entity.setDeviceToken("1a0018970a8b36725ca");
-		entity.setUserId("baozi");
+		entity.setRegId("F9365E230312414199CC34122F6F1D70");
+		entity.setDeviceToken("c1474c0bbd89117493cf57376c4bfdd4782c9beeee133cb7d5e68575e7d8cf6a");
+		entity.setUserId("111");
 		System.out.println("===============================" + JsonEntityTransform.Object2Json(pushService.registDevice(entity)));
 	}
 
