@@ -42,10 +42,10 @@
       t_pay_record t
     WHERE  record_uid = #{userId,jdbcType=VARCHAR}
     <if test="start != null ">
-      and t.create_time <![CDATA[  >= ]]>#{startStr,jdbcType=TIMESTAMP}
+      and t.create_time <![CDATA[  >= ]]>#{start,jdbcType=TIMESTAMP}
     </if>
     <if test="end != null ">
-      and t.create_time <![CDATA[  <= ]]> #{endStr,jdbcType=TIMESTAMP}
+      and t.create_time <![CDATA[  <= ]]> #{end,jdbcType=TIMESTAMP}
     </if>
   </select>
 

@@ -305,7 +305,7 @@ public class UserController extends AbstractController {
         }
         //默认不支持免密
         boolean isPWd = false;
-        if (ValueUtil.getintValue(paramRequest.getIsPwd()) == YesNoEnum.YES.getCode()){
+        if (ValueUtil.getintValue(paramRequest.getIsPWd()) == YesNoEnum.YES.getCode()){
             isPWd = true;
         }
         String  key = HeaderUtil.getCodeStr(header, SmsTypeEnum.PWD_ACCOUNT.getCode());
@@ -313,7 +313,7 @@ public class UserController extends AbstractController {
         if (!ValueUtil.getStrValue(value).equals(ValueUtil.getStrValue(paramRequest.getMsgCode()))){
             return new ResponseDto("验证码错误");
         }
-        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        LogUtil.info(LOGGER, "changeAccountPwd传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
             DataTransferObject<Void> dto =userService.updateAccountPasswordAndPwd(getUserId(request),paramRequest.getNewPwd(),isPWd);
             return dto.trans2Res();

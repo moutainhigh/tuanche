@@ -35,14 +35,14 @@ public class ChangePwdRequest extends BaseEntity {
     /**
      * 是否免密
      */
-    private Integer isPwd;
+    private Integer isPWd;
 
-    public Integer getIsPwd() {
-        return isPwd;
+    public Integer getIsPWd() {
+        return isPWd;
     }
 
-    public void setIsPwd(Integer isPwd) {
-        this.isPwd = isPwd;
+    public void setIsPWd(Integer isPWd) {
+        this.isPWd = isPWd;
     }
 
     public String getOldPwd() {

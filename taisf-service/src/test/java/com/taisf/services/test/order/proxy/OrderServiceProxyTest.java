@@ -78,12 +78,12 @@ public class OrderServiceProxyTest extends BaseTest {
     @Test
     public void initOrderTest() {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
-        createOrderRequest.setUserUid("baozi");
+        createOrderRequest.setUserUid("2c91340c6135fb79016136e0888a0002");
         createOrderRequest.setBusinessUid("jipin");
-        createOrderRequest.setOrderType(OrderTypeEnum.LUNCH_COMMON.getCode());
+        createOrderRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
 //        createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(1);
-        createOrderRequest.setEnterpriseCode("0001");
+        createOrderRequest.setEnterpriseCode("qpg001");
         DataTransferObject<OrderSaveInfo> classify = orderService.initOrder(createOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 

@@ -50,21 +50,25 @@ public class PushController extends AbstractController {
             dto = new ResponseDto("参数异常");
             return dto;
         }
+        String userId = getUserId(request);
+        if(Check.NuNStr(userId)){
+            dto = new ResponseDto("请登录");
+            return dto;
+        }
         device.setDeviceType(String.valueOf(header.getDeviceType()));
-        device.setUserId(getUserId(request));
+        device.setUserId(userId);
         if ((Check.NuNObj(device.getRegId()))) {
             dto = new ResponseDto("参数异常");
             return dto;
         }
-        if(Check.NuNObj(device.getUserId())){
-            if(Check.NuNObjs(device.getDeviceToken(),device.getPushType(), device.getDeviceType())){
-                dto = new ResponseDto("参数异常");
-                return dto;
-            }
+        if(Check.NuNObjs(device.getDeviceToken(),device.getPushType(), device.getDeviceType())){
+            dto = new ResponseDto("参数异常");
+            return dto;
         }
         DataTransferObject<Void> result = pushService.registDevice(device);
         return result.trans2Res();
     }
+
     @RequestMapping(value = "/logoutDevice", method = RequestMethod.POST)
     public
     @ResponseBody

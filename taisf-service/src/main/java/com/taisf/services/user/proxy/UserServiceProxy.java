@@ -918,6 +918,7 @@ public class UserServiceProxy implements UserService {
      */
     @Override
     public DataTransferObject<Void> updateAccountPasswordAndPwd(String userId,String accountPassword ,boolean isPwd){
+        LogUtil.error(LOGGER, "【updateAccountPasswordAndPwd】userId:{}, accountPassword{},isPwd:{}" ,userId,accountPassword,isPwd);
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(userId)
                 || Check.NuNObj(accountPassword)) {
