@@ -147,7 +147,15 @@ public class UserController {
                 return dto;
             }
         }
-
+        //判断payCode 如果不为空 查询是非已存在
+        if(!Check.NuNObj(userEntity.getPayCode())){
+            UserEntity user = userManager.getByPayCode(userEntity.getPayCode());
+            if(!Check.NuNObj(user)){
+                dto.setErrorMsg("支付码已存在");
+                dto.setErrCode(DataTransferObject.ERROR);
+                return dto;
+            }
+        }
         //获取当前登录员工
         EmployeeEntity employeeEntity = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
 
@@ -432,7 +440,7 @@ public class UserController {
         }
         try {
             EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
-            userEntity.setBizCode(emp.getEmpBiz());
+            userEntity   .setBizCode(emp.getEmpBiz());
             String uuid = UUIDGenerator.hexUUID();
             userEntity.setUserPassword(MD5Util.MD5Encode(userEntity.getUserPhone()));
             userEntity.setUserStatus(UserStatusEnum.AVAILABLE.getCode());

@@ -167,6 +167,13 @@
                                            value="" class="form-control">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">支付码:</label>
+                                <div class="col-sm-8">
+                                    <input id="payCode" name="payCode" type="text"
+                                           value="" class="form-control">
+                                </div>
+                            </div>
                             <input type="hidden" class="form-control" id="iduser" name="id" value=""/>
                             <input type="hidden" class="form-control" id="UID" name="UID" value=""/>
                             <!-- 用于 将表单缓存清空 -->
@@ -565,6 +572,7 @@
                 'userName': $("#userName").val(),
                 'empMail': $("#empMail").val(),
                 'userCode': $("#userCode").val(),
+                'payCode': $("#payCode").val(),
             },
             type: "post",
             dataType: "json",
