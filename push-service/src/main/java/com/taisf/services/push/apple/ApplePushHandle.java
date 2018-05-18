@@ -1,6 +1,11 @@
 package com.taisf.services.push.apple;
 
 import com.jk.framework.base.utils.Check;
+//import com.notnoop.apns.APNS;
+//import com.notnoop.apns.ApnsNotification;
+//import com.notnoop.apns.ApnsService;
+//import com.notnoop.apns.PayloadBuilder;
+import com.jk.framework.base.utils.JsonEntityTransform;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsNotification;
 import com.notnoop.apns.ApnsService;
@@ -31,7 +36,7 @@ public class ApplePushHandle extends PushAppleConstant implements PushHandle {
     /**
      * 苹果官方的处理
      */
-    private  ApnsService service ;
+    private ApnsService service ;
 
 
 
@@ -44,13 +49,21 @@ public class ApplePushHandle extends PushAppleConstant implements PushHandle {
         }
 
 
+//        mutable("1")
+
+//        mutable-content
+
         PayloadBuilder payloadBuilder = APNS.newPayload();
         payloadBuilder.customField("customContent",pushPar.getExtra());
-        String payload = payloadBuilder.badge(1).sound("default").mutable("1").
+        String payload = payloadBuilder.badge(1).sound("default").localizedArguments().
                 alertTitle(pushPar.getTitle()).alertBody(pushPar.getContent()).build();
 
-        //
-        List<ApnsNotification> apnsNotifications = (List<ApnsNotification>) service.push(pushPar.getToken(), payload);
+        Apns apns = JsonEntityTransform.json2Object(payload,Apns.class);
+
+        System.out.println(apns.trans2par());
+
+
+        List<ApnsNotification> apnsNotifications = (List<ApnsNotification>) service.push(pushPar.getToken(), apns.trans2par());
         return apnsNotifications;
     }
 
