@@ -48,21 +48,12 @@ public class ApplePushHandle extends PushAppleConstant implements PushHandle {
             this.instanceAppleService();
         }
 
-
-//        mutable("1")
-
-//        mutable-content
-
         PayloadBuilder payloadBuilder = APNS.newPayload();
         payloadBuilder.customField("customContent",pushPar.getExtra());
-        String payload = payloadBuilder.badge(1).sound("default").localizedArguments().
+        String payload = payloadBuilder.badge(1).sound("default").localizedArguments().alertBody("content").
                 alertTitle(pushPar.getTitle()).alertBody(pushPar.getContent()).build();
-
         Apns apns = JsonEntityTransform.json2Object(payload,Apns.class);
-
-        System.out.println(apns.trans2par());
-
-
+//        System.out.println(apns.trans2par());
         List<ApnsNotification> apnsNotifications = (List<ApnsNotification>) service.push(pushPar.getToken(), apns.trans2par());
         return apnsNotifications;
     }

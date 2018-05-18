@@ -20,10 +20,13 @@ import java.util.Map;
  */
 public class Apns extends BaseEntity{
 
+    private static final long serialVersionUID = 301231231201446703L;
+
+
     private Object customContent;
 
 
-    private Map aps;
+    private Map<String,Object> aps;
 
 
     public String trans2par(){
@@ -39,11 +42,12 @@ public class Apns extends BaseEntity{
         this.customContent = customContent;
     }
 
-    public Map getAps() {
+
+    public Map<String, Object> getAps() {
         return aps;
     }
 
-    public void setAps(Map aps) {
+    public void setAps(Map<String, Object> aps) {
         this.aps = aps;
     }
 }

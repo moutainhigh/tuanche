@@ -581,6 +581,8 @@ public class OrderServiceProxy implements OrderService {
     public DataTransferObject<FaceVO> faceOrder(CreateOrderRequest createOrderRequest,boolean needPwd){
         DataTransferObject<FaceVO> dto = new DataTransferObject<>();
 
+        LogUtil.info(LOGGER,"faceOrder :par:{},needPwd:{}",JsonEntityTransform.Object2Json(createOrderRequest),needPwd);
+
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
             && Check.NuNStr(createOrderRequest.getPayCode())) {
             dto.setErrorMsg("参数异常");
@@ -600,6 +602,7 @@ public class OrderServiceProxy implements OrderService {
         }else {
             orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE.getCode());
         }
+
 
         //1. 填充面对面收款订单的信息
         this.faceOrderInfo(dto,orderSaveVO, createOrderRequest,needPwd);
