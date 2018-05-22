@@ -645,7 +645,7 @@ public class OrderServiceProxy implements OrderService {
         }
         MoneySendRequest moneySendRequest = new MoneySendRequest();
         moneySendRequest.setUserId(userId);
-        moneySendRequest.setMoney(ValueUtil.getStrValue(BigDecimalUtil.div(money,2)));
+        moneySendRequest.setMoney(ValueUtil.getStrValue(BigDecimalUtil.div(money,100)));
         moneySendRequest.setPhone(userTel);
         moneySendRequest.setName(userName);
         pushServiceProxy.sendMoneySuccess(moneySendRequest);

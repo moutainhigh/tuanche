@@ -55,14 +55,17 @@ public class RechargeOrderProxyTest extends BaseTest {
     @Test
     public void dealRechargeOrder4PayReturnTest() {
         try{
-            RechargeOrderEntity recordRequest = new RechargeOrderEntity();
 
-            recordRequest.setOrderSn("CZ180416I15M8N57183731");
-            recordRequest.setUserUid("baozi");
-            recordRequest.setTotalFee(100);
-            recordRequest.setPayType(1);
-            recordRequest.setPayTime(DateUtil.getTime(ValueUtil.getintValue(System.currentTimeMillis())));
-            recordRequest.setTradeNo("1111");
+            String aa = "{\"id\":null,\"orderSn\":\"CZ180522O8TB43WY150641\",\"payType\":1,\"totalFee\":1,\"needMoney\":null,\"tradeNo\":\"4200000111201805226810873462\",\"payTime\":1526972809987,\"accountsStatus\":null,\"payStatus\":null,\"enterpriseCode\":null,\"supplierCode\":null,\"userUid\":null,\"createTime\":null,\"lastModifyDate\":null}";
+
+            RechargeOrderEntity recordRequest = JsonEntityTransform.json2Object(aa,RechargeOrderEntity.class);
+
+            recordRequest.setOrderSn("CZ180509A3Y7869C143248");
+//            recordRequest.setUserUid("baozi");
+//            recordRequest.setTotalFee(100);
+//            recordRequest.setPayType(1);
+//            recordRequest.setPayTime(DateUtil.getTime(ValueUtil.getintValue(System.currentTimeMillis())));
+//            recordRequest.setTradeNo("1111");
 
 
             DataTransferObject<Void> dto = rechargeOrderProxy.dealRechargeOrder4PayReturn(recordRequest);

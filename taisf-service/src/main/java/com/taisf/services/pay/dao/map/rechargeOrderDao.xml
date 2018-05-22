@@ -166,7 +166,7 @@
           last_modify_date = #{lastModifyDate,jdbcType=TIMESTAMP},
         </if>
       </set>
-      where  order_sn = #{orderSn,jdbcType=VARCHAR}
+      where  order_sn = #{orderSn,jdbcType=VARCHAR}  and trade_no is  null
     </update>
 
 </mapper>

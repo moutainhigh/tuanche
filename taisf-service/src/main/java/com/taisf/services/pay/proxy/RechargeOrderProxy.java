@@ -1,7 +1,9 @@
 package com.taisf.services.pay.proxy;
 
+import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.SnUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
@@ -110,11 +112,25 @@ public class RechargeOrderProxy  implements RechargeOrderService {
     public DataTransferObject<Void> dealRechargeOrder4PayReturn(RechargeOrderEntity rechargeOrderEntity) {
         DataTransferObject dto = new DataTransferObject();
 
-        if (Check.NuNObjs(rechargeOrderEntity.getOrderSn(),rechargeOrderEntity.getUserUid())){
+        LogUtil.info(LOGGER,"dealRechargeOrder4PayReturn par:{}", JsonEntityTransform.Object2Json(rechargeOrderEntity));
+        if (Check.NuNStr(rechargeOrderEntity.getOrderSn())){
             dto.setErrorMsg("参数异常");
             return dto;
         }
 
+        if (Check.NuNStr(rechargeOrderEntity.getTradeNo())){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        RechargeOrderEntity order = rechargeOrderManager.getRechargeOrderByOrderSn(rechargeOrderEntity.getOrderSn());
+        if (Check.NuNObj(order)){
+            dto.setErrorMsg("当前订单不存在");
+            return dto;
+        }
+        if (ValueUtil.getintValue(order.getPayStatus()) == YesNoEnum.YES.getCode()){
+            return dto;
+        }
+        rechargeOrderEntity.setUserUid(order.getUserUid());
         try{
             int num = rechargeOrderManager.updateOrderPayAndAccount(rechargeOrderEntity);
             if (num == 0){
