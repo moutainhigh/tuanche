@@ -38,7 +38,7 @@ public class ApplePushHandleTest extends BaseTest {
         par.setTitle("title");
         par.setContent("content");
         List<String> tokenList = new ArrayList<String>();
-        tokenList.add("ca6c5faf80473ca3c9833cecbec3ee810e81e5dfde657ce5ac47e03eba7ba613");
+        tokenList.add("ada61922f79282840c92492ac186af620c2831aafa4919566a4c2dd46322df1d");
         par.setToken(tokenList);
         Map<String,String> param = new HashMap<String,String>();
         param.put("messageType","1");

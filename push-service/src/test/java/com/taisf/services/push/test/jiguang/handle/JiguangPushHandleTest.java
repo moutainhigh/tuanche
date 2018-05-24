@@ -69,7 +69,7 @@ public class JiguangPushHandleTest extends BaseTest {
         par.setTitle("title");
         par.setContent("content");
         List<String> tokenList = new ArrayList<String>();
-        tokenList.add("1a0018970a8b36725ca");
+        tokenList.add("19f477076fedd33a0860ccb5559996575bbf2d5b6dd25f3e0586451ef8dbae70");
         par.setToken(tokenList);
 
         Map<String,String> param = new HashMap<String,String>();
