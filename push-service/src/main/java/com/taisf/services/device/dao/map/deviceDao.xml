@@ -62,6 +62,59 @@
       #{deviceToken,jdbcType=VARCHAR}, #{pushType,jdbcType=INTEGER}, #{deviceType,jdbcType=VARCHAR}, 
       #{version,jdbcType=VARCHAR}, #{applicationcode,jdbcType=VARCHAR})
   </insert>
+
+
+  <insert id="replaceDevice" parameterType="com.taisf.services.device.entity.DeviceEntity" >
+    replace into t_device
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="regId != null" >
+        reg_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="deviceToken != null" >
+        device_token,
+      </if>
+      <if test="pushType != null" >
+        push_type,
+      </if>
+      <if test="deviceType != null" >
+        device_type,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="applicationcode != null" >
+        applicationCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="regId != null" >
+        #{regId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceToken != null" >
+        #{deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="pushType != null" >
+        #{pushType,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationcode != null" >
+        #{applicationcode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
   <insert id="addDevice" parameterType="com.taisf.services.device.entity.DeviceEntity" >
     insert into t_device
     <trim prefix="(" suffix=")" suffixOverrides="," >

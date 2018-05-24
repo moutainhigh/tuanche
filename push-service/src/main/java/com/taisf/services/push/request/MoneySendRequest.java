@@ -79,8 +79,8 @@ public class MoneySendRequest extends SendRequest {
     @Override
     public PushPar transPushPar() {
         PushPar par = new PushPar();
-        par.setTitle("馋滴支付:馋滴收款" + getMoney() + "元");
-        par.setContent("");
+        par.setTitle("馋滴");
+        par.setContent("馋滴支付:馋滴收款" + getMoney() + "元");
         List<String> tokenList = new ArrayList<>();
         tokenList.add(getToken());
         par.setToken(tokenList);

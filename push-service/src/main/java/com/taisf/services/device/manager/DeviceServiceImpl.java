@@ -22,12 +22,12 @@ public class DeviceServiceImpl {
 	 * @param entity
 	 */
 	public void updateOrSaveDevice(DeviceEntity entity){
-		DeviceEntity device = deviceDao.getDeviceByRegId(entity.getRegId());
-		if(Check.NuNObj(device)){
-			deviceDao.addDevice(entity);
-			return;
-		}
-		deviceDao.updateDevice(entity);
+//		DeviceEntity device = deviceDao.getDeviceByRegId(entity.getRegId());
+//		if(Check.NuNObj(device)){
+//			deviceDao.addDevice(entity);
+//			return;
+//		}
+		deviceDao.replaceDevice(entity);
 	}
 
 	/**

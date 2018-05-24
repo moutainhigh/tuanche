@@ -88,6 +88,11 @@ public class PushServiceProxy implements PushService {
             dto.setMsg("参数异常");
             return dto;
         }
+        if (Check.NuNObjs(deviceEnity.getUserId())) {
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("参数异常");
+            return dto;
+        }
         if(Check.NuNObj(deviceEnity.getPushType())){
             deviceEnity.setPushType(PushTypeEnum.JIGUANG.getCode());
         }

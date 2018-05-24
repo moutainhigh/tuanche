@@ -44,6 +44,14 @@ public class DeviceDao extends BaseDao{
         return mybatisDaoContext.findAll(SQLID + "listDeviceByUserId", DeviceEntity.class, userIds);
     }
 
+
+
+
+    public int replaceDevice(DeviceEntity entity){
+        return mybatisDaoContext.save(SQLID + "replaceDevice", entity);
+    }
+
+
     public int addDevice(DeviceEntity entity){
         return mybatisDaoContext.save(SQLID + "addDevice", entity);
     }
