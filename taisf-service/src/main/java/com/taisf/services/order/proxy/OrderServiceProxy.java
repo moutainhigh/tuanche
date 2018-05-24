@@ -857,11 +857,16 @@ public class OrderServiceProxy implements OrderService {
         DataTransferObject<OrderSaveInfo> dto = new DataTransferObject<>();
 
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
-                || Check.NuNStr(createOrderRequest.getUserUid())
-                || Check.NuNObjs(createOrderRequest.getOrderType())) {
+                || Check.NuNStr(createOrderRequest.getUserUid())) {
             dto.setErrorMsg("参数异常");
             return dto;
         }
+
+        if (Check.NuNObjs(createOrderRequest.getOrderType())) {
+            dto.setErrorMsg("订单时间已过");
+            return dto;
+        }
+
         //获取当前的购物车
         DataTransferObject<CartInfoVO> cartDto=cartService.cartInfo(createOrderRequest.getUserUid(), createOrderRequest.getBusinessUid(),createOrderRequest.getEnterpriseCode());
         if (!cartDto.checkSuccess()){
