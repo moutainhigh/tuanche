@@ -276,6 +276,11 @@ public class IndexServiceProxy implements IndexService {
             indexVO.setOrderFlag(true);
             indexVO.setOrderType(orderTypeEnum.getCode());
         }
+
+        if (ValueUtil.getintValue(indexVO.getTimeLast()) <= 0){
+            indexVO.setOrderType(null);
+            indexVO.setOrderFlag(false);
+        }
         return dto;
     }
 

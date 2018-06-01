@@ -56,6 +56,15 @@
         </dependency>
 
 
+
+        <dependency>
+            <groupId>com.taisf</groupId>
+            <artifactId>push-service-base</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+
+
         <dependency>
             <groupId>com.taisf</groupId>
             <artifactId>push-service</artifactId>

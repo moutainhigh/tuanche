@@ -1,8 +1,11 @@
 package com.taisf.services.test.pay.dao;
 
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.pay.dao.RechargeOrderDao;
+import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
+import com.taisf.services.pay.vo.RechargeOrderVO;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
@@ -26,6 +29,17 @@ public class RechargeOrderDaoTest extends BaseTest {
 
     @Resource(name = "pay.rechargeOrderDao")
     private RechargeOrderDao rechargeOrderDao;
+
+
+
+
+    @Test
+    public void findRechargeOrderByPageTest() {
+        RechargeOrderListRequest rechargeOrderListRequest =new RechargeOrderListRequest();
+        PagingResult<RechargeOrderVO> page = rechargeOrderDao.findRechargeOrderByPage(rechargeOrderListRequest);
+        System.out.println(JsonEntityTransform.Object2Json(page));
+    }
+
 
 
     @Test

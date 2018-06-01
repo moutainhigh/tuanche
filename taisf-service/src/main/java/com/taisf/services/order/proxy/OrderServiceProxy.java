@@ -8,7 +8,7 @@ import com.jk.framework.cache.redis.api.RedisOperations;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.*;
-import com.taisf.services.device.proxy.PushServiceProxy;
+import com.taisf.services.device.api.PushService;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
@@ -94,7 +94,7 @@ public class OrderServiceProxy implements OrderService {
 
 
     @Resource(name = "push.pushServiceProxy")
-    private PushServiceProxy pushServiceProxy;
+    private PushService pushServiceProxy;
 
     @Autowired
     private RedisOperations redisOperations;

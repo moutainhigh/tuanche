@@ -1,8 +1,15 @@
 package com.taisf.services.pay.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.dto.RechargeOrderRequest;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
+import com.taisf.services.pay.vo.RechargeOrderVO;
+import com.taisf.services.user.dto.UserMoneyRequest;
+import com.taisf.services.user.vo.AccountUserLogVO;
+
+import java.util.List;
 
 /**
  * <p>TODO</p>
@@ -18,6 +25,26 @@ import com.taisf.services.pay.entity.RechargeOrderEntity;
  * @since 1.0
  */
 public interface RechargeOrderService {
+
+
+
+    /**
+     * 获取充值记录
+     * @author afi
+     * @param rechargeOrderListRequest
+     * @return
+     */
+    DataTransferObject<PagingResult<RechargeOrderVO>> findRechargeOrderByPage(RechargeOrderListRequest rechargeOrderListRequest);
+
+
+
+    /**
+     * 获取充值记录
+     * @author afi
+     * @param rechargeOrderListRequest
+     * @return
+     */
+    DataTransferObject<List<RechargeOrderVO>> findRechargeOrderAll(RechargeOrderListRequest rechargeOrderListRequest);
 
 
     /**

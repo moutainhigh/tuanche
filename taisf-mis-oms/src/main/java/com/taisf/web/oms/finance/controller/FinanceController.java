@@ -3,13 +3,18 @@ package com.taisf.web.oms.finance.controller;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.excel.utils.ExcelUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.EnterpriseStatusEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterprisePageRequest;
 import com.taisf.services.enterprise.entity.EnterpriseEntity;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
+import com.taisf.services.pay.api.RechargeOrderService;
+import com.taisf.services.pay.dto.RechargeOrderListRequest;
+import com.taisf.services.pay.vo.RechargeOrderVO;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.services.recharge.api.RechargeService;
 import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
@@ -18,6 +23,8 @@ import com.taisf.services.recharge.dto.ChargeRequest;
 import com.taisf.services.recharge.vo.EnterpriseStatsNumber;
 import com.taisf.services.user.api.UserService;
 import com.taisf.services.user.dto.UserAccountRequest;
+import com.taisf.services.user.dto.UserMoneyRequest;
+import com.taisf.services.user.vo.AccountUserLogVO;
 import com.taisf.services.user.vo.UserAccountVO;
 import com.taisf.web.oms.common.constant.LoginConstant;
 import com.taisf.web.oms.common.page.PageResult;
@@ -29,6 +36,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>财务相关</p>
@@ -53,12 +65,120 @@ public class FinanceController {
     @Autowired
     private RechargeService rechargeService;
 
+
+    @Autowired
+    private RechargeOrderService rechargeOrderService;
+
+
+
+
     @Autowired
     EnterpriseService enterpriseService;
 
 
     @Autowired
     UserService userService;
+
+
+
+    /**
+     * 校验当前的参数
+     * @param request
+     * @param requestPar
+     * @return
+     */
+    private boolean checkAndChargeRequest(HttpServletRequest request, RechargeOrderListRequest requestPar) {
+        if (!Check.NuNStr(requestPar.getStartStr())){
+            Date startTime = DateUtil.parseDate(requestPar.getStartStr(),DateUtil.timestampPattern);
+            requestPar.setStart(startTime);
+        }
+
+        if (!Check.NuNStr(requestPar.getEndStr())){
+            Date endTime = DateUtil.parseDate(requestPar.getEndStr(),DateUtil.timestampPattern);
+            requestPar.setEnd(endTime);
+        }
+        EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+        requestPar.setSupplierCode(emp.getEmpBiz());
+//        if (Check.NuNStr(requestPar.getSupplierCode())){
+//            return true;
+//        }
+        return false;
+    }
+
+
+    /**
+     * 获取当前的充值记录
+     * @param request
+     * @return
+     */
+    @RequestMapping("/rechargeOrderList")
+    public String rechargeOrderList(HttpServletRequest request) {
+        return "finance/orderRechargeList";
+    }
+
+
+    /**
+     * 获取充值记录
+     * @param request
+     * @param req
+     * @return
+     */
+    @RequestMapping("rechargeOrderListPage")
+    @ResponseBody
+    public PageResult rechargeOrderListPage(HttpServletRequest request, RechargeOrderListRequest req) {
+        PageResult pageResult = new PageResult();
+        try {
+            if (Check.NuNObj(req)){
+                req = new RechargeOrderListRequest();
+            }
+
+            if(!checkAndChargeRequest(request,req)){
+                DataTransferObject<PagingResult<RechargeOrderVO>> dto = rechargeOrderService.findRechargeOrderByPage(req);
+                if (dto.checkSuccess()){
+                    PagingResult<RechargeOrderVO> pagingResult = dto.getData();
+                    if(Check.NuNObj(pagingResult)){
+                        return pageResult;
+                    }
+                    pageResult.setRows(pagingResult.getList());
+                    pageResult.setTotal(pagingResult.getTotal());
+                }
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(req));
+            LogUtil.error(LOGGER, "error:{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
+
+
+    /**
+     * 导出excel
+     * @param request
+     * @param response
+     * @param req
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("rechargeOrderListExcel")
+    public void rechargeOrderListExcel(HttpServletRequest request, HttpServletResponse response, RechargeOrderListRequest req) throws UnsupportedEncodingException {
+        response.setContentType("octets/stream");
+        String fileName = "充值记录";
+        response.addHeader("Content-Disposition", "attachment;filename="+ new String(fileName.getBytes("GB2312"),"ISO8859-1") +".xls");
+
+        List<RechargeOrderVO> list = new ArrayList();
+        try{
+            if (!checkAndChargeRequest(request, req)){
+                DataTransferObject<List<RechargeOrderVO>> dto = rechargeOrderService.findRechargeOrderAll(req);
+                if (dto.checkSuccess()){
+                    list = dto.getData();
+                }
+            }
+            ExcelUtil.exportExcel(response.getOutputStream(),list);
+        }catch (Exception e){
+            LogUtil.error(LOGGER, "收费列表导出excel异常:{}",e);
+        }
+    }
+
 
 
 

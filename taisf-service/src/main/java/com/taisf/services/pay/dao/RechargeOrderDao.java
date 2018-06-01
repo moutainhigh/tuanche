@@ -1,15 +1,23 @@
 package com.taisf.services.pay.dao;
 
 import com.jk.framework.base.exception.BusinessException;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.enterprise.dto.EnterpriseAddressRequest;
+import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
+import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
+import com.taisf.services.pay.vo.RechargeOrderVO;
+import com.taisf.services.user.vo.AccountUserLogVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +42,28 @@ public class RechargeOrderDao extends BaseDao {
     private static Logger logger = LoggerFactory.getLogger(RechargeOrderDao.class);
 
     private String SQLID = "pay.rechargeOrderDao.";
+
+
+    /**
+     * 获取全量
+     * @param rechargeOrderListRequest
+     * @return
+     */
+    public List<RechargeOrderVO> findRechargeOrderAll(RechargeOrderListRequest rechargeOrderListRequest) {
+        return mybatisDaoContext.findAll(SQLID + "findRechargeOrderList", RechargeOrderVO.class,rechargeOrderListRequest);
+    }
+
+
+
+    public PagingResult<RechargeOrderVO> findRechargeOrderByPage(RechargeOrderListRequest rechargeOrderListRequest) {
+        PageBounds pageBounds = new PageBounds();
+        pageBounds.setLimit(rechargeOrderListRequest.getLimit());
+        pageBounds.setPage(rechargeOrderListRequest.getPage());
+        return mybatisDaoContext.findForPage(SQLID + "findRechargeOrderList", RechargeOrderVO.class,rechargeOrderListRequest,pageBounds);
+
+    }
+
+
 
     /**
      * 获取当前的配置信息

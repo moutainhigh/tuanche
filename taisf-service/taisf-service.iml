@@ -37,6 +37,7 @@
     <orderEntry type="library" name="Maven: com.belerweb:pinyin4j:2.5.0" level="project" />
     <orderEntry type="library" name="Maven: com.jk:jk-framework-cache:0.0.1" level="project" />
     <orderEntry type="module" module-name="ups-service" />
+    <orderEntry type="module" module-name="push-service-base" />
     <orderEntry type="module" module-name="push-service" />
     <orderEntry type="library" name="Maven: cn.jpush.api:jpush-client:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: cn.jpush.api:jiguang-common:1.0.7" level="project" />

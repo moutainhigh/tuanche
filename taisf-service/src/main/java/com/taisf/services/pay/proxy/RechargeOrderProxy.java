@@ -2,22 +2,28 @@ package com.taisf.services.pay.proxy;
 
 import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.SnUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.pay.api.RechargeOrderService;
+import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.dto.RechargeOrderRequest;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
 import com.taisf.services.pay.manager.RechargeOrderManagerImpl;
+import com.taisf.services.pay.vo.RechargeOrderVO;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
+import com.taisf.services.user.vo.AccountUserLogVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>TODO</p>
@@ -44,6 +50,54 @@ public class RechargeOrderProxy  implements RechargeOrderService {
 
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
+
+
+
+    /**
+     * 获取充值记录
+     * @author afi
+     * @param rechargeOrderListRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<List<RechargeOrderVO>> findRechargeOrderAll(RechargeOrderListRequest rechargeOrderListRequest){
+        DataTransferObject<List<RechargeOrderVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(rechargeOrderListRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //获取当前的信息
+        List<RechargeOrderVO> list = rechargeOrderManager.findRechargeOrderAll(rechargeOrderListRequest);
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        dto.setData(list);
+        return dto;
+    }
+
+    /**
+     * 获取充值记录
+     * @author afi
+     * @param rechargeOrderListRequest
+     * @return
+     */
+    @Override
+    public DataTransferObject<PagingResult<RechargeOrderVO>> findRechargeOrderByPage(RechargeOrderListRequest rechargeOrderListRequest){
+
+        DataTransferObject<PagingResult<RechargeOrderVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(rechargeOrderListRequest)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        //获取当前的信息
+        PagingResult<RechargeOrderVO> page = rechargeOrderManager.findRechargeOrderByPage(rechargeOrderListRequest);
+        if (page == null) {
+            page = new PagingResult();
+        }
+
+        dto.setData(page);
+        return dto;
+    }
 
     /**
      * 充值的下单逻辑

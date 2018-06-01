@@ -33,6 +33,37 @@
 
 
 
+  <select id="findRechargeOrderList" resultType="com.taisf.services.pay.vo.RechargeOrderVO" parameterType="com.taisf.services.pay.dto.RechargeOrderListRequest" >
+    select
+      t.order_sn  as orderSn,
+      t.pay_type as payType,
+      t.total_fee as totalFee,
+      t.trade_no as tradeNo,
+      t.pay_time as payTime,
+      t.pay_status as payStatus,
+      t.user_uid as userUid,
+      u.user_phone  as userTel
+
+    from t_recharge_order t
+    inner join t_user u on t.user_uid = u.user_uid
+    where  t.pay_status = 1
+
+    <if test="userPhone != null and userPhone != '' " >
+      and  u.user_phone = #{userPhone,jdbcType=VARCHAR}
+    </if>
+
+    <if test="start!=null and start!=''">
+      AND t.create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}
+    </if>
+    <if test="end!=null and end!=''">
+      AND t.create_time <![CDATA[ <= ]]> #{end,jdbcType=TIMESTAMP}
+    </if>
+
+    ORDER BY t.id DESC
+  </select>
+
+
+
     <insert id="saveRechargeOrder" parameterType="com.taisf.services.pay.entity.RechargeOrderEntity" >
       insert into t_recharge_order
       <trim prefix="(" suffix=")" suffixOverrides="," >

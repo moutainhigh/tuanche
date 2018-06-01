@@ -2,14 +2,17 @@ package com.taisf.services.pay.manager;
 
 import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.exception.BusinessException;
+import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.valenum.AccountTypeEnum;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.order.dao.OrderBaseDao;
 import com.taisf.services.pay.dao.PayRecordDao;
 import com.taisf.services.pay.dao.RechargeOrderDao;
+import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
+import com.taisf.services.pay.vo.RechargeOrderVO;
 import com.taisf.services.user.dao.AccountLogDao;
 import com.taisf.services.user.dao.UserAccountDao;
 import com.taisf.services.user.entity.AccountLogEntity;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 
 @Service("pay.rechargeOrderManagerImpl")
@@ -30,6 +34,34 @@ public class RechargeOrderManagerImpl {
 
 	@Resource(name = "user.accountUserDao")
 	private UserAccountDao userAccountDao;
+
+
+
+
+
+
+	/**
+	 * 分页获取充值信息
+	 * @author afi
+	 * @param rechargeOrderListRequest
+	 * @return
+	 */
+	public List<RechargeOrderVO> findRechargeOrderAll(RechargeOrderListRequest rechargeOrderListRequest){
+		return rechargeOrderDao.findRechargeOrderAll(rechargeOrderListRequest);
+	}
+
+
+
+	/**
+	 * 分页获取充值信息
+	 * @author afi
+	 * @param rechargeOrderListRequest
+	 * @return
+	 */
+	public PagingResult<RechargeOrderVO> findRechargeOrderByPage(RechargeOrderListRequest rechargeOrderListRequest){
+		return rechargeOrderDao.findRechargeOrderByPage(rechargeOrderListRequest);
+	}
+
 
 	/**
 	 * 获取当前的充值信息

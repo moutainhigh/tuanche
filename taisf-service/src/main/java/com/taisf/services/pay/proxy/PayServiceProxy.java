@@ -6,7 +6,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
-import com.taisf.services.device.proxy.PushServiceProxy;
+import com.taisf.services.device.api.PushService;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
@@ -44,7 +44,7 @@ public class PayServiceProxy implements PayService {
 
 
     @Resource(name = "push.pushServiceProxy")
-    private PushServiceProxy pushServiceProxy;
+    private PushService pushServiceProxy;
 
     @Resource(name = "order.orderManagerImpl")
     private OrderManagerImpl orderManager;

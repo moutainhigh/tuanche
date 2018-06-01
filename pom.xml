@@ -11,6 +11,7 @@
         <module>payment-api</module>
         <module>payment-service</module>
         <module>push-service</module>
+        <module>push-service-base</module>
     </modules>
 
 
