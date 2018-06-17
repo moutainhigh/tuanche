@@ -8,6 +8,7 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.excel.utils.ExcelUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.valenum.OrderTypeEnum;
+import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.common.valenum.RecordPayTypeEnum;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.order.api.OrderService;
@@ -24,8 +25,10 @@ import com.taisf.services.pay.manager.PayManagerImpl;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
+import com.taisf.web.enterprise.order.vo.OrderExcelAllVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -80,6 +84,54 @@ public class OrderController {
         request.setAttribute("orderSn",orderSn);
         return "order/orderProductList";
     }
+
+    /**
+     * @author:afi
+     * @date:2018/2/28
+     * @description:订单查询导出
+     **/
+    @RequestMapping("listOrderExcelALL")
+    public void listOrderExcelALL(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+
+        OrderInfoRequest orderInfoRequest = new OrderInfoRequest();
+        response.setContentType("octets/stream");
+        String fileName = "订单分析";
+        response.addHeader("Content-Disposition", "attachment;filename="+ new String(fileName.getBytes("GB2312"),"ISO8859-1") +".xls");
+        try{
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            orderInfoRequest.setBizCode(emp.getEmpBiz());
+            List<OrderInfoVO> orderExcelVOList = orderManagerImpl.listOrder(orderInfoRequest);
+
+            ExcelUtil.exportExcel(response.getOutputStream(), tran4excel(orderExcelVOList));
+        }catch (Exception e){
+            LogUtil.error(LOGGER, "订单查询导出excel异常:{}",e);
+        }
+    }
+
+    /**
+     * 转化逻辑
+     * @param orderExcelVOList
+     * @return
+     */
+    private List<OrderExcelAllVO> tran4excel(List<OrderInfoVO> orderExcelVOList){
+        List<OrderExcelAllVO> list = new ArrayList<>();
+        if(Check.NuNCollection(orderExcelVOList)){
+            return list;
+        }
+        for (OrderInfoVO infoVO : orderExcelVOList) {
+            OrderExcelAllVO excelVO = new OrderExcelAllVO();
+            BeanUtils.copyProperties(infoVO,excelVO);
+            excelVO.setOrderTypeStr(OrderTypeEnum.transCode2Name(infoVO.getOrderType()));
+            excelVO.setOrderStatusStr(OrdersStatusEnum.getByCode(infoVO.getOrderStatus()).getName());
+
+            list.add(excelVO);
+        }
+        return list;
+    }
+
+
+
+
 
     /**
      * @author:zhangzhengguang

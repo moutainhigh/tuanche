@@ -102,6 +102,15 @@
                         <button class="btn btn-primary" type="button" onclick="query();">
                             <i class="fa fa-search"></i>&nbsp;搜索
                         </button>
+
+                    </div>
+
+                    <div class="col-sm-1">
+
+
+                        <button class="btn btn-primary" type="button" onclick="fenxi();">
+                            <i class="fa fa-search"></i>&nbsp;下载分析
+                        </button>
                     </div>
                 </div>
             </div>
@@ -523,6 +532,13 @@
             layer.close(index);
         });
     }
+
+
+
+    function fenxi(){
+        window.location.href="order/listOrderExcelALL";
+    }
+
 
     function listOrderExcel(){
 

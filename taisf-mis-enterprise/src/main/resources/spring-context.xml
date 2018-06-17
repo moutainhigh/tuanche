@@ -12,7 +12,7 @@
 	<!--<context:property-placeholder location="classpath*:redis.properties,jdbc.properties,mis.properties" 
 		ignore-unresolvable="true" /> -->
 	<context:property-placeholder
-		location="classpath*:mis.properties,classpath*:jdbc.properties,classpath*:redis.properties"
+		location="classpath*:mis.properties,classpath*:jdbc.properties,classpath*:redis.properties,classpath*:push.properties"
 		local-override="true" ignore-unresolvable="true" />
 
 
@@ -39,6 +39,7 @@
 
 	<import resource="META-INF/spring/applicationContext-taisf.xml" />
 	<import resource="META-INF/spring/applicationContext-ups.xml" />
+	<import resource="META-INF/spring/applicationContext-push.xml" />
 	<import resource="spring-mvc.xml" />
 	<!--<import resource="spring-task.xml" />-->
 

@@ -234,6 +234,19 @@ public class OrderManagerImpl {
 		return pagingResult;
 	}
 
+
+	/**
+	 * 获取全量的订单列表
+	 * @param orderInfoRequest
+	 * @return
+	 */
+	public List<OrderInfoVO> listOrder(OrderInfoRequest orderInfoRequest){
+		return orderInfoDao.listOrder(orderInfoRequest);
+	}
+
+
+
+
 	/**
 	 * @author:zhangzhengguang
 	 * @date:2017/10/16

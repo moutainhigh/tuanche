@@ -101,6 +101,20 @@ public class OrderInfoDao extends BaseDao{
         return mybatisDaoContext.findForPage(SQLID + "pageListOrder", OrderInfoVO.class, orderInfoRequest,pageBounds);
     }
 
+
+	/**
+	 * 获取全量的订单列表
+	 * @param orderInfoRequest
+	 * @return
+	 */
+	public List<OrderInfoVO> listOrder(OrderInfoRequest orderInfoRequest){
+		PageBounds pageBounds=new PageBounds();
+		pageBounds.setLimit(orderInfoRequest.getLimit());
+		pageBounds.setPage(orderInfoRequest.getPage());
+		return mybatisDaoContext.findAll(SQLID + "pageListOrder", OrderInfoVO.class, orderInfoRequest);
+	}
+
+
    /**
     * @author:zhangzhengguang
     * @date:2018/2/28
