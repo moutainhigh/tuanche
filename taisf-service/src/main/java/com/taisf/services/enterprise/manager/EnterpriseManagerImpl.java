@@ -226,7 +226,7 @@ public class EnterpriseManagerImpl {
 				map.put(day.getDayTime(),day);
 			}
 		}
-		while (!firstDay.after(lastDay)){
+		while (firstDay.before(lastDay)){
 			String key = DateUtil.intFormat(firstDay)+"";
 			if (map.containsKey(key)){
 				//DB包含直接过
@@ -291,7 +291,7 @@ public class EnterpriseManagerImpl {
 	public List<DayVO> getCurrentWeek(String enterpriseCode){
 		Date first = DateUtil.getFirstDayOfWeekDay(new Date());
 		Map<String,EnterpriseDayEntity> map = new HashMap<>();
-		List<EnterpriseDayEntity>  list = getEnterpriseDaysByTime(enterpriseCode,first,DateUtil.jumpDate(first,6));
+		List<EnterpriseDayEntity>  list = getEnterpriseDaysByTime(enterpriseCode,first,DateUtil.jumpDate(first,7));
 		if (!Check.NuNCollection(list)){
 			for (EnterpriseDayEntity dayEntity : list) {
 				map.put(dayEntity.getDayTime(),dayEntity);
