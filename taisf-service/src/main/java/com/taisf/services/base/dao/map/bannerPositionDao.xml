@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="base.bannerPositionDao" >
+  <resultMap id="BaseResultMap" type="com.taisf.services.base.entity.BannerPositionEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="app_code" property="appCode" jdbcType="VARCHAR" />
+    <result column="postion_name" property="postionName" jdbcType="VARCHAR" />
+    <result column="position_code" property="positionCode" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, app_code, postion_name, position_code, is_del, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_banner_position
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getByAppCodeAndPositionCode" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from t_banner_position
+    where app_code = #{appCode,jdbcType=VARCHAR}
+    AND position_code = #{positionCode,jdbcType=VARCHAR}
+  </select>
+  <select id="getBannerPositionList" resultMap="BaseResultMap" parameterType="com.taisf.services.base.dto.BannerPositionRequest" >
+    select
+    <include refid="Base_Column_List" />
+    from t_banner_position
+    where 1=1
+    <if test="isDel!=null">
+      and is_del=#{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="appCode != null and appCode != ''">
+      and app_code=#{appCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="getBannerPositionPage" resultMap="BaseResultMap" parameterType="com.taisf.services.base.dto.BannerPositionRequest" >
+    select
+    <include refid="Base_Column_List" />
+    from t_banner_position
+    where 1=1
+    <if test="appCode != null and appCode != ''" >
+      AND  app_code = #{appCode,jdbcType=VARCHAR}
+    </if>
+    <if test="positionCode != null and positionCode != ''" >
+      AND position_code = #{positionCode}
+    </if>
+    <if test="postionName != null and postionName != ''" >
+      AND postion_name = #{postionName}
+    </if>
+    <if test="isDel != null" >
+      AND is_del = #{isDel}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_banner_position
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.taisf.services.base.entity.BannerPositionEntity" >
+    insert into t_banner_position (id, app_code, postion_name, 
+      position_code, is_del, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{appCode,jdbcType=VARCHAR}, #{postionName,jdbcType=VARCHAR}, 
+      #{positionCode,jdbcType=VARCHAR}, #{isDel,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taisf.services.base.entity.BannerPositionEntity" >
+    insert into t_banner_position
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="appCode != null" >
+        app_code,
+      </if>
+      <if test="postionName != null" >
+        postion_name,
+      </if>
+      <if test="positionCode != null" >
+        position_code,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appCode != null" >
+        #{appCode,jdbcType=VARCHAR},
+      </if>
+      <if test="postionName != null" >
+        #{postionName,jdbcType=VARCHAR},
+      </if>
+      <if test="positionCode != null" >
+        #{positionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taisf.services.base.entity.BannerPositionEntity" >
+    update t_banner_position
+    <set >
+      <if test="appCode != null" >
+        app_code = #{appCode,jdbcType=VARCHAR},
+      </if>
+      <if test="postionName != null" >
+        postion_name = #{postionName,jdbcType=VARCHAR},
+      </if>
+      <if test="positionCode != null" >
+        position_code = #{positionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taisf.services.base.entity.BannerPositionEntity" >
+    update t_banner_position
+    set app_code = #{appCode,jdbcType=VARCHAR},
+      postion_name = #{postionName,jdbcType=VARCHAR},
+      position_code = #{positionCode,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
