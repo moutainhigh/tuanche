@@ -3,6 +3,7 @@ package com.taisf.services.user.dao;
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.vo.EnterpriseAccountVO;
 import com.taisf.services.user.entity.UserAccountEntity;
@@ -169,19 +170,49 @@ public class UserAccountDao extends BaseDao {
 
 
     /**
+     * 自动扣除当前的金额
+     * @author afi
+     * @param userId
+     * @param allMoney
+     * @return
+     */
+    public int costUserBalanceAuto(String userId,int allMoney){
+        if (Check.NuNObjs(userId)){
+            throw new BusinessException("更新数据 id 为空,par:"+ JsonEntityTransform.Object2Json(userId));
+        }
+        UserAccountEntity accountEntity = getAccountUserByUid(userId);
+        if(Check.NuNObj(accountEntity)){
+            throw new BusinessException("异常的账户数据 id 为空,par:"+ JsonEntityTransform.Object2Json(userId));
+        }
+        Map<String,Object> par = new HashMap();
+        par.put("userId",userId);
+        int balance = ValueUtil.getintValue(accountEntity.getDrawBalance());
+        if (balance >= allMoney ){
+            par.put("money",-allMoney);
+            par.put("extMoney", 0);
+        }else {
+            par.put("money",-balance);
+            par.put("extMoney", balance-allMoney);
+        }
+        return mybatisDaoContext.update(SQLID + "changeUserBalance",par);
+    }
+
+
+    /**
      * 改变当前余额信息
      * @author afi
      * @param userId
      * @param money
      * @return
      */
-    public int changeUserBalance(String userId,int money){
+    public int changeUserBalance(String userId,int money,Integer extMoney){
         if (Check.NuNObjs(userId)){
             throw new BusinessException("更新数据 id 为空,par:"+ JsonEntityTransform.Object2Json(userId));
         }
         Map<String,Object> par = new HashMap();
         par.put("userId",userId);
         par.put("money",money);
+        par.put("extMoney", ValueUtil.getintValue(extMoney));
         return mybatisDaoContext.update(SQLID + "changeUserBalance",par);
     }
 

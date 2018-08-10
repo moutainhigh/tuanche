@@ -53,7 +53,7 @@ public interface RechargeOrderService {
      * @param rechargeOrderRequest
      * @return
      */
-    DataTransferObject<String> createRechargeOrder(RechargeOrderRequest rechargeOrderRequest);
+    DataTransferObject<RechargeOrderEntity> createRechargeOrder(RechargeOrderRequest rechargeOrderRequest);
 
     /**
      * 获取充值信息

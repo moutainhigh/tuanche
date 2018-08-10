@@ -4,6 +4,7 @@ import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.exception.BusinessException;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
+import com.jk.framework.base.utils.ValueUtil;
 import com.taisf.services.common.valenum.AccountTypeEnum;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.order.dao.OrderBaseDao;
@@ -102,8 +103,9 @@ public class RechargeOrderManagerImpl {
 		int num =   rechargeOrderDao.updateRechargeOrder(recordEntity);
 		if (num == 1){
 			int money = recordEntity.getTotalFee();
+			int extMoney = ValueUtil.getintValue(recordEntity.getExtMoney());
 			//消费当前的余额信息
-			int change = userAccountDao.changeUserBalance(recordEntity.getUserUid(),money);
+			int change = userAccountDao.changeUserBalance(recordEntity.getUserUid(),money, extMoney);
 			if (change != 1){
 				throw new BusinessException("更新用户金额失败");
 			}
@@ -111,6 +113,7 @@ public class RechargeOrderManagerImpl {
 			AccountLogEntity log = new AccountLogEntity();
 			log.setAccountType(AccountTypeEnum.FILL.getCode());
 			log.setBizMoney(money);
+			log.setExtMoney(extMoney);
 			log.setBizSn(recordEntity.getOrderSn());
 			log.setUserId(recordEntity.getUserUid());
 			log.setTitle("个人充值");

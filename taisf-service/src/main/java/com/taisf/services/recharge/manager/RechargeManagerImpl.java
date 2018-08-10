@@ -168,7 +168,7 @@ public class RechargeManagerImpl {
      */
     private void subEnterpriseAccount(String enterpriseCode,int money,String bizSn){
         //消费当前的余额信息
-        int num =  userAccountDao.changeUserBalance(enterpriseCode,money);
+        int num =  userAccountDao.changeUserBalance(enterpriseCode,money,null);
         if (num != 1){
             throw new BusinessException("更新用户金额失败");
         }
@@ -192,7 +192,7 @@ public class RechargeManagerImpl {
      */
     private void rollBackEnterpriseAccount(String enterpriseCode,int money,String bizSn){
         //消费当前的余额信息
-        userAccountDao.changeUserBalance(enterpriseCode,money);
+        userAccountDao.changeUserBalance(enterpriseCode,money,null);
         //记录当前的消费记录
         AccountLogEntity log = new AccountLogEntity();
         log.setAccountType(AccountTypeEnum.CHANGE.getCode());
@@ -214,7 +214,7 @@ public class RechargeManagerImpl {
      */
     private void forbiddenUserAccount(String userUid,int money,String bizSn){
         //消费当前的余额信息
-        userAccountDao.changeUserBalance(userUid,-money);
+        userAccountDao.changeUserBalance(userUid,-money,null);
         //记录当前的消费记录
         AccountLogEntity log = new AccountLogEntity();
         log.setAccountType(AccountTypeEnum.CHANGE.getCode());
@@ -234,7 +234,7 @@ public class RechargeManagerImpl {
      */
     private void fillUserAccount(String userUid,int money,String bizSn){
         //消费当前的余额信息
-        int num = userAccountDao.changeUserBalance(userUid,money);
+        int num = userAccountDao.changeUserBalance(userUid,money,null);
         if (num != 1){
             throw new BusinessException("更新用户金额失败");
         }
@@ -267,7 +267,7 @@ public class RechargeManagerImpl {
      */
     public void refundByOrder(String userUid,int money,String bizSn){
         //消费当前的余额信息
-        userAccountDao.changeUserBalance(userUid,money);
+        userAccountDao.changeUserBalance(userUid,money,null);
         //记录当前的消费记录
         AccountLogEntity log = new AccountLogEntity();
         log.setAccountType(AccountTypeEnum.REFUND.getCode());

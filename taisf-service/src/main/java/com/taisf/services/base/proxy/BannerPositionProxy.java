@@ -3,10 +3,10 @@ package com.taisf.services.base.proxy;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.log.utils.LogUtil;
-import com.jk.services.basedata.api.BannerPositionService;
-import com.jk.services.basedata.entity.BannerPositionEntity;
-import com.jk.services.basedata.request.BannerPositionRequest;
-import com.jk.services.basedata.service.BannerPositionServiceImpl;
+import com.taisf.services.base.api.BannerPositionService;
+import com.taisf.services.base.dto.BannerPositionRequest;
+import com.taisf.services.base.entity.BannerPositionEntity;
+import com.taisf.services.base.manager.BannerPositionManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class BannerPositionProxy implements BannerPositionService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BannerPositionProxy.class);
 	
 	@Autowired
-	private BannerPositionServiceImpl bannerPositionServiceImpl;
+	private BannerPositionManagerImpl bannerPositionServiceImpl;
 
 	@Override
 	public DataTransferObject<PagingResult<BannerPositionEntity>> PageBannerPositionList(BannerPositionRequest request) {

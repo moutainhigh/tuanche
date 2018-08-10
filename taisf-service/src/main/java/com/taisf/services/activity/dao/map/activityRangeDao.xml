@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="activity.activityRangeDao" >
+  <resultMap id="BaseResultMap" type="com.taisf.services.activity.entity.ActivityRangeEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="act_sn" property="actSn" jdbcType="VARCHAR" />
+    <result column="range_limit" property="rangeLimit" jdbcType="INTEGER" />
+    <result column="range_money" property="rangeMoney" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, act_sn, range_limit, range_money, create_time
+  </sql>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_activity_range
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getActRangeBySn" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_activity_range
+    where act_sn = #{actSn,jdbcType=VARCHAR}
+    ORDER BY range_limit DESC
+  </select>
+
+
+
+  <delete id="deleteAllByActSn" parameterType="java.lang.String" >
+    delete from t_activity_range
+    where act_sn = #{actSn,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="saveActRange" parameterType="com.taisf.services.activity.entity.ActivityRangeEntity" >
+    insert into t_activity_range
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+
+      <if test="actSn != null" >
+        act_sn,
+      </if>
+
+      <if test="rangeLimit != null" >
+        range_limit,
+      </if>
+      <if test="rangeMoney != null" >
+        range_money,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+
+      <if test="actSn != null" >
+        #{actSn,jdbcType=VARCHAR},
+      </if>
+
+      <if test="rangeLimit != null" >
+        #{rangeLimit,jdbcType=INTEGER},
+      </if>
+      <if test="rangeMoney != null" >
+         #{rangeMoney,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+ 
+</mapper>

@@ -9,6 +9,8 @@
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="account_type" property="accountType" jdbcType="INTEGER" />
     <result column="biz_money" property="bizMoney" jdbcType="INTEGER" />
+    <result column="ext_money" property="extMoney" jdbcType="INTEGER" />
+
     <result column="biz_status" property="bizStatus" jdbcType="INTEGER" />
     <result column="biz_sn" property="bizSn" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -23,7 +25,7 @@
 
 
   <sql id="Base_Column_List" >
-    id, user_id, title, account_type,  biz_money, biz_status, biz_sn, create_time
+    id, user_id, title, account_type,  biz_money,ext_money, biz_status, biz_sn, create_time
   </sql>
 
 
@@ -32,7 +34,7 @@
 
   <select id="rechargeMoneyLogByPage" resultMap="BaseResultMapUser" parameterType="com.taisf.services.user.dto.UserMoneyRequest" >
     select
-      t.id, t.user_id, t.title, t.account_type,  t.biz_money, t.biz_status, t.biz_sn, t.create_time,
+      t.id, t.user_id, t.title, t.account_type,  t.biz_money, t.ext_money, t.biz_status, t.biz_sn, t.create_time,
       u.user_name,  u.user_phone
     from t_user_account_log t
       inner join t_user u on t.user_id = u.user_uid
@@ -101,6 +103,12 @@
       <if test="bizMoney != null" >
         biz_money,
       </if>
+
+      <if test="extMoney != null" >
+        ext_money,
+      </if>
+
+
       <if test="bizStatus != null" >
         biz_status,
       </if>
@@ -129,6 +137,10 @@
       <if test="bizMoney != null" >
         #{bizMoney,jdbcType=INTEGER},
       </if>
+      <if test="extMoney != null" >
+        #{extMoney,jdbcType=INTEGER},
+      </if>
+
       <if test="bizStatus != null" >
         #{bizStatus,jdbcType=INTEGER},
       </if>

@@ -8,6 +8,9 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.SnUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.activity.entity.ActivityRangeEntity;
+import com.taisf.services.activity.manager.ActivityManagerImpl;
+import com.taisf.services.activity.vo.ActivityVO;
 import com.taisf.services.pay.api.RechargeOrderService;
 import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.dto.RechargeOrderRequest;
@@ -50,6 +53,9 @@ public class RechargeOrderProxy  implements RechargeOrderService {
 
     @Resource(name = "user.userManagerImpl")
     private UserManagerImpl userManager;
+
+    @Resource(name = "activity.activityManagerImpl")
+    private ActivityManagerImpl activityManager;
 
 
 
@@ -106,8 +112,8 @@ public class RechargeOrderProxy  implements RechargeOrderService {
      * @return
      */
     @Override
-    public DataTransferObject<String> createRechargeOrder(RechargeOrderRequest rechargeOrderRequest) {
-        DataTransferObject dto = new DataTransferObject();
+    public DataTransferObject<RechargeOrderEntity> createRechargeOrder(RechargeOrderRequest rechargeOrderRequest) {
+        DataTransferObject<RechargeOrderEntity> dto = new DataTransferObject();
 
         if (Check.NuNObj(rechargeOrderRequest)){
             dto.setErrorMsg("参数异常");
@@ -142,6 +148,11 @@ public class RechargeOrderProxy  implements RechargeOrderService {
         rechargeOrderEntity.setSupplierCode(userEntity.getEnterpriseCode());
         rechargeOrderEntity.setEnterpriseCode(userEntity.getBizCode());
         try{
+            if(rechargeOrderRequest.getActivityFlag()){
+                //填充当前的充值的送钱的活动
+                this.fillRechargeExtMoney(rechargeOrderEntity);
+            }
+            //直接保存当前的充值信息
             int num = rechargeOrderManager.saveRechargeOrder(rechargeOrderEntity);
             if (num == 0){
                 dto.setErrorMsg("充值失败");
@@ -151,10 +162,50 @@ public class RechargeOrderProxy  implements RechargeOrderService {
             dto.setErrorMsg("充值失败");
             return dto;
         }
-        dto.setData(orderSn);
+        dto.setData(rechargeOrderEntity);
         return dto;
     }
 
+    /**
+     * 填充当前的充值信息
+     * @param rechargeOrderEntity
+     */
+    private void fillRechargeExtMoney(RechargeOrderEntity rechargeOrderEntity){
+        if (Check.NuNObj(rechargeOrderEntity)){
+            return;
+        }
+        //获取当前的返利情况
+        rechargeOrderEntity.setExtMoney(getRechargeExtMoney(rechargeOrderEntity.getNeedMoney()));
+    }
+
+
+    /**
+     * 获取当前充值的返利活动
+     * @param money
+     * @return
+     */
+    private int getRechargeExtMoney(Integer money){
+        int ext = 0;
+        if (ValueUtil.getintValue(money) <= 0){
+            return ext;
+        }
+        ActivityVO last = activityManager.getLastAct4ChargeVo();
+        if (Check.NuNObj(last)){
+            return ext;
+        }
+        List<ActivityRangeEntity> list = last.getRangeList();
+        if(Check.NuNCollection(list)){
+            return ext;
+        }
+        for (ActivityRangeEntity activityRangeEntity : list) {
+            int limit = ValueUtil.getintValue(activityRangeEntity.getRangeLimit());
+            if (money >= limit){
+                ext =ValueUtil.getintValue(activityRangeEntity.getRangeMoney());
+                return ext;
+            }
+        }
+        return ext;
+    }
 
     /**
      * 处理回调

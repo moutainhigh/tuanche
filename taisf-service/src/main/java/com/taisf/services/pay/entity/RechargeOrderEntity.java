@@ -41,9 +41,16 @@ public class RechargeOrderEntity extends BaseEntity{
     private Integer totalFee;
 
     /**
+     * 赠送金额
+     */
+    private Integer extMoney;
+
+
+    /**
      * 应收金额
      */
     private Integer needMoney;
+
 
     /**
      * 支付流水号
@@ -199,4 +206,12 @@ public class RechargeOrderEntity extends BaseEntity{
         this.lastModifyDate = lastModifyDate;
     }
 
+
+    public Integer getExtMoney() {
+        return extMoney;
+    }
+
+    public void setExtMoney(Integer extMoney) {
+        this.extMoney = extMoney;
+    }
 }

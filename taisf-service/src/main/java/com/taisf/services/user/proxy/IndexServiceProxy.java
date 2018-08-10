@@ -179,7 +179,7 @@ public class IndexServiceProxy implements IndexService {
             userVO.setIsAccount(YesNoEnum.YES.getCode());
         }
         //获取当前的余额
-        int drawBalance = ValueUtil.getintValue(accountEntity.getDrawBalance());
+        int drawBalance = ValueUtil.getintValue(accountEntity.transBalance());
         if (drawBalance < 0){
             dto.setErrorMsg("异常的账户信息");
             return ;

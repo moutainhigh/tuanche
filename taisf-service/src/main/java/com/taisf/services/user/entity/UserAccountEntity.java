@@ -1,6 +1,7 @@
 package com.taisf.services.user.entity;
 
 import com.jk.framework.base.entity.BaseEntity;
+import com.jk.framework.base.utils.ValueUtil;
 
 import java.util.Date;
 
@@ -55,6 +56,11 @@ public class UserAccountEntity extends BaseEntity {
     private Integer freezeMoney;
 
     /**
+     * 赠送金额
+     */
+    private Integer extMoney;
+
+    /**
      * 用户积分
      */
     private Integer userIntegral;
@@ -101,6 +107,14 @@ public class UserAccountEntity extends BaseEntity {
 
     public Integer getDrawBalance() {
         return drawBalance;
+    }
+
+    /**
+     * 获取当前的可用余额
+     * @return
+     */
+    public Integer transBalance() {
+        return ValueUtil.getintValue(drawBalance) +  ValueUtil.getintValue(extMoney);
     }
 
     public void setDrawBalance(Integer drawBalance) {
@@ -162,5 +176,14 @@ public class UserAccountEntity extends BaseEntity {
 
     public void setAccountPassword(String accountPassword) {
         this.accountPassword = accountPassword;
+    }
+
+
+    public Integer getExtMoney() {
+        return extMoney;
+    }
+
+    public void setExtMoney(Integer extMoney) {
+        this.extMoney = extMoney;
     }
 }
