@@ -24,9 +24,11 @@ public class ProductClassifyInfo extends ProductClassifyVO {
     private List<SupplierProductVO> list = new ArrayList<>();
 
 
+
     public List<SupplierProductVO> getList() {
         return list;
     }
+
 
     public void setList(List<SupplierProductVO> list) {
         this.list = list;

@@ -37,6 +37,16 @@ public interface SupplierProductService {
      */
     DataTransferObject<SelectInfo4Week> getSupplierClassifyProductByWeek(String enterpriseCode,String supplierCode, Integer week);
 
+
+    /**
+     * 获取当前的列表信息
+     *
+     * @param supplierCode
+     * @return
+     */
+    DataTransferObject<SelectInfo4Week> getSupplierClassifyProductByWeekAll(String enterpriseCode,String supplierCode, Integer week);
+
+
     /**
      * 获取当前的列表信息
      * @param supplierCode

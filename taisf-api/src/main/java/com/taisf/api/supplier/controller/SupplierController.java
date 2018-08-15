@@ -150,6 +150,41 @@ public class SupplierController extends AbstractController {
      * @param response
      * @return
      */
+    @RequestMapping(value = "/classifyProductWeekAll", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDto classifyProductWeekAll(HttpServletRequest request, HttpServletResponse response,String supplierCode,Integer week) {
+
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(supplierCode)) {
+            return new ResponseDto("参数异常");
+        }
+        if (Check.NuNObj(week)){
+            week = WeekUtil.getWeek();
+        }
+        LogUtil.info(LOGGER, "classifyProductWeekAll传入参数:{}", JsonEntityTransform.Object2Json(supplierCode));
+        try {
+            DataTransferObject<SelectInfo4Week> dto =supplierProductService.getSupplierClassifyProductByWeekAll(user.getEnterpriseCode(),supplierCode,week);
+            return dto.trans2Res();
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【获取分类商品】错误,par:{}, e={}",JsonEntityTransform.Object2Json(supplierCode), e);
+            return new ResponseDto("未知错误");
+        }
+    }
+
+
+    /**
+     * 获取商品分类
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/classifyProductWeek", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDto classifyProduct(HttpServletRequest request, HttpServletResponse response,String supplierCode,Integer week) {

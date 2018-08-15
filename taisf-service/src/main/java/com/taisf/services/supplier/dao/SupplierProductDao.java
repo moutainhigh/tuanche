@@ -43,6 +43,18 @@ public class SupplierProductDao extends BaseDao {
 
 
 
+
+    /**
+     * 获取当前供应商的全时菜单信息
+     * @author afi
+     * @param supplierProductRequest
+     * @return
+     */
+    public List<ProductEntity> getSupplierProductAllTime(SupplierProductRequest supplierProductRequest){
+        return mybatisDaoContext.findAll(SQLID+"getSupplierProductAllTime", ProductEntity.class, supplierProductRequest);
+    }
+
+
     /**
      * 获取当前供应商的菜单信息
      * @author afi

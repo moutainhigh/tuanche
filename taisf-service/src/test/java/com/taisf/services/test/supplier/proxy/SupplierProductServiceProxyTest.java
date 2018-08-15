@@ -65,6 +65,17 @@ public class SupplierProductServiceProxyTest extends BaseTest {
     }
 
 
+
+
+    @Test
+    public void getSupplierClassifyProductByWeekAllTest() {
+
+        DataTransferObject<SelectInfo4Week> classify = supplierProductService.getSupplierClassifyProductByWeekAll("0001","jipin",null);
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+
+    }
+
+
     @Test
     public void getSupplierClassifyProductByWeekTest() {
 

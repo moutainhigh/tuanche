@@ -68,7 +68,7 @@ public class EnterpriseConfigDaoTest  extends BaseTest {
 
     @Test
     public void getEnterpriseConfigByCodeTest() {
-        EnterpriseConfigEntity rst = enterpriseConfigDao.getEnterpriseConfigByCode("code");
+        EnterpriseConfigEntity rst = enterpriseConfigDao.getEnterpriseConfigByCode("qpg001");
         System.out.println(JsonEntityTransform.Object2Json(rst));
     }
 

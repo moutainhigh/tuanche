@@ -14,14 +14,16 @@
     <result column="for_dinner" jdbcType="INTEGER" property="forDinner" />
     <result column="dinner_start" jdbcType="VARCHAR" property="dinnerStart" />
     <result column="dinner_end" jdbcType="VARCHAR" property="dinnerEnd" />
+    <result column="for_all" jdbcType="INTEGER" property="forAll" />
+    <result column="all_start" jdbcType="VARCHAR" property="allStart" />
+    <result column="all_end" jdbcType="VARCHAR" property="allEnd" />
   </resultMap>
 
 
   <sql id="Base_Column_List">
     id, enterprise_code, boss_price, emp_price, for_lunch, lunch_start,
-    lunch_end, for_dinner, dinner_start, dinner_end
+    lunch_end, for_dinner, dinner_start, dinner_end,for_all,all_start,all_end
   </sql>
-
 
   <select id="getEnterpriseConfigByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -65,6 +67,17 @@
       <if test="dinnerEnd != null">
         dinner_end,
       </if>
+
+      <if test="forAll != null">
+        for_all,
+      </if>
+      <if test="allStart != null">
+        all_start,
+      </if>
+      <if test="allEnd != null">
+        all_end,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
 
@@ -96,6 +109,15 @@
       </if>
       <if test="dinnerEnd != null">
         #{dinnerEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="forAll != null">
+        #{forAll,jdbcType=INTEGER},
+      </if>
+      <if test="allStart != null">
+        #{allStart,jdbcType=VARCHAR},
+      </if>
+      <if test="allEnd != null">
+        #{allEnd,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +188,17 @@
       <if test="dinnerEnd != null">
         dinner_end = #{dinnerEnd,jdbcType=VARCHAR},
       </if>
+
+      <if test="forAll != null">
+        for_all = #{forAll,jdbcType=INTEGER},
+      </if>
+      <if test="allStart != null">
+        all_start = #{allStart,jdbcType=VARCHAR},
+      </if>
+      <if test="allEnd != null">
+        all_end = #{allEnd,jdbcType=VARCHAR},
+      </if>
+
     </set>
     where enterprise_code = #{enterpriseCode,jdbcType=INTEGER}
   </update>

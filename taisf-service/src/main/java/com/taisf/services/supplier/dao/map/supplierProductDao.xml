@@ -12,6 +12,7 @@
         <result column="is_send" jdbcType="SMALLINT" property="isSend"/>
         <result column="for_lunch" jdbcType="INTEGER" property="forLunch"/>
         <result column="for_dinner" jdbcType="INTEGER" property="forDinner"/>
+        <result column="for_all" jdbcType="INTEGER" property="forAll"/>
     </resultMap>
 
 
@@ -30,19 +31,41 @@
         <result column="is_del" jdbcType="INTEGER" property="isDel"/>
         <result column="for_lunch" jdbcType="INTEGER" property="forLunch"/>
         <result column="for_dinner" jdbcType="INTEGER" property="forDinner"/>
-
+        <result column="for_all" jdbcType="INTEGER" property="forAll"/>
     </resultMap>
 
 
     <sql id="Base_Column_List_Supplier">
     t.id, t.product_name, t.product_classify, t.product_type, t.product_source, t.product_des, t.product_pic,
-    t.price_sale  as price_sale,   t.price_market  as price_market, t.create_time, t.update_time, is_del, p.for_lunch, p.for_dinner
+    t.price_sale  as price_sale,   t.price_market  as price_market, t.create_time, t.update_time, is_del, p.for_lunch, p.for_dinner,p.for_all
   </sql>
 
 
     <sql id="Base_Column_List">
-    id, supplier_code, product_code, product_type,product_price, create_time, is_send,for_lunch,for_dinner
+    id, supplier_code, product_code, product_type,product_price, create_time, is_send,for_lunch,for_dinner,for_all
   </sql>
+
+
+
+
+    <select id="getSupplierProductAllTime" parameterType="com.taisf.services.supplier.dto.SupplierProductRequest"
+            resultMap="BaseProductMap">
+        select
+        <include refid="Base_Column_List_Supplier"/>
+        from t_product t
+        inner join t_supplier_product p ON p.product_code = t.id
+        where p.supplier_code = #{supplierCode,jdbcType=VARCHAR}
+        and p.for_all = 1
+        <if test="week != null">
+            and p.week = #{week,jdbcType=INTEGER}
+        </if>
+        <if test="productIds != null ">
+            and t.id in <foreach collection="productIds" item="item" index="index"
+                                 open="(" separator="," close=")">#{item}</foreach>
+        </if>
+
+    </select>
+
 
     <select id="getProductListBySupplierAndType" parameterType="com.taisf.services.supplier.dto.SupplierProductRequest"
             resultMap="BaseProductMap">
@@ -65,6 +88,8 @@
         <if test="orderType != null and orderType == '30' ">
             and p.for_dinner = 1
         </if>
+
+
         <if test="productIds != null ">
             and t.id in <foreach collection="productIds" item="item" index="index"
                                open="(" separator="," close=")">#{item}</foreach>
@@ -149,6 +174,9 @@
             <if test="forDinner != null">
                 for_dinner,
             </if>
+            <if test="forAll != null">
+                for_all,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="week != null">
@@ -177,6 +205,9 @@
             </if>
             <if test="forDinner != null">
                 #{forDinner,jdbcType=INTEGER},
+            </if>
+            <if test="forAll != null">
+                #{forAll,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -217,12 +248,15 @@
 
         <result column="for_lunch" jdbcType="INTEGER" property="forLunch"/>
         <result column="for_dinner" jdbcType="INTEGER" property="forDinner"/>
+        <result column="for_all" jdbcType="INTEGER" property="forAll"/>
+
     </resultMap>
 
     <select id="pageListSupplierProduct" parameterType="com.taisf.services.product.dto.ProductListRequest"
             resultMap="BaseResultMapList">
         select t_product.id,
-        t_product.product_name, t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale,for_lunch,for_dinner
+        t_product.product_name, t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale,for_lunch,for_all
+
         from t_supplier_product
         INNER JOIN t_product ON t_product.id = t_supplier_product.product_code
         where 1=1
@@ -250,6 +284,9 @@
         </if>
         <if test="forDinner != null and forDinner != ''">
             AND for_dinner = #{forDinner}
+        </if>
+        <if test="forAll != null and forAll != ''">
+            AND for_all = #{forAll}
         </if>
     </select>
 </mapper>
