@@ -396,7 +396,7 @@ public class UserServiceProxy implements UserService {
             dto.setErrorMsg("异常的账户信息");
             return;
         }
-        vo.setDrawBalance(accountEntity.transBalance());
+        vo.setDrawBalance(accountEntity.getDrawBalance());
         //设置属性
         dto.setData(vo);
     }

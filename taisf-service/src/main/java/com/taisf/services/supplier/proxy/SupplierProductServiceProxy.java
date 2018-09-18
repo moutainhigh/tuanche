@@ -4,7 +4,6 @@ import com.jk.framework.base.constant.YesNoEnum;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
-import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
@@ -101,66 +100,6 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         OrderTypeEnum orderTypeEnum = orderTypeDto.getData();
         return getSupplierClassifyProductBase(supplierCode, WeekUtil.getWeek(), dto,orderTypeEnum);
     }
-
-
-
-    /**
-     * 获取当前的列表信息
-     *
-     * @param supplierCode
-     * @return
-     */
-    @Override
-    public DataTransferObject<SelectInfo4Week> getSupplierClassifyProductByWeekAll(String enterpriseCode,String supplierCode, Integer week) {
-        //获取当前的菜单情况
-        DataTransferObject<SelectInfo4Week> dto = this.getSupplierClassifyProductByWeek(enterpriseCode,supplierCode,week);
-        //补充全时信息
-        this.fillAllTime(dto,enterpriseCode, supplierCode,week);
-        return dto;
-    }
-
-
-    /**
-     * 填充当前的全时的信息
-     * @param dto
-     * @param enterpriseCode
-     * @param week
-     */
-    private void fillAllTime(DataTransferObject<SelectInfo4Week> dto,String enterpriseCode,String supplierCode, Integer week){
-        SelectInfo4Week info4Week = dto.getData();
-        if (Check.NuNObj(info4Week)){
-            info4Week = new SelectInfo4Week();
-        }
-        EnterpriseConfigEntity config = enterpriseManager.getEnterpriseConfigByCode(enterpriseCode);
-        if (Check.NuNObj(config)){
-            return;
-        }
-        if (ValueUtil.getintValue(config.getForAll()) != YesNoEnum.YES.getCode()){
-            return;
-        }
-        Date now = new Date();
-
-        Date start = DateUtil.connectDate(now,config.getAllStart());
-        Date end = DateUtil.connectDate(now,config.getAllEnd());
-        if(start.after(now) ){
-            return;
-        }
-        if(end.before(now)){
-            return;
-        }
-        if (Check.NuNObj(week)){
-            week = WeekUtil.getWeek();
-        }
-        //时间匹配.返回全时信息
-        SupplierProductRequest request = new SupplierProductRequest();
-        request.setSupplierCode(supplierCode);
-        request.setWeek(week);
-        List<ProductEntity> productAllTime = supplierManager.getSupplierProductAllTime(request);
-        info4Week.setProductAll(transProductList2VO(productAllTime, SupplierProductTypeEnum.PRODUCT));
-        dto.setData(info4Week);
-    }
-
-
 
     /**
      * 获取当前的列表信息
@@ -599,27 +538,6 @@ public class SupplierProductServiceProxy implements SupplierProductService {
     public Map<String, List<SupplierProductVO>> getSupplierProductMap(String supplierCode,Integer week) {
         return getSupplierProductMap(supplierCode,week,null);
     }
-
-
-    /**
-     * 获取当前的全时的菜单信息
-     *
-     * @param supplierCode
-     * @return
-     * @author afi
-     */
-    public  List<SupplierProductVO> getSupplierProductAllTime(String supplierCode,Integer week) {
-        SupplierProductRequest request = new SupplierProductRequest();
-        request.setSupplierCode(supplierCode);
-        if (Check.NuNObj(week)){
-            week = WeekUtil.getWeek();
-        }
-        request.setWeek(week);
-        List<ProductEntity> list = supplierManager.getSupplierProductAllTime(request);
-        return  this.transProductList2VO(list, SupplierProductTypeEnum.PRODUCT);
-    }
-
-
 
     /**
      * 获取当前的分类

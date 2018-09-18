@@ -130,16 +130,6 @@ public class EnterpriseManagerImpl {
 		return enterpriseDao.getEnterpriseExtByPage(request);
 	}
 
-	/**
-	 * 获取当前的企业配置
-	 * @author afi
-	 * @param enterpriseCode
-	 * @return
-	 */
-	public EnterpriseConfigEntity getEnterpriseConfigByCode(String enterpriseCode){
-		return enterpriseConfigDao.getEnterpriseConfigByCode(enterpriseCode);
-	}
-
 
 	/**
 	 * 获取当前的企业比较全的信息

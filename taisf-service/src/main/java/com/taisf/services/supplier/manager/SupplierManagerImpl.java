@@ -113,19 +113,6 @@ public class SupplierManagerImpl {
 
 
 
-
-	/**
-	 * 获取当前供应商当前的全时供应情况
-	 * @author afi
-	 * @param supplierProductRequest
-	 * @return
-	 */
-	public List<ProductEntity> getSupplierProductAllTime(SupplierProductRequest supplierProductRequest){
-		//获取商品列表
-		return supplierProductDao.getSupplierProductAllTime(supplierProductRequest);
-	}
-
-
 	/**
 	 * 根据供应商获取其菜单信息
 	 * @author afi

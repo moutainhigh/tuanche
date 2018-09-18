@@ -12,8 +12,6 @@
     <result column="draw_balance" property="drawBalance" jdbcType="INTEGER" />
     <result column="draw_not_balance" property="drawNotBalance" jdbcType="INTEGER" />
     <result column="freeze_money" property="freezeMoney" jdbcType="INTEGER" />
-    <result column="ext_money" property="extMoney" jdbcType="INTEGER" />
-
     <result column="user_integral" property="userIntegral" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -22,7 +20,7 @@
 
 
   <sql id="Base_Column_List" >
-    id, user_id,account_password, account_status, draw_balance, draw_not_balance, freeze_money,ext_money, user_integral,
+    id, user_id,account_password, account_status, draw_balance, draw_not_balance, freeze_money, user_integral,
      create_time, update_time, is_del
   </sql>
 
@@ -30,8 +28,7 @@
   <!-- 改变当前余额信息 -->
   <update id="changeUserBalance" parameterType="java.util.Map" >
     update t_user_account
-    SET draw_balance = draw_balance  +  #{money,jdbcType=INTEGER},
-     draw_balance = draw_balance  +  #{extMoney,jdbcType=INTEGER}
+    SET draw_balance = draw_balance  +  #{money,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
 
@@ -42,6 +39,9 @@
     SET draw_balance = draw_balance  +  #{money,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
+
+
+
 
   <select id="getEnterpriseAccountByList" resultType="com.taisf.services.enterprise.vo.EnterpriseAccountVO" parameterType="java.util.Map" >
     select
@@ -107,11 +107,6 @@
       <if test="freezeMoney != null" >
         freeze_money,
       </if>
-
-      <if test="extMoney != null" >
-        ext_money,
-      </if>
-
       <if test="userIntegral != null" >
         user_integral,
       </if>
@@ -197,12 +192,6 @@
       <if test="freezeMoney != null" >
         freeze_money = #{freezeMoney,jdbcType=INTEGER},
       </if>
-
-      <if test="extMoney != null" >
-        ext_money = #{extMoney,jdbcType=INTEGER},
-      </if>
-
-
       <if test="userIntegral != null" >
         user_integral = #{userIntegral,jdbcType=INTEGER},
       </if>

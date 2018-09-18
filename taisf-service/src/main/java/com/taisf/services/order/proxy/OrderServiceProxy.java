@@ -1080,7 +1080,7 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
         //获取当前的余额
-        int drawBalance = ValueUtil.getintValue(accountEntity.transBalance());
+        int drawBalance = ValueUtil.getintValue(accountEntity.getDrawBalance());
         if (drawBalance < 0){
             dto.setErrorMsg("异常的账户信息");
             return;
@@ -1159,7 +1159,7 @@ public class OrderServiceProxy implements OrderService {
             return dto;
         }
         //获取当前的余额
-        int drawBalance = ValueUtil.getintValue(accountEntity.transBalance());
+        int drawBalance = ValueUtil.getintValue(accountEntity.getDrawBalance());
         if (drawBalance < 0){
             dto.setErrorMsg("异常的账户信息");
             return dto;
@@ -1201,7 +1201,7 @@ public class OrderServiceProxy implements OrderService {
             return;
         }
         //获取当前的余额
-        int drawBalance = ValueUtil.getintValue(accountEntity.transBalance());
+        int drawBalance = ValueUtil.getintValue(accountEntity.getDrawBalance());
         if (drawBalance < 0){
             dto.setErrorMsg("异常的账户信息");
             return;

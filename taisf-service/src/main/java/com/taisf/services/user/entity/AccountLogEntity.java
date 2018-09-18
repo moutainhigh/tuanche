@@ -49,14 +49,6 @@ public class AccountLogEntity extends BaseEntity {
     private Integer bizMoney;
 
     /**
-     * 活动金额
-     */
-    @FieldMeta(skip = true)
-    private Integer extMoney;
-
-
-
-    /**
      * 状态:1:处理完成  暂时现在所有的状态都是完成
      */
     @FieldMeta(skip = true)
@@ -150,11 +142,5 @@ public class AccountLogEntity extends BaseEntity {
     }
 
 
-    public Integer getExtMoney() {
-        return extMoney;
-    }
 
-    public void setExtMoney(Integer extMoney) {
-        this.extMoney = extMoney;
-    }
 }

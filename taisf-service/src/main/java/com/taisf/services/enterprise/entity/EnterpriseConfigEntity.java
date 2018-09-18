@@ -69,46 +69,6 @@ public class EnterpriseConfigEntity extends BaseEntity {
      */
     private String dinnerEnd;
 
-
-    /**
-     * 是否全时
-     */
-    private Integer forAll;
-
-    /**
-     * 全时开始时间
-     */
-    private String allStart;
-
-    /**
-     * 全时开始时间
-     */
-    private String allEnd;
-
-    public Integer getForAll() {
-        return forAll;
-    }
-
-    public void setForAll(Integer forAll) {
-        this.forAll = forAll;
-    }
-
-    public String getAllStart() {
-        return allStart;
-    }
-
-    public void setAllStart(String allStart) {
-        this.allStart = allStart;
-    }
-
-    public String getAllEnd() {
-        return allEnd;
-    }
-
-    public void setAllEnd(String allEnd) {
-        this.allEnd = allEnd;
-    }
-
     public Integer getId() {
         return id;
     }

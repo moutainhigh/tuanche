@@ -399,7 +399,7 @@ public class OrderManagerImpl {
 	private void costUserBalanceByOrderSn(String userUid,String orderSn,int money){
 
 		//消费当前的余额信息
-		userAccountDao.costUserBalanceAuto(userUid,money);
+		userAccountDao.changeUserBalance(userUid,-money);
 		//记录当前的消费记录
 		AccountLogEntity log = new AccountLogEntity();
 		log.setAccountType(AccountTypeEnum.CONSUME.getCode());

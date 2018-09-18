@@ -29,20 +29,6 @@ public class RechargeOrderRequest  extends BaseEntity {
      */
     private Integer needMoney;
 
-    /**
-     * 是否需要活动
-     */
-    private Boolean activityFlag = false;
-
-
-    public Boolean getActivityFlag() {
-        return activityFlag;
-    }
-
-    public void setActivityFlag(Boolean activityFlag) {
-        this.activityFlag = activityFlag;
-    }
-
     public String getUserUid() {
         return userUid;
     }

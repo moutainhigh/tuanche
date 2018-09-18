@@ -46,7 +46,7 @@ public class RechargeOrderProxyTest extends BaseTest {
         RechargeOrderRequest payRecordRequest = new RechargeOrderRequest();
         payRecordRequest.setUserUid("baozi");
         payRecordRequest.setNeedMoney(100);
-        DataTransferObject<RechargeOrderEntity> dto = rechargeOrderProxy.createRechargeOrder(payRecordRequest);
+        DataTransferObject<String> dto = rechargeOrderProxy.createRechargeOrder(payRecordRequest);
         System.out.println(JsonEntityTransform.Object2Json(dto));
     }
 

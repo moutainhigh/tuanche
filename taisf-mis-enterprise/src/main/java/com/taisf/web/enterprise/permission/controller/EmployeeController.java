@@ -71,6 +71,10 @@ public class EmployeeController {
     @RequestMapping("userListData")
     @ResponseBody
     public PageResult userListData(HttpServletRequest request, EmployeeRequest paramRequest) {
+        EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+
+        paramRequest.setSupplierCode(emp.getEmpBiz());
+
         PageResult rst = new PageResult();
         PagingResult<EmployeeEntity> pr = employeeService.findEmployeeForPage(paramRequest);
         rst.setRows(pr.getList());

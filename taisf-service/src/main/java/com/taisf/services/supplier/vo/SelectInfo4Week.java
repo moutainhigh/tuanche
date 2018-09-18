@@ -29,11 +29,6 @@ public class SelectInfo4Week  extends BaseEntity {
 
 
     /**
-     * 全时列表
-     */
-    List<SupplierProductVO> productAll = new ArrayList<>();
-
-    /**
      * 订饭时间
      */
     private List<FanVO> timeList = new ArrayList<>();
@@ -53,13 +48,5 @@ public class SelectInfo4Week  extends BaseEntity {
 
     public void setTimeList(List<FanVO> timeList) {
         this.timeList = timeList;
-    }
-
-    public List<SupplierProductVO> getProductAll() {
-        return productAll;
-    }
-
-    public void setProductAll(List<SupplierProductVO> productAll) {
-        this.productAll = productAll;
     }
 }

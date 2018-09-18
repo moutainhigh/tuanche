@@ -46,6 +46,8 @@ public class SupplierProductEntity extends BaseEntity {
 
     private Short isSend;
 
+
+
     /**
      * 是否午餐
      */
@@ -55,20 +57,6 @@ public class SupplierProductEntity extends BaseEntity {
      * 是否晚餐
      */
     private Integer forDinner;
-
-    /**
-     * 是否全时
-     */
-    private Integer forAll;
-
-
-    public Integer getForAll() {
-        return forAll;
-    }
-
-    public void setForAll(Integer forAll) {
-        this.forAll = forAll;
-    }
 
     public Integer getForLunch() {
         return forLunch;
