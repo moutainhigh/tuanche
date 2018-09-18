@@ -39,6 +39,20 @@ public class EmployeeRequest extends PageRequest {
 	 */
 	private String empMobile;
 
+	/**
+	 * 企业编号
+	 */
+	private String supplierCode;
+
+
+	public String getSupplierCode() {
+		return supplierCode;
+	}
+
+	public void setSupplierCode(String supplierCode) {
+		this.supplierCode = supplierCode;
+	}
+
 	public String getEmpName() {
 		return empName;
 	}

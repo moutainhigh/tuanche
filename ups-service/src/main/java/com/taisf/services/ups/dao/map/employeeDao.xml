@@ -110,6 +110,9 @@
 		<include refid="Base_Column_List" />
 		from t_sys_employee
 		where emp_valid = 0
+		<if test="supplierCode != null">
+			and emp_biz = #{supplierCode,jdbcType=VARCHAR}
+		</if>
 		<if test="empMail != null and empMail != ''">
 			and emp_mail LIKE CONCAT('%', #{empMail,jdbcType=VARCHAR}, '%')
 		</if>
