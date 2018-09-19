@@ -130,32 +130,35 @@ public class OrderManagerImpl {
 	/**
 	 * 申请退款
 	 * @param order
-	 * @param payRecord
+	 * @param payRecordList
 	 */
-	public  String refundOrder(OrderEntity order,PayRecordEntity payRecord,List<StockWeekEntity> list){
+	public void refundOrder(OrderEntity order, List<PayRecordEntity> payRecordList, List<StockWeekEntity> list){
+		if (Check.NuNCollection(payRecordList)){
+			throw new BusinessException("异常的支付信息:"+order.getOrderSn());
+		}
 		int count = orderBaseDao.refundOrder(order.getOrderSn(),order.getOrderStatus());
 		if (count == 1){
-			//生成退款
-			RefundEntity entity = new RefundEntity();
-			entity.setSourceType(order.getOrderSource());
-			entity.setOrderSn(order.getOrderSn());
-			entity.setCardNo(payRecord.getTradeNo());
-			entity.setCardType(payRecord.getPayType());
-			entity.setRecordId(payRecord.getId());
-			entity.setRefundFee(payRecord.getTotalFee());
-			entity.setPayFee(payRecord.getTotalFee());
-			entity.setRefundName(order.getUserName());
-			entity.setRefundSn(SnUtil.getRefundSn());
-			entity.setRefundUid(order.getUserUid());
-			entity.setRefundStatus(RefundStatusEnum.WAIT.getCode());
-			entity.setSupplierCode(order.getSupplierCode());
-			int row =  refundDao.saveRefund(entity);
+			for (PayRecordEntity payRecord : payRecordList) {
+				//生成退款
+				RefundEntity entity = new RefundEntity();
+				entity.setSourceType(order.getOrderSource());
+				entity.setOrderSn(order.getOrderSn());
+				entity.setCardNo(payRecord.getTradeNo());
+				entity.setCardType(payRecord.getPayType());
+				entity.setRecordId(payRecord.getId());
+				entity.setRefundFee(payRecord.getTotalFee());
+				entity.setPayFee(payRecord.getTotalFee());
+				entity.setRefundName(order.getUserName());
+				entity.setRefundSn(SnUtil.getRefundSn());
+				entity.setRefundUid(order.getUserUid());
+				entity.setRefundStatus(RefundStatusEnum.WAIT.getCode());
+				entity.setSupplierCode(order.getSupplierCode());
+				int row =  refundDao.saveRefund(entity);
+			}
 			if (!Check.NuNCollection(list)){
 				stockWeekDao.batchSaveStockWeek(list);
 			}
-			return entity.getRefundSn();
 		}
-		return null;
 	}
 
 
@@ -484,14 +487,19 @@ public class OrderManagerImpl {
 		orderDetailVO.setList(list);
 
 		//支付信息
-		PayRecordEntity record = payRecordDao.getPayRecordByOrderSn(orderSn);
-		if (!Check.NuNObj(record)){
-			RecordPayTypeEnum payTypeEnum = RecordPayTypeEnum.getTypeByCode(record.getPayType());
+		List<PayRecordEntity> recordList = payRecordDao.getPayRecordByOrderSn(orderSn);
+		if (!Check.NuNCollection(recordList)){
+
+			RecordPayTypeEnum payTypeEnum = null;
+			if (recordList.size() > 1){
+				payTypeEnum = RecordPayTypeEnum.MIX;
+			}else {
+				payTypeEnum = RecordPayTypeEnum.getTypeByCode(recordList.get(0).getPayType());
+			}
 			if (!Check.NuNObj(payTypeEnum)){
 				orderDetailVO.setPayInfo(payTypeEnum.getName());
 			}
 		}
-
 		//返回订单信息
 		return orderDetailVO;
 	}

@@ -252,17 +252,22 @@ public class OrderController {
         }
         if (!Check.NuNObj(orderInfoVO)){
             RecordPayTypeEnum recordPayTypeEnum = null;
-            PayRecordEntity record = payManager.getPayRecordByOrderSn(orderSn);
-            if (!Check.NuNObj(record)){
-                recordPayTypeEnum =  RecordPayTypeEnum.getTypeByCode(record.getPayType());
+            List<PayRecordEntity> recordList = payManager.getPayRecordByOrderSn(orderSn);
+            if (Check.NuNCollection(recordList)){
+
+            }else if (recordList.size() > 1){
+                //当存在多条记录 表示是混合支付
+                recordPayTypeEnum =  RecordPayTypeEnum.MIX;
+            }else {
+                recordPayTypeEnum =  RecordPayTypeEnum.getTypeByCode(recordList.get(0).getPayType());
             }
-            if (Check.NuNObj(recordPayTypeEnum)){
+            //当前的支付类型
+            if(Check.NuNObj(recordPayTypeEnum)){
                 orderInfoVO.setPayTypeStr("未支付");
             }else {
                 orderInfoVO.setPayTypeStr(recordPayTypeEnum.getName());
             }
         }
-
         return orderInfoVO;
     }
 

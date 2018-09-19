@@ -69,7 +69,7 @@ public class RefundController extends AbstractController {
         }
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
         try {
-            DataTransferObject<String> dto =ordersService.refundOrder(paramRequest);
+            DataTransferObject<Void> dto =ordersService.refundOrder(paramRequest);
             return dto.trans2Res();
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【申请退款】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);

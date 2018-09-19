@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,10 +43,10 @@ public class PayRecordDao extends BaseDao {
      * @param orderSn
      * @return
      */
-    public PayRecordEntity getPayRecordByOrderSn(String orderSn){
+    public List<PayRecordEntity> getPayRecordByOrderSn(String orderSn){
         Map<String,Object> par = new HashMap<>();
         par.put("orderSn",orderSn);
-        return mybatisDaoContext.findOne(SQLID + "getPayRecordBySn",PayRecordEntity.class,par);
+        return mybatisDaoContext.findAll(SQLID + "getPayRecordBySn",PayRecordEntity.class,par);
     }
 
 
