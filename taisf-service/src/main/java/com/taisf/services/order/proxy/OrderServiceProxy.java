@@ -206,9 +206,9 @@ public class OrderServiceProxy implements OrderService {
      * @return
      */
     @Override
-    public DataTransferObject<String>  refundOrder(RefundOrderRequest refundOrderRequest){
+    public DataTransferObject<Void>  refundOrder(RefundOrderRequest refundOrderRequest){
 
-        DataTransferObject<String> dto = new DataTransferObject<>();
+        DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(refundOrderRequest)) {
             dto.setErrorMsg("参数异常");
             return dto;
@@ -242,8 +242,8 @@ public class OrderServiceProxy implements OrderService {
             return dto;
         }
         // 获取当前订单的支付信息
-        PayRecordEntity payRecord = payManager.getPayRecordByOrderSn(base.getOrderSn());
-        if (Check.NuNObj(payRecord)){
+        List<PayRecordEntity> payRecordList = payManager.getPayRecordByOrderSn(base.getOrderSn());
+        if (Check.NuNCollection(payRecordList)){
             dto.setErrorMsg("异常的支付信息");
             return dto;
         }
@@ -254,11 +254,9 @@ public class OrderServiceProxy implements OrderService {
                 this.cutProductStock4RedisReset(base.getOrderType(),dbs);
             }
         }
-
         List<StockWeekEntity> list = this.trans2Stock(base);
         //退款
-        String refundSn = orderManager.refundOrder(base, payRecord,list);
-        dto.setData(refundSn);
+        orderManager.refundOrder(base, payRecordList,list);
         return dto;
 
     }
@@ -1214,10 +1212,11 @@ public class OrderServiceProxy implements OrderService {
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
             money.setNeedPay(0);
         }else{
+            int needPay = cost - drawBalance;
             //余额不足
-            money.setPayBalance(0);
+            money.setPayBalance(drawBalance);
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
-            money.setNeedPay(cost);
+            money.setNeedPay(needPay);
         }
         if (!createFlag){
             //非创建订单,直接返回

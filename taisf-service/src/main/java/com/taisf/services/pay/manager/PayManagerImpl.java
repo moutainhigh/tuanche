@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 
 @Service("pay.payManagerImpl")
@@ -39,7 +40,7 @@ public class PayManagerImpl {
 	 * @param orderSn
 	 * @return
 	 */
-	public PayRecordEntity getPayRecordByOrderSn(String orderSn){
+	public List<PayRecordEntity> getPayRecordByOrderSn(String orderSn){
 		return payRecordDao.getPayRecordByOrderSn(orderSn);
 	}
 
