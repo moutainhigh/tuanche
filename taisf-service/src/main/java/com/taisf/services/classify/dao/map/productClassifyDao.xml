@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="" >
+<mapper namespace="productClassifyDao" >
   <resultMap id="BaseResultMap" type="com.taisf.services.classify.entity.ProductClassifyEntity" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="supplier_code" property="supplierCode" jdbcType="VARCHAR" />
