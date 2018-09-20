@@ -62,14 +62,18 @@
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="productClassify" id="productClassifyS">
                             <option value="">--请选择--</option>
-                            <option value="1">--大荤--</option>
-                            <option value="2">--小荤--</option>
-                            <option value="3">--素--</option>
-                            <option value="4">--汤--</option>
-                            <option value="5">--饮品--</option>
-                            <option value="6">--主食--</option>
-                            <option value="7">--水果--</option>
-                            <option value="8">--超市--</option>
+                            <c:forEach items="${productClassifyEntities}" var="z">
+                                <option value="${z.classifyCode}">${z.classifyName}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <label class="col-xs-1 col-sm-1 control-label mtop">窗口:</label>
+                    <div class="col-xs-2 col-sm-2">
+                        <select class="form-control" name="windowCode_s" id="windowCode_s">
+                            <option value="">--请选择--</option>
+                            <c:forEach items="${supplierWindowEntities}" var="z">
+                                <option value="${z.windowCode}">${z.windowName}</option>
+                            </c:forEach>
                         </select>
                     </div>
                     <label class="col-xs-1 col-sm-1 control-label mtop">供餐类型:</label>
@@ -94,6 +98,7 @@
                             <option value="1">--清真--</option>
                         </select>
                     </div>
+
                     <div class="col-sm-1">
                         <button class="btn btn-primary" type="button" onclick="query();">
                             <i class="fa fa-search"></i>&nbsp;搜索
@@ -164,8 +169,10 @@
                                 data-align="center"><span class="tdfont">供餐类型</span></th>
                             <th data-field="productSource" data-width="10%" data-formatter="formatProductSource"
                                 data-align="center"><span class="tdfont">菜品属性</span></th>
-                            <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
+                            <th data-field="productClassify" data-width="10%"
                                 data-align="center"><span class="tdfont">分类</span></th>
+                             <th data-field="windowCode" data-width="10%"
+                                data-align="center"><span class="tdfont">窗口</span></th>
                             <th data-field="forLunch" data-width="10%" data-formatter="formatForLunch"
                                 data-align="center"><span class="tdfont">午餐/晚餐</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
@@ -257,6 +264,7 @@
             productClassify: $("#productClassifyS").val(),
             productType: $("#productTypeS").val(),
             productSource: $("#productSourceS").val(),
+            windowCode: $("#windowCode_s").val(),
             week: week,
         };
     }

@@ -18,11 +18,17 @@
     from t_supplier_window
     where id = #{id,jdbcType=INTEGER}
   </select>
- <select id="pageListSupplierWindow" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+ <select id="pageListSupplierWindow" resultMap="BaseResultMap" parameterType="com.taisf.services.window.req.SupplierWindowListRequest" >
     select
     <include refid="Base_Column_List" />
     from t_supplier_window
     where 1=1
+   <if test="supplierCode != null and supplierCode != ''">
+     AND supplier_code = #{supplierCode,jdbcType=VARCHAR}
+   </if>
+   <if test="windowName != null and windowName != ''">
+     AND window_name LIKE concat("%",#{windowName,jdbcType=VARCHAR},"%")
+   </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_supplier_window

@@ -8,9 +8,10 @@
     <result column="classify_name" property="classifyName" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="rank" property="rank" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, supplier_code, classify_code, classify_name, create_time, update_time
+    id, supplier_code, classify_code, classify_name, create_time, update_time,rank
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -18,24 +19,23 @@
     from t_product_classify
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="pageListProductClassify" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="pageListProductClassify" resultMap="BaseResultMap" parameterType="com.taisf.services.classify.req.ProductClassifyListRequest" >
     select
     <include refid="Base_Column_List" />
     from t_product_classify
     where 1=1
+    <if test="supplierCode != null and supplierCode != ''">
+      AND supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    </if>
+    <if test="classifyName != null and classifyName != ''">
+      AND classify_name LIKE concat("%",#{classifyName,jdbcType=VARCHAR},"%")
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_product_classify
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.taisf.services.classify.entity.ProductClassifyEntity" >
-    insert into t_product_classify (id, supplier_code, classify_code, 
-      classify_name, create_time, update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{supplierCode,jdbcType=VARCHAR}, #{classifyCode,jdbcType=VARCHAR}, 
-      #{classifyName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
+
   <insert id="insertSelective" parameterType="com.taisf.services.classify.entity.ProductClassifyEntity" >
     insert into t_product_classify
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -57,6 +57,9 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+     <if test="rank != null" >
+       rank,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -76,6 +79,9 @@
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+     <if test="rank != null" >
+        #{rank},
       </if>
     </trim>
   </insert>
@@ -97,16 +103,11 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+     <if test="rank != null" >
+       rank = #{rank},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.taisf.services.classify.entity.ProductClassifyEntity" >
-    update t_product_classify
-    set supplier_code = #{supplierCode,jdbcType=VARCHAR},
-      classify_code = #{classifyCode,jdbcType=VARCHAR},
-      classify_name = #{classifyName,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
 </mapper>

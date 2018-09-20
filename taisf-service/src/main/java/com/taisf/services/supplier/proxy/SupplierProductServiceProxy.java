@@ -26,7 +26,6 @@ import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
 import com.taisf.services.supplier.vo.*;
 import com.taisf.services.user.proxy.IndexServiceProxy;
-import com.taisf.services.user.vo.DayVO;
 import com.taisf.services.user.vo.FanVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -504,7 +503,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return rst;
         }
         for (ProductEntity productEntity : list) {
-            Integer productClassify = productEntity.getProductClassify();
+            String productClassify = productEntity.getProductClassify();
             if (Check.NuNObj(productClassify)) {
                 //直接过滤掉异常数据
                 continue;
@@ -562,7 +561,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return rst;
         }
         for (ProductEntity productEntity : list) {
-            Integer productClassify = productEntity.getProductClassify();
+            String productClassify = productEntity.getProductClassify();
             if (Check.NuNObj(productClassify)) {
                 //直接过滤掉异常数据
                 continue;

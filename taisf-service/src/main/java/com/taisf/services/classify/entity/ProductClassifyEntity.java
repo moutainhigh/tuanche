@@ -35,6 +35,16 @@ public class ProductClassifyEntity extends BaseEntity{
      */
     private Date updateTime;
 
+    private Integer rank;
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
     public Integer getId() {
         return id;
     }

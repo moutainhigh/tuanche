@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.taisf.services.product.entity.ProductEntity">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="product_name" jdbcType="VARCHAR" property="productName"/>
-        <result column="product_classify" jdbcType="INTEGER" property="productClassify"/>
+        <result column="product_classify" jdbcType="VARCHAR" property="productClassify"/>
         <result column="product_type" jdbcType="INTEGER" property="productType"/>
         <result column="product_source" jdbcType="INTEGER" property="productSource"/>
         <result column="product_des" jdbcType="VARCHAR" property="productDes"/>
@@ -15,12 +15,15 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_del" jdbcType="INTEGER" property="isDel"/>
+
+        <result column="supplier_code" jdbcType="VARCHAR" property="supplierCode"/>
+        <result column="window_code" jdbcType="VARCHAR" property="windowCode"/>
     </resultMap>
 
 
     <sql id="Base_Column_List">
         id, product_name, product_classify, product_type, product_source, product_des, product_pic,
-        price_sale,price_market, create_time, update_time, is_del
+        price_sale,price_market, create_time, update_time, is_del,supplier_code,window_code
     </sql>
 
 
@@ -35,26 +38,35 @@
         select
         <include refid="Base_Column_List"/>
         from t_product
-        where product_classify = #{productClassify,jdbcType=INTEGER}
+        where product_classify = #{productClassify,jdbcType=VARCHAR}
     </select>
 
     <select id="pageListProduct" parameterType="com.taisf.services.product.dto.ProductListRequest"
             resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from t_product
-        where id > 0
+        p.id, p.product_name, tpc.classify_name AS  product_classify, p.product_type, p.product_source, p.product_des, p.product_pic,
+        p.price_sale,p.price_market, p.create_time, p.update_time, p.is_del,p.supplier_code,tsw.window_name AS window_code
+        from t_product p
+        LEFT JOIN t_supplier_window tsw on tsw.window_code = p.window_code
+        LEFT JOIN t_product_classify tpc on tpc.classify_code = p.product_classify
+        where p.id > 0
         <if test="productName != null and productName != ''">
-           AND product_name = #{productName}
+           AND p.product_name = #{productName}
         </if>
         <if test="productClassify != null and productClassify != ''">
-            AND product_classify = #{productClassify}
+            AND p.product_classify = #{productClassify}
         </if>
         <if test="productType != null and productType != ''">
-            AND product_type = #{productType}
+            AND p.product_type = #{productType}
         </if>
         <if test="productSource != null and productSource != ''">
-            AND product_source = #{productSource}
+            AND p.product_source = #{productSource}
+        </if>
+        <if test="supplierCode != null and supplierCode != ''">
+            AND p.supplier_code = #{supplierCode}
+        </if>
+         <if test="windowCode != null and windowCode != ''">
+            AND p.window_code = #{windowCode}
         </if>
         ORDER BY id DESC
     </select>
@@ -113,13 +125,19 @@
             <if test="isDel != null">
                 is_del,
             </if>
+        <if test="windowCode != null">
+            window_code,
+            </if>
+        <if test="supplierCode != null">
+            supplier_code,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="productName != null">
                 #{productName,jdbcType=VARCHAR},
             </if>
             <if test="productClassify != null">
-                #{productClassify,jdbcType=INTEGER},
+                #{productClassify,jdbcType=VARCHAR},
             </if>
             <if test="productType != null">
                 #{productType,jdbcType=INTEGER},
@@ -148,6 +166,12 @@
             <if test="isDel != null">
                 #{isDel,jdbcType=INTEGER},
             </if>
+            <if test="windowCode != null">
+                #{windowCode,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierCode != null">
+                #{supplierCode,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
 
@@ -159,7 +183,7 @@
                 product_name = #{productName,jdbcType=VARCHAR},
             </if>
             <if test="productClassify != null">
-                product_classify = #{productClassify,jdbcType=INTEGER},
+                product_classify = #{productClassify,jdbcType=VARCHAR},
             </if>
             <if test="productType != null">
                 product_type = #{productType,jdbcType=INTEGER},
@@ -189,6 +213,12 @@
             </if>
             <if test="isDel != null">
                 is_del = #{isDel,jdbcType=INTEGER},
+            </if>
+            <if test="windowCode != null">
+                window_code =  #{windowCode,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierCode != null">
+                supplier_code = #{supplierCode,jdbcType=VARCHAR},
             </if>
         </set>
 

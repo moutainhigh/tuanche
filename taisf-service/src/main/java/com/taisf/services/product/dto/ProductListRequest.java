@@ -15,7 +15,7 @@ public class ProductListRequest extends PageRequest {
     /**
      * 商品分类
      */
-    private Integer productClassify;
+    private String productClassify;
 
     /**
      * 商品配型
@@ -37,6 +37,16 @@ public class ProductListRequest extends PageRequest {
     private Integer forLunch;
 
     private Integer forDinner;
+
+    private String windowCode;
+
+    public String getWindowCode() {
+        return windowCode;
+    }
+
+    public void setWindowCode(String windowCode) {
+        this.windowCode = windowCode;
+    }
 
     public Integer getForLunch() {
         return forLunch;
@@ -70,11 +80,11 @@ public class ProductListRequest extends PageRequest {
         this.productName = productName;
     }
 
-    public Integer getProductClassify() {
+    public String getProductClassify() {
         return productClassify;
     }
 
-    public void setProductClassify(Integer productClassify) {
+    public void setProductClassify(String productClassify) {
         this.productClassify = productClassify;
     }
 
