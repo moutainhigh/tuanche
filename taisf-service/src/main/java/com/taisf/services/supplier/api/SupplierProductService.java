@@ -52,13 +52,13 @@ public interface SupplierProductService {
     DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProduct(String supplierCode,String enterpriseCode);
 
 
-    /**
-     * 获取当前供应商的商品了列表
-     * @author  afi
-     * @param supplierProductRequest
-     * @return
-     */
-    DataTransferObject<List<SupplierProductVO>> getSupplierProductList(SupplierProductRequest supplierProductRequest);
+//    /**
+//     * 获取当前供应商的商品了列表
+//     * @author  afi
+//     * @param supplierProductRequest
+//     * @return
+//     */
+//    DataTransferObject<List<SupplierProductVO>> getSupplierProductList(SupplierProductRequest supplierProductRequest);
 
     /**
      * @author:zhangzhengguang

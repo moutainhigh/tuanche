@@ -37,6 +37,20 @@ public class ProductClassifyEntity extends BaseEntity{
 
     private Integer rank;
 
+    /**
+     * 商品类型
+     */
+    private Integer supplierProductType;
+
+
+    public Integer getSupplierProductType() {
+        return supplierProductType;
+    }
+
+    public void setSupplierProductType(Integer supplierProductType) {
+        this.supplierProductType = supplierProductType;
+    }
+
     public Integer getRank() {
         return rank;
     }

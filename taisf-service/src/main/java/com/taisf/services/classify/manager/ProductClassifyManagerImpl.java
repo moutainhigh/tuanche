@@ -23,6 +23,16 @@ public class ProductClassifyManagerImpl {
 
 
 	/**
+	 * 获取供应商的分类
+	 * @param supplierCode
+	 * @return
+	 */
+	public List<ProductClassifyEntity> listProductClassifyBySupplierCode(String supplierCode){
+		return productClassifyDao.listProductClassifyBySupplierCode(supplierCode);
+	}
+
+
+	/**
 	 * @author:zhangzhengguang
 	 * @date:2018/9/19
 	 * @description:新增

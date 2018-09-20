@@ -52,17 +52,17 @@ public class SupplierProductServiceProxyTest extends BaseTest {
 
     }
 
-    @Test
-    public void getSupplierProductListTest() {
-
-        SupplierProductRequest supplierProductRequest =  new SupplierProductRequest();
-        supplierProductRequest.setSupplierCode("123");
-        supplierProductRequest.setProductClassify(1);
-
-        DataTransferObject<List<SupplierProductVO>> supplierProductList = supplierProductService.getSupplierProductList(supplierProductRequest);
-        System.out.println(JsonEntityTransform.Object2Json(supplierProductList));
-
-    }
+//    @Test
+//    public void getSupplierProductListTest() {
+//
+//        SupplierProductRequest supplierProductRequest =  new SupplierProductRequest();
+//        supplierProductRequest.setSupplierCode("123");
+//        supplierProductRequest.setProductClassify(1);
+//
+//        DataTransferObject<List<SupplierProductVO>> supplierProductList = supplierProductService.getSupplierProductList(supplierProductRequest);
+//        System.out.println(JsonEntityTransform.Object2Json(supplierProductList));
+//
+//    }
 
 
     @Test

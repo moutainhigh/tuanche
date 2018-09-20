@@ -108,40 +108,40 @@ public class SupplierController extends AbstractController {
 
 
 
-    /**
-     * 获取商品分类
-     * @author afi
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping(value = "/productList", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseDto productList(HttpServletRequest request, HttpServletResponse response,String supplierCode,Integer productClassify) {
-
-
-        if (Check.NuNStr(supplierCode)) {
-            return new ResponseDto("参数异常");
-        }
-
-        if (Check.NuNObj(productClassify)) {
-            return new ResponseDto("参数异常");
-        }
-        SupplierProductRequest paramRequest =new SupplierProductRequest();
-        paramRequest.setProductClassify(productClassify);
-        paramRequest.setSupplierCode(supplierCode);
-
-        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
-        try {
-
-            DataTransferObject<List<SupplierProductVO>> dto =supplierProductService.getSupplierProductList(paramRequest);
-            return dto.trans2Res();
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【获取商品列表】错误,par:{}, e={}",JsonEntityTransform.Object2Json(supplierCode), e);
-            return new ResponseDto("未知错误");
-        }
-
-    }
+//    /**
+//     * 获取商品分类
+//     * @author afi
+//     * @param request
+//     * @param response
+//     * @return
+//     */
+//    @RequestMapping(value = "/productList", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ResponseDto productList(HttpServletRequest request, HttpServletResponse response,String supplierCode,Integer productClassify) {
+//
+//
+//        if (Check.NuNStr(supplierCode)) {
+//            return new ResponseDto("参数异常");
+//        }
+//
+//        if (Check.NuNObj(productClassify)) {
+//            return new ResponseDto("参数异常");
+//        }
+//        SupplierProductRequest paramRequest =new SupplierProductRequest();
+//        paramRequest.setProductClassify(productClassify);
+//        paramRequest.setSupplierCode(supplierCode);
+//
+//        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+//        try {
+//
+//            DataTransferObject<List<SupplierProductVO>> dto =supplierProductService.getSupplierProductList(paramRequest);
+//            return dto.trans2Res();
+//        } catch (Exception e) {
+//            LogUtil.error(LOGGER, "【获取商品列表】错误,par:{}, e={}",JsonEntityTransform.Object2Json(supplierCode), e);
+//            return new ResponseDto("未知错误");
+//        }
+//
+//    }
 
     /**
      * 获取商品分类

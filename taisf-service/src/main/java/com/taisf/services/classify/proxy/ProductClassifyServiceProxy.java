@@ -2,6 +2,7 @@ package com.taisf.services.classify.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.jk.framework.base.utils.Check;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.classify.api.ProductClassifyService;
 import com.taisf.services.classify.entity.ProductClassifyEntity;
@@ -28,6 +29,30 @@ public class ProductClassifyServiceProxy implements ProductClassifyService {
     @Resource(name = "productClassifyManagerImpl")
     private ProductClassifyManagerImpl supplierWindowManagerImpl;
 
+
+    /**
+     * 获取供应商的分类
+     * @param supplierCode
+     * @return
+     */
+    public DataTransferObject<List<ProductClassifyEntity>> listProductClassifyBySupplierCode(String supplierCode){
+        DataTransferObject<List<ProductClassifyEntity>> dto = new DataTransferObject();
+        if (Check.NuNStr(supplierCode)){
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+
+        try {
+            List<ProductClassifyEntity> entityList = supplierWindowManagerImpl.listProductClassifyBySupplierCode(supplierCode);
+            dto.setData(entityList);
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "listProductClassifyBySupplierCode error:{}", e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setMsg("获取供应商分类失敗");
+            return dto;
+        }
+        return dto;
+    }
 
     @Override
     public DataTransferObject<Void> saveProductClassify(ProductClassifyEntity entity) {

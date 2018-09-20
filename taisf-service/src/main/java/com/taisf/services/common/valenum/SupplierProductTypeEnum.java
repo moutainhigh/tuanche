@@ -36,7 +36,7 @@ public enum SupplierProductTypeEnum {
     }
 
     // 构造方法
-    private SupplierProductTypeEnum(String name, Integer code) {
+    private SupplierProductTypeEnum(String name, int code) {
         this.name = name;
         this.code = code;
     }

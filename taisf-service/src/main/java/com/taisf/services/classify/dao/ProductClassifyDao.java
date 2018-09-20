@@ -99,4 +99,15 @@ public class ProductClassifyDao extends BaseDao {
     public List<ProductClassifyEntity> findListProductClassify(ProductClassifyListRequest request){
         return mybatisDaoContext.findAll(SQLID+"pageListProductClassify",ProductClassifyEntity.class,request);
     }
+
+    /**
+     * 获取供应商的分类
+     * @param supplierCode
+     * @return
+     */
+    public List<ProductClassifyEntity> listProductClassifyBySupplierCode(String supplierCode){
+        return mybatisDaoContext.findAll(SQLID+"listProductClassifyBySupplierCode",ProductClassifyEntity.class,supplierCode);
+    }
+
+
 }
