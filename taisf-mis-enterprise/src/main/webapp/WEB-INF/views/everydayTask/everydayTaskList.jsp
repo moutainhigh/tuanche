@@ -164,8 +164,10 @@
                                 data-align="center"><span class="tdfont">菜品名称</span></th>
                             <th data-field="productNum" data-width="10%"
                                 data-align="center"><span class="tdfont">数量</span></th>
-                            <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
+                            <th data-field="productClassify" data-width="10%"
                                 data-align="center"><span class="tdfont">分类</span></th>
+                            <th data-field="windowName" data-width="10%"
+                                data-align="center"><span class="tdfont">窗口</span></th>
                         </tr>
                         </thead>
                     </table>

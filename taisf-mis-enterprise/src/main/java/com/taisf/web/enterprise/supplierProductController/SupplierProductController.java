@@ -5,12 +5,18 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.classify.api.ProductClassifyService;
+import com.taisf.services.classify.entity.ProductClassifyEntity;
+import com.taisf.services.classify.req.ProductClassifyListRequest;
 import com.taisf.services.product.api.ProductService;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.api.SupplierProductService;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.ups.entity.EmployeeEntity;
+import com.taisf.services.window.api.SupplierWindowService;
+import com.taisf.services.window.entity.SupplierWindowEntity;
+import com.taisf.services.window.req.SupplierWindowListRequest;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
 import org.slf4j.Logger;
@@ -37,6 +43,11 @@ public class SupplierProductController {
     @Autowired
     private SupplierProductService supplierProductService;
 
+    @Autowired
+    private SupplierWindowService supplierWindowService;
+
+    @Autowired
+    private ProductClassifyService productClassifyService;
     /**
      * @author:zhangzhengguang
      * @date:2017/10/11
@@ -44,6 +55,16 @@ public class SupplierProductController {
      **/
     @RequestMapping("list")
     public String list(HttpServletRequest request) {
+        ProductClassifyListRequest productClassifyListRequest = new ProductClassifyListRequest();
+        HttpSession session = request.getSession();
+        EmployeeEntity emp = (EmployeeEntity)session.getAttribute(LoginConstant.SESSION_KEY);
+        productClassifyListRequest.setSupplierCode(emp.getEmpBiz());
+        List<ProductClassifyEntity> productClassifyEntities = productClassifyService.findListProductClassify(productClassifyListRequest).getData();
+        request.setAttribute("productClassifyEntities",productClassifyEntities);
+        SupplierWindowListRequest supplierWindowListRequest = new SupplierWindowListRequest();
+        supplierWindowListRequest.setSupplierCode(emp.getEmpBiz());
+        List<SupplierWindowEntity> supplierWindowEntities = supplierWindowService.findListSupplierWindow(supplierWindowListRequest).getData();
+        request.setAttribute("supplierWindowEntities",supplierWindowEntities);
         return "supplierProduct/supplierProductList";
     }
 
@@ -57,9 +78,11 @@ public class SupplierProductController {
     public PageResult pageList(HttpServletRequest request, ProductListRequest productListRequest) {
         PageResult pageResult = new PageResult();
         try {
+            HttpSession session = request.getSession();
+            EmployeeEntity emp = (EmployeeEntity)session.getAttribute(LoginConstant.SESSION_KEY);
+            productListRequest.setSupplierCode(emp.getEmpBiz());
             DataTransferObject<PagingResult<ProductEntity>> dto = productService.pageListProduct(productListRequest);
             //查询出当前供餐商下所有菜品信息
-            HttpSession session = request.getSession();
             EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
             if (Check.NuNStr(employeeEntity.getEmpBiz())){
                 return pageResult;

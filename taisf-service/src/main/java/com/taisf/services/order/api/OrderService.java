@@ -65,7 +65,7 @@ public interface OrderService {
      * @param refundOrderRequest
      * @return
      */
-    DataTransferObject<String>  refundOrder(RefundOrderRequest refundOrderRequest);
+    DataTransferObject<Void>  refundOrder(RefundOrderRequest refundOrderRequest);
 
 
     /**

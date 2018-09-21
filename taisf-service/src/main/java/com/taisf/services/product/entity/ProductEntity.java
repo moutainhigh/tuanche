@@ -30,7 +30,7 @@ public class ProductEntity extends BaseEntity {
     /**
      * 商品分类
      */
-    private Integer productClassify;
+    private String productClassify;
 
     /**
      * 商品配型
@@ -51,6 +51,7 @@ public class ProductEntity extends BaseEntity {
      * 默认图片
      */
     private String productPic;
+
 
     /**
      * 销售价
@@ -81,6 +82,25 @@ public class ProductEntity extends BaseEntity {
     private Integer forLunch;
 
     private Integer forDinner;
+
+    private String supplierCode;
+    private String windowCode;
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
+    public String getWindowCode() {
+        return windowCode;
+    }
+
+    public void setWindowCode(String windowCode) {
+        this.windowCode = windowCode;
+    }
 
     public Integer getForLunch() {
         return forLunch;
@@ -125,11 +145,11 @@ public class ProductEntity extends BaseEntity {
         this.productName = productName;
     }
 
-    public Integer getProductClassify() {
+    public String getProductClassify() {
         return productClassify;
     }
 
-    public void setProductClassify(Integer productClassify) {
+    public void setProductClassify(String productClassify) {
         this.productClassify = productClassify;
     }
 

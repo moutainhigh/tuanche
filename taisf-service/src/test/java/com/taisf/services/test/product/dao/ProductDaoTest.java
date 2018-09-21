@@ -36,7 +36,6 @@ public class ProductDaoTest extends BaseTest {
         productEntity.setPriceSale(1);
         productEntity.setProductName("name");
         productEntity.setProductDes("des");
-        productEntity.setProductClassify(1);
         productEntity.setIsDel(0);
         productEntity.setProductSource(1);
         productEntity.setProductType(2);
@@ -52,7 +51,6 @@ public class ProductDaoTest extends BaseTest {
         productEntity.setPriceSale(1);
         productEntity.setProductName("name");
         productEntity.setProductDes("des");
-        productEntity.setProductClassify(1);
         productEntity.setIsDel(0);
         productEntity.setProductSource(1);
         productEntity.setProductType(2);

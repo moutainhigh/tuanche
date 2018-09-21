@@ -7,6 +7,8 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.classify.entity.ProductClassifyEntity;
+import com.taisf.services.classify.manager.ProductClassifyManagerImpl;
 import com.taisf.services.common.constant.PathConstant;
 import com.taisf.services.common.util.WeekUtil;
 import com.taisf.services.common.valenum.OrderTypeEnum;
@@ -26,7 +28,6 @@ import com.taisf.services.supplier.manager.SupplierManagerImpl;
 import com.taisf.services.supplier.manager.SupplierPackageManagerImpl;
 import com.taisf.services.supplier.vo.*;
 import com.taisf.services.user.proxy.IndexServiceProxy;
-import com.taisf.services.user.vo.DayVO;
 import com.taisf.services.user.vo.FanVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +78,13 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
     @Resource(name = "enterprise.enterpriseManagerImpl")
     private EnterpriseManagerImpl enterpriseManager;
+
+    @Resource(name = "productClassifyManagerImpl")
+    private ProductClassifyManagerImpl productClassifyManager;
+
+
+
+
 
     /**
      * 获取当前的列表信息
@@ -190,24 +198,22 @@ public class SupplierProductServiceProxy implements SupplierProductService {
     private DataTransferObject<List<ProductClassifyInfo>> getSupplierClassifyProductBase(String supplierCode, Integer week, DataTransferObject dto,OrderTypeEnum orderTypeEnum) {
         Map<String, List<SupplierProductVO>> map = this.getSupplierProductMap(supplierCode,week,orderTypeEnum==null?null:orderTypeEnum.getCode());
         List<ProductClassifyVO> list = new ArrayList<>();
+        dto.setData(list);
+        //获取当前供应商的分类
+        List<ProductClassifyEntity> classifyEntityList = productClassifyManager.listProductClassifyBySupplierCode(supplierCode);
+        if(Check.NuNCollection(classifyEntityList)){
+            return dto;
+        }
+
         try {
-            //便利当前的枚举信息
-            for (ProductClassifyEnum c : ProductClassifyEnum.values()) {
-                if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PRODUCT.getCode()) {
-                    dealProduct(map, list, c);
+            for (ProductClassifyEntity productClassifyEntity : classifyEntityList) {
+                if (SupplierProductTypeEnum.PRODUCT.getCode() == ValueUtil.getintValue(productClassifyEntity.getSupplierProductType())) {
+                    dealProduct(map, list, productClassifyEntity);
                 }
-                if (c.getSupplierProductTypeEnum().getCode() == SupplierProductTypeEnum.PACKAGE.getCode()) {
-                    if (!Check.NuNObj(orderTypeEnum)){
-                        //版本兼容,之前只获取当天当前饭点的
-                        dealPackage4old(supplierCode, list, c,orderTypeEnum);
-                    }else {
-                        dealPackage4week(supplierCode, week, list, c);
-                    }
-
-
+                if (SupplierProductTypeEnum.PACKAGE.getCode() == ValueUtil.getintValue(productClassifyEntity.getSupplierProductType())) {
+                    dealPackage4week(supplierCode, week, list,productClassifyEntity);
                 }
             }
-            dto.setData(list);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【获取列表和商品信息】par:{},error:{}", JsonEntityTransform.Object2Json(supplierCode), e);
             dto.setErrCode(DataTransferObject.ERROR);
@@ -217,43 +223,43 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         return dto;
     }
 
-
-    /**
-     * 设置当前的套餐相关的信息
-     * @author afi
-     * @param supplierCode
-     * @param list
-     * @param c
-     * @return
-     */
-    private void dealPackage4old(String supplierCode,  List<ProductClassifyVO> list, ProductClassifyEnum c,OrderTypeEnum orderTypeEnum) {
-        List<SupplierProductVO> full = this.getPackage(supplierCode);
-        if (Check.NuNCollection(full)){
-            return ;
-        }
-        if (Check.NuNObj(orderTypeEnum)){
-            return;
-        }
-        List<SupplierProductVO> tmp = new ArrayList<>();
-        for (SupplierProductVO supplierProductVO : full) {
-            if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
-                tmp.add(supplierProductVO);
-            }else {
-                continue;
-            }
-
-        }
-        if (Check.NuNCollection(tmp)) {
-            return;
-        }
-
-        ProductClassifyInfo vo = new ProductClassifyInfo();
-        String key = c.getCode() + "";
-        vo.setProductClassify(key);
-        vo.setProductClassifyName(c.getName());
-        vo.setList(tmp);
-        list.add(vo);
-    }
+//
+//    /**
+//     * 设置当前的套餐相关的信息
+//     * @author afi
+//     * @param supplierCode
+//     * @param list
+//     * @param c
+//     * @return
+//     */
+//    private void dealPackage4old(String supplierCode,  List<ProductClassifyVO> list, ProductClassifyEnum c,OrderTypeEnum orderTypeEnum) {
+//        List<SupplierProductVO> full = this.getPackage(supplierCode);
+//        if (Check.NuNCollection(full)){
+//            return ;
+//        }
+//        if (Check.NuNObj(orderTypeEnum)){
+//            return;
+//        }
+//        List<SupplierProductVO> tmp = new ArrayList<>();
+//        for (SupplierProductVO supplierProductVO : full) {
+//            if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
+//                tmp.add(supplierProductVO);
+//            }else {
+//                continue;
+//            }
+//
+//        }
+//        if (Check.NuNCollection(tmp)) {
+//            return;
+//        }
+//
+//        ProductClassifyInfo vo = new ProductClassifyInfo();
+//        String key = c.getCode() + "";
+//        vo.setProductClassify(key);
+//        vo.setProductClassifyName(c.getName());
+//        vo.setList(tmp);
+//        list.add(vo);
+//    }
 
 
     /**
@@ -262,10 +268,10 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @param supplierCode
      * @param week
      * @param list
-     * @param c
+     * @param productClassifyEntity
      * @return
      */
-    private void dealPackage4week(String supplierCode, Integer week, List<ProductClassifyVO> list, ProductClassifyEnum c) {
+    private void dealPackage4week(String supplierCode, Integer week, List<ProductClassifyVO> list, ProductClassifyEntity productClassifyEntity) {
         List<SupplierProductVO> full = this.getPackage(supplierCode,week);
         if (Check.NuNCollection(full)){
             return ;
@@ -282,9 +288,9 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         }
 
         ProductClassifyInfo vo = new ProductClassifyInfo();
-        String key = c.getCode() + "";
+        String key = productClassifyEntity.getClassifyCode();
         vo.setProductClassify(key);
-        vo.setProductClassifyName(c.getName());
+        vo.setProductClassifyName(productClassifyEntity.getClassifyName());
         vo.setList(tmp);
         list.add(vo);
     }
@@ -310,16 +316,16 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      *
      * @param map
      * @param list
-     * @param c
+     * @param productClassifyEntity
      */
-    private void dealProduct(Map<String, List<SupplierProductVO>> map, List<ProductClassifyVO> list, ProductClassifyEnum c) {
-        if (Check.NuNObjs(map, list, c)) {
+    private void dealProduct(Map<String, List<SupplierProductVO>> map, List<ProductClassifyVO> list, ProductClassifyEntity productClassifyEntity) {
+        if (Check.NuNObjs(map, list, productClassifyEntity)) {
             return;
         }
         ProductClassifyInfo vo = new ProductClassifyInfo();
-        String key = c.getCode() + "";
+        String key = productClassifyEntity.getClassifyCode() ;
         vo.setProductClassify(key);
-        vo.setProductClassifyName(c.getName());
+        vo.setProductClassifyName(productClassifyEntity.getClassifyName());
         List<SupplierProductVO> tmp = map.get(key);
         if (!Check.NuNCollection(tmp)) {
             for (SupplierProductVO productVO : tmp) {
@@ -403,41 +409,41 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         return dto;
     }
 
-    /**
-     * 获取当前供应商的商品了列表
-     *
-     * @param supplierProductRequest
-     * @return
-     * @author afi
-     */
-    @Override
-    public DataTransferObject<List<SupplierProductVO>> getSupplierProductList(SupplierProductRequest supplierProductRequest) {
-        DataTransferObject dto = new DataTransferObject();
-        try {
-
-            ProductClassifyEnum productClassifyEnum = ProductClassifyEnum.getByCode(supplierProductRequest.getProductClassify());
-            if (Check.NuNObj(productClassifyEnum)) {
-                dto.setErrorMsg("异常的商品分类");
-                return dto;
-            }
-            SupplierProductTypeEnum supplierProductTypeEnum = productClassifyEnum.getSupplierProductTypeEnum();
-            if (supplierProductTypeEnum.getCode() == SupplierProductTypeEnum.PRODUCT.getCode()) {
-                //处理普通的商品信息
-                dealSupplierProduct(dto, supplierProductRequest);
-            } else if (supplierProductTypeEnum.getCode() == SupplierProductTypeEnum.PACKAGE.getCode()) {
-                //处理打包推荐列表
-                dealSupplierPackage(dto, supplierProductRequest);
-            } else {
-                dto.setErrorMsg("异常的分类");
-            }
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【获取商品列表】par:{},error:{}", JsonEntityTransform.Object2Json(supplierProductRequest), e);
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setMsg("获取商品列表失败");
-            return dto;
-        }
-        return dto;
-    }
+//    /**
+//     * 获取当前供应商的商品了列表
+//     *
+//     * @param supplierProductRequest
+//     * @return
+//     * @author afi
+//     */
+//    @Override
+//    public DataTransferObject<List<SupplierProductVO>> getSupplierProductList(SupplierProductRequest supplierProductRequest) {
+//        DataTransferObject dto = new DataTransferObject();
+//        try {
+//
+//            ProductClassifyEnum productClassifyEnum = ProductClassifyEnum.getByCode(supplierProductRequest.getProductClassify());
+//            if (Check.NuNObj(productClassifyEnum)) {
+//                dto.setErrorMsg("异常的商品分类");
+//                return dto;
+//            }
+//            SupplierProductTypeEnum supplierProductTypeEnum = productClassifyEnum.getSupplierProductTypeEnum();
+//            if (supplierProductTypeEnum.getCode() == SupplierProductTypeEnum.PRODUCT.getCode()) {
+//                //处理普通的商品信息
+//                dealSupplierProduct(dto, supplierProductRequest);
+//            } else if (supplierProductTypeEnum.getCode() == SupplierProductTypeEnum.PACKAGE.getCode()) {
+//                //处理打包推荐列表
+//                dealSupplierPackage(dto, supplierProductRequest);
+//            } else {
+//                dto.setErrorMsg("异常的分类");
+//            }
+//        } catch (Exception e) {
+//            LogUtil.error(LOGGER, "【获取商品列表】par:{},error:{}", JsonEntityTransform.Object2Json(supplierProductRequest), e);
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setMsg("获取商品列表失败");
+//            return dto;
+//        }
+//        return dto;
+//    }
 
     /**
      * 处理当前供应商的推荐商品信息
@@ -504,7 +510,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return rst;
         }
         for (ProductEntity productEntity : list) {
-            Integer productClassify = productEntity.getProductClassify();
+            String productClassify = productEntity.getProductClassify();
             if (Check.NuNObj(productClassify)) {
                 //直接过滤掉异常数据
                 continue;
@@ -562,7 +568,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return rst;
         }
         for (ProductEntity productEntity : list) {
-            Integer productClassify = productEntity.getProductClassify();
+            String productClassify = productEntity.getProductClassify();
             if (Check.NuNObj(productClassify)) {
                 //直接过滤掉异常数据
                 continue;
