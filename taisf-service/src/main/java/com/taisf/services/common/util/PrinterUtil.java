@@ -57,7 +57,7 @@ public class PrinterUtil {
      * @param content 打印内容
      * @return
      */
-    private static String print(String printerUser, String printerKey, String printerSn, String content){
+    public static String print(String printerUser, String printerKey, String printerSn, String content){
         //标签说明：
         //单标签:
         //"<BR>"为换行,"<CUT>"为切刀指令(主动切纸,仅限切刀打印机使用才有效果)
