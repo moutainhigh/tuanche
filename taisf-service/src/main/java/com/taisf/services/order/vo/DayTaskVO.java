@@ -32,8 +32,20 @@ public class DayTaskVO extends BaseEntity {
     /**
      * 分类
      */
-    private Integer  productClassify;
+    private String  productClassify;
 
+    /**
+     * 窗口
+     */
+    private String windowName;
+
+    public String getWindowName() {
+        return windowName;
+    }
+
+    public void setWindowName(String windowName) {
+        this.windowName = windowName;
+    }
 
     public String getProductName() {
         return productName;
@@ -51,11 +63,11 @@ public class DayTaskVO extends BaseEntity {
         this.productNum = productNum;
     }
 
-    public Integer getProductClassify() {
+    public String getProductClassify() {
         return productClassify;
     }
 
-    public void setProductClassify(Integer productClassify) {
+    public void setProductClassify(String productClassify) {
         this.productClassify = productClassify;
     }
 }

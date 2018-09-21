@@ -85,7 +85,8 @@
         select
             ca.num as productNum,
             p.product_name as productName,
-            p.product_classify as productClassify
+            pc.classify_name as productClassify ,
+            sw.window_name AS windowName
             from
             (
                 select
@@ -112,6 +113,8 @@
               )tmp
               group by tmp.product_code
             )ca inner JOIN t_product p ON ca.product_code = p.id
+        LEFT JOIN t_supplier_window sw ON p.window_code = sw.window_code
+        LEFT JOIN t_product_classify pc ON pc.classify_code = p.product_classify
         order by p.product_classify asc
 
     </select>
