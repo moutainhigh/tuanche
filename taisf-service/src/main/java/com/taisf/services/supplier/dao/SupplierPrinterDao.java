@@ -2,7 +2,7 @@ package com.taisf.services.supplier.dao;
 
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.supplier.dto.SupplierPrinterRequest;
-import com.taisf.services.supplier.entity.SupplierProductEntity;
+import com.taisf.services.supplier.entity.SupplierPrintterEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -26,8 +26,8 @@ public class SupplierPrinterDao extends BaseDao {
      * @date:2018/9/21
      * @description:查询供应商的所有打印机
      **/
-    public List<SupplierProductEntity> findListSupplierPrinter(SupplierPrinterRequest request){
-        return mybatisDaoContext.findAll(SQLID+"findListSupplierPrinter",SupplierProductEntity.class,request);
+    public List<SupplierPrintterEntity> findListSupplierPrinter(SupplierPrinterRequest request){
+        return mybatisDaoContext.findAll(SQLID+"findListSupplierPrinter", SupplierPrintterEntity.class,request);
     }
 
 

@@ -6,7 +6,7 @@ import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.classify.proxy.ProductClassifyServiceProxy;
 import com.taisf.services.supplier.api.SupplierPrinterService;
 import com.taisf.services.supplier.dto.SupplierPrinterRequest;
-import com.taisf.services.supplier.entity.SupplierProductEntity;
+import com.taisf.services.supplier.entity.SupplierPrintterEntity;
 import com.taisf.services.supplier.manager.SupplierPrinterManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +32,14 @@ public class SupplierPrinterServiceProxy implements SupplierPrinterService {
 
 
     @Override
-    public DataTransferObject<List<SupplierProductEntity>> findListSupplierPrinter(SupplierPrinterRequest request){
-        DataTransferObject<List<SupplierProductEntity>> dto = new DataTransferObject();
+    public DataTransferObject<List<SupplierPrintterEntity>> findListSupplierPrinter(SupplierPrinterRequest request){
+        DataTransferObject<List<SupplierPrintterEntity>> dto = new DataTransferObject();
         if (Check.NuNObj(request) ||Check.NuNObj(request.getSupplierCode())){
             dto.setErrorMsg("参数异常");
             return dto;
         }
         try {
-            List<SupplierProductEntity> listSupplierPrinter = supplierPrinterManagerImpl.findListSupplierPrinter(request);
+            List<SupplierPrintterEntity> listSupplierPrinter = supplierPrinterManagerImpl.findListSupplierPrinter(request);
             dto.setData(listSupplierPrinter);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "findListSupplierPrinter error:{}", e);

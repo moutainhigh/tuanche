@@ -2,7 +2,7 @@ package com.taisf.services.supplier.manager;
 
 import com.taisf.services.supplier.dao.SupplierPrinterDao;
 import com.taisf.services.supplier.dto.SupplierPrinterRequest;
-import com.taisf.services.supplier.entity.SupplierProductEntity;
+import com.taisf.services.supplier.entity.SupplierPrintterEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +26,7 @@ public class SupplierPrinterManagerImpl {
 	 * @date:2018/9/21
 	 * @description:查询供应商的所有打印机
 	 **/
-	public List<SupplierProductEntity> findListSupplierPrinter(SupplierPrinterRequest request){
+	public List<SupplierPrintterEntity> findListSupplierPrinter(SupplierPrinterRequest request){
 		return productClassifyDao.findListSupplierPrinter(request);
 	}
 

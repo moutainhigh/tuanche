@@ -5,7 +5,7 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dto.SupplierPrinterRequest;
 import com.taisf.services.supplier.entity.SupplierEntity;
-import com.taisf.services.supplier.entity.SupplierProductEntity;
+import com.taisf.services.supplier.entity.SupplierPrintterEntity;
 import com.taisf.services.supplier.manager.SupplierPrinterManagerImpl;
 import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class SupplierServiceProxyTest extends BaseTest {
       SupplierPrinterRequest request = new SupplierPrinterRequest();
       request.setSupplierCode("jipin");
       request.setIsDefault(0);
-      List<SupplierProductEntity> list = supplierPrinterManagerImpl.findListSupplierPrinter(request);
+      List<SupplierPrintterEntity> list = supplierPrinterManagerImpl.findListSupplierPrinter(request);
 
       System.out.println(JsonEntityTransform.Object2Json(list));
 

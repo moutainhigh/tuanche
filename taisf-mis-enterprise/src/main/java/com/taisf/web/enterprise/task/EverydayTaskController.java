@@ -5,6 +5,7 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.util.PrinterUtil;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.enterprise.api.EnterpriseService;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
@@ -16,8 +17,12 @@ import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
 import com.taisf.services.order.vo.DayTaskVO;
 import com.taisf.services.order.vo.OrderSendStatsVo;
+import com.taisf.services.supplier.dto.SupplierPrinterRequest;
+import com.taisf.services.supplier.entity.SupplierPrintterEntity;
+import com.taisf.services.supplier.manager.SupplierPrinterManagerImpl;
 import com.taisf.services.ups.entity.EmployeeEntity;
 import com.taisf.web.enterprise.common.constant.LoginConstant;
+import com.taisf.web.enterprise.common.constant.PrinterConstant;
 import com.taisf.web.enterprise.common.page.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +31,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +54,12 @@ public class EverydayTaskController {
 
     @Autowired
     private OrderService orderService;
+
+    @Resource(name = "supplierPrinterManagerImpl")
+    private SupplierPrinterManagerImpl supplierPrinterManagerImpl;
+    @Autowired
+    private PrinterConstant printerConstant;
+
 
 
     /**
@@ -188,5 +200,61 @@ public class EverydayTaskController {
             return new PageResult();
         }
         return pageResult;
+    }
+
+    /**
+     * @author:zhangzhengguang
+     * @date:2018/9/21
+     * @description:打印订单
+     **/
+    @RequestMapping("printTask")
+    @ResponseBody
+    public DataTransferObject<Void> printTask(HttpServletRequest request,DayTaskRequest dayTaskRequest) {
+        DataTransferObject<Void> dto = new DataTransferObject<>();
+        try {
+            EmployeeEntity emp = (EmployeeEntity)request.getSession().getAttribute(LoginConstant.SESSION_KEY);
+            SupplierPrinterRequest supplierPrinterRequest = new SupplierPrinterRequest();
+            supplierPrinterRequest.setSupplierCode(emp.getEmpBiz());
+            supplierPrinterRequest.setIsDefault(1);
+            List<SupplierPrintterEntity> listSupplierPrinter = supplierPrinterManagerImpl.findListSupplierPrinter(supplierPrinterRequest);
+            if(Check.NuNCollection(listSupplierPrinter)){
+                LogUtil.error(LOGGER, "printTask 查询供应商信息失败 :{}", JsonEntityTransform.Object2Json(supplierPrinterRequest));
+                dto.setErrorMsg("查询供应商信息失败");
+                return dto;
+            }
+            List<DayTaskVO> dayTaskVOS = orderService.getEverydayTaskPgeList(dayTaskRequest).getData().getList();
+                if(Check.NuNCollection(dayTaskVOS)){
+                    LogUtil.error(LOGGER, "printTask 查询查询任务信息失败 :{}", JsonEntityTransform.Object2Json(dayTaskRequest));
+                    dto.setErrorMsg("查询任务信息失败");
+                    return dto;
+                }
+            String printerNum = listSupplierPrinter.get(0).getPrinterNum();
+            StringBuilder sb = new StringBuilder(1024);
+            for (DayTaskVO dayTaskVO : dayTaskVOS) {
+                sb.append(dayTaskVO.getWindowName()+"<BR>");
+                sb.append(Splice(dayTaskVO.getProductName(),dayTaskVO.getProductNum())+"<BR><BR><CUT>");
+
+            }
+            PrinterUtil.print(printerConstant.USER,printerConstant.UKEY,printerNum,sb.toString());
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "error:{}", e);
+            dto.setErrCode(DataTransferObject.ERROR);
+            dto.setErrorMsg("系统错误");
+            return dto;
+        }
+        return dto;
+    }
+
+    public String Splice(String productName,Integer productNum){
+
+        Integer productNameLengtth = productName.length();
+        Integer max  = 16;
+        Integer tailLength = (productNum + "份").length();
+        String spaceStr = "";
+        int spaceNum = max - (productNameLengtth + tailLength);
+        for (int i = 0; i < spaceNum ; i++) {
+            spaceStr +="  ";
+        }
+        return productName + spaceStr + productNum + "份";
     }
 }

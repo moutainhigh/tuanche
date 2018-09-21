@@ -22,7 +22,6 @@ public class PrinterUtil {
     public static final String URL = "http://api.feieyun.cn/Api/Open/";//不需要修改
 
 
-
     //**********测试时，打开下面注释掉方法的即可,更多接口文档信息,请访问官网开放平台查看**********
     public static void main(String[] args) throws Exception{
 
@@ -57,7 +56,7 @@ public class PrinterUtil {
      * @param content 打印内容
      * @return
      */
-    private static String print(String printerUser, String printerKey, String printerSn, String content){
+    public static String print(String printerUser, String printerKey, String printerSn, String content){
         //标签说明：
         //单标签:
         //"<BR>"为换行,"<CUT>"为切刀指令(主动切纸,仅限切刀打印机使用才有效果)
@@ -73,7 +72,7 @@ public class PrinterUtil {
 //        String content;
 //        String content1;
 //        content1 = "档口A<BR>";
-//        content1 += "糖醋小排　　　　　 单价  数量 30份<BR><CUT>";
+//        content1 += "糖醋小排　　　　　 单价  数量 30份<BR><>CUT";
 //        content1 += "档口B<BR>";
 //        content1 += "糖醋小排11　　　　　 单价  数量 30份<BR><CUT>";
 //        content1 += "档口C<BR>";
