@@ -3,6 +3,8 @@ package com.taisf.services.pay.manager;
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.order.dao.OrderBaseDao;
+import com.taisf.services.order.dao.OrderMoneyDao;
+import com.taisf.services.order.entity.OrderMoneyEntity;
 import com.taisf.services.pay.dao.PayRecordDao;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class PayManagerImpl {
 
 	@Resource(name = "order.orderBaseDao")
 	private OrderBaseDao orderBaseDao;
+
+	@Resource(name = "order.orderMoneyDao")
+	private OrderMoneyDao orderMoneyDao;
 
 
 	/**
@@ -72,6 +77,11 @@ public class PayManagerImpl {
 		int num = payRecordDao.savePayRecord(recordEntity);
 		if (num ==1){
 			orderBaseDao.payOrder(recordEntity.getOrderSn(), OrdersStatusEnum.NO_PAY.getCode());
+			//处理订单支付金额
+			OrderMoneyEntity orderMoneyEntity = new OrderMoneyEntity();
+			orderMoneyEntity.setOrderSn(recordEntity.getOrderSn());
+			orderMoneyEntity.setPayMoney(recordEntity.getTotalFee());
+			orderMoneyDao.updateOrderMoney(orderMoneyEntity);
 		}
 		return num;
 	}
