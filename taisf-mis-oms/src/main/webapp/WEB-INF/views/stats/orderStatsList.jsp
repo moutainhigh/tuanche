@@ -101,14 +101,13 @@
                                 data-align="center"><span class="tdfont">企业名称</span></th>
                             <th data-field="allNum" data-width="10%"
                                 data-align="center"><span class="tdfont">下单总数量</span></th>
-                            <th data-field="noExtNum" data-width="10%"
+                            <th data-field="orderNum" data-width="10%"
                                 data-align="center"><span class="tdfont">线上预定</span></th>
-                            <th data-field="extNum" data-width="10%"
-                                data-align="center"><span class="tdfont">补单</span></th>
+                            <th data-field="knightNum" data-width="10%"
+                                data-align="center"><span class="tdfont">骑手收款</span></th>
 
                             <th data-field="faceNum" data-width="10%"
                                 data-align="center"><span class="tdfont">面对面收款</span></th>
-
 
                             <th data-field="payBalance" data-width="10%"  data-formatter="formatAmount"
                                 data-align="center"><span class="tdfont">账户支付</span></th>

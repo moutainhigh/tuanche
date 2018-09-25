@@ -36,9 +36,6 @@ public class OrderInfoDaoTest extends BaseTest {
 
 
 
-
-
-
     @Test
     public void finOrderDistributionListTest() {
         EnterpriseListRequest orderInfoRequest = new EnterpriseListRequest();

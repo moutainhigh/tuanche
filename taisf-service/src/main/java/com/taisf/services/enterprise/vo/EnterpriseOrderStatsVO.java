@@ -28,19 +28,24 @@ public class EnterpriseOrderStatsVO  extends BaseEntity{
 
     private String enterpriseName;
 
-    /**
-     * 补单数量
-     */
-    private Integer extNum;
 
     /**
-     * 非补单数量
+     * 订单数量
      */
-    private Integer noExtNum;
+    private Integer orderNum;
+
+
     /**
      * 面对面收款
      */
     private Integer faceNum;
+
+    /**
+     * 骑手收款
+     */
+    private Integer knightNum;
+
+
 
     /**
      * 全部数量
@@ -90,20 +95,13 @@ public class EnterpriseOrderStatsVO  extends BaseEntity{
         this.enterpriseName = enterpriseName;
     }
 
-    public Integer getExtNum() {
-        return extNum;
+
+    public Integer getOrderNum() {
+        return orderNum;
     }
 
-    public void setExtNum(Integer extNum) {
-        this.extNum = extNum;
-    }
-
-    public Integer getNoExtNum() {
-        return noExtNum;
-    }
-
-    public void setNoExtNum(Integer noExtNum) {
-        this.noExtNum = noExtNum;
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
     }
 
     public Integer getAllNum() {
@@ -128,5 +126,13 @@ public class EnterpriseOrderStatsVO  extends BaseEntity{
 
     public void setPayBalance(Integer payBalance) {
         this.payBalance = payBalance;
+    }
+
+    public Integer getKnightNum() {
+        return knightNum;
+    }
+
+    public void setKnightNum(Integer knightNum) {
+        this.knightNum = knightNum;
     }
 }
