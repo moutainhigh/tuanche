@@ -78,6 +78,9 @@ public class OrderEntity extends BaseEntity {
     private Integer orderType;
 
 
+    /** 面对面收款类型 */
+    private Integer faceType;
+
 
     /** 商家Uid */
     private String businessUid;
@@ -358,5 +361,13 @@ public class OrderEntity extends BaseEntity {
 
     public void setUserCode(String userCode) {
         this.userCode = userCode;
+    }
+
+    public Integer getFaceType() {
+        return faceType;
+    }
+
+    public void setFaceType(Integer faceType) {
+        this.faceType = faceType;
     }
 }

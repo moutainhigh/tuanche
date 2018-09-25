@@ -120,6 +120,11 @@
             <if test="orderType != null">
                 order_type,
             </if>
+
+            <if test="faceType != null">
+                face_type,
+            </if>
+
             <if test="businessUid != null">
                 business_uid,
             </if>
@@ -218,6 +223,11 @@
             <if test="orderType != null">
                 #{orderType,jdbcType=TINYINT},
             </if>
+
+            <if test="faceType != null">
+                #{faceType,jdbcType=TINYINT},
+            </if>
+
 
             <if test="businessUid != null">
                 #{businessUid,jdbcType=VARCHAR},
