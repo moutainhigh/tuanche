@@ -141,6 +141,52 @@ public class EnterpriseStatsController {
         return pageResult;
     }
 
+
+    /**
+     * 企业充值统计
+     * @param request
+     * @return
+     */
+    @RequestMapping("/selfStatsList")
+    public String selfStatsList(HttpServletRequest request) {
+        return "stats/selfStatsList";
+    }
+
+
+    /**
+     * 企业充值统计
+     * @author afi
+     * @param request
+     * @param enterpriseStatsRequest
+     * @return
+     */
+    @RequestMapping("selfStatsListPage")
+    @ResponseBody
+    public PageResult selfStatsListPage(HttpServletRequest request, EnterpriseStatsRequest enterpriseStatsRequest) {
+        PageResult pageResult = new PageResult();
+        try {
+            dealTime(enterpriseStatsRequest);
+            String time = enterpriseStatsRequest.getStartStr()  + " 至 "+ enterpriseStatsRequest.getEndStr();
+            DataTransferObject<List<EnterpriseRechargeStatsVO>> dto = rechargeService.getSelfRechargeStats(enterpriseStatsRequest);
+            List<EnterpriseRechargeStatsVO> list = dto.getData();
+            //查询出当前供餐商下所有菜品信息
+            if (!Check.NuNCollection(list)) {
+                for (EnterpriseRechargeStatsVO statsVO : list) {
+                    //设置区间
+                    statsVO.setTime(time);
+                }
+                pageResult.setRows(dto.getData());
+                pageResult.setTotal(ValueUtil.getlongValue(dto.getData().size()));
+            }
+        } catch (Exception e) {
+            LogUtil.info(LOGGER, "params :{}", JsonEntityTransform.Object2Json(enterpriseStatsRequest));
+            LogUtil.error(LOGGER, "error :{}", e);
+            return new PageResult();
+        }
+        return pageResult;
+    }
+
+
     /**
      * 处理时间
      * @author afi
@@ -148,7 +194,7 @@ public class EnterpriseStatsController {
      */
     private void dealTime(EnterpriseStatsRequest enterpriseStatsRequest) {
         if (Check.NuNStr(enterpriseStatsRequest.getStartStr())){
-            enterpriseStatsRequest.setStartStr(DateUtil.timestampFormat(DateUtil.connectDate(DateUtil.jumpMonth(new Date(),-3),"00:00:00")));
+            enterpriseStatsRequest.setStartStr(DateUtil.timestampFormat(DateUtil.connectDate(DateUtil.jumpMonth(new Date(),-6),"00:00:00")));
         }
         if (Check.NuNStr(enterpriseStatsRequest.getEndStr())){
             enterpriseStatsRequest.setEndStr(DateUtil.timestampFormat(DateUtil.connectDate(new Date(),"23:59:59")));

@@ -11,6 +11,7 @@ import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
 import com.taisf.services.order.dto.CartCleanRequest;
 import com.taisf.services.order.dto.EnterpriseStatsRequest;
+import com.taisf.services.pay.manager.RechargeOrderManagerImpl;
 import com.taisf.services.recharge.api.RechargeService;
 import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
 import com.taisf.services.recharge.dto.BalanceMoneyOneRequest;
@@ -59,6 +60,10 @@ public class RechargeServiceProxy implements RechargeService {
     @Resource(name = "recharge.rechargeManagerImpl")
     private RechargeManagerImpl rechargeManager;
 
+    @Resource(name = "pay.rechargeOrderManagerImpl")
+    private RechargeOrderManagerImpl rechargeOrderManager;
+
+
 
     /**
      * 获取企业充值的统计信息
@@ -66,6 +71,27 @@ public class RechargeServiceProxy implements RechargeService {
      * @param request
      * @return
      */
+    @Override
+    public DataTransferObject<List<EnterpriseRechargeStatsVO>> getSelfRechargeStats(EnterpriseStatsRequest request){
+        DataTransferObject<List<EnterpriseRechargeStatsVO>> dto = new DataTransferObject<>();
+        if (Check.NuNObj(request)) {
+            dto.setErrorMsg("参数异常");
+            return dto;
+        }
+        List<EnterpriseRechargeStatsVO> list = rechargeOrderManager.getSelfRechargeStats(request);
+        dto.setData(list);
+        return dto;
+    }
+
+
+
+    /**
+     * 获取企业充值的统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    @Override
     public DataTransferObject<List<EnterpriseRechargeStatsVO>> getEnterpriseRechargeStats(EnterpriseStatsRequest request){
         DataTransferObject<List<EnterpriseRechargeStatsVO>> dto = new DataTransferObject<>();
         if (Check.NuNObj(request)) {

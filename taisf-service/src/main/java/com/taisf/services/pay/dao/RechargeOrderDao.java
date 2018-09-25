@@ -7,6 +7,8 @@ import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.dto.EnterpriseAddressRequest;
 import com.taisf.services.enterprise.entity.EnterpriseAddressEntity;
+import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
 import com.taisf.services.pay.vo.RechargeOrderVO;
@@ -105,4 +107,15 @@ public class RechargeOrderDao extends BaseDao {
         }
         return mybatisDaoContext.update(SQLID + "updateRechargeOrder",recordEntity);
     }
+
+    /**
+     * 获取企业充值统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    public List<EnterpriseRechargeStatsVO> getSelfRechargeStats(EnterpriseStatsRequest request){
+        return mybatisDaoContext.findAll(SQLID + "getSelfRechargeStats", EnterpriseRechargeStatsVO.class, request);
+    }
+
 }

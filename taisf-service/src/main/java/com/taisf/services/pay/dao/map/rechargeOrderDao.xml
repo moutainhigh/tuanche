@@ -200,4 +200,46 @@
       where  order_sn = #{orderSn,jdbcType=VARCHAR}  and trade_no is  null
     </update>
 
+
+
+    <select id="getSelfRechargeStats" parameterType="com.taisf.services.order.dto.EnterpriseStatsRequest"
+            resultType="com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO">
+
+      SELECT
+      ll.enterprise_code AS enterpriseCode,
+      ll.num AS num,
+      ll.price AS price,
+      p.enterprise_name AS enterpriseName
+      FROM
+
+      (SELECT
+      enterprise_code,
+      COUNT( 1 ) AS num,
+      SUM( total_fee ) AS price
+      FROM
+      t_recharge_order t
+      WHERE 1 =1  and pay_status = 1 and
+
+      <if test="supplierCode != null and supplierCode != '' ">
+        and t.supplier_code = #{supplierCode,jdbcType=VARCHAR}
+      </if>
+
+      <if test="enterpriseCode != null and enterpriseCode != '' ">
+        and t.enterprise_code = #{enterpriseCode,jdbcType=VARCHAR}
+      </if>
+
+      <if test="startStr != null and startStr != '' ">
+        and t.pay_time <![CDATA[  >= ]]>#{startStr,jdbcType=VARCHAR}
+      </if>
+      <if test="endStr != null and endStr != '' ">
+        and t.pay_time <![CDATA[  <= ]]> #{endStr,jdbcType=VARCHAR}
+      </if>
+      GROUP BY
+      enterprise_code
+      ) ll
+      LEFT JOIN t_enterprise p ON ll.enterprise_code = p.enterprise_code
+
+    </select>
+
+
 </mapper>
