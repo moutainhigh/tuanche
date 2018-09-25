@@ -138,6 +138,11 @@
                             <i class="fa fa-search"></i>&nbsp;搜索
                         </button>
                     </div>
+                    <div class="col-sm-1">
+                        <button class="btn btn-primary" type="button" onclick="printTask();">
+                            <i class="fa fa-search"></i>&nbsp;打印
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -206,6 +211,25 @@
     }
     function query() {
         $("#listTable").bootstrapTable("selectPage", 1);
+    }
+
+    function printTask(){
+
+        $.ajax({
+            data: {
+                enterpriseCode: $("#enterpriseCodeS").val(),
+            },
+            type: "get",
+            dataType: "json",
+            url: 'everydayTask/printTask',
+            success: function (result) {
+                layer.alert("打印成功", {icon: 6, time: 2000, title: '提示'});
+            },
+            error: function (result) {
+                layer.alert("未知错误", {icon: 5, time: 2000, title: '提示'});
+                $("#saveBtn").removeAttr("disabled");
+            }
+        });
     }
 </script>
 </body>
