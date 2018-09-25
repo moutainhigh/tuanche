@@ -89,7 +89,7 @@
                            data-content-type="application/x-www-form-urlencoded"
                            data-query-params="paginationParam" data-method="post"
                            data-single-select="true"
-                           data-url="stats/rechargeStatsListPage">
+                           data-url="stats/selfStatsListPage">
                         <thead>
                         <tr>
 

@@ -139,8 +139,8 @@ public class RechargeOrderProxy  implements RechargeOrderService {
         rechargeOrderEntity.setNeedMoney(rechargeOrderRequest.getNeedMoney());
         rechargeOrderEntity.setUserUid(rechargeOrderRequest.getUserUid());
         rechargeOrderEntity.setOrderSn(orderSn);
-        rechargeOrderEntity.setSupplierCode(userEntity.getEnterpriseCode());
-        rechargeOrderEntity.setEnterpriseCode(userEntity.getBizCode());
+        rechargeOrderEntity.setEnterpriseCode(userEntity.getEnterpriseCode());
+        rechargeOrderEntity.setSupplierCode(userEntity.getBizCode());
         try{
             int num = rechargeOrderManager.saveRechargeOrder(rechargeOrderEntity);
             if (num == 0){

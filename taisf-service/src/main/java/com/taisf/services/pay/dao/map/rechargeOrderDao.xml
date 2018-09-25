@@ -218,7 +218,7 @@
       SUM( total_fee ) AS price
       FROM
       t_recharge_order t
-      WHERE 1 =1  and pay_status = 1 and
+      WHERE 1 =1  and pay_status = 1
 
       <if test="supplierCode != null and supplierCode != '' ">
         and t.supplier_code = #{supplierCode,jdbcType=VARCHAR}
