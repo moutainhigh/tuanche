@@ -1115,16 +1115,20 @@ public class OrderServiceProxy implements OrderService {
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.RECEIVE.getCode());
             money.setNeedPay(0);
         }else{
-            dto.setErrorMsg("余额不足");
-            return;
+            money.setPayBalance(drawBalance);
+            orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
+            money.setNeedPay(cost-drawBalance);
         }
+
         if (!createFlag){
             //非创建订单,直接返回
             return;
         }
+        //不需要余额支付
         if (ValueUtil.getintValue(money.getPayBalance()) <= 0){
             return;
         }
+
         if (!pwd){
             return;
         }

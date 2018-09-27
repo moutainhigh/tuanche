@@ -3,6 +3,7 @@ package com.taisf.services.supplier.dao;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.supplier.dto.SupplierRequest;
 import com.taisf.services.supplier.entity.SupplierEntity;
 import org.slf4j.Logger;
@@ -33,7 +34,17 @@ public class SupplierDao extends BaseDao {
      * 日志对象
      */
     private static Logger logger = LoggerFactory.getLogger(SupplierDao.class);
-    
+
+
+    /**
+     * 获取供应商列表
+     * @author afi
+     * @return
+     */
+    public List<SupplierEntity> getSupplierList(String supplierCode){
+        return mybatisDaoContext.findAll(SQLID+"getSupplierList", SupplierEntity.class,supplierCode);
+    }
+
     /**
      * 获取供应商列表
      * @return

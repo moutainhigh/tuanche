@@ -90,7 +90,7 @@ public class SupStatsController {
             this.dealTime(supStatsRequest);
 
 
-            DataTransferObject<List<SupplierEntity>> allSupplierList = supplierService.getAllSupplierList();
+            DataTransferObject<List<SupplierEntity>> allSupplierList = supplierService.getSupplierList(supStatsRequest.getSupplierCode());
             List<SupplierEntity> listAll = allSupplierList.getData();
             if (Check.NuNCollection(listAll)){
                 return pageResult;

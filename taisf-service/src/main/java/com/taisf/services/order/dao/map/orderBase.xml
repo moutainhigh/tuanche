@@ -287,7 +287,7 @@
         <!-- 更新订单金额 -->
         UPDATE t_order
         set
-        order_status = 50
+        order_status = #{orderStatus,jdbcType=TINYINT}
         WHERE order_sn = #{orderSn,jdbcType=VARCHAR}
         AND order_status =  #{oldStatus,jdbcType=TINYINT}
     </update>

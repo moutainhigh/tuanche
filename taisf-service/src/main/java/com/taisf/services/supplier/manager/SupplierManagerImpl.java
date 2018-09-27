@@ -2,6 +2,7 @@ package com.taisf.services.supplier.manager;
 
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.base.entity.EmployeeSupplierEntity;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.dao.SupplierDao;
 import com.taisf.services.supplier.dao.SupplierPackageDao;
@@ -46,6 +47,17 @@ public class SupplierManagerImpl {
 	@Resource(name = "supplier.supplierPackageDao")
 	private SupplierPackageDao supplierPackageDao;
 
+
+
+
+	/**
+	 * 获取供应商列表
+	 * @author afi
+	 * @return
+	 */
+	public List<SupplierEntity> getSupplierList(String supplierCode){
+		return supplierDao.getSupplierList(supplierCode);
+	}
 
 	/**
 	 * 获取供应商列表
