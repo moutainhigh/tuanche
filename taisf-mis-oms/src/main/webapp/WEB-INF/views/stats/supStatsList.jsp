@@ -100,25 +100,15 @@
                                 data-align="center"><span class="tdfont">供应商编号</span></th>
                             <th data-field="supplierName" data-width="10%"
                                 data-align="center"><span class="tdfont">供应商名称</span></th>
-                            <th data-field="allNum" data-width="10%"
-                                data-align="center"><span class="tdfont">下单总数量</span></th>
-                            <th data-field="orderNum" data-width="10%"
-                                data-align="center"><span class="tdfont">线上预定</span></th>
-                            <th data-field="knightNum" data-width="10%"
-                                data-align="center"><span class="tdfont">骑手收款</span></th>
-
-                            <th data-field="faceNum" data-width="10%"
-                                data-align="center"><span class="tdfont">面对面收款</span></th>
-
                             <th data-field="payBalance" data-width="10%"  data-formatter="formatAmount"
-                                data-align="center"><span class="tdfont">账户支付</span></th>
+                                data-align="center"><span class="tdfont">账户支付(元)</span></th>
                             <th data-field="payMoney" data-width="10%"  data-formatter="formatAmount"
-                                data-align="center"><span class="tdfont">网银支付</span></th>
+                                data-align="center"><span class="tdfont">网银支付(元)</span></th>
 
                             <th data-field="rechargePrice" data-width="10%"  data-formatter="formatAmount"
-                                data-align="center"><span class="tdfont">企业充值</span></th>
+                                data-align="center"><span class="tdfont">企业充值(元)</span></th>
                             <th data-field="orderRechargePrice" data-width="10%"  data-formatter="formatAmount"
-                                data-align="center"><span class="tdfont">个人充值</span></th>
+                                data-align="center"><span class="tdfont">个人充值(元)</span></th>
 
 
                         </tr>

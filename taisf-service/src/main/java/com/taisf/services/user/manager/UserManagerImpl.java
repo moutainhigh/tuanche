@@ -250,6 +250,7 @@ public class UserManagerImpl {
 
         has = new UserEntity();
         has.setUserUid(enterpriseEntity.getEnterpriseCode());
+        has.setUserPhone(enterpriseEntity.getEnterpriseCode());
         has.setUserType(UserTypeEnum.QIYE.getCode());
         has.setEnterpriseCode(enterpriseEntity.getEnterpriseCode());
         has.setEnterpriseName(enterpriseEntity.getEnterpriseName());

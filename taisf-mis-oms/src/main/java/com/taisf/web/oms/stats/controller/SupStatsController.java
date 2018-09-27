@@ -88,7 +88,7 @@ public class SupStatsController {
         try {
 
             this.dealTime(supStatsRequest);
-            String time = supStatsRequest.getStartStr()  + " 至 "+ supStatsRequest.getEndStr();
+
 
             DataTransferObject<List<SupplierEntity>> allSupplierList = supplierService.getAllSupplierList();
             List<SupplierEntity> listAll = allSupplierList.getData();
@@ -102,7 +102,7 @@ public class SupStatsController {
                 SupStatsVO supStatsVO = new SupStatsVO();
                 supStatsVO.setSupplierCode(supplierEntity.getSupplierCode());
                 supStatsVO.setSupplierName(supplierEntity.getSupplierName());
-                supStatsVO.setTime(time);
+                supStatsVO.setTime(getTime(supStatsRequest));
                 supStatsVOList.add(supStatsVO);
             }
 
@@ -188,10 +188,26 @@ public class SupStatsController {
             String key = supStatsVO.getSupplierCode();
             if (supOrderStatsMap.containsKey(key)){
                 SupOrderStatsVO supOrderStatsVO = supOrderStatsMap.get(key);
-                BeanUtils.copyProperties(supOrderStatsVO,supStatsVO);
+                supStatsVO.setPayBalance(supOrderStatsVO.getPayBalance());
+                supStatsVO.setPayMoney(supOrderStatsVO.getPayMoney());
             }
+
         }
     }
+
+
+    /**
+     * 处理时间
+     * @author afi
+     * @param supStatsRequest
+     */
+    private String  getTime(SupStatsRequest supStatsRequest) {
+        //处理时间
+        dealTime(supStatsRequest);
+        String time = supStatsRequest.getStartStr()  + " 至 "+ supStatsRequest.getEndStr();
+        return time;
+    }
+
 
     /**
      * 处理时间

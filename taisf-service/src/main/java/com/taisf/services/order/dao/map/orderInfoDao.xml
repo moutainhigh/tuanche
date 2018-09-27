@@ -369,8 +369,8 @@
 
 
 
-    <select id="getEnterpriseOrderStats" parameterType="com.taisf.services.order.dto.SupStatsRequest"
-            resultType="com.taisf.services.enterprise.vo.SupOrderStatsVO">
+    <select id="getEnterpriseOrderStats" parameterType="com.taisf.services.order.dto.EnterpriseStatsRequest"
+            resultType="com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO">
         SELECT
         p.enterprise_name as enterpriseName,
         ll.enterpriseCode,

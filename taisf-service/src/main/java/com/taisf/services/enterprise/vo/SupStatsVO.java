@@ -15,9 +15,30 @@ import com.jk.framework.base.entity.BaseEntity;
  * @version 1.0
  * @since 1.0
  */
-public class SupStatsVO extends SupOrderStatsVO{
+public class SupStatsVO extends BaseEntity{
 
     private static final long serialVersionUID = 301231231201446703L;
+
+    /**
+     * 统计区间
+     */
+    private String time;
+
+    private String supplierCode;
+
+    private String supplierName;
+
+
+    /**
+     * 支付
+     */
+    private Integer payMoney;
+
+    /**
+     * 余额支付
+     */
+    private Integer payBalance;
+
 
 
     /**
@@ -73,5 +94,45 @@ public class SupStatsVO extends SupOrderStatsVO{
 
     public void setOrderRechargePrice(Integer orderRechargePrice) {
         this.orderRechargePrice = orderRechargePrice;
+    }
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public Integer getPayMoney() {
+        return payMoney;
+    }
+
+    public void setPayMoney(Integer payMoney) {
+        this.payMoney = payMoney;
+    }
+
+    public Integer getPayBalance() {
+        return payBalance;
+    }
+
+    public void setPayBalance(Integer payBalance) {
+        this.payBalance = payBalance;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
