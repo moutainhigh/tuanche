@@ -56,9 +56,9 @@
                         <input id="endTime" name="endTime"  class="laydate-icon form-control layer-date">
                     </div>
 
-                    <label class="col-sm-1 control-label mtop">企业编号:</label>
+                    <label class="col-sm-1 control-label mtop">供应商编号:</label>
                     <div class="col-sm-2">
-                        <input id="enterpriseCode" name="enterpriseCode"  class="form-control">
+                        <input id="supplierCode" name="supplierCode"  class="form-control">
                     </div>
 
                     <div class="col-sm-1">
@@ -150,7 +150,7 @@
         return {
             startStr: startTime,
             endStr: endTime,
-            enterpriseCode:$("#enterpriseCode").val(),
+            supplierCode:$("#supplierCode").val(),
             limit: params.limit,
             page: $("#listTable").bootstrapTable("getOptions").pageNumber
         };
