@@ -14,6 +14,7 @@ import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
+import com.taisf.services.enterprise.vo.SupOrderStatsVO;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.*;
@@ -124,6 +125,28 @@ public class OrderServiceProxy implements OrderService {
         return dto;
     }
 
+
+
+    /**
+     * 获取企业订单的统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    public Map<String,SupOrderStatsVO> getSupOrderStatsMap(SupStatsRequest request) {
+        Map<String,SupOrderStatsVO> map = new HashMap<>();
+        if (Check.NuNObj(request)){
+            return map;
+        }
+
+        List<SupOrderStatsVO> supOrderStats = orderManager.getSupOrderStats(request);
+        if (!Check.NuNCollection(supOrderStats)){
+            for (SupOrderStatsVO supOrderStat : supOrderStats) {
+                map.put(supOrderStat.getSupplierCode(),supOrderStat);
+            }
+        }
+        return map;
+    }
 
     /**
      * 获取企业订单的统计信息

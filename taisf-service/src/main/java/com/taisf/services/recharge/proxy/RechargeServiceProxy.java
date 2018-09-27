@@ -9,8 +9,10 @@ import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
+import com.taisf.services.enterprise.vo.SupRechargeStatsVO;
 import com.taisf.services.order.dto.CartCleanRequest;
 import com.taisf.services.order.dto.EnterpriseStatsRequest;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.pay.manager.RechargeOrderManagerImpl;
 import com.taisf.services.recharge.api.RechargeService;
 import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
@@ -28,9 +30,7 @@ import com.taisf.services.user.manager.UserManagerImpl;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>充值相关</p>
@@ -64,6 +64,26 @@ public class RechargeServiceProxy implements RechargeService {
     private RechargeOrderManagerImpl rechargeOrderManager;
 
 
+    /**
+     * 获取企业充值统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    @Override
+    public Map<String,SupRechargeStatsVO> getSupRechargeStatsMap(SupStatsRequest request){
+        Map<String,SupRechargeStatsVO> map = new HashMap<>();
+        if (Check.NuNObj(request)){
+            return map;
+        }
+        List<SupRechargeStatsVO> supRechargeStats = rechargeManager.getSupRechargeStats(request);
+        if (!Check.NuNCollection(supRechargeStats)){
+            for (SupRechargeStatsVO supRechargeStat : supRechargeStats) {
+                map.put(supRechargeStat.getSupplierCode(),supRechargeStat);
+            }
+        }
+        return map;
+    }
 
     /**
      * 获取企业充值的统计信息
@@ -225,6 +245,7 @@ public class RechargeServiceProxy implements RechargeService {
      * @param request
      * @return
      */
+    @Override
     public  DataTransferObject<Void> balanceMoneyOne(BalanceMoneyOneRequest request){
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(request)){
@@ -296,6 +317,7 @@ public class RechargeServiceProxy implements RechargeService {
      * @param request
      * @return
      */
+    @Override
     public  DataTransferObject<Void> balanceMoneyAvg(BalanceMoneyAvgRequest request){
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNObj(request)){
@@ -427,6 +449,7 @@ public class RechargeServiceProxy implements RechargeService {
      * @param chargeRequest
      * @return
      */
+    @Override
     public  DataTransferObject<Void> chargeMoney(ChargeRequest chargeRequest){
         DataTransferObject<Void> dto = new DataTransferObject<>();
         if (Check.NuNStr(chargeRequest.getEnterpriseCode())

@@ -2,6 +2,8 @@ package com.taisf.services.pay.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.enterprise.vo.SupRechargeStatsVO;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.dto.RechargeOrderRequest;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
@@ -10,6 +12,7 @@ import com.taisf.services.user.dto.UserMoneyRequest;
 import com.taisf.services.user.vo.AccountUserLogVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>TODO</p>
@@ -71,4 +74,13 @@ public interface RechargeOrderService {
      * @return
      */
     DataTransferObject<Void> dealRechargeOrder4PayReturn(RechargeOrderEntity rechargeOrderEntity);
+
+
+    /**
+     * 获取企业充值统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    Map<String,SupRechargeStatsVO> getSelfRechargeSupStatsMap(SupStatsRequest request);
 }

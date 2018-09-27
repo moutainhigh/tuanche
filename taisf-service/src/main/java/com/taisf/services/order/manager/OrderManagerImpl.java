@@ -11,6 +11,7 @@ import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.common.valenum.RecordPayTypeEnum;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
+import com.taisf.services.enterprise.vo.SupOrderStatsVO;
 import com.taisf.services.order.dao.*;
 import com.taisf.services.order.dto.*;
 import com.taisf.services.order.entity.*;
@@ -109,6 +110,15 @@ public class OrderManagerImpl {
 		return orderInfoDao.getEnterpriseOrderStats(request);
 	}
 
+	/**
+	 * 获取企业订单的统计信息
+	 * @author afi
+	 * @param request
+	 * @return
+	 */
+	public List<SupOrderStatsVO> getSupOrderStats(SupStatsRequest request){
+		return orderInfoDao.getSupOrderStats(request);
+	}
 
 
 	/**

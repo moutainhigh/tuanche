@@ -5,8 +5,10 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
+import com.taisf.services.enterprise.vo.SupRechargeStatsVO;
 import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.order.vo.OrderInfoVO;
 import com.taisf.services.recharge.dto.ChargeHisRequest;
 import com.taisf.services.recharge.entity.RechargeEntity;
@@ -50,6 +52,18 @@ public class RechargeDao extends BaseDao {
      */
     public List<EnterpriseRechargeStatsVO> getEnterpriseRechargeStats(EnterpriseStatsRequest request){
         return mybatisDaoContext.findAll(SQLID + "getEnterpriseRechargeStats", EnterpriseRechargeStatsVO.class, request);
+    }
+
+
+
+    /**
+     * 获取企业充值统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    public List<SupRechargeStatsVO> getSupRechargeStats(SupStatsRequest request){
+        return mybatisDaoContext.findAll(SQLID + "getSupRechargeStats", SupRechargeStatsVO.class, request);
     }
 
 

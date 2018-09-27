@@ -291,8 +291,86 @@
     </select>
 
 
-    <select id="getEnterpriseOrderStats" parameterType="com.taisf.services.order.dto.EnterpriseStatsRequest"
-            resultType="com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO">
+
+
+
+    <select id="getSupOrderStats" parameterType="com.taisf.services.order.dto.SupStatsRequest"
+            resultType="com.taisf.services.enterprise.vo.SupOrderStatsVO">
+        SELECT
+        p.supplier_name as supplierName,
+        ll.supplierCode,
+        ll.orderNum,
+        ll.faceNum,
+        ll.knightNum,
+        ll.allNum,
+        ll.payMoney,
+        ll.payBalance
+        FROM
+        (
+        SELECT
+        tmp.supplier_code AS supplierCode,
+        SUM( orderNum ) AS orderNum,
+        SUM( faceNum ) AS faceNum,
+        SUM( knightNum ) AS knightNum,
+        SUM( allNum ) AS allNum,
+        SUM( payMoney ) AS payMoney,
+        SUM( payBalance ) AS payBalance
+        FROM
+        (
+        SELECT
+        t.supplier_code,
+
+        CASE
+        WHEN t.face_type = 0 THEN
+        1 ELSE 0
+        END AS orderNum,
+
+        CASE
+        WHEN t.face_type = 1 THEN
+        1 ELSE 0
+        END AS faceNum,
+
+        CASE
+        WHEN t.face_type = 2 THEN
+        1 ELSE 0
+        END AS knightNum,
+
+        1 AS allNum,
+
+        m.pay_balance AS payBalance,
+
+        m.pay_money AS payMoney
+
+
+        FROM
+        t_order t
+        INNER JOIN t_order_money m ON t.order_sn = m.order_sn
+        WHERE
+        t.supplier_code IS NOT NULL
+
+        <if test="supplierCode != null and supplierCode != '' ">
+            and t.supplier_code = #{supplierCode,jdbcType=VARCHAR}
+        </if>
+
+
+        <if test="startStr != null and startStr != '' ">
+            and t.create_time <![CDATA[  >= ]]>#{startStr,jdbcType=VARCHAR}
+        </if>
+        <if test="endStr != null and endStr != '' ">
+            and t.create_time <![CDATA[  <= ]]> #{endStr,jdbcType=VARCHAR}
+        </if>
+        ) tmp
+        GROUP BY
+        tmp.supplier_code
+        ) ll
+        LEFT JOIN t_supplier p ON ll.supplierCode = p.supplier_code
+    </select>
+
+
+
+
+    <select id="getEnterpriseOrderStats" parameterType="com.taisf.services.order.dto.SupStatsRequest"
+            resultType="com.taisf.services.enterprise.vo.SupOrderStatsVO">
         SELECT
         p.enterprise_name as enterpriseName,
         ll.enterpriseCode,

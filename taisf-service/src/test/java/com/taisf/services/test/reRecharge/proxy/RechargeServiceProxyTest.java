@@ -2,6 +2,8 @@ package com.taisf.services.test.reRecharge.proxy;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.taisf.services.enterprise.vo.SupRechargeStatsVO;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.recharge.api.RechargeService;
 import com.taisf.services.recharge.dto.BalanceMoneyAvgRequest;
 import com.taisf.services.recharge.dto.BalanceMoneyOneRequest;
@@ -11,6 +13,7 @@ import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * <p>TODO</p>
@@ -32,6 +35,16 @@ public class RechargeServiceProxyTest extends BaseTest {
     @Resource(name = "recharge.rechargeServiceProxy")
     private RechargeService rechargeService;
 
+
+
+
+    @Test
+    public void getSupRechargeStatsMapTest() {
+        SupStatsRequest request = new SupStatsRequest();
+        Map<String,SupRechargeStatsVO> map = rechargeService.getSupRechargeStatsMap(request);
+        System.out.println(JsonEntityTransform.Object2Json(map));
+
+    }
 
 
 

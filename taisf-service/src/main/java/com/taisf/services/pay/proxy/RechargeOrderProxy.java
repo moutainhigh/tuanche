@@ -8,6 +8,8 @@ import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.SnUtil;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.enterprise.vo.SupRechargeStatsVO;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.pay.api.RechargeOrderService;
 import com.taisf.services.pay.dto.RechargeOrderListRequest;
 import com.taisf.services.pay.dto.RechargeOrderRequest;
@@ -16,14 +18,15 @@ import com.taisf.services.pay.manager.RechargeOrderManagerImpl;
 import com.taisf.services.pay.vo.RechargeOrderVO;
 import com.taisf.services.user.entity.UserEntity;
 import com.taisf.services.user.manager.UserManagerImpl;
-import com.taisf.services.user.vo.AccountUserLogVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>TODO</p>
@@ -225,6 +228,27 @@ public class RechargeOrderProxy  implements RechargeOrderService {
     }
 
 
+    /**
+     * 获取企业充值统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    @Override
+    public Map<String,SupRechargeStatsVO> getSelfRechargeSupStatsMap(SupStatsRequest request){
+        Map<String,SupRechargeStatsVO> map = new HashMap<>();
+        if (Check.NuNObj(request)){
+            return map;
+        }
+
+        List<SupRechargeStatsVO> selfRechargeSupStats = rechargeOrderManager.getSelfRechargeSupStats(request);
+        if (!Check.NuNCollection(selfRechargeSupStats)){
+            for (SupRechargeStatsVO selfRechargeSupStat : selfRechargeSupStats) {
+                map.put(selfRechargeSupStat.getSupplierCode(),selfRechargeSupStat);
+            }
+        }
+        return map;
+    }
 
 
 }
