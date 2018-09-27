@@ -296,9 +296,9 @@
         SELECT
         p.enterprise_name as enterpriseName,
         ll.enterpriseCode,
-        ll.extNum,
-        ll.noExtNum,
+        ll.orderNum,
         ll.faceNum,
+        ll.knightNum,
         ll.allNum,
         ll.payMoney,
         ll.payBalance
@@ -306,9 +306,9 @@
         (
         SELECT
         tmp.enterprise_code AS enterpriseCode,
-        SUM( extNum ) AS extNum,
-        SUM( noExtNum ) AS noExtNum,
+        SUM( orderNum ) AS orderNum,
         SUM( faceNum ) AS faceNum,
+        SUM( knightNum ) AS knightNum,
         SUM( allNum ) AS allNum,
         SUM( payMoney ) AS payMoney,
         SUM( payBalance ) AS payBalance
@@ -316,38 +316,32 @@
         (
         SELECT
         t.enterprise_code,
-        CASE
-          WHEN t.order_type IN ( 21, 31 ) THEN
-        1 ELSE 0
-        END AS extNum,
 
         CASE
-          WHEN t.order_type IN ( 20, 30 ) THEN
+          WHEN t.face_type = 0 THEN
         1 ELSE 0
-        END AS noExtNum,
+        END AS orderNum,
 
         CASE
-        WHEN t.order_type IN ( 40, 41 ) THEN
+        WHEN t.face_type = 1 THEN
         1 ELSE 0
         END AS faceNum,
 
+        CASE
+        WHEN t.face_type = 2 THEN
+        1 ELSE 0
+        END AS knightNum,
 
         1 AS allNum,
 
-        CASE
-        WHEN m.pay_type = 3 THEN
-        m.total_fee ELSE 0
-        END AS payBalance,
+        m.pay_balance AS payBalance,
 
-        CASE
-        WHEN m.pay_type != 3 THEN
-        m.total_fee ELSE 0
-        END AS payMoney
+        m.pay_money AS payMoney
 
 
         FROM
         t_order t
-        INNER JOIN t_pay_record m ON t.order_sn = m.order_sn
+        INNER JOIN t_order_money m ON t.order_sn = m.order_sn
         WHERE
         t.enterprise_code IS NOT NULL
 

@@ -597,10 +597,11 @@ public class OrderServiceProxy implements OrderService {
         OrderSaveVO orderSaveVO = new OrderSaveVO();
         if (needPwd){
             orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE_FACE.getCode());
+            orderSaveVO.getOrderBase().setFaceType(FaceTypeEnum.KNIGHT.getCode());
         }else {
             orderSaveVO.getOrderBase().setOrderType(OrderTypeEnum.FACE.getCode());
+            orderSaveVO.getOrderBase().setFaceType(FaceTypeEnum.FACE.getCode());
         }
-
 
         //1. 填充面对面收款订单的信息
         this.faceOrderInfo(dto,orderSaveVO, createOrderRequest,needPwd);

@@ -28,6 +28,15 @@ import java.util.List;
  */
 public interface RechargeService {
 
+
+    /**
+     * 获取企业充值的统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    DataTransferObject<List<EnterpriseRechargeStatsVO>> getSelfRechargeStats(EnterpriseStatsRequest request);
+
     /**
      * 获取企业充值的统计信息
      * @author afi

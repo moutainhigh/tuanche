@@ -6,7 +6,9 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.valenum.AccountTypeEnum;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
+import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
 import com.taisf.services.order.dao.OrderBaseDao;
+import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.pay.dao.PayRecordDao;
 import com.taisf.services.pay.dao.RechargeOrderDao;
 import com.taisf.services.pay.dto.RechargeOrderListRequest;
@@ -130,5 +132,15 @@ public class RechargeOrderManagerImpl {
 
 	}
 
+
+	/**
+	 * 获取企业充值统计信息
+	 * @author afi
+	 * @param request
+	 * @return
+	 */
+	public List<EnterpriseRechargeStatsVO> getSelfRechargeStats(EnterpriseStatsRequest request){
+		return rechargeOrderDao.getSelfRechargeStats(request);
+	}
 
 }
