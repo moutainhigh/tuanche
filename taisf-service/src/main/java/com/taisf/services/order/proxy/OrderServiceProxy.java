@@ -213,9 +213,12 @@ public class OrderServiceProxy implements OrderService {
             }
         }
 
+        // 获取当前订单的支付信息
+        List<PayRecordEntity> payRecordList = payManager.getPayRecordByOrderSn(base.getOrderSn());
+
         List<StockWeekEntity> list = this.trans2Stock(base);
         //退款
-        orderManager.cancelOrder(base,list);
+        orderManager.cancelOrder(base,list,payRecordList);
         return dto;
 
     }
@@ -951,11 +954,15 @@ public class OrderServiceProxy implements OrderService {
         if (!need){
             return false;
         }
+        if (costMoney == 0){
+            return false;
+        }
         Boolean needPwd = true;
         UserEntity has =userManager.getUserByUid(userId);
         if (Check.NuNObj(has)){
             return needPwd;
         }
+
         if (ValueUtil.getintValue(has.getIsPwd()) == YesNoEnum.NO.getCode()){
             return needPwd;
         }
@@ -1115,6 +1122,10 @@ public class OrderServiceProxy implements OrderService {
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.RECEIVE.getCode());
             money.setNeedPay(0);
         }else{
+            if (ValueUtil.getintValue(createOrderRequest.getMix()) == YesNoEnum.NO.getCode()){
+                dto.setErrorMsg("余额不足");
+                return;
+            }
             money.setPayBalance(drawBalance);
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
             money.setNeedPay(cost-drawBalance);
@@ -1240,6 +1251,10 @@ public class OrderServiceProxy implements OrderService {
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
             money.setNeedPay(0);
         }else{
+            if (ValueUtil.getintValue(createOrderRequest.getMix()) == YesNoEnum.NO.getCode()){
+                dto.setErrorMsg("余额不足");
+                return;
+            }
             int needPay = cost - drawBalance;
             //余额不足
             money.setPayBalance(drawBalance);
