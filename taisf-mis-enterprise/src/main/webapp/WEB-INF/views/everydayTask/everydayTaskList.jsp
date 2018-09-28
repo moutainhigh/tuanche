@@ -172,7 +172,7 @@
                             <th data-field="productClassify" data-width="10%"
                                 data-align="center"><span class="tdfont">分类</span></th>
                             <th data-field="windowName" data-width="10%"
-                                data-align="center"><span class="tdfont">窗口</span></th>
+                                data-align="center"><span class="tdfont">档口</span></th>
                         </tr>
                         </thead>
                     </table>

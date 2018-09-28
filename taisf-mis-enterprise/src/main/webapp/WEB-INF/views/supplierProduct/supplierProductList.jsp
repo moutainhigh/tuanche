@@ -67,7 +67,7 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <label class="col-xs-1 col-sm-1 control-label mtop">窗口:</label>
+                    <label class="col-xs-1 col-sm-1 control-label mtop">档口:</label>
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="windowCode_s" id="windowCode_s">
                             <option value="">--请选择--</option>
@@ -172,7 +172,7 @@
                             <th data-field="productClassify" data-width="10%"
                                 data-align="center"><span class="tdfont">分类</span></th>
                              <th data-field="windowCode" data-width="10%"
-                                data-align="center"><span class="tdfont">窗口</span></th>
+                                data-align="center"><span class="tdfont">档口</span></th>
                             <th data-field="forLunch" data-width="10%" data-formatter="formatForLunch"
                                 data-align="center"><span class="tdfont">午餐/晚餐</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"

@@ -34,7 +34,7 @@
 		<div class="ibox-content">
 			<div class="row" style="height:49px;">
 				<div class="form-group">
-					<label class="col-sm-1 control-label mtop">窗口名称:</label>
+					<label class="col-sm-1 control-label mtop">档口名称:</label>
 					<div class="col-sm-2">
 						<input id="windowName_s" type="text" value=""
 							   class="form-control">
@@ -59,7 +59,7 @@
 		<div class="ibox-content">
 			<div class="row row-lg">
 				<div class="col-sm-12">
-					<button id="addMenuButton" type="button"  class="btn btn-primary" data-toggle="modal" data-target="#addModal">添加窗口</button>
+					<button id="addMenuButton" type="button"  class="btn btn-primary" data-toggle="modal" data-target="#addModal">添加档口</button>
 					<div class="example-wrap">
 						<div class="example">
 							<table id="listTable" class="table table-bordered" data-click-to-select="true"
@@ -78,7 +78,7 @@
 								<tr>
 									<th data-field="id" data-visible="false"></th>
 									<th data-field="windowName" data-width="15%"
-										data-align="center"><p class="tdfont">窗口名称</p></th>
+										data-align="center"><p class="tdfont">档口名称</p></th>
 									<th data-field="createTime" data-width="10%" data-align="center"
 										data-formatter="formateDate" ><p class="tdfont">创建时间<p></th>
 									<th data-field="updateTime" data-width="10%" data-align="center"
@@ -117,7 +117,7 @@
 						<form id="form" class="form-horizontal m-t" >
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">窗口名称:</label>
+								<label class="col-sm-3 control-label">档口名称:</label>
 								<div class="col-sm-8">
 									<input id="windowName_a" name="realName" type="text" class="form-control">
 								</div>
@@ -161,7 +161,7 @@
 							<input type="hidden" id="idE" name="id" >
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">窗口名称:</label>
+								<label class="col-sm-3 control-label">档口名称:</label>
 								<div class="col-sm-8">
 									<input id="windowName_e" name="realName" type="text" class="form-control">
 								</div>
@@ -242,7 +242,7 @@
 
         $("#editBtn").attr("disabled","disabled");
         if ($("#windowName_e").val() == ""){
-            layer.alert("请填写窗口名称", {icon: 5,time: 2000, title:'提示'});
+            layer.alert("请填写档口名称", {icon: 5,time: 2000, title:'提示'});
             $("#editBtn").removeAttr("disabled");
             return false;
         }
@@ -330,7 +330,7 @@
         $("#saveBtn").attr("disabled","disabled");
         //校验
         if ($("#windowName_a").val() == ""){
-            layer.alert("请填写窗口名称", {icon: 5,time: 2000, title:'提示'});
+            layer.alert("请填写档口名称", {icon: 5,time: 2000, title:'提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }

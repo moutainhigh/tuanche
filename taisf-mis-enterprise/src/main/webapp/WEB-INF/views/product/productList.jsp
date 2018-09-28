@@ -138,7 +138,7 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <label class="col-xs-1 col-sm-1 control-label mtop">窗口:</label>
+                    <label class="col-xs-1 col-sm-1 control-label mtop">档口:</label>
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="windowCode_s" id="windowCode_s">
                             <option value="">--请选择--</option>
@@ -202,7 +202,7 @@
                             <th data-field="productClassify" data-width="10%"
                                 data-align="center"><span class="tdfont">分类</span></th>
                              <th data-field="windowCode" data-width="10%"
-                                data-align="center"><span class="tdfont">窗口</span></th>
+                                data-align="center"><span class="tdfont">档口</span></th>
                             <th data-field="priceMarket" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">销售价</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
@@ -252,7 +252,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">选择窗口:</label>
+                                <label class="col-sm-3 control-label">选择档口:</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" name="windowCode_a" id="windowCode_a">
                                         <option value="">--请选择--</option>
@@ -365,7 +365,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">选择窗口:</label>
+                                <label class="col-sm-3 control-label">选择档口:</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" name="windowCode_a" id="windowCode_e">
                                         <option value="">--请选择--</option>
@@ -478,7 +478,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">选择窗口:</label>
+                                <label class="col-sm-3 control-label">选择档口:</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" name="windowCode_a" id="windowCode_d" disabled>
                                         <option value="">--请选择--</option>
@@ -736,7 +736,7 @@
             return false;
         }
         ; if ($("#windowCode_a option:selected").val() == null || $("#windowCode_a option:selected").val() == "") {
-            layer.alert("请选择窗口", {icon: 5, time: 2000, title: '提示'});
+            layer.alert("请选择档口", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
@@ -828,7 +828,7 @@
             return false;
         }
         ; if ($("#windowCode_e option:selected").val() == null || $("#windowCode_r option:selected").val() == "") {
-            layer.alert("请选择窗口", {icon: 5, time: 2000, title: '提示'});
+            layer.alert("请选择档口", {icon: 5, time: 2000, title: '提示'});
             $("#saveBtn").removeAttr("disabled");
             return false;
         }
