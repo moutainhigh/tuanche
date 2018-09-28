@@ -252,7 +252,7 @@ public class OrderController extends AbstractController {
         DataTransferObject<CreateOrderVO> dto = createOrderLocal(request,paramRequest);
         if(dto.checkSuccess()){
             DataTransferObject<String> rst = new DataTransferObject<>();
-            rst.setErrorMsg(dto.getData().getOrderSn());
+            rst.setData(dto.getData().getOrderSn());
             return rst.trans2Res();
         }
         return dto.trans2Res();
