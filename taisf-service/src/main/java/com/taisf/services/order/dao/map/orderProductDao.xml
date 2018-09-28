@@ -10,7 +10,7 @@
         <result column="product_code" jdbcType="INTEGER" property="productCode"/>
         <result column="product_num" jdbcType="VARCHAR" property="productNum"/>
         <result column="product_price" jdbcType="INTEGER" property="productPrice"/>
-        <result column="product_classify" jdbcType="INTEGER" property="productClassify"/>
+        <result column="product_classify" jdbcType="VARCHAR" property="productClassify"/>
     </resultMap>
 
 

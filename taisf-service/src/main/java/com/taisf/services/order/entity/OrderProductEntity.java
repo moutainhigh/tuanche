@@ -55,13 +55,14 @@ public class OrderProductEntity extends BaseEntity {
     private Integer productPrice;
 
 
-    private Integer productClassify;
+    private String productClassify;
 
-    public Integer getProductClassify() {
+
+    public String getProductClassify() {
         return productClassify;
     }
 
-    public void setProductClassify(Integer productClassify) {
+    public void setProductClassify(String productClassify) {
         this.productClassify = productClassify;
     }
 

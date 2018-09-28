@@ -1252,14 +1252,17 @@ public class OrderServiceProxy implements OrderService {
             money.setNeedPay(0);
         }else{
             if (ValueUtil.getintValue(createOrderRequest.getMix()) == YesNoEnum.NO.getCode()){
-                dto.setErrorMsg("余额不足");
-                return;
+                //余额不足 - 历史版本兼容
+                money.setPayBalance(0);
+                orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
+                money.setNeedPay(cost);
+            }else {
+                int needPay = cost - drawBalance;
+                //余额不足
+                money.setPayBalance(drawBalance);
+                orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
+                money.setNeedPay(needPay);
             }
-            int needPay = cost - drawBalance;
-            //余额不足
-            money.setPayBalance(drawBalance);
-            orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
-            money.setNeedPay(needPay);
         }
         if (!createFlag){
             //非创建订单,直接返回
