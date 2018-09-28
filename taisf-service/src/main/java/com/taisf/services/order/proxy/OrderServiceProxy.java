@@ -647,6 +647,7 @@ public class OrderServiceProxy implements OrderService {
         vo.setPrice(orderSaveVO.getExtPrice());
         vo.setSupplierCode(orderSaveVO.getOrderBase().getSupplierCode());
         vo.setSupplierName(orderSaveVO.getSupplierName());
+        vo.setOrderStatus(OrdersStatusEnum.getByCode(orderSaveVO.getOrderBase().getOrderStatus()).getForeignType().getCode());
         dto.setData(vo);
         return dto;
     }
@@ -727,8 +728,8 @@ public class OrderServiceProxy implements OrderService {
      * @return
      */
     @Override
-    public DataTransferObject<String> createOrder(CreateOrderRequest createOrderRequest){
-        DataTransferObject<String> dto = new DataTransferObject<>();
+    public DataTransferObject<CreateOrderVO> createOrder(CreateOrderRequest createOrderRequest){
+        DataTransferObject<CreateOrderVO> dto = new DataTransferObject<>();
 
         if (Check.NuNStr(createOrderRequest.getBusinessUid())
                 || Check.NuNStr(createOrderRequest.getUserUid())
@@ -760,8 +761,27 @@ public class OrderServiceProxy implements OrderService {
         if (dto.checkSuccess()){
             orderManager.saveOrderSave(orderSaveVO);
         }
-        dto.setData(orderSaveVO.getOrderSn());
+        CreateOrderVO vo = new CreateOrderVO();
+        vo.setOrderSn(orderSaveVO.getOrderSn());
+        vo.setOrderStatus(OrdersStatusEnum.getByCode(orderSaveVO.getOrderBase().getOrderStatus()).getForeignType().getCode());
+        dto.setData(vo);
         return dto;
+    }
+
+    /**
+     * 处理返回结果
+     * @param orderSaveVO
+     * @param createOrderRequest
+     * @return
+     */
+    private String getOrderRst(OrderSaveVO orderSaveVO,CreateOrderRequest createOrderRequest){
+        if (ValueUtil.getintValue(createOrderRequest.getMix()) == YesNoEnum.NO.getCode()){
+            return orderSaveVO.getOrderSn();
+        }
+        Map map = new HashMap();
+        map.put("orderSn",orderSaveVO.getOrderSn());
+        map.put("orderStatus",orderSaveVO.getOrderBase().getOrderStatus());
+        return JsonEntityTransform.Object2Json(map);
     }
 
     /**

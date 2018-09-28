@@ -131,7 +131,7 @@ public interface OrderService {
      * @param createOrderRequest
      * @return
      */
-    DataTransferObject<String> createOrder(CreateOrderRequest createOrderRequest);
+    DataTransferObject<CreateOrderVO> createOrder(CreateOrderRequest createOrderRequest);
 
 
     /**

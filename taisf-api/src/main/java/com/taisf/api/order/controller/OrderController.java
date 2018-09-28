@@ -164,6 +164,62 @@ public class OrderController extends AbstractController {
      * @param response
      * @return
      */
+    @RequestMapping(value = "/createOrderNew", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDto createOrderNew(HttpServletRequest request, HttpServletResponse response) {
+        Header header = getHeader(request);
+        if (Check.NuNObj(header)) {
+            return new ResponseDto("头信息为空");
+        }
+
+        UserModelVO user = getUser(request);
+        if (Check.NuNObj(user)){
+            return new ResponseDto("请登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())){
+            return new ResponseDto("请重新登录");
+        }
+        if (Check.NuNStr(user.getEnterpriseCode())) {
+            return new ResponseDto("参数异常");
+        }
+        //获取当前参数
+        CreateOrderRequest paramRequest = getEntity(request, CreateOrderRequest.class);
+        paramRequest.setSource(header.getSource());
+        paramRequest.setUserUid(getUserId(request));
+        if (Check.NuNObj(paramRequest)) {
+            return new ResponseDto("参数异常");
+        }
+        paramRequest.setEnterpriseCode(user.getEnterpriseCode());
+        LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
+        return createOrderLocal(request,paramRequest).trans2Res();
+
+    }
+
+    /**
+     * 下单
+     * @param request
+     * @param paramRequest
+     * @return
+     */
+    private DataTransferObject<CreateOrderVO> createOrderLocal(HttpServletRequest request,CreateOrderRequest paramRequest) {
+        try {
+            DataTransferObject<CreateOrderVO> dto =ordersService.createOrder(paramRequest);
+            return dto;
+        } catch (Exception e) {
+            LogUtil.error(LOGGER, "【下单】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
+            DataTransferObject<CreateOrderVO> dto = new DataTransferObject<>();
+            dto.setErrorMsg("下单错误");
+            return dto;
+        }
+    }
+
+    /**
+     * 下单逻辑
+     * @author afi
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDto createOrder(HttpServletRequest request, HttpServletResponse response) {
@@ -192,14 +248,14 @@ public class OrderController extends AbstractController {
 
         paramRequest.setEnterpriseCode(user.getEnterpriseCode());
         LogUtil.info(LOGGER, "传入参数:{}", JsonEntityTransform.Object2Json(paramRequest));
-        try {
 
-            DataTransferObject<String> dto =ordersService.createOrder(paramRequest);
-            return dto.trans2Res();
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【下单】错误,par:{}, e={}",JsonEntityTransform.Object2Json(paramRequest), e);
-            return new ResponseDto("未知错误");
+        DataTransferObject<CreateOrderVO> dto = createOrderLocal(request,paramRequest);
+        if(dto.checkSuccess()){
+            DataTransferObject<String> rst = new DataTransferObject<>();
+            rst.setErrorMsg(dto.getData().getOrderSn());
+            return rst.trans2Res();
         }
+        return dto.trans2Res();
 
     }
 
