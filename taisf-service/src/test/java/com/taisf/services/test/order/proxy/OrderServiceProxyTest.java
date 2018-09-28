@@ -105,7 +105,7 @@ public class OrderServiceProxyTest extends BaseTest {
         createOrderRequest.setSource(1);
         createOrderRequest.setAddressFid("2c91cb36616a0f9001616a0f90290000");
         createOrderRequest.setEnterpriseCode("qpg001");
-        DataTransferObject<String> classify = orderService.createOrder(createOrderRequest);
+        DataTransferObject<CreateOrderVO> classify = orderService.createOrder(createOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
     }
