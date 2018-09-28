@@ -45,6 +45,11 @@ public class FaceVO  extends BaseEntity{
      */
     private Integer price;
 
+    /**
+     *  订单状态
+     */
+    private Integer orderStatus;
+
     public String getOrderSn() {
         return orderSn;
     }
@@ -83,5 +88,13 @@ public class FaceVO  extends BaseEntity{
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Integer getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }
