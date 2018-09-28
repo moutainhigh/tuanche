@@ -55,9 +55,9 @@
     <include refid="Base_Column_List" />
     from t_supplier
     where supplier_status = 1
-    <if test="supplierCode != null and supplierCode != ''">
-      AND supplier_code LIKE '%${supplierCode}%'
-    </if>
+    <!--<if test="supplierCode != null and supplierCode != ''">-->
+      <!--AND supplier_code LIKE '%${supplierCode}%'-->
+    <!--</if>-->
 
   </select>
 

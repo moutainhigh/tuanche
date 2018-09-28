@@ -1,5 +1,7 @@
 package com.taisf.services.common.valenum;
 
+import com.jk.framework.base.utils.Check;
+
 public enum EnterpriseTypeEnum {
 
 	// 企业类型 1:平台委托 2:自主开发
@@ -30,7 +32,10 @@ public enum EnterpriseTypeEnum {
 		this.name = name;
 	}
 
-	public static EnterpriseTypeEnum getTypeByCode(int code) {
+	public static EnterpriseTypeEnum getTypeByCode(Integer code) {
+		if (Check.NuNObj(code)){
+			return  null;
+		}
 		EnterpriseTypeEnum[] enums = EnterpriseTypeEnum.values();
 		for (EnterpriseTypeEnum enumtype : enums) {
 			if (enumtype.getCode() == code) {

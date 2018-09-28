@@ -6,6 +6,7 @@ import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.EnterpriseTypeEnum;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO;
 import com.taisf.services.order.api.OrderService;
@@ -83,6 +84,10 @@ public class EnterpriseStatsController {
                 for (EnterpriseOrderStatsVO statsVO : list) {
                     //设置区间
                     statsVO.setTime(time);
+                    EnterpriseTypeEnum enterpriseTypeEnum =   EnterpriseTypeEnum.getTypeByCode(statsVO.getEnterpriseType());
+                    if (enterpriseTypeEnum != null) {
+                        statsVO.setEnterpriseTypeName(enterpriseTypeEnum.getName());
+                    }
                 }
                 pageResult.setRows(dto.getData());
                 pageResult.setTotal(ValueUtil.getlongValue(dto.getData().size()));
