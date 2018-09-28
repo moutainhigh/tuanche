@@ -33,6 +33,7 @@
     <if test="classifyName != null and classifyName != ''">
       AND classify_name LIKE concat("%",#{classifyName,jdbcType=VARCHAR},"%")
     </if>
+    order BY rank ASC
   </select>
 
   <select id="listProductClassifyBySupplierCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -40,6 +41,7 @@
     <include refid="Base_Column_List" />
     from t_product_classify
     where supplier_code =  #{supplierCode,jdbcType=VARCHAR}
+    order BY rank ASC
   </select>
 
 
