@@ -33,8 +33,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author:zhangzhengguang
@@ -228,12 +232,14 @@ public class EverydayTaskController {
                     dto.setErrorMsg("查询任务信息失败");
                     return dto;
                 }
+            List<DayTaskVO> newList =dayTaskVOS.stream().sorted(Comparator.comparing(DayTaskVO::getWindowName)).collect(Collectors.toList());
             String printerNum = listSupplierPrinter.get(0).getPrinterNum();
             StringBuilder sb = new StringBuilder(1024);
-            for (DayTaskVO dayTaskVO : dayTaskVOS) {
-                sb.append(dayTaskVO.getWindowName()+"<BR>");
-                sb.append(Splice(dayTaskVO.getProductName(),dayTaskVO.getProductNum())+"<BR><BR><CUT>");
-
+            sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+":<BR>");
+            for (DayTaskVO dayTaskVO : newList) {
+                sb.append("<BOLD><B>"+dayTaskVO.getWindowName()+"<BR></B></BOLD>");
+                sb.append("<BOLD><B>"+Splice(dayTaskVO.getProductName(),dayTaskVO.getProductNum())+"<BR></B></BOLD>");
+                sb.append("--------------------------------<BR><BR><CUT>");
             }
             PrinterUtil.print(printerConstant.USER,printerConstant.UKEY,printerNum,sb.toString());
         } catch (Exception e) {
