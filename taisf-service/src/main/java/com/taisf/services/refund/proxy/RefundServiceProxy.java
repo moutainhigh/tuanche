@@ -144,11 +144,11 @@ public class RefundServiceProxy implements RefundService {
                 }
             }
             //4. 订单状态校验
-            OrdersStatusEnum ordersStatusEnum = OrdersStatusEnum.getByCode(base.getOrderStatus());
-            if (Check.NuNObj(ordersStatusEnum) || ordersStatusEnum.getCode() != OrdersStatusEnum.REFUND.getCode() ){
-                dto.setErrorMsg("异常的订单状态");
+            if (!this.checkRefundAudit(OrdersStatusEnum.getByCode(base.getOrderStatus()))){
+                dto.setErrorMsg("当前订单状态不能审核退款操作");
                 return dto;
             }
+
             //5. 修改退款单
             int num = refundManagerImpl.updateRefundAudit(par);
             if (num != 1) {
@@ -165,6 +165,25 @@ public class RefundServiceProxy implements RefundService {
         return dto;
     }
 
+    /**
+     * 确认当前的退款状态-审核操作
+     * @param ordersStatusEnum
+     * @return
+     */
+    private boolean checkRefundAudit(OrdersStatusEnum ordersStatusEnum){
+        boolean canRefund = false;
+        if (Check.NuNObj(ordersStatusEnum)){
+            return canRefund;
+        }
+        if ( ordersStatusEnum.getCode() == OrdersStatusEnum.REFUND.getCode()
+                || ordersStatusEnum.getCode() == OrdersStatusEnum.CANCEL.getCode()
+                || ordersStatusEnum.getCode() == OrdersStatusEnum.REFUND_YES.getCode()
+                ){
+            canRefund = true;
+        }
+
+        return canRefund;
+    }
 
 
     /**
