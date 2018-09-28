@@ -17,9 +17,7 @@ import com.taisf.services.order.dto.OrderInfoRequest;
 import com.taisf.services.order.dto.OrderProductListRequest;
 import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.order.manager.OrderManagerImpl;
-import com.taisf.services.order.vo.OrderExcelVO;
-import com.taisf.services.order.vo.OrderInfoVO;
-import com.taisf.services.order.vo.OrderListVo;
+import com.taisf.services.order.vo.*;
 import com.taisf.services.pay.entity.PayRecordEntity;
 import com.taisf.services.pay.manager.PayManagerImpl;
 import com.taisf.services.ups.entity.EmployeeEntity;
@@ -171,7 +169,7 @@ public class OrderController {
     public PageResult orderProductPageList(HttpServletRequest request, OrderProductListRequest orderProductListRequest) {
         PageResult pageResult = new PageResult();
         try {
-            PagingResult<OrderProductEntity> pagingResult = orderManagerImpl.getOrderProductPageList(orderProductListRequest);
+            PagingResult<OrderProductListVO> pagingResult = orderManagerImpl.getOrderProductPageList(orderProductListRequest);
             if (!Check.NuNCollection(pagingResult.getList())) {
                 pageResult.setRows(pagingResult.getList());
                 pageResult.setTotal(pagingResult.getTotal());

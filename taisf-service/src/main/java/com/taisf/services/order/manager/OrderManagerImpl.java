@@ -296,8 +296,8 @@ public class OrderManagerImpl {
 	 * @date:2017/10/17
 	 * @description:分页查询订单详情商品列表
 	 **/
-	public PagingResult<OrderProductEntity>  getOrderProductPageList(OrderProductListRequest orderProductListRequest){
-		PagingResult<OrderProductEntity> orderProductPageList = orderProductDao.getOrderProductPageList(orderProductListRequest);
+	public PagingResult<OrderProductListVO>  getOrderProductPageList(OrderProductListRequest orderProductListRequest){
+		PagingResult<OrderProductListVO> orderProductPageList = orderProductDao.getOrderProductPageList(orderProductListRequest);
 		return orderProductPageList;
 	}
 
