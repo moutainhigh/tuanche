@@ -48,6 +48,21 @@
     </if>
   </select>
 
+
+
+  <select id="getSupplierList" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from t_supplier
+    where supplier_status = 1
+    <if test="supplierCode != null and supplierCode != ''">
+      AND supplier_code LIKE '%${supplierCode}%'
+    </if>
+
+  </select>
+
+
+
   <select id="getAllSupplierList" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

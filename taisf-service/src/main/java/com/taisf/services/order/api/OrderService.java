@@ -3,11 +3,13 @@ package com.taisf.services.order.api;
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
+import com.taisf.services.enterprise.vo.SupOrderStatsVO;
 import com.taisf.services.order.dto.*;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.order.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>订单相关接口</p>
@@ -24,6 +26,14 @@ import java.util.List;
  */
 public interface OrderService {
 
+
+    /**
+     * 获取企业订单的统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    Map<String,SupOrderStatsVO> getSupOrderStatsMap(SupStatsRequest request);
 
     /**
      * 取消订单

@@ -5,8 +5,10 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
 import com.taisf.services.enterprise.dto.EnterpriseListRequest;
+import com.taisf.services.enterprise.vo.SupOrderStatsVO;
 import com.taisf.services.order.dto.EnterpriseStatsRequest;
 import com.taisf.services.order.dto.OrderInfoRequest;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.order.entity.OrderEntity;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
 import com.taisf.services.order.vo.OrderExcelVO;
@@ -51,6 +53,20 @@ public class OrderInfoDao extends BaseDao{
 	public List<EnterpriseOrderStatsVO> getEnterpriseOrderStats(EnterpriseStatsRequest request){
 		return mybatisDaoContext.findAll(SQLID + "getEnterpriseOrderStats", EnterpriseOrderStatsVO.class, request);
 	}
+
+
+	/**
+	 * 获取企业订单的统计信息
+	 * @author afi
+	 * @param request
+	 * @return
+	 */
+	public List<SupOrderStatsVO> getSupOrderStats(SupStatsRequest request){
+		return mybatisDaoContext.findAll(SQLID + "getSupOrderStats", SupOrderStatsVO.class, request);
+	}
+
+
+
 
 
     /**

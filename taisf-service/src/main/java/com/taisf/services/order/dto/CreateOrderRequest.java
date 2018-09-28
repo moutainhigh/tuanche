@@ -66,6 +66,12 @@ public class CreateOrderRequest extends BaseEntity{
      */
     private String payCode;
 
+
+    /**
+     * 混合支付
+     */
+    private Integer mix;
+
     public String getPayCode() {
         return payCode;
     }
@@ -138,5 +144,13 @@ public class CreateOrderRequest extends BaseEntity{
 
     public void setSource(Integer source) {
         this.source = source;
+    }
+
+    public Integer getMix() {
+        return mix;
+    }
+
+    public void setMix(Integer mix) {
+        this.mix = mix;
     }
 }

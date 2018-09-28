@@ -5,6 +5,7 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.common.dao.BaseDao;
+import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.order.entity.OrderEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +45,15 @@ public class OrderBaseDao extends BaseDao{
      * @param oldStatus
      * @return
      */
-    public int payOrder(String orderSn,int oldStatus){
+    public int payOrder(String orderSn,int oldStatus,boolean face){
         Map<String,Object> par = new HashMap<>();
         par.put("orderSn",orderSn);
         par.put("oldStatus",oldStatus);
+        if (face){
+            par.put("orderStatus", OrdersStatusEnum.RECEIVE.getCode());
+        }else {
+            par.put("orderStatus",OrdersStatusEnum.HAS_PAY.getCode());
+        }
         return mybatisDaoContext.update(SQLID + "payOrder", par);
     }
 

@@ -69,14 +69,14 @@ public class PayManagerImpl {
 	 * @param recordEntity
 	 * @return
 	 */
-	public int updateOrderPay(PayRecordEntity  recordEntity){
+	public int updateOrderPay(PayRecordEntity  recordEntity,boolean face){
 		if (Check.NuNObj(recordEntity.getCreateTime())){
 			recordEntity.setCreateTime(new Date());
 		}
 		//添加记录
 		int num = payRecordDao.savePayRecord(recordEntity);
 		if (num ==1){
-			orderBaseDao.payOrder(recordEntity.getOrderSn(), OrdersStatusEnum.NO_PAY.getCode());
+			orderBaseDao.payOrder(recordEntity.getOrderSn(), OrdersStatusEnum.NO_PAY.getCode(),face);
 			//处理订单支付金额
 			OrderMoneyEntity orderMoneyEntity = new OrderMoneyEntity();
 			orderMoneyEntity.setOrderSn(recordEntity.getOrderSn());

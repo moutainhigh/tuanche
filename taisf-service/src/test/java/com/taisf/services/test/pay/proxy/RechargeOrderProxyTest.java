@@ -5,6 +5,8 @@ import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.DateUtil;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.base.utils.ValueUtil;
+import com.taisf.services.enterprise.vo.SupRechargeStatsVO;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.pay.dto.RechargeOrderRequest;
 import com.taisf.services.pay.entity.RechargeOrderEntity;
 import com.taisf.services.pay.proxy.RechargeOrderProxy;
@@ -12,6 +14,7 @@ import com.taisf.services.test.common.BaseTest;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * <p>TODO</p>
@@ -31,6 +34,19 @@ public class RechargeOrderProxyTest extends BaseTest {
 
     @Resource(name = "pay.rechargeOrderProxy")
     private RechargeOrderProxy rechargeOrderProxy;
+
+
+
+
+
+    @Test
+    public void getSelfRechargeSupStatsMapTest() {
+        SupStatsRequest request = new SupStatsRequest();
+        Map<String,SupRechargeStatsVO> dto = rechargeOrderProxy.getSelfRechargeSupStatsMap(request);
+        System.out.println(JsonEntityTransform.Object2Json(dto));
+    }
+
+
 
 
     @Test

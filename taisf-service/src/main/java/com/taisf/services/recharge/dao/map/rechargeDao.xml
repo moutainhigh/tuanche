@@ -236,6 +236,44 @@
     </update>
 
 
+    <select id="getSupRechargeStats" parameterType="com.taisf.services.order.dto.SupStatsRequest"
+            resultType="com.taisf.services.enterprise.vo.SupRechargeStatsVO">
+        SELECT
+        ll.supplier_code AS supplierCode,
+        ll.num AS num,
+        ll.price AS price,
+        p.supplier_name AS supplierName
+        FROM
+
+        (SELECT
+        supplier_code,
+        COUNT( 1 ) AS num,
+        SUM( total_price ) AS price
+        FROM
+        t_recharge t
+        WHERE t.recharge_status = 1 AND t.supplier_code IS NOT NULL
+
+        <if test="supplierCode != null and supplierCode != '' ">
+            and t.supplier_code = #{supplierCode,jdbcType=VARCHAR}
+        </if>
+
+
+        <if test="startStr != null and startStr != '' ">
+            and t.create_time <![CDATA[  >= ]]>#{startStr,jdbcType=VARCHAR}
+        </if>
+        <if test="endStr != null and endStr != '' ">
+            and t.create_time <![CDATA[  <= ]]> #{endStr,jdbcType=VARCHAR}
+        </if>
+        GROUP BY
+        supplier_code
+        ) ll
+        LEFT JOIN t_supplier p ON ll.supplier_code = p.supplier_code
+
+    </select>
+
+
+
+
     <select id="getEnterpriseRechargeStats" parameterType="com.taisf.services.order.dto.EnterpriseStatsRequest"
             resultType="com.taisf.services.enterprise.vo.EnterpriseRechargeStatsVO">
 

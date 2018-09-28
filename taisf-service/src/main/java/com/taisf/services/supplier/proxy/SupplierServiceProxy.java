@@ -4,6 +4,7 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.taisf.services.common.valenum.AppScanTypeEnum;
+import com.taisf.services.order.dto.SupStatsRequest;
 import com.taisf.services.supplier.api.SupplierService;
 import com.taisf.services.supplier.dao.SupplierDao;
 import com.taisf.services.supplier.dto.SupplierRequest;
@@ -32,6 +33,18 @@ public class SupplierServiceProxy implements SupplierService{
 	@Resource(name = "user.userManagerImpl")
 	private UserManagerImpl userManager;
 
+
+	/**
+	 * 获取供应商列表
+	 * @return
+	 */
+	@Override
+	public DataTransferObject<List<SupplierEntity>> getSupplierList(String supplierCode){
+		DataTransferObject<List<SupplierEntity>> dto = new DataTransferObject<List<SupplierEntity>>();
+		List<SupplierEntity> supplierList = supplierManager.getSupplierList(supplierCode);
+		dto.setData(supplierList);
+		return dto;
+	}
 
 	 /**
      * 获取供应商列表

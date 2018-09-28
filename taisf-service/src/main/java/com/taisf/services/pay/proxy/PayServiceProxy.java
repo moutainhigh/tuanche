@@ -5,6 +5,7 @@ import com.jk.framework.base.utils.BigDecimalUtil;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.common.valenum.FaceTypeEnum;
 import com.taisf.services.common.valenum.OrdersStatusEnum;
 import com.taisf.services.device.api.PushService;
 import com.taisf.services.order.entity.OrderEntity;
@@ -89,6 +90,14 @@ public class PayServiceProxy implements PayService {
                 dto.setErrorMsg("当前订单不存在");
                 return dto;
             }
+
+            FaceTypeEnum faceTypeEnum = FaceTypeEnum.getTypeByCode(orderEntity.getFaceType());
+            Boolean face = false;
+            if(!Check.NuNObj(faceTypeEnum)
+                    && faceTypeEnum.getCode() > FaceTypeEnum.NULL.getCode()){
+                face = true;
+            }
+
             Integer orderStatus =  orderEntity.getOrderStatus();
             OrdersStatusEnum statusEnum = OrdersStatusEnum.getByCode(orderStatus);
             if (Check.NuNObj(statusEnum)){
@@ -114,7 +123,7 @@ public class PayServiceProxy implements PayService {
                 if (Check.NuNObj(save.getCreateTime())){
                     save.setCreateTime(new Date());
                 }
-                payManager.updateOrderPay(save);
+                payManager.updateOrderPay(save,face);
 
                 this.dealSend(orderEntity,payRecordRequest.getTotalFee());
             }else {

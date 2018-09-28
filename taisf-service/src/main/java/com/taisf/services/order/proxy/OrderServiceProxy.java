@@ -14,6 +14,7 @@ import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
 import com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO;
+import com.taisf.services.enterprise.vo.SupOrderStatsVO;
 import com.taisf.services.order.api.CartService;
 import com.taisf.services.order.api.OrderService;
 import com.taisf.services.order.dto.*;
@@ -125,6 +126,28 @@ public class OrderServiceProxy implements OrderService {
     }
 
 
+
+    /**
+     * 获取企业订单的统计信息
+     * @author afi
+     * @param request
+     * @return
+     */
+    public Map<String,SupOrderStatsVO> getSupOrderStatsMap(SupStatsRequest request) {
+        Map<String,SupOrderStatsVO> map = new HashMap<>();
+        if (Check.NuNObj(request)){
+            return map;
+        }
+
+        List<SupOrderStatsVO> supOrderStats = orderManager.getSupOrderStats(request);
+        if (!Check.NuNCollection(supOrderStats)){
+            for (SupOrderStatsVO supOrderStat : supOrderStats) {
+                map.put(supOrderStat.getSupplierCode(),supOrderStat);
+            }
+        }
+        return map;
+    }
+
     /**
      * 获取企业订单的统计信息
      * @author afi
@@ -190,9 +213,12 @@ public class OrderServiceProxy implements OrderService {
             }
         }
 
+        // 获取当前订单的支付信息
+        List<PayRecordEntity> payRecordList = payManager.getPayRecordByOrderSn(base.getOrderSn());
+
         List<StockWeekEntity> list = this.trans2Stock(base);
         //退款
-        orderManager.cancelOrder(base,list);
+        orderManager.cancelOrder(base,list,payRecordList);
         return dto;
 
     }
@@ -928,11 +954,15 @@ public class OrderServiceProxy implements OrderService {
         if (!need){
             return false;
         }
+        if (costMoney == 0){
+            return false;
+        }
         Boolean needPwd = true;
         UserEntity has =userManager.getUserByUid(userId);
         if (Check.NuNObj(has)){
             return needPwd;
         }
+
         if (ValueUtil.getintValue(has.getIsPwd()) == YesNoEnum.NO.getCode()){
             return needPwd;
         }
@@ -1092,16 +1122,24 @@ public class OrderServiceProxy implements OrderService {
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.RECEIVE.getCode());
             money.setNeedPay(0);
         }else{
-            dto.setErrorMsg("余额不足");
-            return;
+            if (ValueUtil.getintValue(createOrderRequest.getMix()) == YesNoEnum.NO.getCode()){
+                dto.setErrorMsg("余额不足");
+                return;
+            }
+            money.setPayBalance(drawBalance);
+            orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.NO_PAY.getCode());
+            money.setNeedPay(cost-drawBalance);
         }
+
         if (!createFlag){
             //非创建订单,直接返回
             return;
         }
+        //不需要余额支付
         if (ValueUtil.getintValue(money.getPayBalance()) <= 0){
             return;
         }
+
         if (!pwd){
             return;
         }
@@ -1213,6 +1251,10 @@ public class OrderServiceProxy implements OrderService {
             orderSaveVO.getOrderBase().setOrderStatus(OrdersStatusEnum.HAS_PAY.getCode());
             money.setNeedPay(0);
         }else{
+            if (ValueUtil.getintValue(createOrderRequest.getMix()) == YesNoEnum.NO.getCode()){
+                dto.setErrorMsg("余额不足");
+                return;
+            }
             int needPay = cost - drawBalance;
             //余额不足
             money.setPayBalance(drawBalance);

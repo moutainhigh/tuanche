@@ -35,6 +35,7 @@ public class RechargeDaoTest extends BaseTest {
 
 
 
+
     @Test
     public void getEnterpriseRechargeStatsTest() {
         EnterpriseStatsRequest record = new EnterpriseStatsRequest();
