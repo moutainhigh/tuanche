@@ -3,11 +3,11 @@ package com.taisf.services.order.dao;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.dao.page.PageBounds;
 import com.taisf.services.common.dao.BaseDao;
-import com.taisf.services.enterprise.dto.EnterpriseListRequest;
 import com.taisf.services.order.dto.DayTaskRequest;
 import com.taisf.services.order.dto.OrderProductListRequest;
 import com.taisf.services.order.entity.OrderProductEntity;
 import com.taisf.services.order.vo.DayTaskVO;
+import com.taisf.services.order.vo.OrderProductListVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -74,11 +74,11 @@ public class OrderProductDao extends BaseDao {
      * @date:2017/10/17
      * @description:分页查询订单下商品信息
      **/
-    public PagingResult<OrderProductEntity> getOrderProductPageList(OrderProductListRequest orderProductListRequest){
+    public PagingResult<OrderProductListVO> getOrderProductPageList(OrderProductListRequest orderProductListRequest){
         PageBounds pageBounds = new PageBounds();
         pageBounds.setPage(orderProductListRequest.getPage());
         pageBounds.setLimit(orderProductListRequest.getLimit());
-        return mybatisDaoContext.findForPage(SQLID+"getOrderProductByOrderSn", OrderProductEntity.class,orderProductListRequest.getOrderSn(), pageBounds);
+        return mybatisDaoContext.findForPage(SQLID+"getOrderProductByOrderSn", OrderProductListVO.class,orderProductListRequest.getOrderSn(), pageBounds);
     }
 
     /**
