@@ -484,11 +484,12 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="order_type" jdbcType="TINYINT" property="orderType"/>
         <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="sum_money" jdbcType="INTEGER" property="sumMoney"/>
     </resultMap>
 
     <select id="listOrderExcel" resultMap="ExcelMap" parameterType="com.taisf.services.order.dto.OrderInfoRequest">
         SELECT
-        t.user_name,t.user_tel,t.address,t.create_time,t.order_type,t.order_sn
+        t.user_name,t.user_tel,t.address,t.create_time,t.order_type,t.order_sn,m.sum_money
         FROM t_order t
         INNER join t_order_money m on t.order_sn = m.order_sn
         LEFT JOIN t_supplier s ON s.supplier_code = t.business_uid

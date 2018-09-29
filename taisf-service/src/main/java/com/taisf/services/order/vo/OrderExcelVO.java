@@ -43,8 +43,16 @@ public class OrderExcelVO extends BaseEntity {
     @FieldMeta(name="菜品信息",order=6)
     private String orderProduct;
 
+    /**
+     * 菜品信息
+     */
+    @FieldMeta(name="订单金额",order=6)
+    @MoneyPenny2Yuan
+    private Integer sumMoney;
+
     @Ignore
     private String orderSn;
+
 
     public String getOrderSn() {
         return orderSn;
