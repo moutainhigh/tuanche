@@ -56,11 +56,6 @@
                         <input id="endTime" name="endTime"  class="laydate-icon form-control layer-date">
                     </div>
 
-                    <label class="col-sm-1 control-label mtop">供应商编号:</label>
-                    <div class="col-sm-2">
-                        <input id="supplierCode" name="supplierCode"  class="form-control">
-                    </div>
-
                     <div class="col-sm-1">
                         <button class="btn btn-primary" type="button" onclick="query();">
                             <i class="fa fa-search"></i>&nbsp;搜索
@@ -96,8 +91,6 @@
 
                             <th data-field="time" data-width="10%"
                                 data-align="center"><span class="tdfont">统计区间</span></th>
-                            <th data-field="supplierCode" data-width="10%"
-                                data-align="center"><span class="tdfont">供应商编号</span></th>
                             <th data-field="supplierName" data-width="10%"
                                 data-align="center"><span class="tdfont">供应商名称</span></th>
                             <th data-field="payBalance" data-width="10%"  data-formatter="formatAmount"
@@ -109,7 +102,6 @@
                                 data-align="center"><span class="tdfont">企业充值(元)</span></th>
                             <th data-field="orderRechargePrice" data-width="10%"  data-formatter="formatAmount"
                                 data-align="center"><span class="tdfont">个人充值(元)</span></th>
-
 
                         </tr>
                         </thead>

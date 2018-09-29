@@ -73,11 +73,6 @@ public class ApplePushHandle extends PushAppleConstant implements PushHandle {
         }
 
         ApnsService service = null ;
-        service = APNS.newService().withCert("/Users/fangwending/github/x/tuanche/push-service/src/main/resources/DFWPush.p12", "123456")
-                .withSandboxDestination()
-                .build();
-
-//
         if(APPLE_ENV.equals("dev")){
             service = APNS.newService().withCert(CERTIFICATE_PATH, CERTIFICATE_PASSWORD)
                     .withSandboxDestination()

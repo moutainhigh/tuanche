@@ -346,7 +346,7 @@
         t_order t
         INNER JOIN t_order_money m ON t.order_sn = m.order_sn
         WHERE
-        t.supplier_code IS NOT NULL
+        t.supplier_code IS NOT NULL   AND t.order_status IN (50,60,70)
 
         <if test="supplierCode != null and supplierCode != '' ">
             and t.supplier_code = #{supplierCode,jdbcType=VARCHAR}
@@ -373,6 +373,7 @@
             resultType="com.taisf.services.enterprise.vo.EnterpriseOrderStatsVO">
         SELECT
         p.enterprise_name as enterpriseName,
+        p.enterprise_type as enterpriseType,
         ll.enterpriseCode,
         ll.orderNum,
         ll.faceNum,
@@ -421,7 +422,7 @@
         t_order t
         INNER JOIN t_order_money m ON t.order_sn = m.order_sn
         WHERE
-        t.enterprise_code IS NOT NULL
+        t.enterprise_code IS NOT NULL  AND t.order_status IN (50,60,70)
 
         <if test="supplierCode != null and supplierCode != '' ">
             and t.supplier_code = #{supplierCode,jdbcType=VARCHAR}

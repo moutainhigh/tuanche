@@ -30,6 +30,16 @@ public class EnterpriseOrderStatsVO  extends BaseEntity{
 
 
     /**
+     * 企业类型
+     */
+    private Integer enterpriseType;
+
+    /**
+     * 企业类型
+     */
+    private String enterpriseTypeName;
+
+    /**
      * 订单数量
      */
     private Integer orderNum;
@@ -134,5 +144,22 @@ public class EnterpriseOrderStatsVO  extends BaseEntity{
 
     public void setKnightNum(Integer knightNum) {
         this.knightNum = knightNum;
+    }
+
+
+    public Integer getEnterpriseType() {
+        return enterpriseType;
+    }
+
+    public void setEnterpriseType(Integer enterpriseType) {
+        this.enterpriseType = enterpriseType;
+    }
+
+    public String getEnterpriseTypeName() {
+        return enterpriseTypeName;
+    }
+
+    public void setEnterpriseTypeName(String enterpriseTypeName) {
+        this.enterpriseTypeName = enterpriseTypeName;
     }
 }

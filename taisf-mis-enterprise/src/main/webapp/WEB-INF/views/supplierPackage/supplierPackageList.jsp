@@ -337,10 +337,10 @@
     function addSupplierPackage() {
         var $table = $('#listTable');
         var len = $table.bootstrapTable('getData').length;
-        if (len >= 5) {
-            layer.alert("最多添加五个套餐", {icon: 5, time: 2000, title: '提示'});
-            return false;
-        }
+//        if (len >= 5) {
+//            layer.alert("最多添加五个套餐", {icon: 5, time: 2000, title: '提示'});
+//            return false;
+//        }
         var url = "supplierProductPackage/toAdd?week="+week+"&weekName="+getWeekName();
 
         $.openNewTab(new Date().getTime(), url, "添加组合套餐");

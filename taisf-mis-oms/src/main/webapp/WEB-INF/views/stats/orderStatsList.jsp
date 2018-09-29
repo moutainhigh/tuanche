@@ -56,10 +56,10 @@
                         <input id="endTime" name="endTime"  class="laydate-icon form-control layer-date">
                     </div>
 
-                    <label class="col-sm-1 control-label mtop">企业编号:</label>
-                    <div class="col-sm-2">
-                        <input id="enterpriseCode" name="enterpriseCode"  class="form-control">
-                    </div>
+                    <%--<label class="col-sm-1 control-label mtop">企业编号:</label>--%>
+                    <%--<div class="col-sm-2">--%>
+                        <%--<input id="enterpriseCode" name="enterpriseCode"  class="form-control">--%>
+                    <%--</div>--%>
 
                     <div class="col-sm-1">
                         <button class="btn btn-primary" type="button" onclick="query();">
@@ -95,10 +95,14 @@
 
                             <th data-field="time" data-width="10%"
                                 data-align="center"><span class="tdfont">统计区间</span></th>
-                            <th data-field="enterpriseCode" data-width="10%"
-                                data-align="center"><span class="tdfont">企业编号</span></th>
+
                             <th data-field="enterpriseName" data-width="10%"
                                 data-align="center"><span class="tdfont">企业名称</span></th>
+
+                            <th data-field="enterpriseTypeName" data-width="10%"
+                                data-align="center"><span class="tdfont">企业类型</span></th>
+
+
                             <th data-field="allNum" data-width="10%"
                                 data-align="center"><span class="tdfont">下单总数量</span></th>
                             <th data-field="orderNum" data-width="10%"
@@ -152,7 +156,7 @@
         return {
             startStr: startTime,
             endStr: endTime,
-            enterpriseCode:$("#enterpriseCode").val(),
+//            enterpriseCode:$("#enterpriseCode").val(),
             limit: params.limit,
             page: $("#listTable").bootstrapTable("getOptions").pageNumber
         };
