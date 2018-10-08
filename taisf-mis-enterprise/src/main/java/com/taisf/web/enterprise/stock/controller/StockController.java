@@ -5,6 +5,9 @@ import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
 import com.jk.framework.log.utils.LogUtil;
+import com.taisf.services.classify.api.ProductClassifyService;
+import com.taisf.services.classify.entity.ProductClassifyEntity;
+import com.taisf.services.classify.req.ProductClassifyListRequest;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.product.api.ProductService;
@@ -56,6 +59,8 @@ public class StockController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductClassifyService productClassifyService;
 
     /**
      * @author:zhangzhengguang
@@ -64,6 +69,12 @@ public class StockController {
      **/
     @RequestMapping("list")
     public String list(HttpServletRequest request) {
+        ProductClassifyListRequest productClassifyListRequest = new ProductClassifyListRequest();
+        HttpSession session = request.getSession();
+        EmployeeEntity emp = (EmployeeEntity)session.getAttribute(LoginConstant.SESSION_KEY);
+        productClassifyListRequest.setSupplierCode(emp.getEmpBiz());
+        List<ProductClassifyEntity> productClassifyEntities = productClassifyService.findListProductClassify(productClassifyListRequest).getData();
+        request.setAttribute("productClassifyEntities",productClassifyEntities);
         return "stock/productStockList";
     }
 

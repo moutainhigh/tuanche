@@ -55,14 +55,9 @@
                     <div class="col-xs-2 col-sm-2">
                         <select class="form-control" name="productClassify" id="productClassifyS">
                             <option value="">--请选择--</option>
-                            <option value="1">--大荤--</option>
-                            <option value="2">--小荤--</option>
-                            <option value="3">--素--</option>
-                            <option value="4">--汤--</option>
-                            <option value="5">--饮品--</option>
-                            <option value="6">--主食--</option>
-                            <option value="7">--水果--</option>
-                            <option value="8">--超市--</option>
+                            <c:forEach items="${productClassifyEntities}" var="z">
+                                <option value="${z.classifyCode}">${z.classifyName}</option>
+                            </c:forEach>
                         </select>
                     </div>
                     <label class="col-xs-1 col-sm-1 control-label mtop">供餐类型:</label>

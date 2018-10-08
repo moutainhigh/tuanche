@@ -220,6 +220,12 @@ public class SupplierProductController {
      **/
     @RequestMapping("findList")
     public String findList(HttpServletRequest request) {
+        ProductClassifyListRequest productClassifyListRequest = new ProductClassifyListRequest();
+        HttpSession session = request.getSession();
+        EmployeeEntity emp = (EmployeeEntity)session.getAttribute(LoginConstant.SESSION_KEY);
+        productClassifyListRequest.setSupplierCode(emp.getEmpBiz());
+        List<ProductClassifyEntity> productClassifyEntities = productClassifyService.findListProductClassify(productClassifyListRequest).getData();
+        request.setAttribute("productClassifyEntities",productClassifyEntities);
         return "supplierProduct/findSupplierProductList";
     }
 
