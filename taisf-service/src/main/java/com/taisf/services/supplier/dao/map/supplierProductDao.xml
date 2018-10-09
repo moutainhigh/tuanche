@@ -225,8 +225,8 @@
         select t_product.id,
         t_product.product_name, pc.classify_name,t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale,for_lunch,for_dinner
         from t_supplier_product
-        LEFT  JOIN t_product_classify pc ON t_product.product_classify = pc.classify_code
         INNER JOIN t_product ON t_product.id = t_supplier_product.product_code
+        LEFT  JOIN t_product_classify pc ON t_product.product_classify = pc.classify_code
         where 1=1
         <if test="supplierCode != null and supplierCode != ''">
             AND t_supplier_product.supplier_code = #{supplierCode}
