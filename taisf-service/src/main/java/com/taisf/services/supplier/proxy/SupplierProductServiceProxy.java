@@ -17,6 +17,7 @@ import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.enterprise.entity.EnterpriseConfigEntity;
 import com.taisf.services.enterprise.manager.EnterpriseManagerImpl;
 import com.taisf.services.enterprise.vo.EnterpriseInfoVO;
+import com.taisf.services.product.ProductVO;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
 import com.taisf.services.supplier.api.SupplierProductService;
@@ -771,10 +772,10 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * @description:分页查询菜品
      **/
     @Override
-    public DataTransferObject<PagingResult<ProductEntity>> pageListProduct(ProductListRequest request) {
-        DataTransferObject<PagingResult<ProductEntity>> dto = new DataTransferObject();
+    public DataTransferObject<PagingResult<ProductVO>> pageListProduct(ProductListRequest request) {
+        DataTransferObject<PagingResult<ProductVO>> dto = new DataTransferObject();
         try {
-            PagingResult<ProductEntity> pagingResult = supplierProductDao.pageListProduct(request);
+            PagingResult<ProductVO> pagingResult = supplierProductDao.pageListProduct(request);
             dto.setData(pagingResult);
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【分页查询菜品失败】par:{},error:{}", JsonEntityTransform.Object2Json(request), e);

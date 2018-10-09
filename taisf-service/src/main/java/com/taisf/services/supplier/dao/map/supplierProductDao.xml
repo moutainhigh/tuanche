@@ -207,10 +207,11 @@
         where supplier_code = #{t_supplierCode,jdbcType=VARCHAR}
     </update>
 
-    <resultMap id="BaseResultMapList" type="com.taisf.services.product.entity.ProductEntity">
+    <resultMap id="BaseResultMapList" type="com.taisf.services.product.ProductVO">
         <result column="id" jdbcType="INTEGER" property="id"/>
         <result column="product_name" jdbcType="VARCHAR" property="productName"/>
         <result column="product_classify" jdbcType="INTEGER" property="productClassify"/>
+        <result column="classify_name" jdbcType="VARCHAR" property="classifyName"/>
         <result column="product_type" jdbcType="INTEGER" property="productType"/>
         <result column="product_source" jdbcType="INTEGER" property="productSource"/>
         <result column="price_sale" jdbcType="INTEGER" property="priceSale"/>
@@ -222,8 +223,9 @@
     <select id="pageListSupplierProduct" parameterType="com.taisf.services.product.dto.ProductListRequest"
             resultMap="BaseResultMapList">
         select t_product.id,
-        t_product.product_name, t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale,for_lunch,for_dinner
+        t_product.product_name, pc.classify_name,t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale,for_lunch,for_dinner
         from t_supplier_product
+        LEFT  JOIN t_product_classify pc ON t_product.product_classify = pc.classify_code
         INNER JOIN t_product ON t_product.id = t_supplier_product.product_code
         where 1=1
         <if test="supplierCode != null and supplierCode != ''">

@@ -109,6 +109,18 @@ public class ProductStockVO extends BaseEntity {
      */
     private Integer dinnerProductNum;
 
+    /**
+     * 商品分类
+     */
+    private  String classifyName;
+
+    public String getClassifyName() {
+        return classifyName;
+    }
+
+    public void setClassifyName(String classifyName) {
+        this.classifyName = classifyName;
+    }
     public Integer getLunchStockId() {
         return lunchStockId;
     }

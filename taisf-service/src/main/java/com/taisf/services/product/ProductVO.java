@@ -8,6 +8,13 @@ import com.taisf.services.product.entity.ProductEntity;
  **/
 public class ProductVO extends ProductEntity {
 
+    private  String classifyName;
 
+    public String getClassifyName() {
+        return classifyName;
+    }
 
+    public void setClassifyName(String classifyName) {
+        this.classifyName = classifyName;
+    }
 }

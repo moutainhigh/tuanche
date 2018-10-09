@@ -2,14 +2,12 @@ package com.taisf.services.supplier.api;
 
 import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
+import com.taisf.services.product.ProductVO;
 import com.taisf.services.product.dto.ProductListRequest;
-import com.taisf.services.product.entity.ProductEntity;
-import com.taisf.services.supplier.dto.SupplierProductRequest;
 import com.taisf.services.supplier.entity.SupplierProductEntity;
 import com.taisf.services.supplier.vo.ProductClassifyInfo;
 import com.taisf.services.supplier.vo.ProductClassifyVO;
 import com.taisf.services.supplier.vo.SelectInfo4Week;
-import com.taisf.services.supplier.vo.SupplierProductVO;
 
 import java.util.List;
 
@@ -101,5 +99,5 @@ public interface SupplierProductService {
      * @date:2017/10/13
      * @description:分页查询菜品
      **/
-    DataTransferObject<PagingResult<ProductEntity>> pageListProduct(ProductListRequest request);
+    DataTransferObject<PagingResult<ProductVO>> pageListProduct(ProductListRequest request);
 }

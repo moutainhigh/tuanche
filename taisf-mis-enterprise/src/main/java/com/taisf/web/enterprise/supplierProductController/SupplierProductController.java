@@ -8,6 +8,7 @@ import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.classify.api.ProductClassifyService;
 import com.taisf.services.classify.entity.ProductClassifyEntity;
 import com.taisf.services.classify.req.ProductClassifyListRequest;
+import com.taisf.services.product.ProductVO;
 import com.taisf.services.product.api.ProductService;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
@@ -245,7 +246,7 @@ public class SupplierProductController {
                 return pageResult;
             }
             productListRequest.setSupplierCode(employeeEntity.getEmpBiz());
-            DataTransferObject<PagingResult<ProductEntity>> dto = supplierProductService.pageListProduct(productListRequest);
+            DataTransferObject<PagingResult<ProductVO>> dto = supplierProductService.pageListProduct(productListRequest);
             //查询出当前供餐商下所有菜品信息
             if (!Check.NuNObj(dto.getData())) {
                 pageResult.setRows(dto.getData().getList());

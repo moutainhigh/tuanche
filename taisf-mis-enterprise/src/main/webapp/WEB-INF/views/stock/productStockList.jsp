@@ -145,7 +145,7 @@
                             <th data-field="id" data-visible="false"></th>
                             <th data-field="productName" data-width="10%"
                                 data-align="center"><span class="tdfont">菜单名称</span></th>
-                            <th data-field="productClassify" data-width="10%" data-formatter="formatProductClassify"
+                            <th data-field="classifyName" data-width="10%"
                                 data-align="center"><span class="tdfont">分类</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">价格</span></th>

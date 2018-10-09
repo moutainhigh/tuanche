@@ -10,6 +10,7 @@ import com.taisf.services.classify.entity.ProductClassifyEntity;
 import com.taisf.services.classify.req.ProductClassifyListRequest;
 import com.taisf.services.common.valenum.OrderTypeEnum;
 import com.taisf.services.common.valenum.SupplierProductTypeEnum;
+import com.taisf.services.product.ProductVO;
 import com.taisf.services.product.api.ProductService;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
@@ -104,8 +105,8 @@ public class StockController {
                 return pageResult;
             }
             productListRequest.setSupplierCode(employeeEntity.getEmpBiz());
-            DataTransferObject<PagingResult<ProductEntity>> dto = supplierProductService.pageListProduct(productListRequest);
-            List<ProductEntity> productEntities = dto.getData().getList();
+            DataTransferObject<PagingResult<ProductVO>> dto = supplierProductService.pageListProduct(productListRequest);
+            List<ProductVO> productEntities = dto.getData().getList();
             if (Check.NuNCollection(productEntities)) {
                 return new PageResult();
             }
