@@ -125,7 +125,7 @@ public class PayServiceProxy implements PayService {
                 }
                 payManager.updateOrderPay(save,face);
 
-                this.dealSend(orderEntity,payRecordRequest.getTotalFee());
+                this.dealSend(orderEntity,orderMoney.getSumMoney());
             }else {
                 dto.setErrorMsg("异常的支付状态");
                 return dto;
