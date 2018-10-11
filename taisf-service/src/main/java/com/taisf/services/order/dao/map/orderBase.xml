@@ -18,6 +18,7 @@
         <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
         <result column="eva_status" jdbcType="TINYINT" property="evaStatus" />
         <result column="order_type" jdbcType="TINYINT" property="orderType" />
+        <result column="face_type" jdbcType="TINYINT" property="faceType" />
         <result column="business_uid" jdbcType="VARCHAR" property="businessUid" />
         <result column="user_uid" jdbcType="VARCHAR" property="userUid" />
         <result column="user_tel" jdbcType="VARCHAR" property="userTel" />
@@ -40,7 +41,7 @@
     <sql id="Base_Column_List">
         <!--  -->
         id, order_sn,title, province_code,area_code, city_code,address, order_source,eva_status, order_status, accounts_status,
-        pay_status,order_type, business_uid, user_uid, user_tel, user_name,user_code,knight_uid,
+        pay_status,order_type,face_type, business_uid, user_uid, user_tel, user_name,user_code,knight_uid,
         send_time, pay_time,create_time, last_modify_date, mark,supplier_code,is_self,order_json
     </sql>
 
