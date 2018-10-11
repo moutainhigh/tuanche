@@ -49,6 +49,9 @@
         from t_product p
         LEFT JOIN t_supplier_window tsw on tsw.window_code = p.window_code
         LEFT JOIN t_product_classify tpc on tpc.classify_code = p.product_classify
+        <if test="packageId != null and packageId != ''">
+            INNER JOIN t_product_package pp on pp.product_id = p.id
+        </if>
         where p.id > 0
         <if test="productName != null and productName != ''">
            AND p.product_name = #{productName}
@@ -67,6 +70,9 @@
         </if>
          <if test="windowCode != null and windowCode != ''">
             AND p.window_code = #{windowCode}
+        </if>
+        <if test="packageId != null and packageId != ''">
+            AND pp.package_id = #{packageId}
         </if>
         ORDER BY id DESC
     </select>

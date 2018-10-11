@@ -37,8 +37,17 @@ public class ProductListRequest extends PageRequest {
     private Integer forLunch;
 
     private Integer forDinner;
-
     private String windowCode;
+
+    private Integer packageId;
+
+    public Integer getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(Integer packageId) {
+        this.packageId = packageId;
+    }
 
     public String getWindowCode() {
         return windowCode;
