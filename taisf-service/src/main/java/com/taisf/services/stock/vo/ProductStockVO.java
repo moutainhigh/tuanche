@@ -32,6 +32,11 @@ public class ProductStockVO extends BaseEntity {
      */
     private Integer productClassify;
 
+
+    /**
+     * @see com.taisf.services.common.valenum.SupplierProductTypeEnum
+     */
+    private Integer supplierProductType;
     /**
      * 商品配型
      */
@@ -113,6 +118,11 @@ public class ProductStockVO extends BaseEntity {
      * 商品分类
      */
     private  String classifyName;
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public String getClassifyName() {
         return classifyName;
