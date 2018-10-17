@@ -184,6 +184,8 @@
                         <div class="ibox-content">
                             <form id="editForm2" class="form-horizontal m-t">
 
+
+
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">菜单名称:</label>
                                     <div class="col-sm-8">
@@ -215,6 +217,8 @@
                                     <label class="col-sm-1 control-label"></label>
                                     <label class="col-sm-5 control-label">(修改库存数时,自动更新剩余库存)</label>
                                 </div>
+
+                                <input type="hidden" class="form-control" id="supplierProductTypeE" name="supplierProductType" value=""/>
                                 <input type="hidden" class="form-control" id="idE" name="id" value=""/>
                                 <input type="hidden" class="form-control" id="lunchStockIdE" name="id" value=""/>
                                 <input type="hidden" class="form-control" id="dinnerStockIdE" name="id" value=""/>
@@ -361,15 +365,15 @@
     // 操作列
     function formatOperate(value, row, index) {
         var result = "";
-        result = result + "<a title='编辑' onclick='toedit(\"" + row.forLunch + "\",\"" + row.forDinner + "\",\"" + row.id + "\",\"" + row.lunchStockId + "\",\"" + row.lunchProductLimit + "\",\"" + row.dinnerStockId + "\",\"" + row.dinnerProductLimit + "\",\"" + row.productName + "\")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+        result = result + "<a title='编辑' onclick='toedit(\"" + row.forLunch + "\",\"" + row.forDinner + "\",\"" + row.id + "\",\"" + row.supplierProductType + "\",\"" + row.lunchStockId + "\",\"" + row.lunchProductLimit + "\",\"" + row.dinnerStockId + "\",\"" + row.dinnerProductLimit + "\",\"" + row.productName + "\")'  data-toggle='modal' data-target='#editModal')>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;";
         return result;
     }
-    function toedit(forLunch,forDinner,id,lunchStockId, lunchProductLimit, dinnerStockId, dinnerProductLimit,productName) {
+    function toedit(forLunch,forDinner,id,supplierProductType,lunchStockId, lunchProductLimit, dinnerStockId, dinnerProductLimit,productName) {
         $("#editReset").trigger("click");
 
         $("#idE").val(id)
 
-
+        $("#supplierProductTypeE").val(supplierProductType)
         $("#productNameE").val(productName)
         if(lunchStockId > 0){
             $("#lunchStockIdE").val(lunchStockId)
@@ -448,7 +452,7 @@
         $.ajax({
             data: {
                 'id': $("#idE").val(),
-                'supplierProductType': 1,
+                'supplierProductType': $("#supplierProductTypeE").val(),
                 'week': week,
                 'lunchStockId':  $("#lunchStockIdE").val(),
                 'lunchProductLimit': $("#lunchProductLimitE").val(),
