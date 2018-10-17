@@ -45,7 +45,7 @@ public class SupplierPackageDaoTest extends BaseTest {
         entity.setFoodCode(6);
         entity.setFruitCode(7);
 
-        supplierPackageDao.saveSupplierPackage(entity);
+//        supplierPackageDao.saveSupplierPackage(entity);
     }
 
 }

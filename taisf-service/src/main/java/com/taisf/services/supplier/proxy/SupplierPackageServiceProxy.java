@@ -29,7 +29,7 @@ import javax.annotation.Resource;
  * @since 1.0
  */
 @Component("supplier.supplierPackageServiceProxy")
-public class SupplierPackageServiceProxy implements SupplierPackageService {
+public class SupplierPackageServiceProxy  {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SupplierPackageServiceProxy.class);
@@ -38,135 +38,135 @@ public class SupplierPackageServiceProxy implements SupplierPackageService {
     @Resource(name = "supplier.supplierPackageDao")
     private SupplierPackageDao supplierPackageDao;
 
-    /**
-     * @author:zhangzhengguang
-     * @date:2017/10/13
-     * @description:分页查询套餐信息
-     **/
-    @Override
-    public DataTransferObject<PagingResult<SupplierPackageEntity>> pageListSupplierProduct(SupplierProductRequest supplierProductRequest) {
-        DataTransferObject<PagingResult<SupplierPackageEntity>> dto = new DataTransferObject();
-        try {
-            PagingResult<SupplierPackageEntity> pagingResult = supplierPackageDao.pageListSupplierProduct(supplierProductRequest);
-            dto.setData(pagingResult);
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【分页查询套餐信息失败】par:{},error:{}", JsonEntityTransform.Object2Json(supplierProductRequest), e);
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setMsg("分页查询套餐信息失败");
-            return dto;
-        }
-        return dto;
-    }
+//    /**
+//     * @author:zhangzhengguang
+//     * @date:2017/10/13
+//     * @description:分页查询套餐信息
+//     **/
+//    @Override
+//    public DataTransferObject<PagingResult<SupplierPackageEntity>> pageListSupplierProduct(SupplierProductRequest supplierProductRequest) {
+//        DataTransferObject<PagingResult<SupplierPackageEntity>> dto = new DataTransferObject();
+//        try {
+//            PagingResult<SupplierPackageEntity> pagingResult = supplierPackageDao.pageListSupplierProduct(supplierProductRequest);
+//            dto.setData(pagingResult);
+//        } catch (Exception e) {
+//            LogUtil.error(LOGGER, "【分页查询套餐信息失败】par:{},error:{}", JsonEntityTransform.Object2Json(supplierProductRequest), e);
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setMsg("分页查询套餐信息失败");
+//            return dto;
+//        }
+//        return dto;
+//    }
+//
+//    /**
+//     * @author:zhangzhengguang
+//     * @date:2017/10/13
+//     * @description:保存组合套餐信息
+//     **/
+//    @Override
+//    public DataTransferObject<Void> saveSupplierPackage(SupplierPackageEntity supplierPackageEntity) {
+//        DataTransferObject<Void> dto = new DataTransferObject();
+//        try {
+//            int num = supplierPackageDao.saveSupplierPackage(supplierPackageEntity);
+//            if (num != 1) {
+//                dto.setErrCode(DataTransferObject.ERROR);
+//                dto.setErrorMsg("保存组合套餐信息失败");
+//                return dto;
+//            }
+//        } catch (Exception e) {
+//            LogUtil.error(LOGGER, "【保存组合套餐信息失败】par:{},error:{}", JsonEntityTransform.Object2Json(supplierPackageEntity), e);
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setMsg("保存组合套餐信息失败");
+//            return dto;
+//        }
+//        return dto;
+//    }
 
-    /**
-     * @author:zhangzhengguang
-     * @date:2017/10/13
-     * @description:保存组合套餐信息
-     **/
-    @Override
-    public DataTransferObject<Void> saveSupplierPackage(SupplierPackageEntity supplierPackageEntity) {
-        DataTransferObject<Void> dto = new DataTransferObject();
-        try {
-            int num = supplierPackageDao.saveSupplierPackage(supplierPackageEntity);
-            if (num != 1) {
-                dto.setErrCode(DataTransferObject.ERROR);
-                dto.setErrorMsg("保存组合套餐信息失败");
-                return dto;
-            }
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【保存组合套餐信息失败】par:{},error:{}", JsonEntityTransform.Object2Json(supplierPackageEntity), e);
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setMsg("保存组合套餐信息失败");
-            return dto;
-        }
-        return dto;
-    }
+//    /**
+//     * @author:zhangzhengguang
+//     * @date:2017/10/13
+//     * @description:删除组合套餐
+//     **/
+//    @Override
+//    public DataTransferObject<Void> deleteByPrimaryKey(Integer id) {
+//        DataTransferObject<Void> dto = new DataTransferObject();
+//        if (Check.NuNObj(id)) {
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setErrorMsg("参数错误");
+//            return dto;
+//        }
+//        try {
+//            int num = supplierPackageDao.deleteByPrimaryKey(id);
+//            if (num != 1) {
+//                dto.setErrCode(DataTransferObject.ERROR);
+//                dto.setErrorMsg("删除组合套餐失败");
+//                return dto;
+//            }
+//        } catch (Exception e) {
+//            LogUtil.error(LOGGER, "【删除组合套餐失败】par:{},error:{}", id, e);
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setMsg("删除组合套餐失败");
+//            return dto;
+//        }
+//        return dto;
+//    }
 
-    /**
-     * @author:zhangzhengguang
-     * @date:2017/10/13
-     * @description:删除组合套餐
-     **/
-    @Override
-    public DataTransferObject<Void> deleteByPrimaryKey(Integer id) {
-        DataTransferObject<Void> dto = new DataTransferObject();
-        if (Check.NuNObj(id)) {
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setErrorMsg("参数错误");
-            return dto;
-        }
-        try {
-            int num = supplierPackageDao.deleteByPrimaryKey(id);
-            if (num != 1) {
-                dto.setErrCode(DataTransferObject.ERROR);
-                dto.setErrorMsg("删除组合套餐失败");
-                return dto;
-            }
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【删除组合套餐失败】par:{},error:{}", id, e);
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setMsg("删除组合套餐失败");
-            return dto;
-        }
-        return dto;
-    }
+//    /**
+//     * @author:zhangzhengguang
+//     * @date:2017/10/13
+//     * @description:查询组合套餐信息根据ID
+//     **/
+//    @Override
+//    public DataTransferObject<SupplierPackageEntity> getSupplierPackageById(Integer id) {
+//        DataTransferObject<SupplierPackageEntity> dto = new DataTransferObject();
+//        if (Check.NuNObj(id)) {
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setErrorMsg("参数错误");
+//            return dto;
+//        }
+//        try {
+//            SupplierPackageEntity packageEntity = supplierPackageDao.getSupplierPackageById(id);
+//            if (Check.NuNObj(packageEntity)) {
+//                dto.setErrCode(DataTransferObject.ERROR);
+//                dto.setErrorMsg("查询组合套餐信息根据ID失败");
+//                return dto;
+//            }
+//            dto.setData(packageEntity);
+//        } catch (Exception e) {
+//            LogUtil.error(LOGGER, "【查询组合套餐信息根据ID失败】par:{},error:{}", id, e);
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setMsg("查询组合套餐信息根据ID失败");
+//            return dto;
+//        }
+//        return dto;
+//    }
 
-    /**
-     * @author:zhangzhengguang
-     * @date:2017/10/13
-     * @description:查询组合套餐信息根据ID
-     **/
-    @Override
-    public DataTransferObject<SupplierPackageEntity> getSupplierPackageById(Integer id) {
-        DataTransferObject<SupplierPackageEntity> dto = new DataTransferObject();
-        if (Check.NuNObj(id)) {
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setErrorMsg("参数错误");
-            return dto;
-        }
-        try {
-            SupplierPackageEntity packageEntity = supplierPackageDao.getSupplierPackageById(id);
-            if (Check.NuNObj(packageEntity)) {
-                dto.setErrCode(DataTransferObject.ERROR);
-                dto.setErrorMsg("查询组合套餐信息根据ID失败");
-                return dto;
-            }
-            dto.setData(packageEntity);
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【查询组合套餐信息根据ID失败】par:{},error:{}", id, e);
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setMsg("查询组合套餐信息根据ID失败");
-            return dto;
-        }
-        return dto;
-    }
-
-    /**
-     * @author:zhangzhengguang
-     * @date:2017/10/13
-     * @description:修改组合套餐信息根据ID
-     **/
-    @Override
-    public DataTransferObject<Void> updateSupplierPackage(SupplierPackageEntity supplierPackageEntity) {
-        DataTransferObject<Void> dto = new DataTransferObject();
-        if (Check.NuNObj(supplierPackageEntity)) {
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setErrorMsg("参数错误");
-            return dto;
-        }
-        try {
-            int num = supplierPackageDao.updateSupplierPackageById(supplierPackageEntity);
-            if (num != 1) {
-                dto.setErrCode(DataTransferObject.ERROR);
-                dto.setErrorMsg("修改组合套餐信息根据ID失败");
-                return dto;
-            }
-        } catch (Exception e) {
-            LogUtil.error(LOGGER, "【修改组合套餐信息根据ID失败】par:{},error:{}", JsonEntityTransform.Object2Json(supplierPackageEntity), e);
-            dto.setErrCode(DataTransferObject.ERROR);
-            dto.setMsg("修改组合套餐信息根据ID失败");
-            return dto;
-        }
-        return dto;
-    }
+//    /**
+//     * @author:zhangzhengguang
+//     * @date:2017/10/13
+//     * @description:修改组合套餐信息根据ID
+//     **/
+//    @Override
+//    public DataTransferObject<Void> updateSupplierPackage(SupplierPackageEntity supplierPackageEntity) {
+//        DataTransferObject<Void> dto = new DataTransferObject();
+//        if (Check.NuNObj(supplierPackageEntity)) {
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setErrorMsg("参数错误");
+//            return dto;
+//        }
+//        try {
+//            int num = supplierPackageDao.updateSupplierPackageById(supplierPackageEntity);
+//            if (num != 1) {
+//                dto.setErrCode(DataTransferObject.ERROR);
+//                dto.setErrorMsg("修改组合套餐信息根据ID失败");
+//                return dto;
+//            }
+//        } catch (Exception e) {
+//            LogUtil.error(LOGGER, "【修改组合套餐信息根据ID失败】par:{},error:{}", JsonEntityTransform.Object2Json(supplierPackageEntity), e);
+//            dto.setErrCode(DataTransferObject.ERROR);
+//            dto.setMsg("修改组合套餐信息根据ID失败");
+//            return dto;
+//        }
+//        return dto;
+//    }
 }

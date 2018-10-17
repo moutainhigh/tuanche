@@ -66,6 +66,37 @@ public class CartServiceProxyTest extends BaseTest {
 
     }
 
+
+
+
+    @Test
+    public void cartInfoTest1() {
+
+        DataTransferObject<CartInfoVO> classify = cartService.cartInfo("baozi","jipin","0001");
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+
+    }
+
+
+
+    @Test
+    public void addCartPackageTest() {
+
+        CartAddRequest cartAddRequest = new CartAddRequest();
+
+        cartAddRequest.setBusinessUid("jipin");
+        cartAddRequest.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
+        cartAddRequest.setProductCode(280);
+        cartAddRequest.setUserUid("baozi");
+        cartAddRequest.setEnterpriseCode("0001");
+        cartAddRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
+        DataTransferObject<CartInfoVO> classify = cartService.addCart(cartAddRequest);
+        System.out.println(JsonEntityTransform.Object2Json(classify));
+
+    }
+
+
+
     @Test
     public void addCartTest() {
 
@@ -76,7 +107,7 @@ public class CartServiceProxyTest extends BaseTest {
         cartAddRequest.setProductCode(188);
         cartAddRequest.setUserUid("baozi");
         cartAddRequest.setEnterpriseCode("001");
-        cartAddRequest.setOrderType(OrderTypeEnum.LUNCH_COMMON.getCode());
+        cartAddRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
         DataTransferObject<CartInfoVO> classify = cartService.addCart(cartAddRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
@@ -100,14 +131,6 @@ public class CartServiceProxyTest extends BaseTest {
     }
 
 
-
-    @Test
-    public void cartInfoTest1() {
-
-        DataTransferObject<CartInfoVO> classify = cartService.cartInfo("afi","jipin","qpg001");
-        System.out.println(JsonEntityTransform.Object2Json(classify));
-
-    }
 
 
 

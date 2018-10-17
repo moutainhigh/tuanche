@@ -44,11 +44,6 @@ public class SupplierManagerImpl {
 	private SupplierProductDao supplierProductDao;
 
 
-	@Resource(name = "supplier.supplierPackageDao")
-	private SupplierPackageDao supplierPackageDao;
-
-
-
 
 	/**
 	 * 获取供应商列表
@@ -89,39 +84,39 @@ public class SupplierManagerImpl {
 	}
 
 
-	/**
-	 * 获取礼包列表
-	 * @author afi
-	 * @param list
-	 * @return
-	 */
-	public List<SupplierPackageEntity> getSupplierPackageByList(List<Integer> list){
-		if (Check.NuNCollection(list)){
-			return new ArrayList<>();
-		}
-		return supplierPackageDao.getSupplierPackageByList(list);
-	}
+//	/**
+//	 * 获取礼包列表
+//	 * @author afi
+//	 * @param list
+//	 * @return
+//	 */
+//	public List<SupplierPackageEntity> getSupplierPackageByList(List<Integer> list){
+//		if (Check.NuNCollection(list)){
+//			return new ArrayList<>();
+//		}
+//		return supplierPackageDao.getSupplierPackageByList(list);
+//	}
 
 
-	/**
-	 * 获取礼包map
-	 * @author afi
-	 * @param list
-	 * @return
-	 */
-	public Map<String,SupplierPackageEntity> getSupplierPackageByMap(List<Integer> list){
-		Map<String,SupplierPackageEntity> map = new HashMap<>();
-		if (Check.NuNCollection(list)){
-			return map;
-		}
-		List<SupplierPackageEntity> listPackage = supplierPackageDao.getSupplierPackageByList(list);
-		if (!Check.NuNCollection(listPackage)){
-			for (SupplierPackageEntity packageEntity : listPackage) {
-				map.put(packageEntity.getId()+"",packageEntity);
-			}
-		}
-		return map;
-	}
+//	/**
+//	 * 获取礼包map
+//	 * @author afi
+//	 * @param list
+//	 * @return
+//	 */
+//	public Map<String,SupplierPackageEntity> getSupplierPackageByMap(List<Integer> list){
+//		Map<String,SupplierPackageEntity> map = new HashMap<>();
+//		if (Check.NuNCollection(list)){
+//			return map;
+//		}
+//		List<SupplierPackageEntity> listPackage = supplierPackageDao.getSupplierPackageByList(list);
+//		if (!Check.NuNCollection(listPackage)){
+//			for (SupplierPackageEntity packageEntity : listPackage) {
+//				map.put(packageEntity.getId()+"",packageEntity);
+//			}
+//		}
+//		return map;
+//	}
 
 
 
@@ -136,29 +131,29 @@ public class SupplierManagerImpl {
 		return supplierProductDao.getProductListBySupplierAndType(supplierProductRequest);
 	}
 
+//
+//	/**
+//	 * 获取当前的供应商打包信息
+//	 * @author afi
+//	 * @param supplierCode
+//	 * @return
+//	 */
+//	public List<SupplierPackageEntity> getSupplierPackageByCode(String supplierCode){
+//		//获取当前的推荐列表
+//		return supplierPackageDao.getSupplierPackageByCode(supplierCode);
+//	}
 
-	/**
-	 * 获取当前的供应商打包信息
-	 * @author afi
-	 * @param supplierCode
-	 * @return
-	 */
-	public List<SupplierPackageEntity> getSupplierPackageByCode(String supplierCode){
-		//获取当前的推荐列表
-		return supplierPackageDao.getSupplierPackageByCode(supplierCode);
-	}
-
-
-	/**
-	 * 获取当前的供应商打包信息
-	 * @author afi
-	 * @param supplierCode
-	 * @return
-	 */
-	public List<SupplierPackageEntity> getSupplierPackageByCodeAndWeek(String supplierCode,Integer week){
-		//获取当前的推荐列表
-		return supplierPackageDao.getSupplierPackageByCodeAndWeek(supplierCode,week);
-	}
+//
+//	/**
+//	 * 获取当前的供应商打包信息
+//	 * @author afi
+//	 * @param supplierCode
+//	 * @return
+//	 */
+//	public List<SupplierPackageEntity> getSupplierPackageByCodeAndWeek(String supplierCode,Integer week){
+//		//获取当前的推荐列表
+//		return supplierPackageDao.getSupplierPackageByCodeAndWeek(supplierCode,week);
+//	}
 
 
 

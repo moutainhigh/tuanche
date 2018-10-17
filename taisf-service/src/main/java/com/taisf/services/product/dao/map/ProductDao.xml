@@ -77,6 +77,17 @@
         ORDER BY id DESC
     </select>
 
+    <select id="getProductByPackageId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_product
+        where id in
+        (
+        select product_id   from t_product_package  where package_id = #{packageId}
+        )
+    </select>
+
+
 
     <select id="getProductByList" parameterType="java.util.Map" resultMap="BaseResultMap">
         select

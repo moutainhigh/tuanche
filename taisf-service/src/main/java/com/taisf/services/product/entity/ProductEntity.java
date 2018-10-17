@@ -28,6 +28,11 @@ public class ProductEntity extends BaseEntity {
     private String productName;
 
     /**
+     * @see com.taisf.services.common.valenum.SupplierProductTypeEnum
+     */
+    private Integer supplierProductType;
+
+    /**
      * 商品分类
      */
     private String productClassify;
@@ -36,6 +41,8 @@ public class ProductEntity extends BaseEntity {
      * 商品配型
      */
     private Integer productType;
+
+
 
     /**
      * 商品属性
@@ -218,6 +225,13 @@ public class ProductEntity extends BaseEntity {
     }
 
 
+    public Integer getSupplierProductType() {
+        return supplierProductType;
+    }
+
+    public void setSupplierProductType(Integer supplierProductType) {
+        this.supplierProductType = supplierProductType;
+    }
 
     @Override
     public String toString() {

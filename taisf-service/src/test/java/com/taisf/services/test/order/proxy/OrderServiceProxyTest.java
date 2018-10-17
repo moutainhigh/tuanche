@@ -81,12 +81,12 @@ public class OrderServiceProxyTest extends BaseTest {
     @Test
     public void initOrderTest() {
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
-        createOrderRequest.setUserUid("2c91340c6135fb79016136e0888a0002");
+        createOrderRequest.setUserUid("baozi");
         createOrderRequest.setBusinessUid("jipin");
         createOrderRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
 //        createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(1);
-        createOrderRequest.setEnterpriseCode("qpg001");
+        createOrderRequest.setEnterpriseCode("0001");
         DataTransferObject<OrderSaveInfo> classify = orderService.initOrder(createOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 
@@ -98,13 +98,13 @@ public class OrderServiceProxyTest extends BaseTest {
     public void createOrderTest() {
 
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
-        createOrderRequest.setUserUid("afi");
+        createOrderRequest.setUserUid("baozi");
         createOrderRequest.setBusinessUid("jipin");
-        createOrderRequest.setOrderType(OrderTypeEnum.LUNCH_COMMON.getCode());
+        createOrderRequest.setOrderType(OrderTypeEnum.DINNER_COMMON.getCode());
         createOrderRequest.setPwd("96e79218965eb72c92a549dd5a330112");
         createOrderRequest.setSource(1);
         createOrderRequest.setAddressFid("2c91cb36616a0f9001616a0f90290000");
-        createOrderRequest.setEnterpriseCode("qpg001");
+        createOrderRequest.setEnterpriseCode("0001");
         DataTransferObject<CreateOrderVO> classify = orderService.createOrder(createOrderRequest);
         System.out.println(JsonEntityTransform.Object2Json(classify));
 

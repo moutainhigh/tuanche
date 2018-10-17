@@ -94,51 +94,51 @@ public class SupplierPackageManagerImpl {
 	 * @return
 	 */
 	public List<ProductEntity> getSupplierProByPackageId(Integer packageId){
-		List<ProductEntity> proList = new ArrayList<>();
-		List<Integer> list = new ArrayList<>();
-		SupplierPackageEntity packageEntity = supplierPackageDao.getSupplierPackageById(packageId);
-		if (Check.NuNObj(packageEntity)) {
-			return proList;
-		}
-		if (!Check.NuNObj(packageEntity.getBigCode())){
-			list.add(packageEntity.getBigCode());
-		}
-		if (!Check.NuNObj(packageEntity.getSmallCode())){
-			list.add(packageEntity.getSmallCode());
-		}
-		if (!Check.NuNObj(packageEntity.getSuCode())){
-			list.add(packageEntity.getSuCode());
-		}
-		if (!Check.NuNObj(packageEntity.getTangCode())){
-			list.add(packageEntity.getTangCode());
-		}
-		if (!Check.NuNObj(packageEntity.getDrinkCode())){
-			list.add(packageEntity.getDrinkCode());
-		}
-		if (!Check.NuNObj(packageEntity.getFoodCode())){
-			list.add(packageEntity.getFoodCode());
-		}
-		if (!Check.NuNObj(packageEntity.getFruitCode())){
-			list.add(packageEntity.getFruitCode());
-		}
-		if (Check.NuNCollection(list)){
-			return proList;
-		}
+//		List<ProductEntity> proList = new ArrayList<>();
+//		List<Integer> list = new ArrayList<>();
+//		SupplierPackageEntity packageEntity = supplierPackageDao.getSupplierPackageById(packageId);
+//		if (Check.NuNObj(packageEntity)) {
+//			return proList;
+//		}
+//		if (!Check.NuNObj(packageEntity.getBigCode())){
+//			list.add(packageEntity.getBigCode());
+//		}
+//		if (!Check.NuNObj(packageEntity.getSmallCode())){
+//			list.add(packageEntity.getSmallCode());
+//		}
+//		if (!Check.NuNObj(packageEntity.getSuCode())){
+//			list.add(packageEntity.getSuCode());
+//		}
+//		if (!Check.NuNObj(packageEntity.getTangCode())){
+//			list.add(packageEntity.getTangCode());
+//		}
+//		if (!Check.NuNObj(packageEntity.getDrinkCode())){
+//			list.add(packageEntity.getDrinkCode());
+//		}
+//		if (!Check.NuNObj(packageEntity.getFoodCode())){
+//			list.add(packageEntity.getFoodCode());
+//		}
+//		if (!Check.NuNObj(packageEntity.getFruitCode())){
+//			list.add(packageEntity.getFruitCode());
+//		}
+//		if (Check.NuNCollection(list)){
+//			return proList;
+//		}
 		Map<String,ProductEntity> tmp = new HashMap<>();
 		//获取商品列表
-		List<ProductEntity>  productEntityList = productDao.getProductByList(list);
+		List<ProductEntity>  productEntityList = productDao.getProductByPackageId(packageId);
 		if (!Check.NuNCollection(productEntityList)){
 			for (ProductEntity entity : productEntityList) {
 				tmp.put(entity.getId()+"",entity);
 			}
 		}
-		for (Integer id : list) {
-			String key = id+"";
-			if (tmp.containsKey(key)){
-				proList.add(tmp.get(key));
-			}
-		}
-		return proList;
+//		for (Integer id : list) {
+//			String key = id+"";
+//			if (tmp.containsKey(key)){
+//				proList.add(tmp.get(key));
+//			}
+//		}
+		return productEntityList;
 	}
 
 

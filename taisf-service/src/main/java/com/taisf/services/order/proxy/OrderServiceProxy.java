@@ -761,10 +761,12 @@ public class OrderServiceProxy implements OrderService {
         if (dto.checkSuccess()){
             orderManager.saveOrderSave(orderSaveVO);
         }
-        CreateOrderVO vo = new CreateOrderVO();
-        vo.setOrderSn(orderSaveVO.getOrderSn());
-        vo.setOrderStatus(OrdersStatusEnum.getByCode(orderSaveVO.getOrderBase().getOrderStatus()).getForeignType().getCode());
-        dto.setData(vo);
+        if (dto.checkSuccess()){
+            CreateOrderVO vo = new CreateOrderVO();
+            vo.setOrderSn(orderSaveVO.getOrderSn());
+            vo.setOrderStatus(OrdersStatusEnum.getByCode(orderSaveVO.getOrderBase().getOrderStatus()).getForeignType().getCode());
+            dto.setData(vo);
+        }
         return dto;
     }
 

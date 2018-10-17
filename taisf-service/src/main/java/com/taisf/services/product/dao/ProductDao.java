@@ -39,6 +39,8 @@ public class ProductDao extends BaseDao {
     private static Logger logger = LoggerFactory.getLogger(ProductDao.class);
 
 
+
+
     /**
      * 根据id获取当前的菜单
      * @author afi
@@ -60,6 +62,19 @@ public class ProductDao extends BaseDao {
         pageBounds.setLimit(request.getLimit());
         pageBounds.setPage(request.getPage());
         return mybatisDaoContext.findForPage(SQLID+"pageListProduct",ProductEntity.class,request,pageBounds);
+    }
+
+
+    /**
+     * 根据id获取当前的菜单list
+     * @author afi
+     * @param packageId
+     * @return
+     */
+    public List<ProductEntity> getProductByPackageId(Integer packageId){
+        Map<String,Object> par = new HashMap<>();
+        par.put("packageId",packageId);
+        return mybatisDaoContext.findAll(SQLID+"getProductByPackageId", ProductEntity.class, par);
     }
 
     /**

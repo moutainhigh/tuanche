@@ -204,67 +204,67 @@ public class StockController {
         return dto;
     }
 
-    /**
-     * @author:zhangzhengguang
-     * @date:2018/3/27
-     * @description:
-     **/
-    @RequestMapping("productPackagePageList")
-    @ResponseBody
-    public PageResult pageList(HttpServletRequest request, SupplierProductRequest req) {
-        PageResult pageResult = new PageResult();
-        try {
-
-            //查询出当前供餐商下所有菜品信息
-            HttpSession session = request.getSession();
-            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
-            if (Check.NuNStr(employeeEntity.getEmpBiz())){
-                return pageResult;
-            }
-
-            req.setSupplierCode(employeeEntity.getEmpBiz());
-            //
-            DataTransferObject<PagingResult<SupplierPackageEntity>> dto = supplierPackageService.pageListSupplierProduct(req);
-
-            List<SupplierPackageEntity> productEntities = dto.getData().getList();
-            if (Check.NuNCollection(productEntities)) {
-                return new PageResult();
-            }
-            List<Integer> productIds = productEntities.parallelStream().map(SupplierPackageEntity::getId).collect(Collectors.toList());
-            Map<String, StockCheckVO> lunchMap = stockProductManager.checkStockLimit(req.getWeek(), SupplierProductTypeEnum.PACKAGE.getCode(), OrderTypeEnum.LUNCH_COMMON.getCode(), employeeEntity.getEmpBiz(), productIds);
-            Map<String, StockCheckVO> dinnerMap = stockProductManager.checkStockLimit(req.getWeek(), SupplierProductTypeEnum.PACKAGE.getCode(), OrderTypeEnum.DINNER_COMMON.getCode(), employeeEntity.getEmpBiz(), productIds);
-            List<ProductStockVO> stockVOList = new ArrayList<>();
-            for (SupplierPackageEntity entity : productEntities) {
-                ProductStockVO vo = new ProductStockVO();
-                vo.setId(entity.getId());
-                vo.setProductName(entity.getTitle());
-                vo.setPriceSale(entity.getPackagePrice());
-                vo.setForLunch(entity.getForLunch());
-                vo.setForDinner(entity.getForDinner());
-                StockCheckVO productLunchVO = lunchMap.get(String.valueOf(entity.getId()));
-                if (!Check.NuNObj(productLunchVO)) {
-                    vo.setLunchStockId(productLunchVO.getLimitId());
-                    vo.setLunchProductLimit(productLunchVO.getProductLimit());
-                    vo.setLunchProductNum(productLunchVO.getProductNum());
-                }
-
-                StockCheckVO productdinnerVO = dinnerMap.get(String.valueOf(entity.getId()));
-                if (!Check.NuNObj(productdinnerVO)) {
-                    vo.setDinnerStockId(productdinnerVO.getLimitId());
-                    vo.setDinnerProductLimit(productdinnerVO.getProductLimit());
-                    vo.setDinnerProductNum(productdinnerVO.getProductNum());
-                }
-                stockVOList.add(vo);
-            }
-            pageResult.setRows(stockVOList);
-            pageResult.setTotal((long) stockVOList.size());
-        } catch (Exception e) {
-            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(req));
-            LogUtil.error(LOGGER, "error:{}", e);
-            return new PageResult();
-        }
-        return pageResult;
-    }
+//    /**
+//     * @author:zhangzhengguang
+//     * @date:2018/3/27
+//     * @description:
+//     **/
+//    @RequestMapping("productPackagePageList")
+//    @ResponseBody
+//    public PageResult pageList(HttpServletRequest request, SupplierProductRequest req) {
+//        PageResult pageResult = new PageResult();
+//        try {
+//
+//            //查询出当前供餐商下所有菜品信息
+//            HttpSession session = request.getSession();
+//            EmployeeEntity employeeEntity = (EmployeeEntity) session.getAttribute(LoginConstant.SESSION_KEY);
+//            if (Check.NuNStr(employeeEntity.getEmpBiz())){
+//                return pageResult;
+//            }
+//
+//            req.setSupplierCode(employeeEntity.getEmpBiz());
+//            //
+//            DataTransferObject<PagingResult<SupplierPackageEntity>> dto = supplierPackageService.pageListSupplierProduct(req);
+//
+//            List<SupplierPackageEntity> productEntities = dto.getData().getList();
+//            if (Check.NuNCollection(productEntities)) {
+//                return new PageResult();
+//            }
+//            List<Integer> productIds = productEntities.parallelStream().map(SupplierPackageEntity::getId).collect(Collectors.toList());
+//            Map<String, StockCheckVO> lunchMap = stockProductManager.checkStockLimit(req.getWeek(), SupplierProductTypeEnum.PACKAGE.getCode(), OrderTypeEnum.LUNCH_COMMON.getCode(), employeeEntity.getEmpBiz(), productIds);
+//            Map<String, StockCheckVO> dinnerMap = stockProductManager.checkStockLimit(req.getWeek(), SupplierProductTypeEnum.PACKAGE.getCode(), OrderTypeEnum.DINNER_COMMON.getCode(), employeeEntity.getEmpBiz(), productIds);
+//            List<ProductStockVO> stockVOList = new ArrayList<>();
+//            for (SupplierPackageEntity entity : productEntities) {
+//                ProductStockVO vo = new ProductStockVO();
+//                vo.setId(entity.getId());
+//                vo.setProductName(entity.getTitle());
+//                vo.setPriceSale(entity.getPackagePrice());
+//                vo.setForLunch(entity.getForLunch());
+//                vo.setForDinner(entity.getForDinner());
+//                StockCheckVO productLunchVO = lunchMap.get(String.valueOf(entity.getId()));
+//                if (!Check.NuNObj(productLunchVO)) {
+//                    vo.setLunchStockId(productLunchVO.getLimitId());
+//                    vo.setLunchProductLimit(productLunchVO.getProductLimit());
+//                    vo.setLunchProductNum(productLunchVO.getProductNum());
+//                }
+//
+//                StockCheckVO productdinnerVO = dinnerMap.get(String.valueOf(entity.getId()));
+//                if (!Check.NuNObj(productdinnerVO)) {
+//                    vo.setDinnerStockId(productdinnerVO.getLimitId());
+//                    vo.setDinnerProductLimit(productdinnerVO.getProductLimit());
+//                    vo.setDinnerProductNum(productdinnerVO.getProductNum());
+//                }
+//                stockVOList.add(vo);
+//            }
+//            pageResult.setRows(stockVOList);
+//            pageResult.setTotal((long) stockVOList.size());
+//        } catch (Exception e) {
+//            LogUtil.info(LOGGER, "params:{}", JsonEntityTransform.Object2Json(req));
+//            LogUtil.error(LOGGER, "error:{}", e);
+//            return new PageResult();
+//        }
+//        return pageResult;
+//    }
 
 
 }

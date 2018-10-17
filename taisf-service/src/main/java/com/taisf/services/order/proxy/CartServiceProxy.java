@@ -123,7 +123,7 @@ public class CartServiceProxy implements CartService{
         //礼包列表
         List<CartEleVO> proList = new ArrayList<>();
         //药品列表
-        List<CartEleVO> packageList = new ArrayList<>();
+//        List<CartEleVO> packageList = new ArrayList<>();
         for (CartEntity cartEntity : list) {
             //获取购物车类型
             SupplierProductTypeEnum supplierProductTypeEnum = SupplierProductTypeEnum.getByCode(cartEntity.getSupplierProductType());
@@ -131,22 +131,25 @@ public class CartServiceProxy implements CartService{
                 dto.setErrorMsg("异常的商品类型");
                 return dto;
             }
-            if(supplierProductTypeEnum.getCode() == SupplierProductTypeEnum.PACKAGE.getCode() ){
-                CartEleVO ele = new CartEleVO();
-                ele.setProductCode(cartEntity.getProductCode());
-                ele.setProductNum(cartEntity.getProductNum());
-                packageList.add(ele);
-            }else if(supplierProductTypeEnum.getCode()== SupplierProductTypeEnum.PRODUCT.getCode() ){
-                CartEleVO ele = new CartEleVO();
-                ele.setProductCode(cartEntity.getProductCode());
-                ele.setProductNum(cartEntity.getProductNum());
-                proList.add(ele);
-            }
+
+            CartEleVO ele = new CartEleVO();
+            ele.setProductCode(cartEntity.getProductCode());
+            ele.setProductNum(cartEntity.getProductNum());
+            proList.add(ele);
+//            if(supplierProductTypeEnum.getCode() == SupplierProductTypeEnum.PACKAGE.getCode() ){
+//                CartEleVO ele = new CartEleVO();
+//                ele.setProductCode(cartEntity.getProductCode());
+//                ele.setProductNum(cartEntity.getProductNum());
+//                packageList.add(ele);
+//            }else if(supplierProductTypeEnum.getCode()== SupplierProductTypeEnum.PRODUCT.getCode() ){
+//
+//
+//            }
         }
-        if (!Check.NuNCollection(packageList)){
-            //处理礼包
-            dealCartPackage(dto,packageList,orderTypeEnum);
-        }
+//        if (!Check.NuNCollection(packageList)){
+//            //处理礼包
+//            dealCartPackage(dto,packageList,orderTypeEnum);
+//        }
         if (!Check.NuNCollection(proList)){
             //处理商品
             dealCartProduct(dto,proList,orderTypeEnum,businessUid);
@@ -155,51 +158,54 @@ public class CartServiceProxy implements CartService{
         return dto;
     }
 
-    /**
-     * 填充礼包的逻辑
-     * @param dto
-     * @param packageList
-     */
-    private void dealCartPackage(DataTransferObject<CartInfoVO> dto,List<CartEleVO> packageList,OrderTypeEnum orderTypeEnum){
-        if (!dto.checkSuccess()){
-            return;
-        }
-        if (Check.NuNCollection(packageList)){
-            return;
-        }
-        if (Check.NuNObj(orderTypeEnum)){
-            return;
-        }
-        Map<String,Integer> numMap = new HashMap<>();
-        List<Integer> pList = new ArrayList<>();
-        for (CartEleVO eleVO : packageList) {
-            pList.add(eleVO.getProductCode());
-            numMap.put(eleVO.getProductCode()+"",eleVO.getProductNum());
-        }
-        List<SupplierPackageEntity> list = supplierProductManager.getSupplierPackageByList(pList);
-        if (Check.NuNCollection(list)){
-            return;
-        }
-        CartInfoVO vo = dto.getData();
-        for (SupplierPackageEntity productEntity : list) {
-            int num = ValueUtil.getintValue(numMap.get(productEntity.getId()+""));
-            CartVO cartVO = new CartVO();
-            cartVO.setProductName(productEntity.getTitle());
-            cartVO.setBusinessUid(vo.getBusinessUid());
-            cartVO.setUserUid(vo.getUserUid());
-            cartVO.setProductCode(productEntity.getId());
-            cartVO.setProductPrice(productEntity.getPackagePrice());
-            cartVO.setProductNum(num);
-            cartVO.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
-            //获取当前的匹配情况
-            if (!orderTypeEnum.checkSuit(ValueUtil.getintValue(productEntity.getForLunch()),ValueUtil.getintValue(productEntity.getForDinner()))){
-                cartVO.setOutDes("不可预定");
-                cartVO.setOutFlag(YesNoEnum.YES.getCode());
-            }
-            vo.getList().add(cartVO);
-            vo.setPrice(MoneyDealUtil.overlayMoney(vo.getPrice(),productEntity.getPackagePrice(),num));
-        }
-    }
+//    /**
+//     * 填充礼包的逻辑
+//     * @param dto
+//     * @param packageList
+//     */
+//    private void dealCartPackage(DataTransferObject<CartInfoVO> dto,List<CartEleVO> packageList,OrderTypeEnum orderTypeEnum){
+//        if (!dto.checkSuccess()){
+//            return;
+//        }
+//        if (Check.NuNCollection(packageList)){
+//            return;
+//        }
+//        if (Check.NuNObj(orderTypeEnum)){
+//            return;
+//        }
+//        Map<String,Integer> numMap = new HashMap<>();
+//        List<Integer> pList = new ArrayList<>();
+//        for (CartEleVO eleVO : packageList) {
+//            pList.add(eleVO.getProductCode());
+//            numMap.put(eleVO.getProductCode()+"",eleVO.getProductNum());
+//        }
+//
+//
+//        supplierProductManager.getProductListBySupplierAndType()
+//        List<SupplierPackageEntity> list = supplierProductManager.getSupplierPackageByList(pList);
+//        if (Check.NuNCollection(list)){
+//            return;
+//        }
+//        CartInfoVO vo = dto.getData();
+//        for (SupplierPackageEntity productEntity : list) {
+//            int num = ValueUtil.getintValue(numMap.get(productEntity.getId()+""));
+//            CartVO cartVO = new CartVO();
+//            cartVO.setProductName(productEntity.getTitle());
+//            cartVO.setBusinessUid(vo.getBusinessUid());
+//            cartVO.setUserUid(vo.getUserUid());
+//            cartVO.setProductCode(productEntity.getId());
+//            cartVO.setProductPrice(productEntity.getPackagePrice());
+//            cartVO.setProductNum(num);
+//            cartVO.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
+//            //获取当前的匹配情况
+//            if (!orderTypeEnum.checkSuit(ValueUtil.getintValue(productEntity.getForLunch()),ValueUtil.getintValue(productEntity.getForDinner()))){
+//                cartVO.setOutDes("不可预定");
+//                cartVO.setOutFlag(YesNoEnum.YES.getCode());
+//            }
+//            vo.getList().add(cartVO);
+//            vo.setPrice(MoneyDealUtil.overlayMoney(vo.getPrice(),productEntity.getPackagePrice(),num));
+//        }
+//    }
 
 //    /**
 //     * 获取今天周几
@@ -249,7 +255,7 @@ public class CartServiceProxy implements CartService{
             cartVO.setUserUid(vo.getUserUid());
             cartVO.setProductCode(productEntity.getId());
             cartVO.setProductPrice(productEntity.getPriceSale());
-            cartVO.setSupplierProductType(SupplierProductTypeEnum.PRODUCT.getCode());
+            cartVO.setSupplierProductType(productEntity.getSupplierProductType());
             cartVO.setProductNum(num);
 
             //获取当前的匹配情况

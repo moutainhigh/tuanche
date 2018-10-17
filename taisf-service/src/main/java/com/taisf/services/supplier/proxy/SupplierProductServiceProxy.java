@@ -208,12 +208,8 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 
         try {
             for (ProductClassifyEntity productClassifyEntity : classifyEntityList) {
-                if (SupplierProductTypeEnum.PRODUCT.getCode() == ValueUtil.getintValue(productClassifyEntity.getSupplierProductType())) {
-                    dealProduct(map, list, productClassifyEntity);
-                }
-                if (SupplierProductTypeEnum.PACKAGE.getCode() == ValueUtil.getintValue(productClassifyEntity.getSupplierProductType())) {
-                    dealPackage4week(supplierCode, week, list,productClassifyEntity);
-                }
+                //拼接当前的药品
+                dealProduct(map, list, productClassifyEntity);
             }
         } catch (Exception e) {
             LogUtil.error(LOGGER, "【获取列表和商品信息】par:{},error:{}", JsonEntityTransform.Object2Json(supplierCode), e);
@@ -224,82 +220,6 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         return dto;
     }
 
-//
-//    /**
-//     * 设置当前的套餐相关的信息
-//     * @author afi
-//     * @param supplierCode
-//     * @param list
-//     * @param c
-//     * @return
-//     */
-//    private void dealPackage4old(String supplierCode,  List<ProductClassifyVO> list, ProductClassifyEnum c,OrderTypeEnum orderTypeEnum) {
-//        List<SupplierProductVO> full = this.getPackage(supplierCode);
-//        if (Check.NuNCollection(full)){
-//            return ;
-//        }
-//        if (Check.NuNObj(orderTypeEnum)){
-//            return;
-//        }
-//        List<SupplierProductVO> tmp = new ArrayList<>();
-//        for (SupplierProductVO supplierProductVO : full) {
-//            if (orderTypeEnum.checkSuit(ValueUtil.getintValue(supplierProductVO.getForLunch()),ValueUtil.getintValue(supplierProductVO.getForDinner()))){
-//                tmp.add(supplierProductVO);
-//            }else {
-//                continue;
-//            }
-//
-//        }
-//        if (Check.NuNCollection(tmp)) {
-//            return;
-//        }
-//
-//        ProductClassifyInfo vo = new ProductClassifyInfo();
-//        String key = c.getCode() + "";
-//        vo.setProductClassify(key);
-//        vo.setProductClassifyName(c.getName());
-//        vo.setList(tmp);
-//        list.add(vo);
-//    }
-
-
-    /**
-     * 设置当前的套餐相关的信息
-     * @author afi
-     * @param supplierCode
-     * @param week
-     * @param list
-     * @param productClassifyEntity
-     * @return
-     */
-    private void dealPackage4week(String supplierCode, Integer week, List<ProductClassifyVO> list, ProductClassifyEntity productClassifyEntity) {
-        List<SupplierProductVO> full = this.getPackage(supplierCode,week);
-        if (Check.NuNCollection(full)){
-            return ;
-        }
-        List<SupplierProductVO> tmp = new ArrayList<>();
-        for (SupplierProductVO supplierProductVO : full) {
-            //获取套餐
-            tmp.add(supplierProductVO);
-            //封装订单类型
-            fillOrderType(supplierProductVO);
-        }
-        if (Check.NuNCollection(tmp)) {
-            return;
-        }
-
-        ProductClassifyInfo vo = new ProductClassifyInfo();
-        String key = productClassifyEntity.getClassifyCode();
-        vo.setProductClassify(key);
-        vo.setProductClassifyName(productClassifyEntity.getClassifyName());
-        vo.setList(tmp);
-        list.add(vo);
-    }
-
-
-
-
-
     /**
      * 商品图片信息
      * @param pro
@@ -309,7 +229,6 @@ public class SupplierProductServiceProxy implements SupplierProductService {
             return;
         }
         pro.setProductPic(pathConstant.PIC_URL + pro.getProductPic());
-
     }
 
     /**
@@ -340,44 +259,45 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         }
     }
 
-    /**
-     * 处理包
-     *
-     * @param supplierCode
-     */
-    private List<SupplierProductVO> getPackage(String supplierCode,Integer week) {
-        if (Check.NuNStr(supplierCode)) {
-            return null;
-        }
-        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCodeAndWeek(supplierCode,week );
-        if (Check.NuNCollection(list)) {
-            list = new ArrayList<>();
-        }
-        List<SupplierProductVO> voList = new ArrayList<>();
-        for (SupplierPackageEntity packageEntity : list) {
-            SupplierProductVO vo = new SupplierProductVO();
-            vo.setId(packageEntity.getId());
-            vo.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
-            vo.setPriceSale(packageEntity.getPackagePrice());
-            //处理套餐标题
-            vo.setProductName(supplierPackageManager.dealPackageTitle(packageEntity.getTitle(),packageEntity.getId(),null,1));
-            vo.setProductPic(packageEntity.getPackagePic());
-            vo.setForLunch(packageEntity.getForLunch());
-            vo.setForDinner(packageEntity.getForDinner());
-            dealPic(vo);
-            voList.add(vo);
-        }
-        return voList;
-    }
+//    /**
+//     * 处理包
+//     *
+//     * @param supplierCode
+//     */
+//    private List<SupplierProductVO> getPackage(String supplierCode,Integer week) {
+//        if (Check.NuNStr(supplierCode)) {
+//            return null;
+//        }
+////        xxxx
+//        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCodeAndWeek(supplierCode,week );
+//        if (Check.NuNCollection(list)) {
+//            list = new ArrayList<>();
+//        }
+//        List<SupplierProductVO> voList = new ArrayList<>();
+//        for (SupplierPackageEntity packageEntity : list) {
+//            SupplierProductVO vo = new SupplierProductVO();
+//            vo.setId(packageEntity.getId());
+//            vo.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
+//            vo.setPriceSale(packageEntity.getPackagePrice());
+//            //处理套餐标题
+//            vo.setProductName(supplierPackageManager.dealPackageTitle(packageEntity.getTitle(),packageEntity.getId(),null,1));
+//            vo.setProductPic(packageEntity.getPackagePic());
+//            vo.setForLunch(packageEntity.getForLunch());
+//            vo.setForDinner(packageEntity.getForDinner());
+//            dealPic(vo);
+//            voList.add(vo);
+//        }
+//        return voList;
+//    }
 
-    /**
-     * 处理包
-     *
-     * @param supplierCode
-     */
-    private List<SupplierProductVO> getPackage(String supplierCode) {
-        return getPackage(supplierCode,WeekUtil.getWeek());
-    }
+//    /**
+//     * 处理包
+//     *
+//     * @param supplierCode
+//     */
+//    private List<SupplierProductVO> getPackage1(String supplierCode) {
+//        return getPackage(supplierCode,WeekUtil.getWeek());
+//    }
 
 
 
@@ -446,33 +366,33 @@ public class SupplierProductServiceProxy implements SupplierProductService {
 //        return dto;
 //    }
 
-    /**
-     * 处理当前供应商的推荐商品信息
-     *
-     * @param dto
-     * @param supplierProductRequest
-     * @author afi
-     */
-    private void dealSupplierPackage(DataTransferObject<List<SupplierProductVO>> dto, SupplierProductRequest supplierProductRequest) {
-        if (!dto.checkSuccess()) {
-            return;
-        }
-        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCode(supplierProductRequest.getSupplierCode());
-        if (Check.NuNCollection(list)) {
-            list = new ArrayList<>();
-        }
-        List<SupplierProductVO> voList = new ArrayList<>();
-        for (SupplierPackageEntity packageEntity : list) {
-            SupplierProductVO vo = new SupplierProductVO();
-            vo.setId(packageEntity.getId());
-            vo.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
-            vo.setPriceSale(packageEntity.getPackagePrice());
-            vo.setProductName(packageEntity.getTitle());
-            vo.setProductPic(packageEntity.getPackagePic());
-            voList.add(vo);
-        }
-        dto.setData(voList);
-    }
+//    /**
+//     * 处理当前供应商的推荐商品信息
+//     *
+//     * @param dto
+//     * @param supplierProductRequest
+//     * @author afi
+//     */
+//    private void dealSupplierPackage(DataTransferObject<List<SupplierProductVO>> dto, SupplierProductRequest supplierProductRequest) {
+//        if (!dto.checkSuccess()) {
+//            return;
+//        }
+//        List<SupplierPackageEntity> list = supplierManager.getSupplierPackageByCode(supplierProductRequest.getSupplierCode());
+//        if (Check.NuNCollection(list)) {
+//            list = new ArrayList<>();
+//        }
+//        List<SupplierProductVO> voList = new ArrayList<>();
+//        for (SupplierPackageEntity packageEntity : list) {
+//            SupplierProductVO vo = new SupplierProductVO();
+//            vo.setId(packageEntity.getId());
+//            vo.setSupplierProductType(SupplierProductTypeEnum.PACKAGE.getCode());
+//            vo.setPriceSale(packageEntity.getPackagePrice());
+//            vo.setProductName(packageEntity.getTitle());
+//            vo.setProductPic(packageEntity.getPackagePic());
+//            voList.add(vo);
+//        }
+//        dto.setData(voList);
+//    }
 
 
     /**
@@ -489,7 +409,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         if (Check.NuNCollection(list)) {
             list = new ArrayList<>();
         }
-        List<SupplierProductVO> voList = this.transProductList2VO(list, SupplierProductTypeEnum.PRODUCT);
+        List<SupplierProductVO> voList = this.transProductList2VO(list);
         dto.setData(voList);
     }
 
@@ -527,7 +447,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         }
         for (String key : map.keySet()) {
             List<ProductEntity> proList = map.get(key);
-            List<SupplierProductVO> voList = this.transProductList2VO(proList, SupplierProductTypeEnum.PRODUCT);
+            List<SupplierProductVO> voList = this.transProductList2VO(proList);
             rst.put(key, voList);
         }
 
@@ -585,7 +505,7 @@ public class SupplierProductServiceProxy implements SupplierProductService {
         }
         for (String key : map.keySet()) {
             List<ProductEntity> proList = map.get(key);
-            List<SupplierProductVO> voList = this.transProductList2VO(proList, SupplierProductTypeEnum.PRODUCT);
+            List<SupplierProductVO> voList = this.transProductList2VO(proList);
             rst.put(key, voList);
         }
 
@@ -596,22 +516,17 @@ public class SupplierProductServiceProxy implements SupplierProductService {
      * 转化当前的商品为对外展示的商品列表信息
      *
      * @param list
-     * @param supplierProductTypeEnum
      * @return
      * @author afi
      */
-    private List<SupplierProductVO> transProductList2VO(List<ProductEntity> list, SupplierProductTypeEnum supplierProductTypeEnum) {
+    private List<SupplierProductVO> transProductList2VO(List<ProductEntity> list) {
         List<SupplierProductVO> voList = new ArrayList<>();
         if (Check.NuNCollection(list)) {
             return voList;
         }
-        if (Check.NuNObj(supplierProductTypeEnum)) {
-            supplierProductTypeEnum = SupplierProductTypeEnum.PRODUCT;
-        }
         for (ProductEntity entity : list) {
             SupplierProductVO supplier = new SupplierProductVO();
             BeanUtils.copyProperties(entity, supplier);
-            supplier.setSupplierProductType(supplierProductTypeEnum.getCode());
             voList.add(supplier);
         }
         return voList;

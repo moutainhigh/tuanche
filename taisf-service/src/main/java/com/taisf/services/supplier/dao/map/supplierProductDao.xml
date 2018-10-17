@@ -20,6 +20,7 @@
         <result column="product_name" jdbcType="VARCHAR" property="productName"/>
         <result column="product_classify" jdbcType="INTEGER" property="productClassify"/>
         <result column="product_type" jdbcType="INTEGER" property="productType"/>
+        <result column="supplier_product_type" jdbcType="INTEGER" property="supplierProductType"/>
         <result column="product_source" jdbcType="INTEGER" property="productSource"/>
         <result column="product_des" jdbcType="VARCHAR" property="productDes"/>
         <result column="product_pic" jdbcType="VARCHAR" property="productPic"/>
@@ -35,7 +36,7 @@
 
 
     <sql id="Base_Column_List_Supplier">
-    t.id, t.product_name, t.product_classify, t.product_type, t.product_source, t.product_des, t.product_pic,
+    t.id, t.product_name, t.product_classify, t.product_type, t.supplier_product_type,t.product_source, t.product_des, t.product_pic,
     t.price_sale  as price_sale,   t.price_market  as price_market, t.create_time, t.update_time, is_del, p.for_lunch, p.for_dinner
   </sql>
 
