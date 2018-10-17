@@ -53,9 +53,9 @@ public class StockController {
     @Autowired
     private StockProductManagerImpl stockProductManager;
 
-
-    @Autowired
-    private SupplierPackageService supplierPackageService;
+//
+//    @Autowired
+//    private SupplierPackageService supplierPackageService;
 
     @Autowired
     private ProductService productService;
