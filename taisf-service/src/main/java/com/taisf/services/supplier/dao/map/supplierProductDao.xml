@@ -214,6 +214,7 @@
         <result column="product_classify" jdbcType="INTEGER" property="productClassify"/>
         <result column="classify_name" jdbcType="VARCHAR" property="classifyName"/>
         <result column="product_type" jdbcType="INTEGER" property="productType"/>
+        <result column="supplier_product_type" jdbcType="INTEGER" property="supplierProductType"/>
         <result column="product_source" jdbcType="INTEGER" property="productSource"/>
         <result column="price_sale" jdbcType="INTEGER" property="priceSale"/>
 
@@ -224,7 +225,7 @@
     <select id="pageListSupplierProduct" parameterType="com.taisf.services.product.dto.ProductListRequest"
             resultMap="BaseResultMapList">
         select t_product.id,
-        t_product.product_name, pc.classify_name,t_product.product_classify, t_product.product_type, t_product.product_source,t_product.price_sale,for_lunch,for_dinner
+        t_product.product_name, pc.classify_name,t_product.product_classify, t_product.product_type, t_product.supplier_product_type, t_product.product_source,t_product.price_sale,for_lunch,for_dinner
         from t_supplier_product
         INNER JOIN t_product ON t_product.id = t_supplier_product.product_code
         LEFT  JOIN t_product_classify pc ON t_product.product_classify = pc.classify_code
