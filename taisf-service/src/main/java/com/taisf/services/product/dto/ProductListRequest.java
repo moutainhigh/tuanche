@@ -22,6 +22,12 @@ public class ProductListRequest extends PageRequest {
      */
     private Integer productType;
 
+
+    /**
+     * @see com.taisf.services.common.valenum.SupplierProductTypeEnum
+     */
+    private Integer supplierProductType;
+
     /**
      * 周几
      */
@@ -119,5 +125,13 @@ public class ProductListRequest extends PageRequest {
 
     public void setWeek(Integer week) {
         this.week = week;
+    }
+
+    public Integer getSupplierProductType() {
+        return supplierProductType;
+    }
+
+    public void setSupplierProductType(Integer supplierProductType) {
+        this.supplierProductType = supplierProductType;
     }
 }

@@ -59,6 +59,12 @@
         <if test="productClassify != null and productClassify != ''">
             AND p.product_classify = #{productClassify}
         </if>
+
+
+        <if test="supplierProductType != null and supplierProductType != ''">
+            AND p.supplier_product_type = #{supplierProductType}
+        </if>
+
         <if test="productType != null and productType != ''">
             AND p.product_type = #{productType}
         </if>
@@ -117,6 +123,9 @@
             <if test="productType != null">
                 product_type,
             </if>
+            <if test="supplierProductType != null">
+                supplier_product_type,
+            </if>
             <if test="productSource != null">
                 product_source,
             </if>
@@ -159,6 +168,10 @@
             <if test="productType != null">
                 #{productType,jdbcType=INTEGER},
             </if>
+            <if test="supplierProductType != null">
+                #{supplierProductType,jdbcType=INTEGER},
+            </if>
+
             <if test="productSource != null">
                 #{productSource,jdbcType=INTEGER},
             </if>

@@ -10,6 +10,7 @@ import com.taisf.services.classify.api.ProductClassifyService;
 import com.taisf.services.classify.entity.ProductClassifyEntity;
 import com.taisf.services.classify.req.ProductClassifyListRequest;
 import com.taisf.services.common.constant.PathConstant;
+import com.taisf.services.common.valenum.SupplierProductTypeEnum;
 import com.taisf.services.product.api.ProductService;
 import com.taisf.services.product.dto.ProductListRequest;
 import com.taisf.services.product.entity.ProductEntity;
@@ -82,6 +83,7 @@ public class ProductController {
             HttpSession session = request.getSession();
             EmployeeEntity emp = (EmployeeEntity)session.getAttribute(LoginConstant.SESSION_KEY);
             productListRequest.setSupplierCode(emp.getEmpBiz());
+            productListRequest.setSupplierProductType(SupplierProductTypeEnum.PRODUCT.getCode());
             DataTransferObject<PagingResult<ProductEntity>> dto = productService.pageListProduct(productListRequest);
             if (!Check.NuNObj(dto.getData())) {
                 pageResult.setRows(dto.getData().getList());
