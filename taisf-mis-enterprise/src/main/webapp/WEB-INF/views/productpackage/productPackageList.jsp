@@ -177,6 +177,8 @@
                                 data-align="center"><span class="tdfont">供餐类型</span></th>
                             <th data-field="productSource" data-width="10%" data-formatter="formatProductSource"
                                 data-align="center"><span class="tdfont">套餐属性</span></th>
+                            <th data-field="productClassify" data-width="10%"
+                                data-align="center"><span class="tdfont">分类</span></th>
                             <th data-field="priceMarket" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">销售价</span></th>
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
@@ -212,6 +214,17 @@
                                 <div class="col-sm-8">
                                     <input id="productName" name="productName" type="text"
                                            class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">选择分类:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="productClassify" id="productClassify_a">
+                                        <option value="">--请选择--</option>
+                                        <c:forEach items="${productClassifyEntities}" var="z">
+                                            <option value="${z.classifyCode}">${z.classifyName}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -306,6 +319,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">选择分类:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="productClassify" id="productClassify_e">
+                                        <option value="">--请选择--</option>
+                                        <c:forEach items="${productClassifyEntities}" var="z">
+                                            <option value="${z.classifyCode}">${z.classifyName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">供餐类型:</label>
                                 <div class="col-sm-8">
                                     <input type="radio" value="1" name="productTypeE"> 全部
@@ -394,6 +418,17 @@
                                 <div class="col-sm-8">
                                     <input readonly id="productNameD" name="productName" type="text"
                                            class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">选择分类:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" name="productClassify" id="productClassify_d" disabled>
+                                        <option value="">--请选择--</option>
+                                        <c:forEach items="${productClassifyEntities}" var="z">
+                                            <option value="${z.classifyCode}">${z.classifyName}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
