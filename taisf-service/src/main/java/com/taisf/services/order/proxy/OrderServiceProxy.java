@@ -931,12 +931,13 @@ public class OrderServiceProxy implements OrderService {
         orderSaveVO.getOrderBase().setOrderType(createOrderRequest.getOrderType());
         //填充订单的信息
         this.fillOrderInfo(dto,orderSaveVO,cartInfoVO, createOrderRequest,false);
-
-        OrderSaveInfo saveInfo = new OrderSaveInfo();
-        BeanUtils.copyProperties(orderSaveVO,saveInfo);
-        //当前订单是否需要密码
-        saveInfo.setNeedPwd(this.checkNeedPwd(createOrderRequest.getUserUid(),saveInfo.getOrderMoney().getSumMoney()));
-        dto.setData(saveInfo);
+        if (dto.checkSuccess()){
+            OrderSaveInfo saveInfo = new OrderSaveInfo();
+            BeanUtils.copyProperties(orderSaveVO,saveInfo);
+            //当前订单是否需要密码
+            saveInfo.setNeedPwd(this.checkNeedPwd(createOrderRequest.getUserUid(),saveInfo.getOrderMoney().getSumMoney()));
+            dto.setData(saveInfo);
+        }
         return dto;
     }
 

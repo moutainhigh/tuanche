@@ -103,8 +103,8 @@
                     t_order_product op
                     INNER JOIN t_order o ON o.order_sn = op.order_sn
                     LEFT JOIN t_product p1 ON op.product_code = p1.id  and op.product_type = 1
-                    LEFT JOIN t_supplier_product_package package ON op.product_code = package.id
-                    LEFT JOIN t_product p2 ON  op.product_type = 2 and p2.id in (package.big_code,package.small_code,package.su_code,package.tang_code,package.drink_code,package.food_code,package.fruit_code)
+                    LEFT JOIN t_product_package package ON op.product_code = package.package_id  and op.product_type = 2
+                    LEFT JOIN t_product p2 ON  p2.id = package.product_id
                     where  1=1
                     and TO_DAYS( now() ) - TO_DAYS(o.create_time) = 0
                     <if test="enterpriseCode != null and enterpriseCode != '' ">
