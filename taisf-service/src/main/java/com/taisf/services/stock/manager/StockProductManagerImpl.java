@@ -47,8 +47,9 @@ public class StockProductManagerImpl {
      * @return
      */
     public Map<String,StockCheckVO>  checkStockLimit(Integer week, Integer supplierProductType, Integer orderType, String supplierCode, List productIds){
+        Map<String,StockCheckVO> map = new HashMap<>();
         if (Check.NuNCollection(productIds)){
-            throw  new BusinessException("参数为空");
+           return map;
         }
         if (Check.NuNObjs(week,supplierProductType,orderType,supplierCode)){
             throw  new BusinessException("参数为空");

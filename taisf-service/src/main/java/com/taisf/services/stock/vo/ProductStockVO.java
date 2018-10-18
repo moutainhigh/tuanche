@@ -120,6 +120,14 @@ public class ProductStockVO extends BaseEntity {
     private  String classifyName;
 
 
+    public Integer getSupplierProductType() {
+        return supplierProductType;
+    }
+
+    public void setSupplierProductType(Integer supplierProductType) {
+        this.supplierProductType = supplierProductType;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

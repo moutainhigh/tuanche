@@ -4,6 +4,7 @@ import com.jk.framework.base.entity.DataTransferObject;
 import com.jk.framework.base.page.PagingResult;
 import com.jk.framework.base.utils.Check;
 import com.jk.framework.base.utils.JsonEntityTransform;
+import com.jk.framework.base.utils.ValueUtil;
 import com.jk.framework.log.utils.LogUtil;
 import com.taisf.services.classify.api.ProductClassifyService;
 import com.taisf.services.classify.entity.ProductClassifyEntity;
@@ -110,21 +111,30 @@ public class StockController {
             if (Check.NuNCollection(productEntities)) {
                 return new PageResult();
             }
-            List<Integer> productIds = productEntities.parallelStream().map(ProductEntity::getId).collect(Collectors.toList());
-            Map<String, StockCheckVO> lunchMap = stockProductManager.checkStockLimit(productListRequest.getWeek(), SupplierProductTypeEnum.PRODUCT.getCode(), OrderTypeEnum.LUNCH_COMMON.getCode(), employeeEntity.getEmpBiz(), productIds);
-            Map<String, StockCheckVO> dinnerMap = stockProductManager.checkStockLimit(productListRequest.getWeek(), SupplierProductTypeEnum.PRODUCT.getCode(), OrderTypeEnum.DINNER_COMMON.getCode(), employeeEntity.getEmpBiz(), productIds);
+            List<Integer> productIds = productEntities.parallelStream().filter(a -> ValueUtil.getintValue(a.getSupplierProductType()) == SupplierProductTypeEnum.PRODUCT.getCode()).map(ProductEntity::getId).collect(Collectors.toList());
+            List<Integer> packageIds = productEntities.parallelStream().filter(a -> ValueUtil.getintValue(a.getSupplierProductType()) == SupplierProductTypeEnum.PACKAGE.getCode()).map(ProductEntity::getId).collect(Collectors.toList());
+
+            Map<String, StockCheckVO> lunchMapPro = stockProductManager.checkStockLimit(productListRequest.getWeek(), SupplierProductTypeEnum.PRODUCT.getCode(), OrderTypeEnum.LUNCH_COMMON.getCode(), employeeEntity.getEmpBiz(), productIds);
+            Map<String, StockCheckVO> lunchMapPackage = stockProductManager.checkStockLimit(productListRequest.getWeek(), SupplierProductTypeEnum.PACKAGE.getCode(), OrderTypeEnum.LUNCH_COMMON.getCode(), employeeEntity.getEmpBiz(), packageIds);
+            lunchMapPro.putAll(lunchMapPackage);
+
+            Map<String, StockCheckVO> dinnerMapPro = stockProductManager.checkStockLimit(productListRequest.getWeek(), SupplierProductTypeEnum.PRODUCT.getCode(), OrderTypeEnum.DINNER_COMMON.getCode(), employeeEntity.getEmpBiz(), productIds);
+            Map<String, StockCheckVO> dinnerMapPackage = stockProductManager.checkStockLimit(productListRequest.getWeek(), SupplierProductTypeEnum.PACKAGE.getCode(), OrderTypeEnum.DINNER_COMMON.getCode(), employeeEntity.getEmpBiz(), packageIds);
+            dinnerMapPro.putAll(dinnerMapPackage);
+
+
             List<ProductStockVO> stockVOList = new ArrayList<>();
             for (ProductEntity productEntity : productEntities) {
                 ProductStockVO vo = new ProductStockVO();
                 BeanUtils.copyProperties(productEntity, vo);
-                StockCheckVO productLunchVO = lunchMap.get(String.valueOf(productEntity.getId()));
+                StockCheckVO productLunchVO = lunchMapPro.get(String.valueOf(productEntity.getId()));
                 if (!Check.NuNObj(productLunchVO)) {
                     vo.setLunchStockId(productLunchVO.getLimitId());
                     vo.setLunchProductLimit(productLunchVO.getProductLimit());
                     vo.setLunchProductNum(productLunchVO.getProductNum());
                 }
 
-                StockCheckVO productdinnerVO = dinnerMap.get(String.valueOf(productEntity.getId()));
+                StockCheckVO productdinnerVO = dinnerMapPro.get(String.valueOf(productEntity.getId()));
                 if (!Check.NuNObj(productdinnerVO)) {
                          vo.setDinnerStockId(productdinnerVO.getLimitId());
                     vo.setDinnerProductLimit(productdinnerVO.getProductLimit());

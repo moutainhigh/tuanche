@@ -147,6 +147,11 @@
                                 data-align="center"><span class="tdfont">菜单名称</span></th>
                             <th data-field="classifyName" data-width="10%"
                                 data-align="center"><span class="tdfont">分类</span></th>
+
+                            <th data-field="supplierProductType" data-width="10%" data-formatter="formatSupplierProductType"
+                                data-align="center"><span class="tdfont">类型</span></th>
+
+
                             <th data-field="priceSale" data-width="10%" data-formatter="formatPrice"
                                 data-align="center"><span class="tdfont">价格</span></th>
                             <th data-field="forLunch" data-width="10%" data-formatter="formatForLunch"
@@ -280,6 +285,18 @@
             return "-";
         }
     }
+
+
+    function formatSupplierProductType(value, row, index) {
+        if (value == 1){
+            return "商品";
+        }else if (value == 2){
+            return "套餐";
+        }
+        return value;
+    }
+
+
     function formatLunchStock(value, row, index) {
         if (row.lunchProductLimit == null || row.lunchProductNum == null) {
             return "0" + "(0)";
