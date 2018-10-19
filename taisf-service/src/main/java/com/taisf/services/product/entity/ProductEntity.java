@@ -93,6 +93,16 @@ public class ProductEntity extends BaseEntity {
     private String supplierCode;
     private String windowCode;
 
+    private String totalProductName;
+
+    public String getTotalProductName() {
+        return totalProductName;
+    }
+
+    public void setTotalProductName(String totalProductName) {
+        this.totalProductName = totalProductName;
+    }
+
     public String getSupplierCode() {
         return supplierCode;
     }

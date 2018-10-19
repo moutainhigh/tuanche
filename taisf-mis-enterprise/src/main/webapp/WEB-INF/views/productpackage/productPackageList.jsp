@@ -173,8 +173,8 @@
                                 data-align="center"><span class="tdfont">ID</span></th>
                             <th data-field="productName" data-width="10%"
                                 data-align="center"><span class="tdfont">套餐名称</span></th>
-                            <th data-field="productType" data-width="15%" data-formatter="formatProductType"
-                                data-align="center"><span class="tdfont">供餐类型</span></th>
+                            <th data-field="totalProductName" data-width="15%" data-formatter="formatTotalProductName"
+                                data-align="center"><span class="tdfont">菜品明细</span></th>
                             <th data-field="productSource" data-width="10%" data-formatter="formatProductSource"
                                 data-align="center"><span class="tdfont">套餐属性</span></th>
                             <th data-field="productClassify" data-width="10%"
@@ -532,13 +532,11 @@
         }
     }
 
-    function formatProductType(value, row, index) {
-        if (value == 1) {
-            return "全部";
-        } else if (value == 2) {
-            return "老板餐";
-        } else if (value == 3) {
-            return "员工餐";
+    function formatTotalProductName(value, row, index) {
+        if (value == "" || value == null) {
+            return "<font color='red'>无</font>";
+        } else{
+            return value;
         }
     }
     function formatProductSource(value, row, index) {
