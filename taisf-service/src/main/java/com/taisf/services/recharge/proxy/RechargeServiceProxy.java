@@ -303,6 +303,8 @@ public class RechargeServiceProxy implements RechargeService {
             dto.setErrorMsg("当前余额不足,请确定余额信息");
             return dto;
         }
+        //幂等创建当前的账户信息
+        userManager.fillAndGetAccountUser(has.getUserUid());
 
         rechargeManager.fillUserAccountOneByEnterprise(request.getEnterpriseCode(),has.getUserUid(),moneyPen.intValue());
         return dto;
